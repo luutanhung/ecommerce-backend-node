@@ -4,9 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "format:write": "prettier --write .",
+    "format:check": "prettier ."
   },
-  "keywords": ["nodejs", "ecommerce"],
+  "keywords": [
+    "nodejs",
+    "ecommerce"
+  ],
   "author": "luutanhung",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "prettier": "3.8.3"
+  }
 }

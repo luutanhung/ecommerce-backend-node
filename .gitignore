@@ -1,6 +1,6 @@
 # Node.js
-node_modules
+**/node_modules
 
 # Environments.
-*.env
-!.env.example
+**/*.env
+**/!.env.example
