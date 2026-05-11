@@ -1,0 +1,12 @@
+{
+  "name": "ecommerce-backend-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": ["nodejs", "ecommerce"],
+  "author": "luutanhung",
+  "license": "ISC",
+  "type": "module"
+}
