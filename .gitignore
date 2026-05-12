@@ -2,8 +2,13 @@
 **/node_modules
 
 # Environments.
-**/*.env
+**/*.env*
 **/!.env.example
+
+# Built Artifacts.
+*dist
+*build
+*coverage
 
 # IDE
 .vscode
