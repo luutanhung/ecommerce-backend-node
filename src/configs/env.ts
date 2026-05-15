@@ -12,7 +12,7 @@ dotenv.config({
 const env = cleanEnv(process.env, {
   NODE_ENV: str({ choices: ["development", "production"] }),
   HOST: host({ default: "127.0.0.1" }),
-  PORT: port({ default: 3003 }),
+  PORT: port({ default: 20008 }),
 
   // MongoDB.
   MONGODB_CONNECTION_STRING: str(),
