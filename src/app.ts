@@ -3,6 +3,7 @@ import type { Express } from "express";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+
 import { mainRouter } from "./routes/index.js";
 
 const app: Express = express();
@@ -15,6 +16,16 @@ app.use(helmet());
 app.use(
   compression({
     level: 9,
+  }),
+);
+
+// Parse application/json
+app.use(express.json());
+
+// Parse URL-encoded payloads.
+app.use(
+  express.urlencoded({
+    extended: true,
   }),
 );
 
