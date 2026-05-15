@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import { env } from "../configs/env.js";
-import { countNumOfConnections } from "../helpers/countNumOfConnections.js";
+import { countNumOfConnections } from "../helpers/investigateMongoDBHealth.js";
 
 export class Database {
   private static instance: Database;
@@ -21,7 +21,9 @@ export class Database {
       console.log("Connected to MongoDB successfully.");
 
       // Check total number of current connections to MongoDB.
-      countNumOfConnections();
+      console.log(
+        `Number of total connections to MongoDB: ${countNumOfConnections()}`,
+      );
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

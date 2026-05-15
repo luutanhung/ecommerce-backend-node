@@ -1,9 +1,15 @@
 import { app } from "./app.js";
 import { env } from "./configs/env.js";
 import { connectToDatabase } from "./dbs/init.mongodb.js";
+import { checkOverloadedConnections } from "./helpers/investigateMongoDBHealth.js";
 
 const startServer = async () => {
   await connectToDatabase();
+
+  /**
+   * Monitor MongoDB connection status.
+   */
+  checkOverloadedConnections();
 
   const server = app.listen(env.PORT, env.HOST, () => {
     console.log(`EBN Server is listening on port ${env.HOST}:${env.PORT}`);
