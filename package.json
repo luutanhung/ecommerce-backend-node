@@ -22,6 +22,7 @@
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/bcrypt": "^6.0.0",
     "@types/compression": "^1.8.1",
     "@types/express": "^5.0.6",
     "@types/helmet": "^0.0.48",
@@ -42,6 +43,7 @@
     "typescript-eslint": "^8.59.3"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "compression": "^1.8.1",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
