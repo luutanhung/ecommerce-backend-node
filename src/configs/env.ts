@@ -13,6 +13,9 @@ const env = cleanEnv(process.env, {
   NODE_ENV: str({ choices: ["development", "production"] }),
   HOST: host({ default: "127.0.0.1" }),
   PORT: port({ default: 3003 }),
+
+  // MongoDB.
+  MONGODB_CONNECTION_STRING: str(),
 });
 
 export { env };
