@@ -1,12 +1,9 @@
-import type { KeyObject } from "node:crypto";
-
 import jwt from "jsonwebtoken";
 
 export const createTokenPair = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any,
-  publicKey: KeyObject,
-  privateKey: KeyObject,
+  privateKey: string,
 ) => {
   try {
     const accessToken = await jwt.sign(payload, privateKey, {
