@@ -11,7 +11,7 @@ const config = {
       port: env.MONGODB_PORT,
       username: env.MONGODB_USERNAME,
       password: env.MONGODB_PASSWORD,
-      name: env.MONGODB_NAME,
+      name: env.MONGODB_DBNAME,
     },
   },
   production: {
@@ -24,7 +24,7 @@ const config = {
       port: env.MONGODB_PORT,
       username: env.MONGODB_USERNAME,
       password: env.MONGODB_PASSWORD,
-      name: env.MONGODB_NAME,
+      name: env.MONGODB_DBNAME,
     },
   },
 };

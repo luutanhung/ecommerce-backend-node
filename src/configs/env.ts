@@ -19,7 +19,7 @@ const env = cleanEnv(process.env, {
   MONGODB_PORT: port({ default: 27017 }),
   MONGODB_USERNAME: str({ default: "" }),
   MONGODB_PASSWORD: str({ default: "" }),
-  MONGODB_NAME: str({ default: "" }),
+  MONGODB_DBNAME: str({ default: "" }),
 });
 
 export { env };
