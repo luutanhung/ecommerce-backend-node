@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { env } from "../configs/env.js";
 import { countNumOfConnections } from "../helpers/investigateMongoDBHealth.js";
 
+const MONGODB_MAX_POOL_SIZE: number = 50;
+
 export class Database {
   private static instance: Database;
 
@@ -17,7 +19,9 @@ export class Database {
     }
 
     try {
-      await mongoose.connect(env.MONGODB_CONNECTION_STRING);
+      await mongoose.connect(env.MONGODB_CONNECTION_STRING, {
+        maxPoolSize: MONGODB_MAX_POOL_SIZE,
+      });
       console.log("Connected to MongoDB successfully.");
 
       // Check total number of current connections to MongoDB.
