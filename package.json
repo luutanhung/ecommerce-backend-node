@@ -7,8 +7,10 @@
     "dev": "cross-env NODE_ENV=development tsx --watch ./src/server.ts",
     "build": "tsc --build",
     "start": "cross-env NODE_ENV=production node ./dist/server.js",
-    "format:write": "prettier --write .",
-    "format:check": "prettier ."
+    "format:check": "prettier .",
+    "format:fix": "prettier --write .",
+    "lint:check": "eslint \"./src/**/*.{js,ts}\"",
+    "lint:fix": "eslint --fix \"./src/**/*.{js,ts}\""
   },
   "keywords": [
     "nodejs",
@@ -18,12 +20,17 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.6",
     "@types/node": "^25.7.0",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
+    "jiti": "^2.7.0",
     "prettier": "3.8.3",
     "prettier-plugin-organize-imports": "^4.3.0",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3"
   },
   "dependencies": {
     "cross-env": "^10.1.0",
