@@ -1,7 +1,7 @@
 import path from "path";
 
 import * as dotenv from "dotenv";
-import { cleanEnv, str, port, host } from "envalid";
+import { cleanEnv, host, port, str } from "envalid";
 
 const NODE_ENV = process.env.NODE_ENV || "development";
 

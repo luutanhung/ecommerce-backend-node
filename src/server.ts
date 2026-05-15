@@ -2,7 +2,7 @@ import { app } from "./app.js";
 import { env } from "./configs/env.js";
 
 const server = app.listen(env.PORT, env.HOST, () => {
-  console.log("Server is listening on port 3003");
+  console.log(`EBN Server is listening on port ${env.HOST}:${env.PORT}`);
 });
 
 process.on("SIGINT", () => {
