@@ -31,8 +31,10 @@ const startServer = async () => {
    */
   checkOverloadedConnections();
 
-  const server = app.listen(env.PORT, env.HOST, () => {
-    console.log(`EBN Server is listening on port ${env.HOST}:${env.PORT}`);
+  const server = app.listen(env.APP_PORT, env.APP_HOST, () => {
+    console.log(
+      `EBN Server is listening on port ${env.APP_HOST}:${env.APP_PORT}`,
+    );
   });
 
   process.on("SIGINT", () => shutdownServerGracefully("SIGINT"));
