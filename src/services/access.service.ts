@@ -30,31 +30,22 @@ export class AccessService {
         roles: [ShopRole.SHOP],
       });
 
-      const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
-        modulusLength: 4096,
-        publicKeyEncoding: {
-          type: "pkcs1",
-          format: "pem",
-        },
-        privateKeyEncoding: {
-          type: "pkcs1",
-          format: "pem",
-        },
-      });
+      // Generate a pair of private key and public key.
+      const privateKey = crypto.randomBytes(64).toString("hex");
+      const publicKey = crypto.randomBytes(64).toString("hex");
 
-      const publicKeyString = await KeyTokenService.createKeyToken({
+      const keyStore = await KeyTokenService.createKeyToken({
         userId: newShop._id,
+        privateKey,
         publicKey,
       });
 
-      if (!publicKeyString) {
+      if (!keyStore) {
         return {
           code: "xxxx",
           message: "publicKeyString error",
         };
       }
-
-      // const publicKeyObject = crypto.createPublicKey(publicKeyString);
 
       // Create a pair of tokens.
       const tokens = await createTokenPair(
@@ -64,6 +55,7 @@ export class AccessService {
         },
         privateKey,
       );
+      console.log(tokens);
 
       return {
         code: 201,
