@@ -6,7 +6,7 @@ import { cleanEnv, host, port, str } from "envalid";
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 dotenv.config({
-  path: path.resolve(import.meta.dirname, `../../env.${NODE_ENV}`),
+  path: path.resolve(import.meta.dirname, `../../.env.${NODE_ENV}`),
 });
 
 const env = cleanEnv(process.env, {
