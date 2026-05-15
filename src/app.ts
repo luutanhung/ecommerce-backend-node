@@ -3,7 +3,7 @@ import type { Express } from "express";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import { router } from "./routes/index.js";
+import { mainRouter } from "./routes/index.js";
 
 const app: Express = express();
 
@@ -18,6 +18,9 @@ app.use(
   }),
 );
 
-app.use(router);
+/**
+ * Register routers.
+ */
+app.use("", mainRouter);
 
 export { app };

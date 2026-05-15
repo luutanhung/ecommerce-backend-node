@@ -5,4 +5,4 @@ const router = Router();
 
 router.use("/v1/api", accessRouter);
 
-export { router };
+export { router as mainRouter };

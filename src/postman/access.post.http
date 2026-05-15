@@ -1,0 +1,2 @@
+### Signup
+POST http://127.0.0.1:20008/v1/api/shop/signup
