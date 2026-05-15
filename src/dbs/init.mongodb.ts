@@ -41,6 +41,25 @@ export class Database {
   }
 }
 
+/**
+ * Open a connection to MongoDB.
+ */
 export const connectToDatabase = async (): Promise<Database> => {
   return Database.getInstance();
+};
+
+/**
+ * Close all current connections made to MongoDB.
+ */
+export const disconnectFromDatabase = async (): Promise<void> => {
+  try {
+    // Close all connections managed by Mongoose.
+    await mongoose.disconnect();
+    console.log(`Mongoose connections closed successfully.`);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    console.error("Error during MongoDB disconnnection", err);
+    process.exit(1);
+  }
 };
