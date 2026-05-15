@@ -49,5 +49,7 @@
 
     "jsx": "react-jsx",
     "noUncheckedSideEffectImports": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "eslint.config.ts"]
 }
