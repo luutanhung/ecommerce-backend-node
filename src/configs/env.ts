@@ -15,7 +15,11 @@ const env = cleanEnv(process.env, {
   APP_PORT: port({ default: 20008 }),
 
   // MongoDB.
-  MONGODB_CONNECTION_STRING: str(),
+  MONGODB_HOST: host(),
+  MONGODB_PORT: port({ default: 27017 }),
+  MONGODB_USERNAME: str({ default: "" }),
+  MONGODB_PASSWORD: str({ default: "" }),
+  MONGODB_NAME: str({ default: "" }),
 });
 
 export { env };

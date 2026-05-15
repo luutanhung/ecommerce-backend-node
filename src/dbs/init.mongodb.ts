@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
 
+import { config } from "../configs/config.js";
 import { env } from "../configs/env.js";
 import { countNumOfConnections } from "../helpers/investigateMongoDBHealth.js";
 
 const MONGODB_MAX_POOL_SIZE: number = 50;
+
+const MONGODB_CONNECTION_STRING =
+  `mongodb://${config.db.username}:${config.db.password}` +
+  `@${config.db.host}:${config.db.port}/${config.db.name}?authSource=admin`;
 
 export class Database {
   private static instance: Database;
@@ -19,7 +24,7 @@ export class Database {
     }
 
     try {
-      await mongoose.connect(env.MONGODB_CONNECTION_STRING, {
+      await mongoose.connect(MONGODB_CONNECTION_STRING, {
         maxPoolSize: MONGODB_MAX_POOL_SIZE,
       });
       console.log("Connected to MongoDB successfully.");
