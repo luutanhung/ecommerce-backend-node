@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import { env } from "../configs/env.js";
+import { countNumOfConnections } from "../helpers/countNumOfConnections.js";
 
 export class Database {
   private static instance: Database;
@@ -18,6 +19,9 @@ export class Database {
     try {
       await mongoose.connect(env.MONGODB_CONNECTION_STRING);
       console.log("Connected to MongoDB successfully.");
+
+      // Check total number of current connections to MongoDB.
+      countNumOfConnections();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
