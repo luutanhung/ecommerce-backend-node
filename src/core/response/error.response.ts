@@ -5,19 +5,19 @@ import {
 } from "../../constants/response.constant.js";
 import type { ResponseParams } from "../../types/core/response.type.js";
 
-import { SuccessResponse } from "./success.response.js";
+import { BaseResponse } from "./base.response.js";
 
-export class OKResponse extends SuccessResponse {
+export class ErrorResponse extends BaseResponse {
   constructor({
-    statusCode = HttpStatusCode.OK,
-    code = ResponseCode.SUCCESS,
-    message = ResponseMessage.SUCCESS,
+    message = ResponseMessage.INTERNAL_SERVER_ERROR,
+    statusCode = HttpStatusCode.INTERNAL_SERVER_ERROR,
+    code = ResponseCode.INTERNAL_SERVER_ERROR,
     data,
   }: ResponseParams) {
     super({
+      message,
       statusCode,
       code,
-      message,
       data,
     });
   }

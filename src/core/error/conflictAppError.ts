@@ -4,7 +4,6 @@ import {
   ResponseMessage,
 } from "../../constants/response.constant.js";
 import type { PartialAppErrorParams } from "../../types/core/appError.js";
-import { isUndefined } from "../../utils/object.util.js";
 
 import { AppError } from "./appError.js";
 
@@ -14,7 +13,7 @@ export class ConflictAppError extends AppError {
       message: message || ResponseMessage.CONFLICT,
       statusCode: HttpStatusCode.CONFLICT,
       code: code || ResponseCode.CONFLICT,
-      ...(!isUndefined(data) && { data }),
+      data,
     });
   }
 }

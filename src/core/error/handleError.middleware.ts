@@ -5,6 +5,7 @@ import {
   ResponseCode,
   ResponseMessage,
 } from "../../constants/response.constant.js";
+import { ErrorResponse } from "../response/error.response.js";
 
 import { AppError } from "./appError.js";
 
@@ -16,19 +17,17 @@ export const handleError = async (
   next: NextFunction,
 ) => {
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
+    return new ErrorResponse({
+      statusCode: err.statusCode,
       code: err.code,
       message: err.message,
       data: err?.data,
-    });
+    }).send(res);
   }
 
-  const internalServerErrorResponse = {
+  return new ErrorResponse({
+    statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
     code: ResponseCode.INTERNAL_SERVER_ERROR,
     message: ResponseMessage.INTERNAL_SERVER_ERROR,
-  };
-
-  return res
-    .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-    .json(internalServerErrorResponse);
+  }).send(res);
 };

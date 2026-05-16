@@ -1,11 +1,12 @@
+import _ from "lodash";
+
 import { HttpStatusCode } from "../../constants/http.constant.js";
 import { ResponseMessage } from "../../constants/response.constant.js";
+import type { AppErrorParams } from "../../types/core/appError.js";
 import type {
-  AppErrorData,
-  AppErrorParams,
-} from "../../types/core/appError.js";
-import type { ResponseCodeKey } from "../../types/core/response.type.js";
-import { isUndefined } from "../../utils/object.util.js";
+  AppData,
+  ResponseCodeKey,
+} from "../../types/core/response.type.js";
 
 /**
  * Custom error class for handling application-specific errors with consistent formatting.
@@ -29,7 +30,7 @@ export class AppError extends Error {
    * Optional additional data payload providing more context about the error.
    * Can be used to include validation details, debug information, or custom error data.
    */
-  data?: AppErrorData;
+  data?: AppData;
 
   /**
    * Creates a new AppError instance with enhanced error context.
@@ -59,7 +60,7 @@ export class AppError extends Error {
     this.code = code;
     this.statusCode = statusCode;
 
-    if (!isUndefined(data)) {
+    if (!_.isUndefined(data)) {
       this.data = data;
     }
 

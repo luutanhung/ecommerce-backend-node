@@ -3,8 +3,7 @@ import {
   ResponseCode,
   ResponseMessage,
 } from "../../constants/response.constant.js";
-import type { SuccessResponseParams } from "../../types/core/response.type.js";
-import { isUndefined } from "../../utils/object.util.js";
+import type { ResponseParams } from "../../types/core/response.type.js";
 
 import { SuccessResponse } from "./success.response.js";
 
@@ -14,12 +13,12 @@ export class CreatedResponse extends SuccessResponse {
     statusCode = HttpStatusCode.CREATED,
     code = ResponseCode.CREATED,
     data,
-  }: SuccessResponseParams) {
+  }: ResponseParams) {
     super({
       message,
       statusCode,
       code,
-      ...(!isUndefined(data) && { data }),
+      data,
     });
   }
 }

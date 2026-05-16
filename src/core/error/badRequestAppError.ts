@@ -4,7 +4,6 @@ import {
   ResponseMessage,
 } from "../../constants/response.constant.js";
 import type { PartialAppErrorParams } from "../../types/core/appError.js";
-import { isUndefined } from "../../utils/object.util.js";
 
 import { AppError } from "./appError.js";
 
@@ -14,7 +13,7 @@ export class BadRequestAppError extends AppError {
       message: message || ResponseMessage.INVALID_REQUEST,
       statusCode: HttpStatusCode.BAD_REQUEST,
       code: code || ResponseCode.INVALID_REQUEST,
-      ...(!isUndefined(data) && { data }),
+      data,
     });
   }
 }
