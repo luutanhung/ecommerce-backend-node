@@ -1,10 +1,12 @@
-import { app } from "./app.js";
 import { env } from "./configs/env.js";
+
 import {
   connectToDatabase,
   disconnectFromDatabase,
 } from "./dbs/init.mongodb.js";
 import { checkOverloadedConnections } from "./helpers/investigateMongoDBHealth.js";
+
+import { app } from "./app.js";
 
 const startServer = async () => {
   /**

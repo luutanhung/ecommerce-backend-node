@@ -22,6 +22,7 @@
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/bcrypt": "^6.0.0",
     "@types/compression": "^1.8.1",
     "@types/express": "^5.0.6",

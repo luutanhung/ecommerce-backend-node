@@ -2,11 +2,16 @@ import crypto from "node:crypto";
 
 import bcrypt from "bcrypt";
 
-import { createTokenPair } from "../auth/auth.utils.js";
 import { ShopRole } from "../constants/shop.js";
-import { Shop } from "../models/shop.model.js";
-import type { SignUpPlayload } from "../types/access.type.js";
+
 import { getInfoData } from "../utils/mapper.js";
+
+import { Shop } from "../models/shop.model.js";
+
+import type { SignUpPlayload } from "../types/access.type.js";
+
+import { createTokenPair } from "../auth/auth.utils.js";
+
 import { KeyTokenService } from "./keytoken.service.js";
 
 export class AccessService {

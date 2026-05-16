@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const DOCUMENT_NAME = "KeyToken";
 const COLLECTION_NAME = "KeyTokens";
