@@ -1,4 +1,5 @@
 import type { Response } from "express";
+import { isUndefined } from "lodash";
 
 import { HttpStatusCode } from "../../constants/http.constant.js";
 import {
@@ -6,23 +7,17 @@ import {
   ResponseMessage,
 } from "../../constants/response.constant.js";
 import type { ResponseCodeKey } from "../../types/core/response.type.js";
+import type {
+  SuccessResponseData,
+  SuccessResponseParams,
+} from "../../types/core/response.type.js";
 import type { OutgoingHttpHeaders } from "../../types/http.type.js";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type SuccessResponseData = { [key: string]: any };
-
-type SuccessResponseParams = {
-  statusCode?: number;
-  code: ResponseCodeKey;
-  message?: string;
-  data?: SuccessResponseData;
-};
 
 export class SuccessResponse {
   statusCode: number;
   code: ResponseCodeKey;
-  data: SuccessResponseData | undefined;
-  message: string | undefined;
+  data?: SuccessResponseData;
+  message?: string;
 
   constructor({
     message = ResponseMessage.SUCCESS,
@@ -32,8 +27,14 @@ export class SuccessResponse {
   }: SuccessResponseParams) {
     this.statusCode = statusCode;
     this.code = code;
-    this.data = data;
-    this.message = message;
+
+    if (!isUndefined(data)) {
+      this.data = data;
+    }
+
+    if (!isUndefined(message)) {
+      this.message = message;
+    }
   }
 
   public send(res: Response, headers: OutgoingHttpHeaders = {}) {

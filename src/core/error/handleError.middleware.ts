@@ -5,7 +5,6 @@ import {
   ResponseCode,
   ResponseMessage,
 } from "../../constants/response.constant.js";
-import type { ApiResponse } from "../../types/core/response.type.js";
 
 import { AppError } from "./appError.js";
 
@@ -24,7 +23,7 @@ export const handleError = async (
     });
   }
 
-  const internalServerErrorResponse: ApiResponse = {
+  const internalServerErrorResponse = {
     code: ResponseCode.INTERNAL_SERVER_ERROR,
     message: ResponseMessage.INTERNAL_SERVER_ERROR,
   };
