@@ -1,18 +1,26 @@
 import type { Request, RequestHandler, Response } from "express";
 
+import { HttpStatusCode } from "../constants/http.constant.js";
+import {
+  ResponseCode,
+  ResponseMessage,
+} from "../constants/response.constant.js";
+
 import { AccessService } from "../services/access.service.js";
+
+import type { ApiResponse } from "../types/response.type.js";
 
 class AccessController {
   signUp: RequestHandler = async (req: Request, res: Response) => {
-    try {
-      return res.status(201).json(await AccessService.signUp(req.body));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      res.status(500).json({
-        code: "5xx",
-        message: err.message,
-      });
-    }
+    const data = await AccessService.signUp(req.body);
+
+    const apiRes: ApiResponse = {
+      code: ResponseCode.SHOP_REGISTRATION_SUCCESS,
+      message: ResponseMessage.SHOP_REGISTRATION_SUCCESS,
+      data,
+    };
+
+    return res.status(HttpStatusCode.CREATED).json(apiRes);
   };
 }
 

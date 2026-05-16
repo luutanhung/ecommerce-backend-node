@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 
 import bcrypt from "bcrypt";
 
+import { ResponseCode } from "../constants/response.constant.js";
 import { ShopRole } from "../constants/shop.constant.js";
 
 import { getInfoData } from "../utils/mapper.js";
@@ -11,72 +12,60 @@ import { Shops } from "../models/shop.model.js";
 import type { SignUpPlayload } from "../types/access.type.js";
 
 import { createTokenPair } from "../auth/auth.utils.js";
+import { AppError } from "../error/appError.js";
 
 import { KeyTokenService } from "./keytoken.service.js";
 
 export class AccessService {
   static signUp = async ({ name, email, password }: SignUpPlayload) => {
-    try {
-      const existingShop = await Shops.findOne({ email }).lean();
-      if (existingShop) {
-        return {
-          code: "xxxx",
-          message: "Shop has already been registered",
-        };
-      }
+    const existingShop = await Shops.findOne({ email }).lean();
 
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Create a new shop.
-      const newShop = await Shops.create({
-        name,
-        email,
-        password: hashedPassword,
-        roles: [ShopRole.SHOP],
+    if (existingShop) {
+      throw new AppError({
+        code: ResponseCode.SHOP_ALREADY_EXISTS,
       });
+    }
 
-      // Generate a pair of private key and public key.
-      const privateKey = crypto.randomBytes(64).toString("hex");
-      const publicKey = crypto.randomBytes(64).toString("hex");
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      const keyStore = await KeyTokenService.createKeyToken({
-        userId: newShop._id,
-        privateKey,
-        publicKey,
-      });
+    // Create a new shop.
+    const newShop = await Shops.create({
+      name,
+      email,
+      password: hashedPassword,
+      roles: [ShopRole.SHOP],
+    });
 
-      if (!keyStore) {
-        return {
-          code: "xxxx",
-          message: "publicKeyString error",
-        };
-      }
+    // Generate a pair of private key and public key.
+    const privateKey = crypto.randomBytes(64).toString("hex");
+    const publicKey = crypto.randomBytes(64).toString("hex");
 
-      // Create a pair of tokens.
-      const tokens = await createTokenPair(
-        {
-          userId: newShop._id,
-          email,
-        },
-        publicKey,
-        privateKey,
-      );
+    const keyStore = await KeyTokenService.createKeyToken({
+      userId: newShop._id,
+      privateKey,
+      publicKey,
+    });
 
+    if (!keyStore) {
       return {
-        code: 201,
-        data: {
-          shop: getInfoData(["_id", "name", "email"], newShop.toObject()),
-          tokens,
-        },
-      };
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      return {
-        code: "xxx",
-        message: err.message,
-        status: "error",
+        code: "xxxx",
+        message: "publicKeyString error",
       };
     }
+
+    // Create a pair of tokens.
+    const tokens = await createTokenPair(
+      {
+        userId: newShop._id,
+        email,
+      },
+      publicKey,
+      privateKey,
+    );
+
+    return {
+      shop: getInfoData(["_id", "name", "email"], newShop.toObject()),
+      tokens,
+    };
   };
 }

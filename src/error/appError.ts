@@ -4,20 +4,20 @@ import { ResponseMessage } from "../constants/response.constant.js";
 import type { ResponseCodeKey } from "../types/response.type.js";
 
 // eslint-disable-next-line
-type AppErrorData = { [key: string]: any } | undefined;
+type AppErrorData = { [key: string]: any };
 
 type AppErrorParams = {
   code: ResponseCodeKey;
   message?: string;
   statusCode?: number;
-  data: AppErrorData;
+  data?: AppErrorData;
 };
 
 export class AppError extends Error {
   code: ResponseCodeKey;
   statusCode: number;
 
-  data: AppErrorData;
+  data: AppErrorData | undefined;
 
   constructor({
     code,

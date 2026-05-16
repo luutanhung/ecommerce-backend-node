@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 import { HttpStatusCode } from "../constants/http.constant.js";
 import {
@@ -10,7 +10,13 @@ import type { ApiResponse } from "../types/response.type.js";
 
 import { AppError } from "./appError.js";
 
-export const handleError = async (err: Error, req: Request, res: Response) => {
+export const handleError = async (
+  err: Error,
+  req: Request,
+  res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  next: NextFunction,
+) => {
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       code: err.code,

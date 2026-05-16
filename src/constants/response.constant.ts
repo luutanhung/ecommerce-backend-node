@@ -8,6 +8,10 @@ export const ResponseCode = {
   TOO_MANY_REQUEST: "TOO_MANY_REQUEST",
 
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
+
+  // Shop.
+  SHOP_ALREADY_EXISTS: "SHOP_ALREADY_EXISTS",
+  SHOP_REGISTRATION_SUCCESS: "SHOP_REGISTRATION_SUCCESS",
 } as const;
 
 export const ResponseMessage: { [key in keyof typeof ResponseCode]: string } = {
@@ -20,4 +24,9 @@ export const ResponseMessage: { [key in keyof typeof ResponseCode]: string } = {
 
   INTERNAL_SERVER_ERROR:
     "Hệ thống đang gặp sự cố, mong bạn thông cảm và thư lại sau nhé",
+
+  // Shop.
+  SHOP_ALREADY_EXISTS:
+    "Cửa hàng đã tồn tại, vui lòng đăng kí cửa hàng với thông tin khác",
+  SHOP_REGISTRATION_SUCCESS: "Đăng kí cửa hàng thành công",
 };
