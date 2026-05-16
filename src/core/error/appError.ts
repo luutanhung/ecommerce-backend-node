@@ -4,7 +4,7 @@ import type {
   AppErrorData,
   AppErrorParams,
 } from "../../types/core/appError.js";
-import type { ResponseCodeKey } from "../../types/response.type.js";
+import type { ResponseCodeKey } from "../../types/core/response.type.js";
 
 /**
  * Custom error class for handling application-specific errors with consistent formatting.

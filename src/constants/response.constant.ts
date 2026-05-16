@@ -1,3 +1,5 @@
+import type { ResponseCodeKey } from "../types/core/response.type.js";
+
 export const ResponseCode = {
   // Generics.
   SUCCESS: "SUCCESS",
@@ -16,7 +18,7 @@ export const ResponseCode = {
   SHOP_REGISTRATION_SUCCESS: "SHOP_REGISTRATION_SUCCESS",
 } as const;
 
-export const ResponseMessage: { [key in keyof typeof ResponseCode]: string } = {
+export const ResponseMessage: Record<ResponseCodeKey, string> = {
   SUCCESS: "Yêu cầu thành công",
 
   UNAUTHORIZED: "Không đủ quyền hạn truy cập vào tài nguyên yêu cầu",

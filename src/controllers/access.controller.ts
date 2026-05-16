@@ -1,6 +1,7 @@
 import type { Request, RequestHandler, Response } from "express";
 
-import { HttpStatusCode } from "../constants/http.constant.js";
+import { SuccessResponse } from "../core/response/success.response.js";
+
 import {
   ResponseCode,
   ResponseMessage,
@@ -8,19 +9,15 @@ import {
 
 import { AccessService } from "../services/access.service.js";
 
-import type { ApiResponse } from "../types/response.type.js";
-
 class AccessController {
   signUp: RequestHandler = async (req: Request, res: Response) => {
     const data = await AccessService.signUp(req.body);
 
-    const apiRes: ApiResponse = {
+    return new SuccessResponse({
       code: ResponseCode.SHOP_REGISTRATION_SUCCESS,
       message: ResponseMessage.SHOP_REGISTRATION_SUCCESS,
       data,
-    };
-
-    return res.status(HttpStatusCode.CREATED).json(apiRes);
+    }).send(res);
   };
 }
 

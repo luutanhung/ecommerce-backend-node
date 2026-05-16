@@ -5,7 +5,7 @@ import {
   ResponseCode,
   ResponseMessage,
 } from "../../constants/response.constant.js";
-import type { ApiResponse } from "../../types/response.type.js";
+import type { ApiResponse } from "../../types/core/response.type.js";
 
 import { AppError } from "./appError.js";
 
