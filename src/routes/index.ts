@@ -3,7 +3,7 @@ import { Router } from "express";
 // import { authenticateApiKey } from "../auth/auth.middleware.js";
 import { handleError } from "../core/error/handleError.middleware.js";
 
-import { accessRouter } from "./access/index.js";
+import { accessRouter } from "./access.route.js";
 
 const router = Router();
 
