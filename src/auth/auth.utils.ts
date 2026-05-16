@@ -1,5 +1,12 @@
 import jwt from "jsonwebtoken";
 
+/**
+ * Creates a pair of access token and refresh token based on public key and private key.
+ *
+ * @param payload - Information to be encoded
+ * @param publicKey - Key to encode access token
+ * @param privateKey - Key to encode refresh token
+ */
 export const createTokenPair = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any,
