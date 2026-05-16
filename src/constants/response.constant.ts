@@ -4,6 +4,8 @@ export const ResponseCode = {
   // Generics.
   SUCCESS: "SUCCESS",
 
+  CREATED: "CREATED",
+
   UNAUTHORIZED: "UNAUTHORIZED",
   INVALID_REQUEST: "INVALID_REQUEST",
   NOT_FOUND: "NOT_FOUND",
@@ -20,6 +22,8 @@ export const ResponseCode = {
 
 export const ResponseMessage: Record<ResponseCodeKey, string> = {
   SUCCESS: "Yêu cầu thành công",
+
+  CREATED: "Tài nguyên được tạo thành công",
 
   UNAUTHORIZED: "Không đủ quyền hạn truy cập vào tài nguyên yêu cầu",
   INVALID_REQUEST: "Yêu cầu vừa rồi không hợp lệ",
