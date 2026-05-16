@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { type InferSchemaType, Schema, model } from "mongoose";
 
 const DOCUMENT_NAME: string = "ApiKey";
 const COLLECTION_NAME: string = "ApiKeys";
@@ -26,4 +26,6 @@ const apiKeySchema = new Schema(
   },
 );
 
-export const ApiKey = model(DOCUMENT_NAME, apiKeySchema);
+export type ApiKeyDocument = InferSchemaType<typeof apiKeySchema>;
+
+export const ApiKeys = model(DOCUMENT_NAME, apiKeySchema);

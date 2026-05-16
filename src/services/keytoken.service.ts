@@ -1,6 +1,6 @@
 import type { Types } from "mongoose";
 
-import { KeyToken } from "../models/keytoken.model.js";
+import { KeyTokens } from "../models/keytoken.model.js";
 
 export class KeyTokenService {
   static createKeyToken = async ({
@@ -13,7 +13,7 @@ export class KeyTokenService {
     publicKey: string;
   }) => {
     try {
-      const tokens = await KeyToken.create({
+      const tokens = await KeyTokens.create({
         user: userId,
         privateKey,
         publicKey,

@@ -2,11 +2,11 @@ import crypto from "node:crypto";
 
 import bcrypt from "bcrypt";
 
-import { ShopRole } from "../constants/shop.js";
+import { ShopRole } from "../constants/shop.constant.js";
 
 import { getInfoData } from "../utils/mapper.js";
 
-import { Shop } from "../models/shop.model.js";
+import { Shops } from "../models/shop.model.js";
 
 import type { SignUpPlayload } from "../types/access.type.js";
 
@@ -17,7 +17,7 @@ import { KeyTokenService } from "./keytoken.service.js";
 export class AccessService {
   static signUp = async ({ name, email, password }: SignUpPlayload) => {
     try {
-      const existingShop = await Shop.findOne({ email }).lean();
+      const existingShop = await Shops.findOne({ email }).lean();
       if (existingShop) {
         return {
           code: "xxxx",
@@ -28,7 +28,7 @@ export class AccessService {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Create a new shop.
-      const newShop = await Shop.create({
+      const newShop = await Shops.create({
         name,
         email,
         password: hashedPassword,
