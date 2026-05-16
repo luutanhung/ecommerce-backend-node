@@ -6,11 +6,47 @@ import type {
 } from "../../types/core/appError.js";
 import type { ResponseCodeKey } from "../../types/response.type.js";
 
+/**
+ * Custom error class for handling application-specific errors with consistent formatting.
+ * Extends the native Error class to provide additional context like HTTP status codes,
+ * response codes, and custom data payloads.
+ */
 export class AppError extends Error {
+  /**
+   * HTTP status code associated with the error (e.g., 400, 401, 404, 500).
+   * Defaults to 400 (BAD_REQUEST) if not specified.
+   */
   statusCode: number;
+
+  /**
+   * Application-specific response code used for client-side error handling and mapping.
+   * Must be a valid key from the ResponseCodeKey type.
+   */
   code: ResponseCodeKey;
+
+  /**
+   * Optional additional data payload providing more context about the error.
+   * Can be used to include validation details, debug information, or custom error data.
+   */
   data: AppErrorData | undefined;
 
+  /**
+   * Creates a new AppError instance with enhanced error context.
+   * 
+   * @param params - Error configuration parameters
+   * @param params.code - Application-specific response code key
+   * @param params.message - Human-readable error message (defaults to ResponseMessage[code])
+   * @param params.statusCode - HTTP status code (defaults to HttpStatusCode.BAD_REQUEST)
+   * @param params.data - Optional additional error data
+   * 
+   * @throws {AppError} Returns an AppError instance that can be thrown or passed to error handlers
+   * 
+   * @remarks
+   * - The error message automatically uses the mapped message from ResponseMessage constant
+     if no custom message is provided
+   * - The prototype chain is properly maintained for `instanceof` checks
+   * - The error name is set to the class name for better debugging
+   */
   constructor({
     code,
     message = ResponseMessage[code],
