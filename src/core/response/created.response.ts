@@ -3,7 +3,7 @@ import {
   ResponseCode,
   ResponseMessage,
 } from "../../constants/response.constant.js";
-import type { ResponseParams } from "../../types/core/response.type.js";
+import type { PartialResponseParams } from "../../types/core/response.type.js";
 
 import { SuccessResponse } from "./success.response.js";
 
@@ -13,7 +13,7 @@ export class CreatedResponse extends SuccessResponse {
     statusCode = HttpStatusCode.CREATED,
     code = ResponseCode.CREATED,
     data,
-  }: ResponseParams) {
+  }: PartialResponseParams) {
     super({
       message,
       statusCode,

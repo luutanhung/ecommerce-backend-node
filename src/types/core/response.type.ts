@@ -11,3 +11,5 @@ export type ResponseParams = {
   message: string;
   data?: AppData;
 };
+
+export type PartialResponseParams = Partial<ResponseParams>;

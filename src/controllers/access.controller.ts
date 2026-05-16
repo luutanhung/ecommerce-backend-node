@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from "express";
 
-import { SuccessResponse } from "../core/response/success.response.js";
+import { CreatedResponse } from "../core/response/created.response.js";
 
 import {
   ResponseCode,
@@ -10,10 +10,13 @@ import {
 import { AccessService } from "../services/access.service.js";
 
 class AccessController {
-  signUp: RequestHandler = async (req: Request, res: Response) => {
+  signUp: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     const data = await AccessService.signUp(req.body);
 
-    return new SuccessResponse({
+    new CreatedResponse({
       code: ResponseCode.SHOP_REGISTRATION_SUCCESS,
       message: ResponseMessage.SHOP_REGISTRATION_SUCCESS,
       data,
