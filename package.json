@@ -11,7 +11,8 @@
     "format:fix": "prettier --write .",
     "lint:check": "eslint \"./src/**/*.{js,ts}\"",
     "lint:fix": "eslint --fix \"./src/**/*.{js,ts}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest"
   },
   "keywords": [
     "nodejs",
@@ -43,7 +44,8 @@
     "prettier-plugin-organize-imports": "^4.3.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.3"
+    "typescript-eslint": "^8.59.3",
+    "vitest": "^4.1.6"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
