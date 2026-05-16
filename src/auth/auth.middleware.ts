@@ -4,6 +4,11 @@ import { REQUEST_HEADERS } from "../constants/http.constant.js";
 
 import { findActiveApiKey } from "../services/apikey.service.js";
 
+import type { ApiKeyPermission } from "../types/apikey.type.js";
+
+/**
+ * Check if there is an active api key document stored. If there are any, attach it to req object and move on.
+ */
 export const authenticateApiKey = async (
   req: Request,
   res: Response,
@@ -32,4 +37,31 @@ export const authenticateApiKey = async (
   } catch (err: any) {
     next(err);
   }
+};
+
+/**
+ * Check whether permissions associated with this api key contains a specific permission.
+ *
+ * @param permission - The permission to be checked.
+ */
+export const checkPermission = (permission: string) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const permissionsAssociatedWithApiKey = req.apiKeyObj?.permissions;
+    if (!permissionsAssociatedWithApiKey) {
+      return res.status(403).json({
+        message: "Permission denied Error",
+      });
+    }
+
+    const hasPermission = permissionsAssociatedWithApiKey.includes(
+      permission as ApiKeyPermission,
+    );
+    if (!hasPermission) {
+      return res.status(403).json({
+        message: "Permission denied Error",
+      });
+    }
+
+    return next();
+  };
 };

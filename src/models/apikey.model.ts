@@ -1,5 +1,7 @@
 import { type InferSchemaType, Schema, model } from "mongoose";
 
+import { ApiKeyPermission } from "../constants/apikey.constant.js";
+
 const DOCUMENT_NAME: string = "ApiKey";
 const COLLECTION_NAME: string = "ApiKeys";
 
@@ -17,7 +19,7 @@ const apiKeySchema = new Schema(
     permissions: {
       type: [String],
       required: true,
-      enum: ["0000", "1111", "2222"],
+      enum: Object.values(ApiKeyPermission),
     },
   },
   {
