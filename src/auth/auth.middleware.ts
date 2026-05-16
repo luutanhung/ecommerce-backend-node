@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 
-import { REQUEST_HEADERS } from "../constants/http.constant.js";
+import { RequestHeaders } from "../constants/http.constant.js";
 
 import { findActiveApiKey } from "../services/apikey.service.js";
 
@@ -15,7 +15,7 @@ export const authenticateApiKey = async (
   next: NextFunction,
 ) => {
   try {
-    const apiKey = req.headers[REQUEST_HEADERS.API_KEY]?.toString();
+    const apiKey = req.headers[RequestHeaders.API_KEY]?.toString();
     if (!apiKey) {
       return res.status(403).json({
         message: "Forbidden Error",
