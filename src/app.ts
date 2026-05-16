@@ -4,6 +4,8 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import { handleError } from "./core/error/handleError.middleware.js";
+
 import { mainRouter } from "./routes/index.js";
 
 const app: Express = express();
@@ -33,5 +35,8 @@ app.use(
  * Register routers.
  */
 app.use("", mainRouter);
+
+// Universal error handler.
+app.use(handleError);
 
 export { app };

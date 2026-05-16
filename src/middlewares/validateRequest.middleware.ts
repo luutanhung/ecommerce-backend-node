@@ -26,7 +26,6 @@ export async function parseSchema<T>(
     return await schema.parseAsync(data);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    console.log(err);
     if (err instanceof ZodError) {
       const firstValidationIssue = err?.issues[0];
       const validationErrorResponseCodeKey =

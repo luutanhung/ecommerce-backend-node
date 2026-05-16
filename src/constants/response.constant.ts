@@ -12,6 +12,9 @@ export const ResponseCode = {
   TOO_MANY_REQUEST: "TOO_MANY_REQUEST",
   CONFLICT: "CONFLICT",
 
+  // JSON.
+  INVALID_JSON: "INVALID_JSON",
+
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
 
   /*
@@ -24,14 +27,14 @@ export const ResponseCode = {
   // Email.
   EMAIL_REQUIRED: "EMAIL_REQUIRED",
   EMAIL_INVALID_TYPE: "EMAIL_INVALID_TYPE",
-  EMAIL_INVALID: "INVALID_EMAIL",
+  EMAIL_INVALID: "EMAIL_INVALID",
 
   // Password.
   PASSWORD_REQUIRED: "PASSWORD_REQUIRED",
   PASSWORD_INVALID_TYPE: "PASSWORD_INVALID_TYPE",
   PASSWORD_INVALID: "PASSWORD_INVALID",
   PASSWORD_TOO_SHORT: "PASSWORD_TOO_SHORT",
-  PASSWORD_MISSING_UPPERCASE: "PASSWORD_TOO_SHORT",
+  PASSWORD_MISSING_UPPERCASE: "PASSWORD_MISSING_UPPERCASE",
   PASSWORD_MISSING_LOWERCASE: "PASSWORD_MISSING_LOWERCASE",
   PASSWORD_MISSING_NUMBER: "PASSWORD_MISSING_NUMBER",
   PASSWORD_MISSING_SPECIAL_CHAR: "PASSWORD_MISSING_SPECIAL_CHAR",
@@ -56,6 +59,9 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
   TOO_MANY_REQUEST:
     "Hệ thống đang tiếp nhận quá nhiều yêu cầu, vui lòng thử lại sau",
   CONFLICT: "Hệ thống bị xung đột, vui lòng thử lại sau",
+
+  // JSON.
+  INVALID_JSON: "Định dạng JSON đã tiếp nhận không hợp lệ",
 
   INTERNAL_SERVER_ERROR:
     "Hệ thống đang gặp sự cố, mong bạn thông cảm và thư lại sau nhé",

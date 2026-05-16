@@ -34,6 +34,15 @@ export const handleError = async (
     }).send(res);
   }
 
+  if (err instanceof SyntaxError) {
+    // Handle invalid JSON format.
+    return new ErrorResponse({
+      statusCode: HttpStatusCode.BAD_REQUEST,
+      code: ResponseCode.INVALID_JSON,
+      message: ResponseMessage.INVALID_JSON,
+    }).send(res);
+  }
+
   return new ErrorResponse({
     statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
     code: ResponseCode.INTERNAL_SERVER_ERROR,
