@@ -11,6 +11,7 @@ export const ResponseCode = {
 
   // Shop.
   SHOP_ALREADY_EXISTS: "SHOP_ALREADY_EXISTS",
+  SHOP_ALREADY_REGISTERED: "SHOP_ALREADY_REGISTERED",
   SHOP_REGISTRATION_SUCCESS: "SHOP_REGISTRATION_SUCCESS",
 } as const;
 
@@ -28,5 +29,6 @@ export const ResponseMessage: { [key in keyof typeof ResponseCode]: string } = {
   // Shop.
   SHOP_ALREADY_EXISTS:
     "Cửa hàng đã tồn tại, vui lòng đăng kí cửa hàng với thông tin khác",
+  SHOP_ALREADY_REGISTERED: "Cửa hàng đã được đăng kí trước đó",
   SHOP_REGISTRATION_SUCCESS: "Đăng kí cửa hàng thành công",
 };

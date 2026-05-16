@@ -40,18 +40,11 @@ export class AccessService {
     const privateKey = crypto.randomBytes(64).toString("hex");
     const publicKey = crypto.randomBytes(64).toString("hex");
 
-    const keyStore = await KeyTokenService.createKeyToken({
+    await KeyTokenService.createKeyToken({
       userId: newShop._id,
       privateKey,
       publicKey,
     });
-
-    if (!keyStore) {
-      return {
-        code: "xxxx",
-        message: "publicKeyString error",
-      };
-    }
 
     // Create a pair of tokens.
     const tokens = await createTokenPair(
