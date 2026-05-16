@@ -1,11 +1,11 @@
-import { type InferSchemaType, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 import { ApiKeyPermission } from "../constants/apikey.constant.js";
 
 const DOCUMENT_NAME: string = "ApiKey";
 const COLLECTION_NAME: string = "ApiKeys";
 
-const apiKeySchema = new Schema(
+export const apiKeySchema = new Schema(
   {
     key: {
       type: String,
@@ -27,7 +27,5 @@ const apiKeySchema = new Schema(
     collection: COLLECTION_NAME,
   },
 );
-
-export type ApiKeyDocument = InferSchemaType<typeof apiKeySchema>;
 
 export const ApiKeys = model(DOCUMENT_NAME, apiKeySchema);

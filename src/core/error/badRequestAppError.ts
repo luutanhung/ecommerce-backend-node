@@ -1,16 +1,13 @@
 import { HttpStatusCode } from "../../constants/http.constant.js";
-import {
-  ResponseCode,
-  ResponseMessage,
-} from "../../constants/response.constant.js";
+import { ResponseCode } from "../../constants/response.constant.js";
 import type { PartialAppErrorParams } from "../../types/core/appError.js";
 
 import { AppError } from "./appError.js";
 
 export class BadRequestAppError extends AppError {
-  constructor({ message, code, data }: PartialAppErrorParams = {}) {
+  constructor({ code, message, data }: PartialAppErrorParams = {}) {
     super({
-      message: message || ResponseMessage.INVALID_REQUEST,
+      message,
       statusCode: HttpStatusCode.BAD_REQUEST,
       code: code || ResponseCode.INVALID_REQUEST,
       data,

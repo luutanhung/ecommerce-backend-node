@@ -1,4 +1,6 @@
-import { type ApiKeyDocument, ApiKeys } from "../models/apikey.model.js";
+import { ApiKeys } from "../models/apikey.model.js";
+
+import type { ApiKeyDocument } from "../types/apikey.type.js";
 
 /**
  * Return the active document with key equals to value of apiKey argument.

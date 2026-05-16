@@ -1,11 +1,11 @@
-import { type InferSchemaType, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 import { ShopStatus } from "../constants/shop.constant.js";
 
 const DOCUMENT_NAME = "Shop";
 const COLLECTION_NAME = "Shops";
 
-const shopSchema = new Schema(
+export const shopSchema = new Schema(
   {
     name: {
       type: String,
@@ -40,7 +40,5 @@ const shopSchema = new Schema(
     collection: COLLECTION_NAME,
   },
 );
-
-export type ShopDocument = InferSchemaType<typeof shopSchema>;
 
 export const Shops = model(DOCUMENT_NAME, shopSchema);

@@ -1,6 +1,6 @@
 @base_api_url=http://127.0.0.1:20008/v1/api
 
-### Signup
+### Registers a new shop successfully.
 POST {{base_api_url}}/shop/signup
 Content-Type: application/json
 x-api-key: xxxxx
@@ -9,4 +9,15 @@ x-api-key: xxxxx
   "name": "ShopDev",
   "email": "shopdev13@gmail.com",
   "password": "shopdevsecret"
+}
+
+### Registers a new shop should fail when missing shop's email.
+POST {{base_api_url}}/shop/signup
+Content-Type: application/json
+x-api-key: xxxxx
+
+{
+  "name": 123,
+  "email": "shopdev20@gmail.com",
+  "password": 123
 }
