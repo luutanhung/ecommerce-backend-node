@@ -5,6 +5,7 @@ import type {
   AppErrorParams,
 } from "../../types/core/appError.js";
 import type { ResponseCodeKey } from "../../types/core/response.type.js";
+import { isUndefined } from "../../utils/object.util.js";
 
 /**
  * Custom error class for handling application-specific errors with consistent formatting.
@@ -28,7 +29,7 @@ export class AppError extends Error {
    * Optional additional data payload providing more context about the error.
    * Can be used to include validation details, debug information, or custom error data.
    */
-  data: AppErrorData | undefined;
+  data?: AppErrorData;
 
   /**
    * Creates a new AppError instance with enhanced error context.
@@ -57,7 +58,10 @@ export class AppError extends Error {
 
     this.code = code;
     this.statusCode = statusCode;
-    this.data = data;
+
+    if (!isUndefined(data)) {
+      this.data = data;
+    }
 
     this.name = this.constructor.name;
     Object.setPrototypeOf(this, new.target.prototype);

@@ -7,7 +7,7 @@ export type AppErrorParams = {
   code: ResponseCodeKey;
   message?: string;
   statusCode?: number;
-  data?: AppErrorData | undefined;
+  data?: AppErrorData;
 };
 
 export type PartialAppErrorParams = Partial<AppErrorParams>;
