@@ -1,4 +1,5 @@
 import type { Request, RequestHandler, Response } from "express";
+
 import { AccessService } from "../services/access.service.js";
 
 class AccessController {
