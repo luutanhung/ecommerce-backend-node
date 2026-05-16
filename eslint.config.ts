@@ -13,7 +13,24 @@ export default defineConfig([
     languageOptions: { globals: globals.node },
 
     rules: {
-      "simple-import-sort/imports": "error",
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [
+            // Node.js builtins
+            ["^node:"],
+
+            // Third-party packages
+            ["^@?\\w"],
+
+            // Absolute imports
+            ["^@/"],
+
+            // Relative imports
+            ["^\\."],
+          ],
+        },
+      ],
       "simple-import-sort/exports": "error",
     },
   },
