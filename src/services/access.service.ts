@@ -53,9 +53,9 @@ export class AccessService {
           userId: newShop._id,
           email,
         },
+        publicKey,
         privateKey,
       );
-      console.log(tokens);
 
       return {
         code: 201,
