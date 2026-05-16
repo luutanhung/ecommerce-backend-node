@@ -4,6 +4,7 @@ export default {
   singleQuote: false,
   semi: true,
   trailingComma: "all",
+  printWidth: 80,
   plugins: ["@trivago/prettier-plugin-sort-imports"],
 
   importOrder: [
