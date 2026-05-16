@@ -34,4 +34,4 @@ export const ResponseMessage: { [key in keyof typeof ResponseCode]: string } = {
     "Cửa hàng đã tồn tại, vui lòng đăng kí cửa hàng với thông tin khác",
   SHOP_ALREADY_REGISTERED: "Cửa hàng đã được đăng kí trước đó",
   SHOP_REGISTRATION_SUCCESS: "Đăng kí cửa hàng thành công",
-};
+} as const;
