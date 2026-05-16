@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 // import { authenticateApiKey } from "../auth/auth.middleware.js";
-import { handleError } from "../error/errorHandler.middleware.js";
+import { handleError } from "../core/error/handleError.middleware.js";
 
 import { accessRouter } from "./access/index.js";
 

@@ -1,12 +1,12 @@
 import type { Types } from "mongoose";
 import mongoose from "mongoose";
 
+import { AppError } from "../core/error/appError.js";
+
 import { HttpStatusCode } from "../constants/http.constant.js";
 import { ResponseCode } from "../constants/response.constant.js";
 
 import { KeyTokens } from "../models/keytoken.model.js";
-
-import { AppError } from "../error/appError.js";
 
 export class KeyTokenService {
   static createKeyToken = async ({

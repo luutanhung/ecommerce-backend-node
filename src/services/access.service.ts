@@ -2,6 +2,8 @@ import crypto from "node:crypto";
 
 import bcrypt from "bcrypt";
 
+import { AppError } from "../core/error/appError.js";
+
 import { ResponseCode } from "../constants/response.constant.js";
 import { ShopRole } from "../constants/shop.constant.js";
 
@@ -12,7 +14,6 @@ import { Shops } from "../models/shop.model.js";
 import type { SignUpPlayload } from "../types/access.type.js";
 
 import { createTokenPair } from "../auth/auth.utils.js";
-import { AppError } from "../error/appError.js";
 
 import { KeyTokenService } from "./keytoken.service.js";
 
@@ -28,7 +29,7 @@ export class AccessService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new shop.
+    // Register a new shop.
     const newShop = await Shops.create({
       name,
       email,

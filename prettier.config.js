@@ -13,6 +13,10 @@ export default {
     // Third-party packages
     "<THIRD_PARTY_MODULES>",
 
+    // Core.
+    "^@/core/(.*)$",
+    "^\\.\\.?/core/(.*)$",
+
     // Constants
     "^@/constants/(.*)$",
     "^\\.\\.?/constants/(.*)$",

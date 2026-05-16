@@ -1,22 +1,14 @@
-import { HttpStatusCode } from "../constants/http.constant.js";
-import { ResponseMessage } from "../constants/response.constant.js";
-
-import type { ResponseCodeKey } from "../types/response.type.js";
-
-// eslint-disable-next-line
-type AppErrorData = { [key: string]: any };
-
-type AppErrorParams = {
-  code: ResponseCodeKey;
-  message?: string;
-  statusCode?: number;
-  data?: AppErrorData;
-};
+import { HttpStatusCode } from "../../constants/http.constant.js";
+import { ResponseMessage } from "../../constants/response.constant.js";
+import type {
+  AppErrorData,
+  AppErrorParams,
+} from "../../types/core/appError.js";
+import type { ResponseCodeKey } from "../../types/response.type.js";
 
 export class AppError extends Error {
-  code: ResponseCodeKey;
   statusCode: number;
-
+  code: ResponseCodeKey;
   data: AppErrorData | undefined;
 
   constructor({

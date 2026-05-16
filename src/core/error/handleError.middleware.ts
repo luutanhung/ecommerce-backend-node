@@ -1,12 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 
-import { HttpStatusCode } from "../constants/http.constant.js";
+import { HttpStatusCode } from "../../constants/http.constant.js";
 import {
   ResponseCode,
   ResponseMessage,
-} from "../constants/response.constant.js";
-
-import type { ApiResponse } from "../types/response.type.js";
+} from "../../constants/response.constant.js";
+import type { ApiResponse } from "../../types/response.type.js";
 
 import { AppError } from "./appError.js";
 

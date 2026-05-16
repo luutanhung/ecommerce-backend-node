@@ -3,9 +3,10 @@ export const ResponseCode = {
   SUCCESS: "SUCCESS",
 
   UNAUTHORIZED: "UNAUTHORIZED",
-
+  INVALID_REQUEST: "INVALID_REQUEST",
   NOT_FOUND: "NOT_FOUND",
   TOO_MANY_REQUEST: "TOO_MANY_REQUEST",
+  CONFLICT: "CONFLICT",
 
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
 
@@ -19,9 +20,11 @@ export const ResponseMessage: { [key in keyof typeof ResponseCode]: string } = {
   SUCCESS: "Yêu cầu thành công",
 
   UNAUTHORIZED: "Không đủ quyền hạn truy cập vào tài nguyên yêu cầu",
+  INVALID_REQUEST: "Yêu cầu vừa rồi không hợp lệ",
   NOT_FOUND: "Không tìm thấy tài nguyên yêu cầu",
   TOO_MANY_REQUEST:
     "Hệ thống đang tiếp nhận quá nhiều yêu cầu, vui lòng thử lại sau",
+  CONFLICT: "Hệ thống bị xung đột, vui lòng thử lại sau",
 
   INTERNAL_SERVER_ERROR:
     "Hệ thống đang gặp sự cố, mong bạn thông cảm và thư lại sau nhé",

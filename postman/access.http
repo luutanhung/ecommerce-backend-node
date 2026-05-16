@@ -1,0 +1,12 @@
+@base_api_url=http://127.0.0.1:20008/v1/api
+
+### Signup
+POST {{base_api_url}}/shop/signup
+Content-Type: application/json
+x-api-key: xxxxx
+
+{
+  "name": "ShopDev",
+  "email": "shopdev11@gmail.com",
+  "password": "shopdevsecret"
+}
