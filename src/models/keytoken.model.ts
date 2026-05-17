@@ -3,7 +3,7 @@ import { type InferSchemaType, Schema, model } from "mongoose";
 const DOCUMENT_NAME = "KeyToken";
 const COLLECTION_NAME = "KeyTokens";
 
-const keyTokenSchema = new Schema(
+export const keyTokenSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,

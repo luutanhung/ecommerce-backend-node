@@ -12,6 +12,7 @@ import { sanitizeShop } from "../utils/sanitizer.js";
 import { Shops } from "../models/shop.model.js";
 
 import type { SignUpPlayload } from "../types/access.type.js";
+import type { TokenPair } from "../types/auth.type.js";
 
 import { createTokenPair } from "../auth/auth.utils.js";
 
@@ -48,7 +49,7 @@ export class AccessService {
     });
 
     // Create a pair of tokens.
-    const tokens = await createTokenPair(
+    const tokenPair: TokenPair = await createTokenPair(
       {
         userId: newCreatedShop._id,
         email,
@@ -59,7 +60,7 @@ export class AccessService {
 
     return {
       shop: sanitizeShop(newCreatedShop),
-      tokens,
+      tokens: tokenPair,
     };
   };
 

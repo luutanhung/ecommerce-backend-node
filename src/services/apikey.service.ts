@@ -1,6 +1,6 @@
 import { ApiKeys } from "../models/apikey.model.js";
 
-import type { ApiKeyDocument } from "../types/apikey.type.js";
+import type { ApiKey } from "../types/apikey.type.js";
 
 /**
  * Return the active document with key equals to value of apiKey argument.
@@ -10,7 +10,6 @@ import type { ApiKeyDocument } from "../types/apikey.type.js";
  */
 export const findActiveApiKey = async (
   apiKey: string,
-): Promise<ApiKeyDocument | null> => {
-  const apiKeyObj = await ApiKeys.findOne({ key: apiKey, status: true }).lean();
-  return apiKeyObj;
+): Promise<ApiKey | null> => {
+  return await ApiKeys.findOne({ key: apiKey, status: true }).lean();
 };
