@@ -2,7 +2,7 @@
   "name": "ecommerce-backend-nodejs",
   "version": "1.0.0",
   "description": "Ecommerce Backend written in Nodejs",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx --watch ./src/server.ts",
     "build": "tsc --build",

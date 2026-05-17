@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import type { TokenPair } from "../types/auth.type.js";
+import type { CreateTokenPairPayload, TokenPair } from "../types/auth.type.js";
 
 /**
  * Creates a pair of access token and refresh token based on public key and private key.
@@ -12,18 +12,17 @@ import type { TokenPair } from "../types/auth.type.js";
  * @returns A pair of tokens generated.
  */
 export const createTokenPair = async (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload: any,
+  payload: CreateTokenPairPayload,
   publicKey: string,
   privateKey: string,
 ): Promise<TokenPair> => {
   try {
-    const accessToken = await jwt.sign(payload, publicKey, {
+    const accessToken: string = await jwt.sign(payload, publicKey, {
       algorithm: "HS256",
       expiresIn: "2 days",
     });
 
-    const refreshToken = await jwt.sign(payload, privateKey, {
+    const refreshToken: string = await jwt.sign(payload, privateKey, {
       algorithm: "HS256",
       expiresIn: "7 days",
     });

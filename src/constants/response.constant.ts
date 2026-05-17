@@ -41,6 +41,9 @@ export const ResponseCode = {
   PASSWORD_MISSING_NUMBER: "PASSWORD_MISSING_NUMBER",
   PASSWORD_MISSING_SPECIAL_CHAR: "PASSWORD_MISSING_SPECIAL_CHAR",
 
+  // Key Token.
+  KEY_TOKEN_ALREADY_EXISTS: "KEY_TOKEN_ALREADY_EXISTS",
+
   // Shop.
   SHOP_NOT_FOUND: "SHOP_NOT_FOUND",
   SHOP_INVALID_NAME: "SHOP_INVALID_NAME",
@@ -96,6 +99,9 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
   PASSWORD_MISSING_NUMBER: "Mật khẩu phải chứa ít nhất một chữ số.",
   PASSWORD_MISSING_SPECIAL_CHAR:
     "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.",
+
+  // Key Token.
+  KEY_TOKEN_ALREADY_EXISTS: "Key Token đã tồn tại",
 
   // Shop.
   SHOP_NOT_FOUND: "Cửa hàng chưa được đăng kí",
