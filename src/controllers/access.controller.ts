@@ -8,8 +8,12 @@ import { ResponseCode } from "../constants/response.constant.js";
 import { AccessService } from "../services/access.service.js";
 
 import type { LoginResult, RegisterResult } from "../types/access.type.js";
+import type { KeyTokenLean } from "../types/keytoken.type.js";
 
 class AccessController {
+  /**
+   * Register a new shop.
+   */
   register: RequestHandler = async (
     req: Request,
     res: Response,
@@ -24,6 +28,9 @@ class AccessController {
     }).send(res);
   };
 
+  /**
+   * Logins with shop info.
+   */
   login: RequestHandler = async (
     req: Request,
     res: Response,
@@ -33,6 +40,23 @@ class AccessController {
     new OKResponse({
       code: ResponseCode.SHOP_LOGIN_SUCCESS,
       data: loginResult,
+    }).send(res);
+  };
+
+  /**
+   * Logout.
+   */
+  logout: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
+    const deletedKeyToken = await AccessService.logout({
+      keyToken: req.keyToken as KeyTokenLean,
+    });
+
+    new OKResponse({
+      code: ResponseCode.SHOP_LOGOUT_SUCCESS,
+      data: deletedKeyToken,
     }).send(res);
   };
 }

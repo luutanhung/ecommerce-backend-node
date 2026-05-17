@@ -1,5 +1,14 @@
 import { sanitizeShop } from "../utils/sanitizer.utils.js";
 
+import type { KeyTokenLean } from "./keytoken.type.js";
+
+export type CreateTokenPairPayload = Record<string, string>;
+
+export type AuthPayload = {
+  userId: string;
+  email: string;
+};
+
 // Services.
 export type RegisterPlayload = {
   name: string;
@@ -27,9 +36,10 @@ export type TokenPair = {
   refreshToken: string;
 };
 
-export type CreateTokenPairPayload = Record<string, string>;
+export type LogoutPayload = {
+  keyToken: KeyTokenLean;
+};
 
-export type AuthPayload = {
-  userId: string;
-  email: string;
+export type LogoutResult = {
+  keyToken: KeyTokenLean;
 };

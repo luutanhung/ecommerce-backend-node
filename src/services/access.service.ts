@@ -18,6 +18,8 @@ import type {
   AuthPayload,
   LoginPayload,
   LoginResult,
+  LogoutPayload,
+  LogoutResult,
   RegisterPlayload,
   RegisterResult,
   TokenPair,
@@ -136,6 +138,21 @@ export class AccessService {
     return {
       shop: sanitizeShop(registeredShop),
       tokens: tokenPair,
+    };
+  };
+
+  /**
+   * Logouts.
+   */
+  static logout = async ({
+    keyToken,
+  }: LogoutPayload): Promise<LogoutResult> => {
+    const deletedKeyToken = await KeyTokenService.deleteKeyTokenById({
+      id: keyToken._id,
+    });
+
+    return {
+      keyToken: deletedKeyToken,
     };
   };
 }

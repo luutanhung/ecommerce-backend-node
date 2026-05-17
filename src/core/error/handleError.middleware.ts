@@ -22,7 +22,7 @@ export const handleError = async (
   err: Error,
   req: Request,
   res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   next: NextFunction,
 ) => {
   if (err instanceof AppError) {

@@ -63,6 +63,7 @@ export const ResponseCode = {
   SHOP_ALREADY_REGISTERED: "SHOP_ALREADY_REGISTERED",
   SHOP_REGISTRATION_SUCCESS: "SHOP_REGISTRATION_SUCCESS",
   SHOP_LOGIN_SUCCESS: "SHOP_LOGIN_SUCCESS",
+  SHOP_LOGOUT_SUCCESS: "SHOP_LOGOUT_SUCCESS",
 } as const;
 
 export const ResponseMessage: Record<ResponseCodeKey, string> = {

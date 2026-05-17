@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 import { AppError } from "../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../core/error/authenticationFailedAppError.js";
@@ -128,11 +128,14 @@ export const authenticate = asyncWrapper(
       return next();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      if (err instanceof TokenExpiredError) {
+      if (err instanceof jwt.TokenExpiredError) {
         throw new AuthenticationFailedAppError({
           code: ResponseCode.ACCESS_TOKEN_EXPIRED,
         });
-      } else if (err instanceof JsonWebTokenError || err instanceof AppError) {
+      } else if (
+        err instanceof jwt.JsonWebTokenError ||
+        err instanceof AppError
+      ) {
         throw new AuthenticationFailedAppError({
           code: ResponseCode.ACCESS_TOKEN_INVALID,
         });

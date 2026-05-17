@@ -22,3 +22,9 @@ export type FindKeyTokenByUserIdPayload = {
 };
 
 export type FindKeyTokenByUserIdResult = KeyTokenLean | null;
+
+export type DeleteKeyTokenByIdPayload = {
+  id: Types.ObjectId;
+};
+
+export type DeleteKeyTokenByIdResult = KeyTokenLean;

@@ -8,7 +8,7 @@
 POST {{base_api_url}}/shop/login
 Content-Type: application/json
 x-api-key: xxxxx
-  
+
 {
   "email": "{{shop_email}}",
   "password": "{{shop_password}}"

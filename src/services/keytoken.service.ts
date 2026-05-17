@@ -1,6 +1,7 @@
 import mongoose, { Types } from "mongoose";
 
 import { AppError } from "../core/error/appError.js";
+import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 
 import { HttpStatusCode } from "../constants/http.constant.js";
 import { ResponseCode } from "../constants/response.constant.js";
@@ -10,6 +11,8 @@ import { KeyTokens } from "../models/keytoken.model.js";
 import type {
   CreateKeyTokenPayload,
   CreateKeyTokenResult,
+  DeleteKeyTokenByIdPayload,
+  DeleteKeyTokenByIdResult,
   FindKeyTokenByUserIdPayload,
   FindKeyTokenByUserIdResult,
 } from "../types/keytoken.type.js";
@@ -62,5 +65,22 @@ export class KeyTokenService {
     userId,
   }: FindKeyTokenByUserIdPayload): Promise<FindKeyTokenByUserIdResult> => {
     return await KeyTokens.findOne({ user: new Types.ObjectId(userId) }).lean();
+  };
+
+  /**
+   * Delete key token by id.
+   */
+  static deleteKeyTokenById = async ({
+    id,
+  }: DeleteKeyTokenByIdPayload): Promise<DeleteKeyTokenByIdResult> => {
+    const deletedKeyToken = await KeyTokens.findByIdAndDelete(id).lean();
+
+    if (!deletedKeyToken) {
+      throw new NotFoundAppError({
+        code: ResponseCode.KEY_TOKEN_NOT_FOUND,
+      });
+    }
+
+    return deletedKeyToken;
   };
 }
