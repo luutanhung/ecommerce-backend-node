@@ -15,12 +15,13 @@ import { createTokenPair } from "../utils/token.utils.js";
 import { Shops } from "../models/shop.model.js";
 
 import type {
+  AuthPayload,
   LoginPayload,
   LoginResult,
   RegisterPlayload,
   RegisterResult,
+  TokenPair,
 } from "../types/access.type.js";
-import type { CreateTokenPairPayload, TokenPair } from "../types/auth.type.js";
 import type { ShopDocument } from "../types/shop.type.js";
 import type { KeyPair } from "../types/utils.type.js";
 
@@ -57,12 +58,14 @@ export class AccessService {
     // Generate a pair of private key and public key.
     const { privateKey, publicKey }: KeyPair = await createKeyPair();
 
+    const authPayload: AuthPayload = {
+      userId: newCreatedShop._id.toString(),
+      email,
+    };
+
     // Create a pair of tokens.
     const tokenPair: TokenPair = await createTokenPair(
-      {
-        userId: newCreatedShop._id,
-        email,
-      },
+      authPayload,
       publicKey,
       privateKey,
     );
@@ -112,13 +115,13 @@ export class AccessService {
 
     const userIdToCreateTokenPair: Types.ObjectId = registeredShop._id;
 
-    const createTokenPairPayload: CreateTokenPairPayload = {
-      userId: userIdToCreateTokenPair,
+    const authPayload: AuthPayload = {
+      userId: userIdToCreateTokenPair.toString(),
       email,
     };
 
     const tokenPair: TokenPair = await createTokenPair(
-      createTokenPairPayload,
+      authPayload,
       publicKey,
       privateKey,
     );

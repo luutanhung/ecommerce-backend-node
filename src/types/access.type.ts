@@ -1,7 +1,5 @@
 import { sanitizeShop } from "../utils/sanitizer.utils.js";
 
-import type { TokenPair } from "./auth.type.js";
-
 // Services.
 export type RegisterPlayload = {
   name: string;
@@ -23,3 +21,15 @@ export type LoginPayload = {
 };
 
 export type LoginResult = AccessBaseResult;
+
+export type TokenPair = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type CreateTokenPairPayload = Record<string, string>;
+
+export type AuthPayload = {
+  userId: string;
+  email: string;
+};

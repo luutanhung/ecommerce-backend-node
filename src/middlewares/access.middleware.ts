@@ -1,10 +1,21 @@
 import type { NextFunction, Request, Response } from "express";
+import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+
+import { AppError } from "../core/error/appError.js";
+import { AuthenticationFailedAppError } from "../core/error/authenticationFailedAppError.js";
+import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 
 import { RequestHeaders } from "../constants/http.constant.js";
+import { ResponseCode } from "../constants/response.constant.js";
 
 import { findActiveApiKey } from "../services/apikey.service.js";
+import { KeyTokenService } from "../services/keytoken.service.js";
 
+import type { AuthPayload } from "../types/access.type.js";
 import type { ApiKeyPermission } from "../types/apikey.type.js";
+import type { FindKeyTokenByUserIdResult } from "../types/keytoken.type.js";
+
+import { asyncWrapper } from "../helpers/asyncWrapper.js";
 
 /**
  * Check if there is an active api key document stored. If there are any, attach it to req object and move on.
@@ -67,5 +78,67 @@ export const checkPermission = (permission: string) => {
 };
 
 /**
- *
+ * Authenticate middlware to verify access token and attach user's details to request.
  */
+export const authenticate = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // Check whether userId is missing.
+    const userId: string | undefined =
+      req.headers[RequestHeaders.CLIENT_ID]?.toString();
+
+    if (!userId) {
+      throw new AuthenticationFailedAppError({
+        code: ResponseCode.CLIENT_ID_REQUIRED,
+      });
+    }
+
+    // Check whether there is a keyToken instance associciated with this user id.
+    const keyToken: FindKeyTokenByUserIdResult =
+      await KeyTokenService.findKeyTokenByUserId({ userId });
+
+    if (!keyToken) {
+      throw new NotFoundAppError({
+        code: ResponseCode.KEY_TOKEN_NOT_FOUND,
+      });
+    }
+
+    // Verify access token.
+    const accessToken = req.headers[RequestHeaders.AUTHORIZATION]?.toString();
+    if (!accessToken) {
+      throw new AuthenticationFailedAppError({
+        code: ResponseCode.ACCESS_TOKEN_REQUIRED,
+      });
+    }
+
+    try {
+      const decodedAuthPayload = (await jwt.verify(
+        accessToken,
+        keyToken.publicKey,
+      )) as AuthPayload;
+
+      if (userId !== decodedAuthPayload.userId) {
+        throw new AuthenticationFailedAppError({
+          code: ResponseCode.USER_INVALID,
+        });
+      }
+
+      // Attach key token instance to req.
+      req.keyToken = keyToken;
+
+      return next();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err instanceof TokenExpiredError) {
+        throw new AuthenticationFailedAppError({
+          code: ResponseCode.ACCESS_TOKEN_EXPIRED,
+        });
+      } else if (err instanceof JsonWebTokenError || err instanceof AppError) {
+        throw new AuthenticationFailedAppError({
+          code: ResponseCode.ACCESS_TOKEN_INVALID,
+        });
+      }
+
+      throw err;
+    }
+  },
+);

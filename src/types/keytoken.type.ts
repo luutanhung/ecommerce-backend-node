@@ -15,4 +15,10 @@ export type CreateKeyTokenPayload = {
   refreshToken: string;
 };
 
-export type CreateKeyTokenResult = KeyTokenLean;
+export type CreateKeyTokenResult = KeyTokenLean | null;
+
+export type FindKeyTokenByUserIdPayload = {
+  userId: string;
+};
+
+export type FindKeyTokenByUserIdResult = KeyTokenLean | null;

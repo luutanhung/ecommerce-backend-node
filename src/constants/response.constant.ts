@@ -12,12 +12,23 @@ export const ResponseCode = {
   TOO_MANY_REQUEST: "TOO_MANY_REQUEST",
   CONFLICT: "CONFLICT",
 
+  // Client ID.
+  CLIENT_ID_REQUIRED: "CLIENT_ID_REQUIRED",
+
   // JSON.
   INVALID_JSON: "INVALID_JSON",
 
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
 
   UNAUTHENTICATED: "UNAUTHENTICATED",
+
+  // User.
+  USER_INVALID: "USER_INVALID",
+
+  // Access token.
+  ACCESS_TOKEN_REQUIRED: "ACCESS_TOKEN_REQUIRED",
+  ACCESS_TOKEN_EXPIRED: "ACCESS_TOKEN_EXPIRED",
+  ACCESS_TOKEN_INVALID: "ACCESS_TOKEN_INVALID",
 
   /*
    * Entity-focused.
@@ -43,6 +54,7 @@ export const ResponseCode = {
 
   // Key Token.
   KEY_TOKEN_ALREADY_EXISTS: "KEY_TOKEN_ALREADY_EXISTS",
+  KEY_TOKEN_NOT_FOUND: "KEY_TOKEN_NOT_FOUND",
 
   // Shop.
   SHOP_NOT_FOUND: "SHOP_NOT_FOUND",
@@ -66,6 +78,9 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
     "Hệ thống đang tiếp nhận quá nhiều yêu cầu, vui lòng thử lại sau",
   CONFLICT: "Hệ thống bị xung đột, vui lòng thử lại sau",
 
+  // Client ID.
+  CLIENT_ID_REQUIRED: "Client ID là bắt buộc",
+
   // JSON.
   INVALID_JSON: "Định dạng JSON đã tiếp nhận không hợp lệ",
 
@@ -73,6 +88,14 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
     "Hệ thống đang gặp sự cố, mong bạn thông cảm và thư lại sau nhé",
 
   UNAUTHENTICATED: "Thông tin đăng nhập không hợp lệ, vui lòng thử lại",
+
+  // User.
+  USER_INVALID: "Thông tin tài khoản không hợp lệ",
+
+  // Access token.
+  ACCESS_TOKEN_REQUIRED: "Access Token là bắt buộc",
+  ACCESS_TOKEN_EXPIRED: "Access Token đã hết hạn",
+  ACCESS_TOKEN_INVALID: "Access Token không hợp lệ",
 
   /**
    * Entity-focused.
@@ -101,6 +124,7 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
     "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.",
 
   // Key Token.
+  KEY_TOKEN_NOT_FOUND: "Key Token không tồn tại",
   KEY_TOKEN_ALREADY_EXISTS: "Key Token đã tồn tại",
 
   // Shop.

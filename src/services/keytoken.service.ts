@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 import { AppError } from "../core/error/appError.js";
 
@@ -10,15 +10,20 @@ import { KeyTokens } from "../models/keytoken.model.js";
 import type {
   CreateKeyTokenPayload,
   CreateKeyTokenResult,
+  FindKeyTokenByUserIdPayload,
+  FindKeyTokenByUserIdResult,
 } from "../types/keytoken.type.js";
 
 export class KeyTokenService {
+  /**
+   * Creates a new key token document instance.
+   */
   static createKeyToken = async ({
     userId,
     privateKey,
     publicKey,
     refreshToken,
-  }: CreateKeyTokenPayload): Promise<CreateKeyTokenResult | null> => {
+  }: CreateKeyTokenPayload): Promise<CreateKeyTokenResult> => {
     try {
       const tokens = await KeyTokens.findOneAndUpdate(
         {
@@ -48,5 +53,14 @@ export class KeyTokenService {
 
       throw err;
     }
+  };
+
+  /**
+   * Find key token instance by user id.
+   */
+  static findKeyTokenByUserId = async ({
+    userId,
+  }: FindKeyTokenByUserIdPayload): Promise<FindKeyTokenByUserIdResult> => {
+    return await KeyTokens.findOne({ user: new Types.ObjectId(userId) }).lean();
   };
 }

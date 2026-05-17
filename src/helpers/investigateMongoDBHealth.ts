@@ -4,7 +4,7 @@ import process from "node:process";
 import mongoose from "mongoose";
 import ms from "ms";
 
-import { formatBytesToMB } from "../utils/bytesFormatter.js";
+import { formatBytesToMB } from "../utils/bytesFormatter.utils.js";
 
 const CHECK_OVERLOADED_CONNECTIONS_INTERVAL: number = ms("5s");
 

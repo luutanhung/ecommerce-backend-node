@@ -1,5 +1,6 @@
 export const RequestHeaders = {
   API_KEY: "x-api-key",
+  CLIENT_ID: "x-client-id",
   AUTHORIZATION: "authorization",
 } as const;
 

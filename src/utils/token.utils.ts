@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 
-import type { CreateTokenPairPayload, TokenPair } from "../types/auth.type.js";
+import type {
+  CreateTokenPairPayload,
+  TokenPair,
+} from "../types/access.type.js";
 
 /**
  * Creates a pair of access token and refresh token based on public key and private key.
