@@ -50,13 +50,12 @@ class AccessController {
     req: Request,
     res: Response,
   ): Promise<void> => {
-    const deletedKeyToken = await AccessService.logout({
+    await AccessService.logout({
       keyToken: req.keyToken as KeyTokenLean,
     });
 
     new OKResponse({
       code: ResponseCode.SHOP_LOGOUT_SUCCESS,
-      data: deletedKeyToken,
     }).send(res);
   };
 }

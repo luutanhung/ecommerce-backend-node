@@ -136,4 +136,5 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
   SHOP_ALREADY_REGISTERED: "Cửa hàng đã được đăng kí trước đó",
   SHOP_REGISTRATION_SUCCESS: "Đăng kí cửa hàng thành công",
   SHOP_LOGIN_SUCCESS: "Đăng nhập thành công",
+  SHOP_LOGOUT_SUCCESS: "Đăng xuất khỏi cửa hàng thành công",
 } as const;
