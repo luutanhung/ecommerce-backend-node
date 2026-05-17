@@ -13,6 +13,7 @@ import { Shops } from "../models/shop.model.js";
 
 import type { SignUpPlayload } from "../types/access.type.js";
 import type { TokenPair } from "../types/auth.type.js";
+import type { ShopDocument } from "../types/shop.type.js";
 
 import { createTokenPair } from "../auth/auth.utils.js";
 
@@ -28,10 +29,10 @@ export class AccessService {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword: string = await bcrypt.hash(password, 10);
 
     // Register a new shop.
-    const newCreatedShop = await Shops.create({
+    const newCreatedShop: ShopDocument = await Shops.create({
       name,
       email,
       password: hashedPassword,
@@ -39,8 +40,8 @@ export class AccessService {
     });
 
     // Generate a pair of private key and public key.
-    const privateKey = crypto.randomBytes(64).toString("hex");
-    const publicKey = crypto.randomBytes(64).toString("hex");
+    const privateKey: string = crypto.randomBytes(64).toString("hex");
+    const publicKey: string = crypto.randomBytes(64).toString("hex");
 
     await KeyTokenService.createKeyToken({
       userId: newCreatedShop._id,
