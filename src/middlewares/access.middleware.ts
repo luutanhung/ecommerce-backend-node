@@ -98,7 +98,7 @@ export const authenticate = asyncWrapper(
 
     if (!keyToken) {
       throw new NotFoundAppError({
-        code: ResponseCode.KEY_TOKEN_NOT_FOUND,
+        code: ResponseCode.SHOP_NOT_LOGGED_IN,
       });
     }
 

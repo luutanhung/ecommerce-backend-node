@@ -77,7 +77,7 @@ export class KeyTokenService {
 
     if (!deletedKeyToken) {
       throw new NotFoundAppError({
-        code: ResponseCode.KEY_TOKEN_NOT_FOUND,
+        code: ResponseCode.SHOP_NOT_LOGGED_IN,
       });
     }
 

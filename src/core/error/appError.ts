@@ -2,7 +2,7 @@ import _ from "lodash";
 
 import { HttpStatusCode } from "../../constants/http.constant.js";
 import { ResponseMessage } from "../../constants/response.constant.js";
-import type { AppErrorParams } from "../../types/core/appError.js";
+import type { AppErrorParams } from "../../types/core/appError.type.js";
 import type {
   AppData,
   ResponseCodeKey,

@@ -1,5 +1,5 @@
 import { ResponseCode } from "../../constants/response.constant.js";
-import type { PartialAppErrorParams } from "../../types/core/appError.js";
+import type { PartialAppErrorParams } from "../../types/core/appError.type.js";
 
 import { AppError } from "./appError.js";
 
