@@ -19,8 +19,17 @@ import { createTokenPair } from "../auth/auth.utils.js";
 
 import { KeyTokenService } from "./keytoken.service.js";
 
+type SignUpResult = {
+  shop: ReturnType<typeof sanitizeShop>;
+  tokens: TokenPair;
+};
+
 export class AccessService {
-  static signUp = async ({ name, email, password }: SignUpPlayload) => {
+  static signUp = async ({
+    name,
+    email,
+    password,
+  }: SignUpPlayload): Promise<SignUpResult> => {
     const existingShop = await Shops.findOne({ email }).lean();
 
     if (existingShop) {
