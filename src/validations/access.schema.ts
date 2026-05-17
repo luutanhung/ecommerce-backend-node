@@ -8,10 +8,10 @@ const ShopNameSchema = NameSchema.min(2, {
   message: ResponseCode.EMAIL_INVALID,
 });
 
-export const ShopSignUpSchema = z.object({
+export const ShopRegisterSchema = z.object({
   name: ShopNameSchema,
   email: EmailSchema,
   password: PasswordSchema,
 });
 
-export type ShopSignUpPayload = z.infer<typeof ShopSignUpSchema>;
+export type ShopRegisterPayload = z.infer<typeof ShopRegisterSchema>;

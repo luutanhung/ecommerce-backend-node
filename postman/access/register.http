@@ -3,18 +3,18 @@
 @shop_password=!'2@;_Ltg42aK8m6
 
 ### Registers a new shop successfully.
-POST {{base_api_url}}/shop/signup
+POST {{base_api_url}}/shop/register
 Content-Type: application/json
 x-api-key: xxxxx
 
 {
-  "name": "ShopDev",
-  "email": "shopdev13@gmail.com",
-  "password": "shopdevsecret"
+  "name": "{{shop_name}}",
+  "email": "shopdev24@gmail.com",
+  "password": "{{shop_password}}"
 }
 
 ### Registers a new shop should fail when missing shop's email.
-POST {{base_api_url}}/shop/signup
+POST {{base_api_url}}/shop/register
 Content-Type: application/json
 x-api-key: xxxxx
 

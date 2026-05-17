@@ -7,18 +7,20 @@ import { ResponseCode } from "../constants/response.constant.js";
 
 import { AccessService } from "../services/access.service.js";
 
-import type { LoginResult, SignUpResult } from "../types/access.type.js";
+import type { LoginResult, RegisterResult } from "../types/access.type.js";
 
 class AccessController {
-  signUp: RequestHandler = async (
+  register: RequestHandler = async (
     req: Request,
     res: Response,
   ): Promise<void> => {
-    const signUpResult: SignUpResult = await AccessService.signUp(req.body);
+    const registerResult: RegisterResult = await AccessService.register(
+      req.body,
+    );
 
     new CreatedResponse({
       code: ResponseCode.SHOP_REGISTRATION_SUCCESS,
-      data: signUpResult,
+      data: registerResult,
     }).send(res);
   };
 

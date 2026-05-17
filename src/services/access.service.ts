@@ -15,9 +15,9 @@ import { Shops } from "../models/shop.model.js";
 import type {
   LoginPayload,
   LoginResult,
-  SignUpPlayload,
+  RegisterPlayload,
+  RegisterResult,
 } from "../types/access.type.js";
-import type { SignUpResult } from "../types/access.type.js";
 import type { TokenPair } from "../types/auth.type.js";
 import type { ShopDocument } from "../types/shop.type.js";
 import type { KeyPair } from "../types/utils.type.js";
@@ -28,11 +28,11 @@ import { KeyTokenService } from "./keytoken.service.js";
 import { findShopByEmail } from "./shop.service.js";
 
 export class AccessService {
-  static signUp = async ({
+  static register = async ({
     name,
     email,
     password,
-  }: SignUpPlayload): Promise<SignUpResult> => {
+  }: RegisterPlayload): Promise<RegisterResult> => {
     const existingShop = await Shops.findOne({ email }).lean();
 
     if (existingShop) {
