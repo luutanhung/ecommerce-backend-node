@@ -7,7 +7,7 @@ import { AppError } from "../core/error/appError.js";
 import { ResponseCode } from "../constants/response.constant.js";
 import { ShopRole } from "../constants/shop.constant.js";
 
-import { getInfoData } from "../utils/mapper.js";
+import { sanitizeShop } from "../utils/sanitizer.js";
 
 import { Shops } from "../models/shop.model.js";
 
@@ -30,7 +30,7 @@ export class AccessService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Register a new shop.
-    const newShop = await Shops.create({
+    const newCreatedShop = await Shops.create({
       name,
       email,
       password: hashedPassword,
@@ -42,7 +42,7 @@ export class AccessService {
     const publicKey = crypto.randomBytes(64).toString("hex");
 
     await KeyTokenService.createKeyToken({
-      userId: newShop._id,
+      userId: newCreatedShop._id,
       privateKey,
       publicKey,
     });
@@ -50,7 +50,7 @@ export class AccessService {
     // Create a pair of tokens.
     const tokens = await createTokenPair(
       {
-        userId: newShop._id,
+        userId: newCreatedShop._id,
         email,
       },
       publicKey,
@@ -58,7 +58,7 @@ export class AccessService {
     );
 
     return {
-      shop: getInfoData(["_id", "name", "email"], newShop.toObject()),
+      shop: sanitizeShop(newCreatedShop),
       tokens,
     };
   };
