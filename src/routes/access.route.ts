@@ -14,4 +14,6 @@ router.post(
   asyncWrapper(accessController.signUp),
 );
 
+router.post("/shop/login", asyncWrapper(accessController.login));
+
 export { router as accessRouter };

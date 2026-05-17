@@ -3,7 +3,7 @@ import {
   ResponseCode,
   ResponseMessage,
 } from "../../constants/response.constant.js";
-import type { ResponseParams } from "../../types/core/response.type.js";
+import type { PartialResponseParams } from "../../types/core/response.type.js";
 
 import { BaseResponse } from "./base.response.js";
 
@@ -13,7 +13,7 @@ export class ErrorResponse extends BaseResponse {
     statusCode = HttpStatusCode.INTERNAL_SERVER_ERROR,
     code = ResponseCode.INTERNAL_SERVER_ERROR,
     data,
-  }: ResponseParams) {
+  }: PartialResponseParams = {}) {
     super({
       message,
       statusCode,

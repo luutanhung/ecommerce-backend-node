@@ -17,6 +17,8 @@ export const ResponseCode = {
 
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
 
+  UNAUTHENTICATED: "UNAUTHENTICATED",
+
   /*
    * Entity-focused.
    */
@@ -40,11 +42,12 @@ export const ResponseCode = {
   PASSWORD_MISSING_SPECIAL_CHAR: "PASSWORD_MISSING_SPECIAL_CHAR",
 
   // Shop.
+  SHOP_NOT_FOUND: "SHOP_NOT_FOUND",
+  SHOP_INVALID_NAME: "SHOP_INVALID_NAME",
   SHOP_ALREADY_EXISTS: "SHOP_ALREADY_EXISTS",
   SHOP_ALREADY_REGISTERED: "SHOP_ALREADY_REGISTERED",
   SHOP_REGISTRATION_SUCCESS: "SHOP_REGISTRATION_SUCCESS",
-
-  SHOP_INVALID_NAME: "SHOP_INVALID_NAME",
+  SHOP_LOGIN_SUCCESS: "SHOP_LOGIN_SUCCESS",
 } as const;
 
 export const ResponseMessage: Record<ResponseCodeKey, string> = {
@@ -65,6 +68,8 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
 
   INTERNAL_SERVER_ERROR:
     "Hệ thống đang gặp sự cố, mong bạn thông cảm và thư lại sau nhé",
+
+  UNAUTHENTICATED: "Thông tin đăng nhập không hợp lệ, vui lòng thử lại",
 
   /**
    * Entity-focused.
@@ -93,10 +98,11 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
     "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.",
 
   // Shop.
+  SHOP_NOT_FOUND: "Cửa hàng chưa được đăng kí",
+  SHOP_INVALID_NAME: "Tên cửa hàng không hợp lệ",
   SHOP_ALREADY_EXISTS:
     "Cửa hàng đã tồn tại, vui lòng đăng kí cửa hàng với thông tin khác",
   SHOP_ALREADY_REGISTERED: "Cửa hàng đã được đăng kí trước đó",
   SHOP_REGISTRATION_SUCCESS: "Đăng kí cửa hàng thành công",
-
-  SHOP_INVALID_NAME: "Tên cửa hàng không hợp lệ",
+  SHOP_LOGIN_SUCCESS: "Đăng nhập thành công",
 } as const;

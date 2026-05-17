@@ -1,4 +1,6 @@
 @base_api_url=http://127.0.0.1:20008/v1/api
+@shop_name=ShopDEV
+@shop_password=!'2@;_Ltg42aK8m6
 
 ### Registers a new shop successfully.
 POST {{base_api_url}}/shop/signup
@@ -17,7 +19,7 @@ Content-Type: application/json
 x-api-key: xxxxx
 
 {
-  "name": "ShopDEV",
+  "name": "{{shop_name}}",
   "email": "shopdev21@gmail.com",
-  "password": "!'2@;_Ltg42aK8m6"
+  "password": "{{shop_password}}"
 }

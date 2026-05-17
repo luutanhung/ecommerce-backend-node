@@ -1,0 +1,15 @@
+@base_api_url=http://127.0.0.1:20008/v1/api
+@shop_name=ShopDEV
+@shop_email=shopdev21@gmail.com
+
+@shop_password=!'2@;_Ltg42aK8m6
+
+### Shop logins successfully.
+POST {{base_api_url}}/shop/login
+Content-Type: application/json
+x-api-key: xxxxx
+
+{
+  "email": "{{shop_email}}",
+  "password": "{{shop_password}}"
+}

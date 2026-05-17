@@ -1,28 +1,31 @@
-import crypto from "node:crypto";
-
 import bcrypt from "bcrypt";
 
 import { AppError } from "../core/error/appError.js";
+import { AuthenticationFailedAppError } from "../core/error/authenticationFailedAppError.js";
+import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 
 import { ResponseCode } from "../constants/response.constant.js";
 import { ShopRole } from "../constants/shop.constant.js";
 
+import { createKeyPair } from "../utils/generator.js";
 import { sanitizeShop } from "../utils/sanitizer.js";
 
 import { Shops } from "../models/shop.model.js";
 
-import type { SignUpPlayload } from "../types/access.type.js";
+import type {
+  LoginPayload,
+  LoginResult,
+  SignUpPlayload,
+} from "../types/access.type.js";
+import type { SignUpResult } from "../types/access.type.js";
 import type { TokenPair } from "../types/auth.type.js";
 import type { ShopDocument } from "../types/shop.type.js";
+import type { KeyPair } from "../types/utils.type.js";
 
 import { createTokenPair } from "../auth/auth.utils.js";
 
 import { KeyTokenService } from "./keytoken.service.js";
-
-type SignUpResult = {
-  shop: ReturnType<typeof sanitizeShop>;
-  tokens: TokenPair;
-};
+import { findShopByEmail } from "./shop.service.js";
 
 export class AccessService {
   static signUp = async ({
@@ -49,8 +52,7 @@ export class AccessService {
     });
 
     // Generate a pair of private key and public key.
-    const privateKey: string = crypto.randomBytes(64).toString("hex");
-    const publicKey: string = crypto.randomBytes(64).toString("hex");
+    const { privateKey, publicKey }: KeyPair = createKeyPair();
 
     await KeyTokenService.createKeyToken({
       userId: newCreatedShop._id,
@@ -69,10 +71,49 @@ export class AccessService {
     );
 
     return {
-      shop: sanitizeShop(newCreatedShop),
+      shop: sanitizeShop(newCreatedShop.toObject()),
       tokens: tokenPair,
     };
   };
 
-  // static login = async ({ email, password, refreshToken = null }) => {};
+  static login = async ({
+    email,
+    password,
+  }: LoginPayload): Promise<LoginResult> => {
+    // Find shop registered with passed-in email.
+    const registeredShop = await findShopByEmail(email);
+
+    if (!registeredShop) {
+      throw new NotFoundAppError({
+        code: ResponseCode.SHOP_NOT_FOUND,
+      });
+    }
+
+    // Check if provided password is matched with stored password.
+    const passwordIsMatched: boolean = await bcrypt.compare(
+      password,
+      registeredShop.password,
+    );
+
+    if (!passwordIsMatched) {
+      throw new AuthenticationFailedAppError();
+    }
+
+    // Generate a pair of publicKey and privateKey.
+    const { privateKey, publicKey }: KeyPair = createKeyPair();
+
+    const tokenPair: TokenPair = await createTokenPair(
+      {
+        userId: registeredShop._id,
+        email,
+      },
+      publicKey,
+      privateKey,
+    );
+
+    return {
+      shop: sanitizeShop(registeredShop),
+      tokens: tokenPair,
+    };
+  };
 }

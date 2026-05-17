@@ -3,19 +3,19 @@ import {
   ResponseCode,
   ResponseMessage,
 } from "../../constants/response.constant.js";
-import type { ResponseParams } from "../../types/core/response.type.js";
+import type { PartialResponseParams } from "../../types/core/response.type.js";
 
 import { BaseResponse } from "./base.response.js";
 
 export class SuccessResponse extends BaseResponse {
   constructor({
-    message = ResponseMessage.SUCCESS,
+    message,
     statusCode = HttpStatusCode.OK,
     code = ResponseCode.SUCCESS,
     data,
-  }: ResponseParams) {
+  }: PartialResponseParams = {}) {
     super({
-      message,
+      message: message || ResponseMessage[code],
       statusCode,
       code,
       data,

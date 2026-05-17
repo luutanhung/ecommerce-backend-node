@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import type { Shop, ShopDocument } from "../types/shop.type.js";
+import type { Shop, ShopLean } from "../types/shop.type.js";
 
 export const pickFields = <
   T extends Record<string, unknown>,
@@ -15,6 +15,6 @@ export const pickFields = <
 /**
  * Sanitize shop document instance.
  */
-export function sanitizeShop(shop: ShopDocument): Partial<Shop> {
-  return pickFields(["_id", "name", "email"], shop.toObject());
+export function sanitizeShop(shop: ShopLean): Partial<Shop> {
+  return pickFields(["_id", "name", "email"], shop);
 }
