@@ -10,7 +10,7 @@ import { ResponseCode } from "../constants/response.constant.js";
 
 import type { ResponseCodeKey } from "../types/core/response.type.js";
 
-import { asyncWrapper } from "./asyncWrapper.middleware.js";
+import { asyncWrapper } from "../helpers/asyncWrapper.js";
 
 type ValidationSchemas = {
   params?: ZodType<ParamsDictionary>;
