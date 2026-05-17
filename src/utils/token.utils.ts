@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import _ from "lodash";
 
 import type {
   CreateTokenPairPayload,
@@ -35,4 +36,25 @@ export const createTokenPair = async (
   } catch (err: any) {
     return err;
   }
+};
+
+/**
+ * Verifies a JSON Web Token with a key secret.
+ *
+ * @param token - Token to verify
+ * @param secretKey - Secret to be used to verify token.
+ */
+export const verifyJSONWebToken = <T>(
+  token: string,
+  secretKey: string,
+): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, secretKey, (err, decoded) => {
+      if (err || _.isUndefined(decoded)) {
+        return reject(err);
+      }
+
+      resolve(decoded as T);
+    });
+  });
 };

@@ -13,6 +13,9 @@ import type {
   CreateKeyTokenResult,
   DeleteKeyTokenByIdPayload,
   DeleteKeyTokenByIdResult,
+  DeleteKeyTokenByUserIdPayload,
+  DeleteKeyTokenByUserIdResult,
+  FindKeyTokenByRefreshTokenPayload,
   FindKeyTokenByUserIdPayload,
   FindKeyTokenByUserIdResult,
 } from "../types/keytoken.type.js";
@@ -59,15 +62,6 @@ export class KeyTokenService {
   };
 
   /**
-   * Find key token instance by user id.
-   */
-  static findKeyTokenByUserId = async ({
-    userId,
-  }: FindKeyTokenByUserIdPayload): Promise<FindKeyTokenByUserIdResult> => {
-    return await KeyTokens.findOne({ user: new Types.ObjectId(userId) }).lean();
-  };
-
-  /**
    * Delete key token by id.
    */
   static deleteKeyTokenById = async ({
@@ -82,5 +76,52 @@ export class KeyTokenService {
     }
 
     return deletedKeyToken;
+  };
+
+  /**
+   * Delete key token by user id.
+   */
+  static deleteKeyTokenByUserId = async ({
+    userId,
+  }: DeleteKeyTokenByUserIdPayload): Promise<DeleteKeyTokenByUserIdResult> => {
+    const deletedKeyToken = await KeyTokens.findOneAndDelete({
+      user: new Types.ObjectId(userId),
+    });
+
+    if (!deletedKeyToken) {
+      throw new NotFoundAppError({
+        code: ResponseCode.SHOP_NOT_LOGGED_IN,
+      });
+    }
+
+    return deletedKeyToken;
+  };
+
+  /**
+   * Find key token instance by user id.
+   */
+  static findKeyTokenByUserId = async ({
+    userId,
+  }: FindKeyTokenByUserIdPayload): Promise<FindKeyTokenByUserIdResult> => {
+    return await KeyTokens.findOne({ user: new Types.ObjectId(userId) }).lean();
+  };
+
+  /**
+   * Find key token by refresh token.
+   */
+  static findKeyTokenByRefreshTokenUsed = async ({
+    refreshToken,
+  }: FindKeyTokenByRefreshTokenPayload) => {
+    const foundKeyToken = await KeyTokens.findOne({
+      refreshTokensUsed: refreshToken,
+    }).lean();
+
+    if (!foundKeyToken) {
+      throw new NotFoundAppError({
+        code: ResponseCode.SHOP_NOT_LOGGED_IN,
+      });
+    }
+
+    return foundKeyToken;
   };
 }

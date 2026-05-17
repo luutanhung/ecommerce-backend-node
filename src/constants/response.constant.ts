@@ -2,11 +2,13 @@ import type { ResponseCodeKey } from "../types/core/response.type.js";
 
 export const ResponseCode = {
   // Generics.
+  // 200 range.
   SUCCESS: "SUCCESS",
-
   CREATED: "CREATED",
 
+  // 400 range.
   UNAUTHORIZED: "UNAUTHORIZED",
+  FORBIDDEN: "FORBIDDEN",
   INVALID_REQUEST: "INVALID_REQUEST",
   NOT_FOUND: "NOT_FOUND",
   TOO_MANY_REQUEST: "TOO_MANY_REQUEST",
@@ -29,6 +31,12 @@ export const ResponseCode = {
   ACCESS_TOKEN_REQUIRED: "ACCESS_TOKEN_REQUIRED",
   ACCESS_TOKEN_EXPIRED: "ACCESS_TOKEN_EXPIRED",
   ACCESS_TOKEN_INVALID: "ACCESS_TOKEN_INVALID",
+
+  // Refresh token.
+  REFRESH_TOKEN_REQUIRED: "REFRESH_TOKEN_REQUIRED",
+  REFRESH_TOKEN_EXPIRED: "REFRESH_TOKEN_EXPIRED",
+  REFRESH_TOKEN_INVALID: "REFRESH_TOKEN_INVALID",
+  REFRESH_TOKEN_REUSED: "REFRESH_TOKEN_REUSED",
 
   /*
    * Entity-focused.
@@ -71,11 +79,14 @@ export const ResponseCode = {
 
 export const ResponseMessage: Record<ResponseCodeKey, string> = {
   // Generics.
+  // 200 range.
   SUCCESS: "Yêu cầu thành công",
-
   CREATED: "Tài nguyên được tạo thành công",
 
+  // 400 range
   UNAUTHORIZED: "Không đủ quyền hạn truy cập vào tài nguyên yêu cầu",
+  FORBIDDEN: "Không đủ quyền hạn thực hiện yêu cầu",
+
   INVALID_REQUEST: "Yêu cầu vừa rồi không hợp lệ",
   NOT_FOUND: "Không tìm thấy tài nguyên yêu cầu",
   TOO_MANY_REQUEST:
@@ -100,6 +111,13 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
   ACCESS_TOKEN_REQUIRED: "Access Token là bắt buộc",
   ACCESS_TOKEN_EXPIRED: "Access Token đã hết hạn",
   ACCESS_TOKEN_INVALID: "Access Token không hợp lệ",
+
+  // Refresh token.
+  REFRESH_TOKEN_REQUIRED: "Refresh Token là bắt buộc",
+  REFRESH_TOKEN_EXPIRED: "Refresh Token đã hết hạn",
+  REFRESH_TOKEN_INVALID: "Refresh Token không hợp lệ",
+  REFRESH_TOKEN_REUSED:
+    "Phát hiện Refresh Token được sử dụng lại. Thu hồi phiên đăng nhập",
 
   /**
    * Entity-focused.

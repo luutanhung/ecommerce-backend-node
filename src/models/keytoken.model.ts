@@ -23,7 +23,7 @@ export const keyTokenSchema = new Schema(
       required: true,
     },
     refreshTokensUsed: {
-      type: Array,
+      type: [String],
       default: [],
     },
   },

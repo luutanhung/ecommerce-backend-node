@@ -17,14 +17,26 @@ export type CreateKeyTokenPayload = {
 
 export type CreateKeyTokenResult = KeyTokenLean | null;
 
+export type DeleteKeyTokenByIdPayload = {
+  id: Types.ObjectId;
+};
+
+export type DeleteKeyTokenByIdResult = KeyTokenLean;
+
+export type DeleteKeyTokenByUserIdPayload = {
+  userId: string;
+};
+
+export type DeleteKeyTokenByUserIdResult = KeyTokenLean;
+
 export type FindKeyTokenByUserIdPayload = {
   userId: string;
 };
 
 export type FindKeyTokenByUserIdResult = KeyTokenLean | null;
 
-export type DeleteKeyTokenByIdPayload = {
-  id: Types.ObjectId;
+export type FindKeyTokenByRefreshTokenPayload = {
+  refreshToken: string;
 };
 
-export type DeleteKeyTokenByIdResult = KeyTokenLean;
+export type FindKeyTokenByRefreshTokenResult = KeyTokenLean;

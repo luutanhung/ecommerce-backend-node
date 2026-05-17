@@ -1,16 +1,19 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import type { Types } from "mongoose";
 
 import { AppError } from "../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../core/error/authenticationFailedAppError.js";
+import { ForbiddenAppError } from "../core/error/forbiddenAppError.js";
 import { NotFoundAppError } from "../core/error/notFoundAppError.js";
+import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
 
 import { ResponseCode } from "../constants/response.constant.js";
 import { ShopRole } from "../constants/shop.constant.js";
 
 import { createKeyPair } from "../utils/generator.utils.js";
 import { sanitizeShop } from "../utils/sanitizer.utils.js";
-import { createTokenPair } from "../utils/token.utils.js";
+import { createTokenPair, verifyJSONWebToken } from "../utils/token.utils.js";
 
 import { Shops } from "../models/shop.model.js";
 
@@ -20,10 +23,12 @@ import type {
   LoginResult,
   LogoutPayload,
   LogoutResult,
+  RefreshTokenPayload,
   RegisterPlayload,
   RegisterResult,
   TokenPair,
 } from "../types/access.type.js";
+import type { KeyTokenLean } from "../types/keytoken.type.js";
 import type { ShopDocument } from "../types/shop.type.js";
 import type { KeyPair } from "../types/utils.type.js";
 
@@ -154,5 +159,47 @@ export class AccessService {
     return {
       keyToken: deletedKeyToken,
     };
+  };
+
+  /**
+   * Verify provided refresh token and generate new access token.
+   */
+  static refreshToken = async ({ refreshToken }: RefreshTokenPayload) => {
+    // Find key token associated to refresh token argument.
+    const foundKeyToken: KeyTokenLean =
+      await KeyTokenService.findKeyTokenByRefreshTokenUsed({
+        refreshToken,
+      });
+
+    if (foundKeyToken) {
+      // CRITICAL: Detected a user who has reused refresh token.
+      try {
+        const { userId }: AuthPayload = await verifyJSONWebToken<AuthPayload>(
+          refreshToken,
+          foundKeyToken.privateKey,
+        );
+
+        // Delete all key token instances connected with this user.
+        await KeyTokenService.deleteKeyTokenByUserId({ userId });
+
+        throw new ForbiddenAppError({
+          code: ResponseCode.REFRESH_TOKEN_REUSED,
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        if (err instanceof jwt.TokenExpiredError) {
+          throw new UnauthorizedAppError({
+            code: ResponseCode.REFRESH_TOKEN_EXPIRED,
+          });
+        } else if (err instanceof jwt.JsonWebTokenError) {
+          throw new UnauthorizedAppError({
+            code: ResponseCode.REFRESH_TOKEN_INVALID,
+          });
+        }
+
+        throw err;
+      }
+    }
   };
 }

@@ -43,3 +43,7 @@ export type LogoutPayload = {
 export type LogoutResult = {
   keyToken: KeyTokenLean;
 };
+
+export type RefreshTokenPayload = {
+  refreshToken: string;
+};
