@@ -10,6 +10,7 @@ import { ShopRole } from "../constants/shop.constant.js";
 
 import { createKeyPair } from "../utils/generator.js";
 import { sanitizeShop } from "../utils/sanitizer.js";
+import { createTokenPair } from "../utils/token.utils.js";
 
 import { Shops } from "../models/shop.model.js";
 
@@ -22,8 +23,6 @@ import type {
 import type { CreateTokenPairPayload, TokenPair } from "../types/auth.type.js";
 import type { ShopDocument } from "../types/shop.type.js";
 import type { KeyPair } from "../types/utils.type.js";
-
-import { createTokenPair } from "../auth/auth.utils.js";
 
 import { KeyTokenService } from "./keytoken.service.js";
 import { findShopByEmail } from "./shop.service.js";
