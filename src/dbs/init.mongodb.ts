@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-import { config } from "../configs/config.js";
 import { env } from "../configs/env.js";
+import { config } from "../configs/index.js";
 
 import { countNumOfConnections } from "../helpers/investigateMongoDBHealth.js";
 
