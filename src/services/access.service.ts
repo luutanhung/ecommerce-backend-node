@@ -8,8 +8,8 @@ import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 import { ResponseCode } from "../constants/response.constant.js";
 import { ShopRole } from "../constants/shop.constant.js";
 
-import { createKeyPair } from "../utils/generator.js";
-import { sanitizeShop } from "../utils/sanitizer.js";
+import { createKeyPair } from "../utils/generator.utils.js";
+import { sanitizeShop } from "../utils/sanitizer.utils.js";
 import { createTokenPair } from "../utils/token.utils.js";
 
 import { Shops } from "../models/shop.model.js";

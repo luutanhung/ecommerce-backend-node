@@ -1,4 +1,4 @@
-import { sanitizeShop } from "../utils/sanitizer.js";
+import { sanitizeShop } from "../utils/sanitizer.utils.js";
 
 import type { TokenPair } from "./auth.type.js";
 
