@@ -7,7 +7,11 @@ import { ResponseCode } from "../constants/response.constant.js";
 
 import { AccessService } from "../services/access.service.js";
 
-import type { LoginResult, RegisterResult } from "../types/access.type.js";
+import type {
+  LoginResult,
+  RefreshTokenResult,
+  RegisterResult,
+} from "../types/access.type.js";
 import type { KeyTokenLean } from "../types/keytoken.type.js";
 
 class AccessController {
@@ -40,6 +44,24 @@ class AccessController {
     new OKResponse({
       code: ResponseCode.SHOP_LOGIN_SUCCESS,
       data: loginResult,
+    }).send(res);
+  };
+
+  /**
+   * Refreshes token.
+   */
+  refreshToken: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
+    const refreshTokenResult: RefreshTokenResult =
+      await AccessService.refreshToken({
+        refreshToken: req.body.refreshToken,
+      });
+
+    new OKResponse({
+      code: ResponseCode.REFRESH_TOKEN_SUCCESS,
+      data: refreshTokenResult,
     }).send(res);
   };
 

@@ -37,6 +37,8 @@ export const ResponseCode = {
   REFRESH_TOKEN_EXPIRED: "REFRESH_TOKEN_EXPIRED",
   REFRESH_TOKEN_INVALID: "REFRESH_TOKEN_INVALID",
   REFRESH_TOKEN_REUSED: "REFRESH_TOKEN_REUSED",
+  REFRESH_TOKEN_NOT_FOUND: "REFRESH_TOKEN_NOT_FOUND",
+  REFRESH_TOKEN_SUCCESS: "REFRESH_TOKEN_SUCCESS",
 
   /*
    * Entity-focused.
@@ -67,6 +69,7 @@ export const ResponseCode = {
   // Shop.
   SHOP_NOT_FOUND: "SHOP_NOT_FOUND",
   SHOP_INVALID_NAME: "SHOP_INVALID_NAME",
+  SHOP_IS_NOT_REGISTERED: "SHOP_IS_NOT_REGISTERED",
   SHOP_ALREADY_EXISTS: "SHOP_ALREADY_EXISTS",
   SHOP_ALREADY_REGISTERED: "SHOP_ALREADY_REGISTERED",
   SHOP_REGISTRATION_SUCCESS: "SHOP_REGISTRATION_SUCCESS",
@@ -118,6 +121,8 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
   REFRESH_TOKEN_INVALID: "Refresh Token không hợp lệ",
   REFRESH_TOKEN_REUSED:
     "Phát hiện Refresh Token được sử dụng lại. Thu hồi phiên đăng nhập",
+  REFRESH_TOKEN_NOT_FOUND: "Không tìm thấy Refresh Token",
+  REFRESH_TOKEN_SUCCESS: "Token được refresh thành công",
 
   /**
    * Entity-focused.
@@ -152,6 +157,7 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
   // Shop.
   SHOP_NOT_FOUND: "Cửa hàng chưa được đăng kí",
   SHOP_INVALID_NAME: "Tên cửa hàng không hợp lệ",
+  SHOP_IS_NOT_REGISTERED: "Cửa hàng chưa được đăng kí",
   SHOP_ALREADY_EXISTS:
     "Cửa hàng đã tồn tại, vui lòng đăng kí cửa hàng với thông tin khác",
   SHOP_ALREADY_REGISTERED: "Cửa hàng đã được đăng kí trước đó",

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { AppError } from "../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../core/error/authenticationFailedAppError.js";
 import { NotFoundAppError } from "../core/error/notFoundAppError.js";
+import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
 
 import { RequestHeaders } from "../constants/http.constant.js";
 import { ResponseCode } from "../constants/response.constant.js";
@@ -13,9 +14,9 @@ import { KeyTokenService } from "../services/keytoken.service.js";
 
 import type { AuthPayload } from "../types/access.type.js";
 import type { ApiKeyPermission } from "../types/apikey.type.js";
-import type { FindKeyTokenByUserIdResult } from "../types/keytoken.type.js";
 
 import { asyncWrapper } from "../helpers/asyncWrapper.js";
+import { composeMiddlewares } from "../helpers/composeMiddlewares.js";
 
 /**
  * Check if there is an active api key document stored. If there are any, attach it to req object and move on.
@@ -78,13 +79,12 @@ export const checkPermission = (permission: string) => {
 };
 
 /**
- * Authenticate middlware to verify access token and attach user's details to request.
+ * Attach user's key token from x-client-id header.
  */
-export const authenticate = asyncWrapper(
+export const authenticateClientId = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     // Check whether userId is missing.
-    const userId: string | undefined =
-      req.headers[RequestHeaders.CLIENT_ID]?.toString();
+    const userId = req.headers[RequestHeaders.CLIENT_ID]?.toString();
 
     if (!userId) {
       throw new AuthenticationFailedAppError({
@@ -93,12 +93,35 @@ export const authenticate = asyncWrapper(
     }
 
     // Check whether there is a keyToken instance associciated with this user id.
-    const keyToken: FindKeyTokenByUserIdResult =
-      await KeyTokenService.findKeyTokenByUserId({ userId });
+    const keyToken = await KeyTokenService.findKeyTokenByUserId({
+      userId,
+    });
 
     if (!keyToken) {
       throw new NotFoundAppError({
         code: ResponseCode.SHOP_NOT_LOGGED_IN,
+      });
+    }
+
+    req.userId = userId;
+    req.keyToken = keyToken;
+
+    next();
+  },
+);
+
+/**
+ * Authenticate middlware to verify access token and attach user's details to request.
+ */
+export const authenticateAccessToken = composeMiddlewares([
+  authenticateClientId,
+  asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.userId;
+    const keyToken = req.keyToken;
+
+    if (!keyToken || !userId) {
+      throw new UnauthorizedAppError({
+        code: ResponseCode.SHOP_IS_NOT_REGISTERED,
       });
     }
 
@@ -143,5 +166,5 @@ export const authenticate = asyncWrapper(
 
       throw err;
     }
-  },
-);
+  }),
+]);

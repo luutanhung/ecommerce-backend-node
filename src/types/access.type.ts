@@ -4,6 +4,12 @@ import type { KeyTokenLean } from "./keytoken.type.js";
 
 export type CreateTokenPairPayload = Record<string, string>;
 
+export type CreateTokenPairInput = {
+  payload: CreateTokenPairPayload;
+  privateKey: string;
+  publicKey: string;
+};
+
 export type AuthPayload = {
   userId: string;
   email: string;

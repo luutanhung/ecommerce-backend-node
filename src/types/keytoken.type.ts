@@ -17,6 +17,10 @@ export type CreateKeyTokenPayload = {
 
 export type CreateKeyTokenResult = KeyTokenLean | null;
 
+export type UpdateRefreshTokenPayload = {
+  refreshToken: string;
+};
+
 export type DeleteKeyTokenByIdPayload = {
   id: Types.ObjectId;
 };
@@ -35,8 +39,14 @@ export type FindKeyTokenByUserIdPayload = {
 
 export type FindKeyTokenByUserIdResult = KeyTokenLean | null;
 
+export type FindKeyTokenByRefreshTokenUsedPayload = {
+  refreshToken: string;
+};
+
+export type FindKeyTokenByRefreshTokenUsedResult = KeyTokenLean | null;
+
 export type FindKeyTokenByRefreshTokenPayload = {
   refreshToken: string;
 };
 
-export type FindKeyTokenByRefreshTokenResult = KeyTokenLean;
+export type FindKeyTokenByRefreshTokenResult = KeyTokenLean | null;

@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Types, type UpdateResult } from "mongoose";
 
 import { AppError } from "../core/error/appError.js";
 import { NotFoundAppError } from "../core/error/notFoundAppError.js";
@@ -16,8 +16,12 @@ import type {
   DeleteKeyTokenByUserIdPayload,
   DeleteKeyTokenByUserIdResult,
   FindKeyTokenByRefreshTokenPayload,
+  FindKeyTokenByRefreshTokenResult,
+  FindKeyTokenByRefreshTokenUsedPayload,
+  FindKeyTokenByRefreshTokenUsedResult,
   FindKeyTokenByUserIdPayload,
   FindKeyTokenByUserIdResult,
+  UpdateRefreshTokenPayload,
 } from "../types/keytoken.type.js";
 
 export class KeyTokenService {
@@ -59,6 +63,24 @@ export class KeyTokenService {
 
       throw err;
     }
+  };
+
+  /**
+   * Updates refresh token.
+   */
+  static updateRefreshToken = async ({
+    refreshToken,
+  }: UpdateRefreshTokenPayload): Promise<UpdateResult> => {
+    return await KeyTokens.updateOne(
+      {
+        refreshToken,
+      },
+      {
+        $addToSet: {
+          refreshTokensUsed: refreshToken,
+        },
+      },
+    );
   };
 
   /**
@@ -107,20 +129,27 @@ export class KeyTokenService {
   };
 
   /**
-   * Find key token by refresh token.
+   * Find key token by used refresh token.
    */
   static findKeyTokenByRefreshTokenUsed = async ({
     refreshToken,
-  }: FindKeyTokenByRefreshTokenPayload) => {
+  }: FindKeyTokenByRefreshTokenUsedPayload): Promise<FindKeyTokenByRefreshTokenUsedResult> => {
     const foundKeyToken = await KeyTokens.findOne({
       refreshTokensUsed: refreshToken,
     }).lean();
 
-    if (!foundKeyToken) {
-      throw new NotFoundAppError({
-        code: ResponseCode.SHOP_NOT_LOGGED_IN,
-      });
-    }
+    return foundKeyToken;
+  };
+
+  /**
+   * Find key token by refresh token.
+   */
+  static findKeyTokenByRefreshToken = async ({
+    refreshToken,
+  }: FindKeyTokenByRefreshTokenPayload): Promise<FindKeyTokenByRefreshTokenResult> => {
+    const foundKeyToken = await KeyTokens.findOne({
+      refreshToken,
+    });
 
     return foundKeyToken;
   };

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import z from "zod";
 
 import { ResponseCode } from "../constants/response.constant.js";
@@ -22,3 +23,24 @@ export const ShopLoginSchema = z.object({
 });
 
 export type ShopLoginPayload = z.infer<typeof ShopLoginSchema>;
+
+export const RefreshTokenSchema = z.object({
+  refreshToken: z
+    .string({
+      error: (issue) => {
+        const refreshToken = issue.input;
+
+        if (_.isUndefined(refreshToken)) {
+          return ResponseCode.REFRESH_TOKEN_REQUIRED;
+        }
+
+        if (!_.isString(refreshToken)) {
+          return ResponseCode.REFRESH_TOKEN_INVALID;
+        }
+      },
+    })
+    .min(1)
+    .trim(),
+});
+
+export type RefreshTokenPayload = z.infer<typeof RefreshTokenSchema>;

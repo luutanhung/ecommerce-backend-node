@@ -1,10 +1,7 @@
 import jwt from "jsonwebtoken";
 import _ from "lodash";
 
-import type {
-  CreateTokenPairPayload,
-  TokenPair,
-} from "../types/access.type.js";
+import type { CreateTokenPairInput, TokenPair } from "../types/access.type.js";
 
 /**
  * Creates a pair of access token and refresh token based on public key and private key.
@@ -15,11 +12,11 @@ import type {
  *
  * @returns A pair of tokens generated.
  */
-export const createTokenPair = async (
-  payload: CreateTokenPairPayload,
-  publicKey: string,
-  privateKey: string,
-): Promise<TokenPair> => {
+export const createTokenPair = async ({
+  payload,
+  privateKey,
+  publicKey,
+}: CreateTokenPairInput): Promise<TokenPair> => {
   try {
     const accessToken: string = await jwt.sign(payload, publicKey, {
       algorithm: "HS256",

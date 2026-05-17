@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import _ from "lodash";
 import type { Types } from "mongoose";
 
 import { AppError } from "../core/error/appError.js";
@@ -24,16 +25,16 @@ import type {
   LogoutPayload,
   LogoutResult,
   RefreshTokenPayload,
+  RefreshTokenResult,
   RegisterPlayload,
   RegisterResult,
   TokenPair,
 } from "../types/access.type.js";
-import type { KeyTokenLean } from "../types/keytoken.type.js";
 import type { ShopDocument } from "../types/shop.type.js";
 import type { KeyPair } from "../types/utils.type.js";
 
 import { KeyTokenService } from "./keytoken.service.js";
-import { findShopByEmail } from "./shop.service.js";
+import { ShopService } from "./shop.service.js";
 
 export class AccessService {
   /**
@@ -71,11 +72,11 @@ export class AccessService {
     };
 
     // Create a pair of tokens.
-    const tokenPair: TokenPair = await createTokenPair(
-      authPayload,
+    const tokenPair: TokenPair = await createTokenPair({
+      payload: authPayload,
       publicKey,
       privateKey,
-    );
+    });
 
     // Store refreshToken in KeyToken model.
     await KeyTokenService.createKeyToken({
@@ -99,7 +100,7 @@ export class AccessService {
     password,
   }: LoginPayload): Promise<LoginResult> => {
     // Find shop registered with passed-in email.
-    const registeredShop = await findShopByEmail(email);
+    const registeredShop = await ShopService.findShopByEmail(email);
 
     if (!registeredShop) {
       throw new NotFoundAppError({
@@ -127,11 +128,11 @@ export class AccessService {
       email,
     };
 
-    const tokenPair: TokenPair = await createTokenPair(
-      authPayload,
+    const tokenPair: TokenPair = await createTokenPair({
+      payload: authPayload,
       publicKey,
       privateKey,
-    );
+    });
 
     await KeyTokenService.createKeyToken({
       userId: userIdToCreateTokenPair,
@@ -142,6 +143,98 @@ export class AccessService {
 
     return {
       shop: sanitizeShop(registeredShop),
+      tokens: tokenPair,
+    };
+  };
+
+  /**
+   * Verifies provided refresh token and generates a pair of tokens.
+   *
+   * @remarks
+   * Ensures that refresh token is used exactly one time to generate a new pair of tokens.
+   */
+  static refreshToken = async ({
+    refreshToken,
+  }: RefreshTokenPayload): Promise<RefreshTokenResult> => {
+    const verifyRefreshToken = async (
+      privateKey: string,
+    ): Promise<AuthPayload> => {
+      try {
+        const refreshAuthPayload = await verifyJSONWebToken<AuthPayload>(
+          refreshToken,
+          privateKey,
+        );
+        return refreshAuthPayload;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        if (err instanceof jwt.TokenExpiredError) {
+          throw new UnauthorizedAppError({
+            code: ResponseCode.REFRESH_TOKEN_EXPIRED,
+          });
+        } else if (err instanceof jwt.JsonWebTokenError) {
+          throw new UnauthorizedAppError({
+            code: ResponseCode.REFRESH_TOKEN_INVALID,
+          });
+        }
+
+        throw err;
+      }
+    };
+
+    // Find key token associated to refresh token argument.
+    const foundKeyTokenWithUsedRefreshToken =
+      await KeyTokenService.findKeyTokenByRefreshTokenUsed({
+        refreshToken,
+      });
+
+    if (foundKeyTokenWithUsedRefreshToken) {
+      // CRITICAL: Detected a user who has reused refresh token.
+      const { userId }: AuthPayload = await verifyRefreshToken(
+        foundKeyTokenWithUsedRefreshToken.privateKey,
+      );
+      // Delete all key token instances connected with this user.
+      await KeyTokenService.deleteKeyTokenByUserId({ userId });
+
+      throw new ForbiddenAppError({
+        code: ResponseCode.REFRESH_TOKEN_REUSED,
+      });
+    }
+
+    const currentUsedKeyToken =
+      await KeyTokenService.findKeyTokenByRefreshToken({
+        refreshToken,
+      });
+
+    if (!currentUsedKeyToken) {
+      throw new UnauthorizedAppError({
+        code: ResponseCode.REFRESH_TOKEN_NOT_FOUND,
+      });
+    }
+
+    const refreshAuthPayload: AuthPayload = await verifyRefreshToken(
+      currentUsedKeyToken.privateKey,
+    );
+    const foundShop = await ShopService.findShopByEmail(
+      refreshAuthPayload.email,
+    );
+
+    if (!foundShop) {
+      throw new AuthenticationFailedAppError({
+        code: ResponseCode.SHOP_IS_NOT_REGISTERED,
+      });
+    }
+
+    // Creates a new pair of keys.
+    const keyPair: KeyPair = await createKeyPair();
+    const tokenPair: TokenPair = await createTokenPair({
+      payload: _.pick(refreshAuthPayload, ["userId", "email"]),
+      ...keyPair,
+    });
+
+    await KeyTokenService.updateRefreshToken({ refreshToken });
+
+    return {
+      user: refreshAuthPayload,
       tokens: tokenPair,
     };
   };
@@ -159,47 +252,5 @@ export class AccessService {
     return {
       keyToken: deletedKeyToken,
     };
-  };
-
-  /**
-   * Verify provided refresh token and generate new access token.
-   */
-  static refreshToken = async ({ refreshToken }: RefreshTokenPayload) => {
-    // Find key token associated to refresh token argument.
-    const foundKeyToken: KeyTokenLean =
-      await KeyTokenService.findKeyTokenByRefreshTokenUsed({
-        refreshToken,
-      });
-
-    if (foundKeyToken) {
-      // CRITICAL: Detected a user who has reused refresh token.
-      try {
-        const { userId }: AuthPayload = await verifyJSONWebToken<AuthPayload>(
-          refreshToken,
-          foundKeyToken.privateKey,
-        );
-
-        // Delete all key token instances connected with this user.
-        await KeyTokenService.deleteKeyTokenByUserId({ userId });
-
-        throw new ForbiddenAppError({
-          code: ResponseCode.REFRESH_TOKEN_REUSED,
-        });
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
-        if (err instanceof jwt.TokenExpiredError) {
-          throw new UnauthorizedAppError({
-            code: ResponseCode.REFRESH_TOKEN_EXPIRED,
-          });
-        } else if (err instanceof jwt.JsonWebTokenError) {
-          throw new UnauthorizedAppError({
-            code: ResponseCode.REFRESH_TOKEN_INVALID,
-          });
-        }
-
-        throw err;
-      }
-    }
   };
 }
