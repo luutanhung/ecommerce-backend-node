@@ -15,3 +15,10 @@ export const ShopRegisterSchema = z.object({
 });
 
 export type ShopRegisterPayload = z.infer<typeof ShopRegisterSchema>;
+
+export const ShopLoginSchema = z.object({
+  email: EmailSchema,
+  password: PasswordSchema,
+});
+
+export type ShopLoginPayload = z.infer<typeof ShopLoginSchema>;
