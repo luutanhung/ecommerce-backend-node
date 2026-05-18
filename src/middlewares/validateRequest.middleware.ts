@@ -6,7 +6,7 @@ import { ZodError } from "zod";
 import { BadRequestAppError } from "../core/error/badRequestAppError.js";
 import { InternalSystemError } from "../core/error/internalSystemError.js";
 
-import { ResponseCode } from "../constants/response.constant.js";
+import { ResCode } from "../constants/response.constants.js";
 
 import type { ResponseCodeKey } from "../types/core/response.type.js";
 
@@ -33,7 +33,7 @@ export async function parseSchema<T>(
 
       if (
         validationErrorResponseCodeKey &&
-        Object.values(ResponseCode).includes(validationErrorResponseCodeKey)
+        Object.values(ResCode).includes(validationErrorResponseCodeKey)
       ) {
         throw new BadRequestAppError({
           code: validationErrorResponseCodeKey,

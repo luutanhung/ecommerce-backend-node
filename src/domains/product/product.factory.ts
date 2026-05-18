@@ -1,4 +1,4 @@
-import { ResponseCode } from "../../constants/response.constants.js";
+import { ResCode } from "../../constants/response.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 
 import { Clothing } from "./entities/clothing.entity.js";
@@ -25,7 +25,7 @@ export class ProductFactory {
 
       default: {
         throw new BadRequestAppError({
-          code: ResponseCode.PRODUCT_TYPE_INVALID,
+          code: ResCode.PRODUCT_TYPE_INVALID,
         });
       }
     }

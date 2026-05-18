@@ -1,6 +1,6 @@
-import { ResponseCode } from "../../constants/response.constants.js";
+import { ResCode } from "../../constants/response.constants.js";
 
-export type ResponseCodeKey = keyof typeof ResponseCode;
+export type ResponseCodeKey = keyof typeof ResCode;
 
 // eslint-disable-next-line
 export type AppData = { [key: string]: any };

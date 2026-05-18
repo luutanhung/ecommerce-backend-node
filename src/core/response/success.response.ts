@@ -1,8 +1,5 @@
 import { HttpStatusCode } from "../../constants/http.constants.js";
-import {
-  ResponseCode,
-  ResponseMessage,
-} from "../../constants/response.constants.js";
+import { ResCode, ResMsg } from "../../constants/response.constants.js";
 import type { PartialResponseParams } from "../../types/core/response.type.js";
 
 import { BaseResponse } from "./base.response.js";
@@ -11,11 +8,11 @@ export class SuccessResponse extends BaseResponse {
   constructor({
     message,
     statusCode = HttpStatusCode.OK,
-    code = ResponseCode.SUCCESS,
+    code = ResCode.SUCCESS,
     data,
   }: PartialResponseParams = {}) {
     super({
-      message: message || ResponseMessage[code],
+      message: message || ResMsg[code],
       statusCode,
       code,
       data,

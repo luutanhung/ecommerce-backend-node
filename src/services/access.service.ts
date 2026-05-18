@@ -12,7 +12,7 @@ import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
 import { ShopRole } from "../domains/shop/shop.constants.js";
 import type { ShopDocument } from "../domains/shop/shop.type.js";
 
-import { ResponseCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/response.constants.js";
 
 import { createKeyPair } from "../utils/generator.utils.js";
 import { sanitizeShop } from "../utils/sanitizer.utils.js";
@@ -50,7 +50,7 @@ export class AccessService {
 
     if (existingShop) {
       throw new AppError({
-        code: ResponseCode.SHOP_ALREADY_EXISTS,
+        code: ResCode.SHOP_ALREADY_EXISTS,
       });
     }
 
@@ -105,7 +105,7 @@ export class AccessService {
 
     if (!registeredShop) {
       throw new NotFoundAppError({
-        code: ResponseCode.SHOP_NOT_FOUND,
+        code: ResCode.SHOP_NOT_FOUND,
       });
     }
 
@@ -170,11 +170,11 @@ export class AccessService {
       } catch (err: any) {
         if (err instanceof jwt.TokenExpiredError) {
           throw new UnauthorizedAppError({
-            code: ResponseCode.REFRESH_TOKEN_EXPIRED,
+            code: ResCode.REFRESH_TOKEN_EXPIRED,
           });
         } else if (err instanceof jwt.JsonWebTokenError) {
           throw new UnauthorizedAppError({
-            code: ResponseCode.REFRESH_TOKEN_INVALID,
+            code: ResCode.REFRESH_TOKEN_INVALID,
           });
         }
 
@@ -197,7 +197,7 @@ export class AccessService {
       await KeyTokenService.deleteKeyTokenByUserId({ userId });
 
       throw new ForbiddenAppError({
-        code: ResponseCode.REFRESH_TOKEN_REUSED,
+        code: ResCode.REFRESH_TOKEN_REUSED,
       });
     }
 
@@ -208,7 +208,7 @@ export class AccessService {
 
     if (!currentUsedKeyToken) {
       throw new UnauthorizedAppError({
-        code: ResponseCode.REFRESH_TOKEN_NOT_FOUND,
+        code: ResCode.REFRESH_TOKEN_NOT_FOUND,
       });
     }
 
@@ -221,7 +221,7 @@ export class AccessService {
 
     if (!foundShop) {
       throw new AuthenticationFailedAppError({
-        code: ResponseCode.SHOP_IS_NOT_REGISTERED,
+        code: ResCode.SHOP_IS_NOT_REGISTERED,
       });
     }
 

@@ -1,12 +1,12 @@
 import _ from "lodash";
 import z from "zod";
 
-import { ResponseCode } from "../constants/response.constant.js";
+import { ResCode } from "../constants/response.constants.js";
 
 import { EmailSchema, NameSchema, PasswordSchema } from "./common.schema.js";
 
 const ShopNameSchema = NameSchema.min(2, {
-  message: ResponseCode.EMAIL_INVALID,
+  message: ResCode.EMAIL_INVALID,
 });
 
 export const ShopRegisterSchema = z.object({
@@ -31,11 +31,11 @@ export const RefreshTokenSchema = z.object({
         const refreshToken = issue.input;
 
         if (_.isUndefined(refreshToken)) {
-          return ResponseCode.REFRESH_TOKEN_REQUIRED;
+          return ResCode.REFRESH_TOKEN_REQUIRED;
         }
 
         if (!_.isString(refreshToken)) {
-          return ResponseCode.REFRESH_TOKEN_INVALID;
+          return ResCode.REFRESH_TOKEN_INVALID;
         }
       },
     })

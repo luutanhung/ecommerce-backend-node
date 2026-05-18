@@ -1,4 +1,4 @@
-import { ResponseCode } from "../../../constants/response.constants.js";
+import { ResCode } from "../../../constants/response.constants.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { Clothes } from "../../../models/product/clothing.model.js";
 import type { CreateProductInput, ProductDocument } from "../product.type.js";
@@ -21,7 +21,7 @@ export class Clothing extends Product<ClothingAttributes> {
 
     if (!newClothing) {
       throw new BadRequestAppError({
-        code: ResponseCode.CLOTHING_CREATION_FAILURE,
+        code: ResCode.CLOTHING_CREATION_FAILURE,
       });
     }
 

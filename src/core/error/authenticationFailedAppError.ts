@@ -1,14 +1,14 @@
-import { HttpStatusCode } from "../../constants/http.constant.js";
-import { ResponseCode } from "../../constants/response.constant.js";
-import type { PartialAppErrorParams } from "../../types/core/appError.type.js";
+import { HttpStatusCode } from "../../constants/http.constants.js";
+import { ResCode } from "../../constants/response.constants.js";
+import type { PartialAppErrorConstructorParams } from "../../types/core/appError.type.js";
 
 import { AppError } from "./appError.js";
 
 export class AuthenticationFailedAppError extends AppError {
-  constructor({ code, data }: PartialAppErrorParams = {}) {
+  constructor({ code, data }: PartialAppErrorConstructorParams = {}) {
     super({
       statusCode: HttpStatusCode.UNAUTHORIZED,
-      code: code || ResponseCode.UNAUTHENTICATED,
+      code: code || ResCode.UNAUTHENTICATED,
       data,
     });
   }

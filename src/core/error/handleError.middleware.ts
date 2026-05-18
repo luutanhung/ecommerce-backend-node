@@ -1,10 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 
 import { HttpStatusCode } from "../../constants/http.constants.js";
-import {
-  ResponseCode,
-  ResponseMessage,
-} from "../../constants/response.constants.js";
+import { ResCode, ResMsg } from "../../constants/response.constants.js";
 import { ErrorResponse } from "../response/error.response.js";
 
 import { AppError } from "./appError.js";
@@ -38,14 +35,14 @@ export const handleError = async (
     // Handle invalid JSON format.
     return new ErrorResponse({
       statusCode: HttpStatusCode.BAD_REQUEST,
-      code: ResponseCode.INVALID_JSON,
-      message: ResponseMessage.INVALID_JSON,
+      code: ResCode.INVALID_JSON,
+      message: ResMsg.INVALID_JSON,
     }).send(res);
   }
 
   return new ErrorResponse({
     statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-    code: ResponseCode.INTERNAL_SERVER_ERROR,
-    message: ResponseMessage.INTERNAL_SERVER_ERROR,
+    code: ResCode.INTERNAL_SERVER_ERROR,
+    message: ResMsg.INTERNAL_SERVER_ERROR,
   }).send(res);
 };

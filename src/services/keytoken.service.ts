@@ -4,7 +4,7 @@ import { AppError } from "../core/error/appError.js";
 import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 
 import { HttpStatusCode } from "../constants/http.constants.js";
-import { ResponseCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/response.constants.js";
 
 import { KeyTokens } from "../models/keytoken.model.js";
 
@@ -56,7 +56,7 @@ export class KeyTokenService {
     } catch (err: any) {
       if (err instanceof mongoose.mongo.MongoServerError) {
         throw new AppError({
-          code: ResponseCode.KEY_TOKEN_ALREADY_EXISTS,
+          code: ResCode.KEY_TOKEN_ALREADY_EXISTS,
           statusCode: HttpStatusCode.CONFLICT,
         });
       }
@@ -93,7 +93,7 @@ export class KeyTokenService {
 
     if (!deletedKeyToken) {
       throw new NotFoundAppError({
-        code: ResponseCode.SHOP_NOT_LOGGED_IN,
+        code: ResCode.SHOP_NOT_LOGGED_IN,
       });
     }
 
@@ -112,7 +112,7 @@ export class KeyTokenService {
 
     if (!deletedKeyToken) {
       throw new NotFoundAppError({
-        code: ResponseCode.SHOP_NOT_LOGGED_IN,
+        code: ResCode.SHOP_NOT_LOGGED_IN,
       });
     }
 

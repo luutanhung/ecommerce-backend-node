@@ -6,8 +6,8 @@ import { AuthenticationFailedAppError } from "../core/error/authenticationFailed
 import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
 
-import { RequestHeaders } from "../constants/http.constant.js";
-import { ResponseCode } from "../constants/response.constant.js";
+import { RequestHeaders } from "../constants/http.constants.js";
+import { ResCode } from "../constants/response.constants.js";
 
 import { findActiveApiKey } from "../services/apikey.service.js";
 import { KeyTokenService } from "../services/keytoken.service.js";
@@ -88,7 +88,7 @@ export const authenticateClientId = asyncWrapper(
 
     if (!userId) {
       throw new AuthenticationFailedAppError({
-        code: ResponseCode.CLIENT_ID_REQUIRED,
+        code: ResCode.CLIENT_ID_REQUIRED,
       });
     }
 
@@ -99,7 +99,7 @@ export const authenticateClientId = asyncWrapper(
 
     if (!keyToken) {
       throw new NotFoundAppError({
-        code: ResponseCode.SHOP_NOT_LOGGED_IN,
+        code: ResCode.SHOP_NOT_LOGGED_IN,
       });
     }
 
@@ -121,7 +121,7 @@ export const authenticateAccessToken = composeMiddlewares([
 
     if (!keyToken || !userId) {
       throw new UnauthorizedAppError({
-        code: ResponseCode.SHOP_IS_NOT_REGISTERED,
+        code: ResCode.SHOP_IS_NOT_REGISTERED,
       });
     }
 
@@ -129,7 +129,7 @@ export const authenticateAccessToken = composeMiddlewares([
     const accessToken = req.headers[RequestHeaders.AUTHORIZATION]?.toString();
     if (!accessToken) {
       throw new AuthenticationFailedAppError({
-        code: ResponseCode.ACCESS_TOKEN_REQUIRED,
+        code: ResCode.ACCESS_TOKEN_REQUIRED,
       });
     }
 
@@ -141,7 +141,7 @@ export const authenticateAccessToken = composeMiddlewares([
 
       if (userId !== decodedAuthPayload.userId) {
         throw new AuthenticationFailedAppError({
-          code: ResponseCode.USER_INVALID,
+          code: ResCode.USER_INVALID,
         });
       }
 
@@ -153,14 +153,14 @@ export const authenticateAccessToken = composeMiddlewares([
     } catch (err: any) {
       if (err instanceof jwt.TokenExpiredError) {
         throw new AuthenticationFailedAppError({
-          code: ResponseCode.ACCESS_TOKEN_EXPIRED,
+          code: ResCode.ACCESS_TOKEN_EXPIRED,
         });
       } else if (
         err instanceof jwt.JsonWebTokenError ||
         err instanceof AppError
       ) {
         throw new AuthenticationFailedAppError({
-          code: ResponseCode.ACCESS_TOKEN_INVALID,
+          code: ResCode.ACCESS_TOKEN_INVALID,
         });
       }
 

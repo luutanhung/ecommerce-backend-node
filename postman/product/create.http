@@ -8,7 +8,7 @@ x-client-id: 6a091336e0905906521bded5
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTA5MTMzNmUwOTA1OTA2NTIxYmRlZDUiLCJlbWFpbCI6InNob3BkZXYyMUBnbWFpbC5jb20iLCJpYXQiOjE3NzkwNjkxNjksImV4cCI6MTc3OTI0MTk2OX0.UvIPtsItQLWR_yZGsLOue60PjMsJDeGynJX5lhQfZgo
 
 {
-  "productName": "Oversized Cotton Hoodie",
+  "productName": "Oversized Cotton Hoodie II",
   "productThumb": "https://cdn.example.com/products/hoodie-black.jpg",
   "productDescription": "Premium oversized hoodie made from 100% cotton.",
   "productPrice": 49.99,

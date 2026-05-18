@@ -3,7 +3,7 @@ import type { Request, RequestHandler, Response } from "express";
 import { CreatedResponse } from "../core/response/created.response.js";
 import { OKResponse } from "../core/response/ok.response.js";
 
-import { ResponseCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/response.constants.js";
 
 import { AccessService } from "../services/access.service.js";
 
@@ -27,7 +27,7 @@ class AccessController {
     );
 
     new CreatedResponse({
-      code: ResponseCode.SHOP_REGISTRATION_SUCCESS,
+      code: ResCode.SHOP_REGISTRATION_SUCCESS,
       data: registerResult,
     }).send(res);
   };
@@ -42,7 +42,7 @@ class AccessController {
     const loginResult: LoginResult = await AccessService.login(req.body);
 
     new OKResponse({
-      code: ResponseCode.SHOP_LOGIN_SUCCESS,
+      code: ResCode.SHOP_LOGIN_SUCCESS,
       data: loginResult,
     }).send(res);
   };
@@ -60,7 +60,7 @@ class AccessController {
       });
 
     new OKResponse({
-      code: ResponseCode.REFRESH_TOKEN_SUCCESS,
+      code: ResCode.REFRESH_TOKEN_SUCCESS,
       data: refreshTokenResult,
     }).send(res);
   };
@@ -77,7 +77,7 @@ class AccessController {
     });
 
     new OKResponse({
-      code: ResponseCode.SHOP_LOGOUT_SUCCESS,
+      code: ResCode.SHOP_LOGOUT_SUCCESS,
     }).send(res);
   };
 }

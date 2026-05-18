@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 import { HttpStatusCode } from "../../constants/http.constants.js";
-import { ResponseMessage } from "../../constants/response.constants.js";
+import { ResMsg } from "../../constants/response.constants.js";
 import type { AppErrorConstructorParams } from "../../types/core/appError.type.js";
 import type {
   AppData,
@@ -37,21 +37,21 @@ export class AppError extends Error {
    * 
    * @param params - Error configuration parameters
    * @param params.code - Application-specific response code key
-   * @param params.message - Human-readable error message (defaults to ResponseMessage[code])
+   * @param params.message - Human-readable error message (defaults to ResMsg[code])
    * @param params.statusCode - HTTP status code (defaults to HttpStatusCode.BAD_REQUEST)
    * @param params.data - Optional additional error data
    * 
    * @throws {AppError} Returns an AppError instance that can be thrown or passed to error handlers
    * 
    * @remarks
-   * - The error message automatically uses the mapped message from ResponseMessage constant
+   * - The error message automatically uses the mapped message from ResMsg constant
      if no custom message is provided
    * - The prototype chain is properly maintained for `instanceof` checks
    * - The error name is set to the class name for better debugging
    */
   constructor({
     code,
-    message = ResponseMessage[code],
+    message = ResMsg[code],
     statusCode = HttpStatusCode.BAD_REQUEST,
     data,
   }: AppErrorConstructorParams) {

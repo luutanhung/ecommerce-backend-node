@@ -1,6 +1,6 @@
 import type { ResponseCodeKey } from "../types/core/response.type.js";
 
-export const ResponseCode = {
+export const ResCode = {
   // Generics.
   // 200 range.
   SUCCESS: "SUCCESS",
@@ -80,7 +80,23 @@ export const ResponseCode = {
   SHOP_LOGOUT_SUCCESS: "SHOP_LOGOUT_SUCCESS",
 
   // Product.
+  PRODUCT_NAME_REQUIRED: "PRODUCT_NAME_REQUIRED",
+  PRODUCT_NAME_INVALID_TYPE: "PRODUCT_NAME_INVALID_TYPE",
+
+  PRODUCT_THUMB_REQUIRED: "PRODUCT_THUMB_REQUIRED",
+  PRODUCT_THUMB_INVALID_TYPE: "PRODUCT_THUMB_INVALID_TYPE",
+
+  PRODUCT_SHOP_REQUIRED: "PRODUCT_SHOP_REQUIRED",
+  PRODUCT_SHOP_INVALID_TYPE: "PRODUCT_SHOP_INVALID_TYPE",
+
   PRODUCT_TYPE_INVALID: "PRODUCT_TYPE_INVALID",
+
+  PRODUCT_PRICE_REQUIRED: "PRODUCT_PRICE_REQUIRED",
+  PRODUCT_PRICE_INVALID_TYPE: "PRODUCT_PRICE_INVALID_TYPE",
+  PRODUCT_PRICE_MUST_BE_POSITIVE: "PRODUCT_PRICE_MUST_BE_POSITIVE",
+
+  PRODUCT_QUANTITY_INVALID_TYPE: "PRODUCT_QUANTITY_INVALID_TYPE",
+  PRODUCT_QUANTITY_MUST_BE_POSITIVE: "PRODUCT_QUANTITY_MUST_BE_POSITIVE",
 
   PRODUCT_CREATION_SUCCESS: "PRODUCT_CREATION_SUCCESS",
   PRODUCT_CREATION_FAILURE: "PRODUCT_CREATION_FAILURE",
@@ -91,7 +107,7 @@ export const ResponseCode = {
   ELECTRONIC_CREATION_FAILURE: "ELECTRONIC_CREATION_FAILURE",
 } as const;
 
-export const ResponseMessage: Record<ResponseCodeKey, string> = {
+export const ResMsg: Record<ResponseCodeKey, string> = {
   // Generics.
   // 200 range.
   SUCCESS: "Yêu cầu thành công",
@@ -179,6 +195,24 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
   SHOP_LOGOUT_SUCCESS: "Đăng xuất khỏi cửa hàng thành công",
 
   // Product.
+  PRODUCT_NAME_REQUIRED: "Tên sản phẩm không được để trống",
+  PRODUCT_NAME_INVALID_TYPE: "Tên sản phẩm phải là kiểu kí tự",
+
+  PRODUCT_THUMB_REQUIRED: "Thumbnail của sản phẩm không được để trống",
+  PRODUCT_THUMB_INVALID_TYPE: "Thumbnail của sản phẩm phải là kiểu kí tự",
+
+  PRODUCT_PRICE_REQUIRED: "Giá của sản phẩm không được để trống",
+  PRODUCT_PRICE_INVALID_TYPE: "Giá của sản phẩm phải là kiểu số",
+  PRODUCT_PRICE_MUST_BE_POSITIVE: "Giá của sản phẩm phải lớn hơn 0",
+
+  PRODUCT_QUANTITY_INVALID_TYPE: "Số lượng sản phẩm phải là kiểu số nguyên",
+  PRODUCT_QUANTITY_MUST_BE_POSITIVE: "Số lượng sản phẩm phải lớn hơn không",
+
+  PRODUCT_SHOP_REQUIRED:
+    "Cửa hàng liên kết với sản phẩm này không được bỏ trống",
+  PRODUCT_SHOP_INVALID_TYPE:
+    "Cửa hàng liên kết với sản phẩm này phải là kiểu kí tự",
+
   PRODUCT_TYPE_INVALID: "Loại sản phẩm không hợp lệ",
 
   PRODUCT_CREATION_SUCCESS: "Tạo sản phẩm thành công",

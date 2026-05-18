@@ -15,8 +15,14 @@ export const ProductSchema = new Schema(
       type: String,
       required: true,
     },
-    productDescription: {
+    productType: {
       type: String,
+      required: true,
+      enum: Object.values(ProductType),
+    },
+    productAttributes: {
+      type: Schema.Types.Mixed,
+      required: true,
     },
     productPrice: {
       type: Number,
@@ -26,18 +32,12 @@ export const ProductSchema = new Schema(
       type: Number,
       required: true,
     },
-    productType: {
-      type: String,
-      required: true,
-      enum: Object.values(ProductType),
-    },
     productShop: {
       type: Schema.Types.ObjectId,
       ref: "Shop",
     },
-    productAttributes: {
-      type: Schema.Types.Mixed,
-      required: true,
+    productDescription: {
+      type: String,
     },
   },
   {
