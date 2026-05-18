@@ -146,6 +146,7 @@ export const authenticateAccessToken = composeMiddlewares([
       }
 
       // Attach key token instance to req.
+      req.user = decodedAuthPayload;
       req.keyToken = keyToken;
 
       return next();

@@ -53,20 +53,6 @@ const BaseProductSchema = z.object({
   ).int({
     error: ResCode.PRODUCT_QUANTITY_INVALID_TYPE,
   }),
-
-  productShop: z.string({
-    error: (issue) => {
-      const productShop = issue.input;
-
-      if (_.isUndefined(productShop)) {
-        return ResCode.PRODUCT_SHOP_REQUIRED;
-      }
-
-      if (!_.isString(productShop)) {
-        return ResCode.PRODUCT_SHOP_INVALID_TYPE;
-      }
-    },
-  }),
 });
 
 const ClothingProductSchema = BaseProductSchema.extend({

@@ -1,4 +1,5 @@
 import type { ApiKeyDocument } from "../../models/apikey.model.ts";
+import type { AuthPayload } from "../access.type.ts";
 import type { KeyTokenLean } from "../keytoken.type.ts";
 import type { Locale } from "../locale.type.ts";
 
@@ -7,6 +8,7 @@ declare global {
     interface Request {
       apiKeyObj?: ApiKeyDocument;
       userId?: string;
+      user?: AuthPayload;
       keyToken?: KeyTokenLean;
       locale?: Locale;
     }

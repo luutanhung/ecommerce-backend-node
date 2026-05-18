@@ -15,7 +15,10 @@ class ProductController {
     req: BodyRequest<ProductCreatePayload>,
     res: Response,
   ): Promise<void> => {
-    const createdProduct = await ProductService.createProduct(req.body);
+    const createdProduct = await ProductService.createProduct({
+      ...req.body,
+      productShop: req.user?.userId as string,
+    });
 
     new CreatedResponse({
       code: ResCode.PRODUCT_CREATION_SUCCESS,
