@@ -14,7 +14,7 @@ class ProductController {
   createProduct = async (
     req: BodyRequest<ProductCreatePayload>,
     res: Response,
-  ) => {
+  ): Promise<void> => {
     const createdProduct = await ProductService.createProduct(req.body);
 
     new CreatedResponse({

@@ -11,13 +11,11 @@ import type { OutgoingHttpHeaders } from "../../types/http.type.js";
 export class BaseResponse {
   statusCode: number;
   code: ResponseCodeKey;
-  message: string;
   data?: AppData;
 
-  constructor({ message, statusCode, code, data }: ResponseParams) {
+  constructor({ statusCode, code, data }: ResponseParams) {
     this.statusCode = statusCode;
     this.code = code;
-    this.message = message;
     this.data = data;
   }
 

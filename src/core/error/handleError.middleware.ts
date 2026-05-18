@@ -20,9 +20,14 @@ export const handleError = async (
   err: Error,
   req: Request,
   res: Response,
-  // eslint-disable-next-line
+   
   next: NextFunction,
 ) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+  console.log(err);
+
   if (err instanceof AppError) {
     return new ErrorResponse({
       statusCode: err.statusCode,

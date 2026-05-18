@@ -12,7 +12,7 @@ Authorization: {{access_token}}
   "productName": "Oversized Cotton Hoodie II",
   "productThumb": "https://cdn.example.com/products/hoodie-black.jpg",
   "productDescription": "Premium oversized hoodie made from 100% cotton.",
-  "productPrice": -49.99,
+  "productPrice": 89.99,
   "productQuantity": 120,
   "productType": "Clothing",
   "productShop": "6829d8f7b8a2d1f4c8a91234",
