@@ -1,18 +1,19 @@
-import { faker } from "@faker-js/faker";
 import { describe, expect, it } from "vitest";
 
 import { request } from "../setup.js";
+import {
+  generateEmail,
+  generateStrongPassword,
+  generateUsername,
+} from "../test.utils.js";
 
 describe("Test access routes", () => {
   describe("Test /shop/register", () => {
     it("returns positive message when registered new shop successfully", async () => {
       const newShopData = {
-        name: faker.internet.username(),
-        email: faker.internet.email(),
-        password: faker.internet.password({
-          length: 15,
-          pattern: /[A-Za-z0-9!@#$%^&*]/,
-        }),
+        name: generateUsername(),
+        email: generateEmail(),
+        password: generateStrongPassword(),
       };
 
       const res = await request.post("/v1/api/shop/register").send(newShopData);
