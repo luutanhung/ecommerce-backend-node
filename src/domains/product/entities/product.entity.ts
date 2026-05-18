@@ -1,4 +1,4 @@
-import { Products } from "../../../models/product.model.js";
+import { Products } from "../../../models/product/product.model.js";
 import type { CreateProductInput, ProductDocument } from "../product.type.js";
 
 export class Product<TAttributes> {

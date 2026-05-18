@@ -1,6 +1,6 @@
 import { ResponseCode } from "../../../constants/response.constants.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
-import { Clothes } from "../../../models/product.model.js";
+import { Clothes } from "../../../models/product/clothing.model.js";
 import type { CreateProductInput, ProductDocument } from "../product.type.js";
 
 import { Product } from "./product.entity.js";

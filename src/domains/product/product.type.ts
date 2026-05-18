@@ -1,12 +1,12 @@
 import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import { productSchema } from "../../models/product.model.js";
+import { ProductSchema } from "../../models/product/product.model.js";
 
 import { ProductType } from "./product.constants.js";
 
 export type ProductType = (typeof ProductType)[keyof typeof ProductType];
 
-export type Product = InferSchemaType<typeof productSchema>;
+export type Product = InferSchemaType<typeof ProductSchema>;
 
 export type ProductDocument = HydratedDocument<Product>;
 
