@@ -5,6 +5,10 @@ const COLLECTION_NAME: string = "Clothes";
 
 export const ClothingAttributesSchema = new Schema(
   {
+    productShop: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
     brand: {
       type: String,
       required: true,

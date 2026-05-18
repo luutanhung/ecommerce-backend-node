@@ -17,7 +17,10 @@ export class Clothing extends Product<ClothingAttributes> {
   }
 
   override async createProduct(): Promise<ProductDocument> {
-    const newClothing = await Clothes.create(this.payload.productAttributes);
+    const newClothing = await Clothes.create({
+      ...this.payload.productAttributes,
+      productShop: this.payload.productShop,
+    });
 
     if (!newClothing) {
       throw new BadRequestAppError({

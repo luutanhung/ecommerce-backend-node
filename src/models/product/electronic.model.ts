@@ -5,6 +5,10 @@ const COLLECTION_NAME: string = "Electronics";
 
 export const ElectronicAttributesSchema = new Schema(
   {
+    productShop: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
     manufacturer: {
       type: String,
       required: true,
