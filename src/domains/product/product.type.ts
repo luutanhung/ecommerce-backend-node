@@ -2,6 +2,9 @@ import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
 import { ProductSchema } from "../../models/product/product.model.js";
 
+import type { ClothingAttributes } from "./entities/clothing.entity.js";
+import type { ElectronicAttributes } from "./entities/electronic.entity.js";
+
 import { ProductType } from "./product.constants.js";
 
 export type ProductType = (typeof ProductType)[keyof typeof ProductType];
@@ -33,3 +36,15 @@ export type CreateProductInput<TAttributes = BaseProductAttributes> = {
 
   productAttributes: TAttributes;
 };
+
+export type CreateClothingInput = CreateProductInput<ClothingAttributes> & {
+  productType: typeof ProductType.CLOTHING;
+};
+
+export type CreateElectronicInput = CreateProductInput<ElectronicAttributes> & {
+  productType: typeof ProductType.ELECTRONICS;
+};
+
+export type CreateProductFactoryInput =
+  | CreateClothingInput
+  | CreateElectronicInput;

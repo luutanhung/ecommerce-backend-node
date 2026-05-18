@@ -1,29 +1,14 @@
 import { ResponseCode } from "../../constants/response.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 
-import {
-  Clothing,
-  type ClothingAttributes,
-} from "./entities/clothing.entity.js";
-import {
-  Electronic,
-  type ElectronicAttributes,
-} from "./entities/electronic.entity.js";
+import { Clothing } from "./entities/clothing.entity.js";
+import { Electronic } from "./entities/electronic.entity.js";
 
 import { ProductType } from "./product.constants.js";
-import type { CreateProductInput, ProductDocument } from "./product.type.js";
-
-type CreateClothingInput = CreateProductInput<ClothingAttributes> & {
-  productType: typeof ProductType.CLOTHING;
-};
-
-export type CreateElectronicInput = CreateProductInput<ElectronicAttributes> & {
-  productType: typeof ProductType.ELECTRONICS;
-};
-
-export type CreateProductFactoryInput =
-  | CreateClothingInput
-  | CreateElectronicInput;
+import type {
+  CreateProductFactoryInput,
+  ProductDocument,
+} from "./product.type.js";
 
 export class ProductFactory {
   static async createProduct(

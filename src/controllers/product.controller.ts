@@ -2,13 +2,13 @@ import type { Request, Response } from "express";
 
 import { CreatedResponse } from "../core/response/created.response.js";
 
-import { ProductFactory } from "../domains/product/product.factory.js";
-
 import { ResponseCode } from "../constants/response.constants.js";
+
+import { ProductService } from "../services/product.service.js";
 
 class ProductController {
   createProduct = async (req: Request, res: Response) => {
-    const createdProduct = await ProductFactory.createProduct(req.body);
+    const createdProduct = await ProductService.createProduct(req.body);
 
     new CreatedResponse({
       code: ResponseCode.PRODUCT_CREATION_SUCCESS,
