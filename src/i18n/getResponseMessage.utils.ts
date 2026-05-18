@@ -1,3 +1,5 @@
+import { Locale } from "../constants/locale.constants.js";
+
 import type { ResponseCodeKey } from "../types/core/response.type.js";
 
 import { AccessEnLocale } from "./locales/en/access.locale.js";
@@ -27,7 +29,7 @@ export const ResMsg = {
 
 export function getResponseMessage(
   code: ResponseCodeKey,
-  locale: keyof typeof ResMsg = "vi",
+  locale: keyof typeof ResMsg = Locale.VIETNAMESE,
 ): string {
   return ResMsg[locale]?.[code] ?? ResMsg.vi[code] ?? code;
 }
