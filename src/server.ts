@@ -1,3 +1,7 @@
+import type { Server } from "node:http";
+
+import type { Express } from "express";
+
 import { env } from "./configs/env.js";
 
 import {
@@ -8,7 +12,12 @@ import { checkOverloadedConnections } from "./helpers/investigateMongoDBHealth.j
 
 import { app } from "./app.js";
 
-const startServer = async () => {
+type StartServerResult = {
+  app: Express;
+  server: Server;
+};
+
+export const startServer = async (): Promise<StartServerResult> => {
   /**
    * Shutdown application server gracefully.
    *
@@ -41,6 +50,11 @@ const startServer = async () => {
 
   process.on("SIGINT", () => shutdownServerGracefully("SIGINT"));
   process.on("SIGTERM", () => shutdownServerGracefully("SIGTERM"));
+
+  return {
+    app,
+    server,
+  };
 };
 
 startServer();

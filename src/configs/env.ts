@@ -9,7 +9,7 @@ dotenv.config({
 });
 
 const env = cleanEnv(process.env, {
-  NODE_ENV: str({ choices: ["development", "production"] }),
+  NODE_ENV: str({ choices: ["development", "test", "production"] }),
   APP_HOST: host({ default: "127.0.0.1" }),
   APP_PORT: port({ default: 20008 }),
 

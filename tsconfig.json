@@ -2,7 +2,7 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
 
     // Base Options
@@ -50,6 +50,6 @@
     "jsx": "react-jsx",
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "eslint.config.ts", "tests"]
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist", "eslint.config.ts"]
 }
