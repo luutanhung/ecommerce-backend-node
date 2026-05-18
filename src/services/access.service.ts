@@ -9,8 +9,10 @@ import { ForbiddenAppError } from "../core/error/forbiddenAppError.js";
 import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
 
-import { ResponseCode } from "../constants/response.constant.js";
-import { ShopRole } from "../constants/shop.constant.js";
+import { ShopRole } from "../domains/shop/shop.constants.js";
+import type { ShopDocument } from "../domains/shop/shop.type.js";
+
+import { ResponseCode } from "../constants/response.constants.js";
 
 import { createKeyPair } from "../utils/generator.utils.js";
 import { sanitizeShop } from "../utils/sanitizer.utils.js";
@@ -30,7 +32,6 @@ import type {
   RegisterResult,
   TokenPair,
 } from "../types/access.type.js";
-import type { ShopDocument } from "../types/shop.type.js";
 import type { KeyPair } from "../types/utils.type.js";
 
 import { KeyTokenService } from "./keytoken.service.js";

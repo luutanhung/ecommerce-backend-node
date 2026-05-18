@@ -19,6 +19,10 @@ export default {
     "^\\.\\.?/core/(.*)$",
 
     // Constants
+    "^@/domains/(.*)$",
+    "^\\.\\.?/domains/(.*)$",
+
+    // Constants
     "^@/constants/(.*)$",
     "^\\.\\.?/constants/(.*)$",
 
