@@ -51,6 +51,10 @@ export default {
     "^@/routes/(.*)$",
     "^\\.\\.?/routes/(.*)$",
 
+    // Locales
+    "^@/locales/(.*)$",
+    "^\\.\\.?/locale/(.*)$",
+
     // Types
     "^@/types/(.*)$",
     "^\\.\\.?/types/(.*)$",
