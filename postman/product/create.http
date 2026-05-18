@@ -1,17 +1,18 @@
 @base_api_url=http://127.0.0.1:20008/v1/api
+@access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTA5MTMzNmUwOTA1OTA2NTIxYmRlZDUiLCJlbWFpbCI6InNob3BkZXYyMUBnbWFpbC5jb20iLCJpYXQiOjE3NzkwNzYxNDMsImV4cCI6MTc3OTI0ODk0M30.4QQVXUG1fuMv4QnHWuxT7jDqXha4vF0Lpsy9dYLWPmw
 
 # Create a new clothing product.
 POST {{base_api_url}}/product/create
 Content-Type: application/json
 x-api-key: xxxxx
 x-client-id: 6a091336e0905906521bded5
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTA5MTMzNmUwOTA1OTA2NTIxYmRlZDUiLCJlbWFpbCI6InNob3BkZXYyMUBnbWFpbC5jb20iLCJpYXQiOjE3NzkwNjkxNjksImV4cCI6MTc3OTI0MTk2OX0.UvIPtsItQLWR_yZGsLOue60PjMsJDeGynJX5lhQfZgo
+Authorization: {{access_token}}
 
 {
   "productName": "Oversized Cotton Hoodie II",
   "productThumb": "https://cdn.example.com/products/hoodie-black.jpg",
   "productDescription": "Premium oversized hoodie made from 100% cotton.",
-  "productPrice": 49.99,
+  "productPrice": -49.99,
   "productQuantity": 120,
   "productType": "Clothing",
   "productShop": "6829d8f7b8a2d1f4c8a91234",

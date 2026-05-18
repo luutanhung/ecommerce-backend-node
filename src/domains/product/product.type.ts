@@ -24,7 +24,7 @@ export type CreateProductInput<TAttributes = BaseProductAttributes> = {
 
   productThumb: string;
 
-  productDescription: string;
+  productDescription?: string;
 
   productPrice: number;
 
@@ -32,7 +32,7 @@ export type CreateProductInput<TAttributes = BaseProductAttributes> = {
 
   productType: ProductType;
 
-  productShop: Types.ObjectId;
+  productShop: string;
 
   productAttributes: TAttributes;
 };

@@ -10,8 +10,19 @@ import type { NextFunction, Request, RequestHandler, Response } from "express";
  * @param fn - The asynchronous Express request handler to wrap.
  * @returns A new Express request handler with centralized async error handling.
  */
-export const asyncWrapper = (fn: RequestHandler): RequestHandler => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch(next);
+export const asyncWrapper = <
+  P = Record<string, string>,
+  ResBody = unknown,
+  ReqBody = unknown,
+  ReqQuery = unknown,
+>(
+  fn: (
+    req: Request<P, ResBody, ReqBody, ReqQuery>,
+    res: Response,
+    next: NextFunction,
+  ) => Promise<unknown>,
+): RequestHandler<P, ResBody, ReqBody, ReqQuery> => {
+  return (req, res, next) => {
+    fn(req, res, next).catch(next);
   };
 };

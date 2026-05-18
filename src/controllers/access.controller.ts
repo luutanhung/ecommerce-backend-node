@@ -1,4 +1,4 @@
-import type { Request, RequestHandler, Response } from "express";
+import type { Request, Response } from "express";
 
 import { CreatedResponse } from "../core/response/created.response.js";
 import { OKResponse } from "../core/response/ok.response.js";
@@ -18,10 +18,7 @@ class AccessController {
   /**
    * Register a new shop.
    */
-  register: RequestHandler = async (
-    req: Request,
-    res: Response,
-  ): Promise<void> => {
+  register = async (req: Request, res: Response): Promise<void> => {
     const registerResult: RegisterResult = await AccessService.register(
       req.body,
     );
@@ -35,10 +32,7 @@ class AccessController {
   /**
    * Logins with shop info.
    */
-  login: RequestHandler = async (
-    req: Request,
-    res: Response,
-  ): Promise<void> => {
+  login = async (req: Request, res: Response): Promise<void> => {
     const loginResult: LoginResult = await AccessService.login(req.body);
 
     new OKResponse({
@@ -50,10 +44,7 @@ class AccessController {
   /**
    * Refreshes token.
    */
-  refreshToken: RequestHandler = async (
-    req: Request,
-    res: Response,
-  ): Promise<void> => {
+  refreshToken = async (req: Request, res: Response): Promise<void> => {
     const refreshTokenResult: RefreshTokenResult =
       await AccessService.refreshToken({
         refreshToken: req.body.refreshToken,
@@ -68,10 +59,7 @@ class AccessController {
   /**
    * Logout.
    */
-  logout: RequestHandler = async (
-    req: Request,
-    res: Response,
-  ): Promise<void> => {
+  logout = async (req: Request, res: Response): Promise<void> => {
     await AccessService.logout({
       keyToken: req.keyToken as KeyTokenLean,
     });

@@ -12,7 +12,7 @@ import {
   RefreshTokenSchema,
   ShopLoginSchema,
   ShopRegisterSchema,
-} from "../validations/access.schema.js";
+} from "../validations/access.validations.js";
 
 const router = Router();
 

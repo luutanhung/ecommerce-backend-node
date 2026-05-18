@@ -6,7 +6,7 @@ import type { CreateProductInput, ProductDocument } from "../product.type.js";
 import { Product } from "./product.entity.js";
 
 export type ClothingAttributes = {
-  band: string;
+  brand: string;
   size?: string;
   material?: string;
 };

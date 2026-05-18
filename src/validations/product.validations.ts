@@ -5,7 +5,7 @@ import { ProductType } from "../domains/product/product.constants.js";
 
 import { ResCode } from "../constants/resCode.constants.js";
 
-import { PositiveNumberSchema } from "./common.schema.js";
+import { PositiveNumberSchema } from "./common.validations.js";
 
 const BaseProductSchema = z.object({
   productName: z
@@ -97,3 +97,5 @@ export const ProductCreateSchema = z.discriminatedUnion("productType", [
   ClothingProductSchema,
   ElectronicProductSchema,
 ]);
+
+export type ProductCreatePayload = z.infer<typeof ProductCreateSchema>;

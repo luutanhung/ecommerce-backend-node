@@ -3,7 +3,11 @@ import z from "zod";
 
 import { ResCode } from "../constants/resCode.constants.js";
 
-import { EmailSchema, NameSchema, PasswordSchema } from "./common.schema.js";
+import {
+  EmailSchema,
+  NameSchema,
+  PasswordSchema,
+} from "./common.validations.js";
 
 const ShopNameSchema = NameSchema.min(2, {
   message: ResCode.EMAIL_INVALID,
