@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
 
 import { env } from "../../configs/env.js";
 import { HttpStatusCode } from "../../constants/http.constants.js";
@@ -35,6 +36,70 @@ export const handleError = async (
     }).send(req, res);
   }
 
+  /**
+   * Handle Mongoose errors.
+   */
+
+  /**
+   * Handle validation errors.
+   */
+  if (err instanceof mongoose.Error.ValidationError) {
+    return new ErrorResponse({
+      statusCode: HttpStatusCode.BAD_REQUEST,
+
+      code: ResCode.INVALID_REQUEST,
+
+      data: {
+        errors: Object.values(err.errors).map((error) => ({
+          field: error.path,
+
+          message: error.message,
+        })),
+      },
+
+      stack: env.isDev ? err.stack : undefined,
+    }).send(req, res);
+  }
+
+  /**
+   * Handle cast errors.
+   */
+  if (err instanceof mongoose.Error.CastError) {
+    return new ErrorResponse({
+      statusCode: HttpStatusCode.BAD_REQUEST,
+
+      code: ResCode.INVALID_REQUEST,
+
+      data: {
+        field: err.path,
+
+        value: err.value,
+      },
+
+      stack: env.isDev ? err.stack : undefined,
+    }).send(req, res);
+  }
+
+  /**
+   * Handle duplicate key.
+   */
+  if (err instanceof mongoose.mongo.MongoServerError && err.code === 11000) {
+    return new ErrorResponse({
+      statusCode: HttpStatusCode.CONFLICT,
+
+      code: ResCode.CONFLICT,
+
+      data: {
+        duplicatedFields: err.keyValue,
+      },
+
+      stack: env.isDev ? err.stack : undefined,
+    }).send(req, res);
+  }
+
+  /**
+   * Handle syntax errors.
+   */
   if (err instanceof SyntaxError) {
     // Handle invalid JSON format.
     return new ErrorResponse({
@@ -44,6 +109,9 @@ export const handleError = async (
     }).send(req, res);
   }
 
+  /**
+   * Handle unknown errors.
+   */
   return new ErrorResponse({
     statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
     code: ResCode.INTERNAL_SERVER_ERROR,
