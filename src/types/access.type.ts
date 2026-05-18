@@ -27,7 +27,7 @@ export type AccessBaseResult = {
   tokens: TokenPair;
 };
 
-export type RegisterShopResult = AccessBaseResult;
+export type RegisterShopResult = Pick<AccessBaseResult, "shop">;
 
 export type LoginShopInput = {
   email: string;

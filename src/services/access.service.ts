@@ -64,32 +64,8 @@ export class AccessService {
       roles: [ShopRole.SHOP],
     });
 
-    // Generate a pair of private key and public key.
-    const { privateKey, publicKey }: KeyPair = await createKeyPair();
-
-    const authPayload: AuthPayload = {
-      userId: newCreatedShop._id.toString(),
-      email,
-    };
-
-    // Create a pair of tokens.
-    const tokenPair: TokenPair = await createTokenPair({
-      payload: authPayload,
-      publicKey,
-      privateKey,
-    });
-
-    // Store refreshToken in KeyToken model.
-    await KeyTokenService.createKeyToken({
-      userId: newCreatedShop._id,
-      privateKey,
-      publicKey,
-      refreshToken: tokenPair.refreshToken,
-    });
-
     return {
       shop: sanitizeShop(newCreatedShop.toObject()),
-      tokens: tokenPair,
     };
   };
 

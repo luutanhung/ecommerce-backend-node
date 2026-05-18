@@ -9,7 +9,7 @@ x-api-key: xxxxx
 
 {
   "name": "{{shopName}}",
-  "email": "shopdev24@gmail.com",
+  "email": "shopdev25@gmail.com",
   "password": "{{shopPassword}}"
 }
 
