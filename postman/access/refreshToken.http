@@ -1,6 +1,6 @@
-@base_api_url=http://127.0.0.1:20008/v1/api
+@baseApiUrl=http://127.0.0.1:20008/v1/api
 
-POST {{base_api_url}}/shop/refreshToken
+POST {{baseApiUrl}}/shop/refreshToken
 Content-Type: application/json
 x-client-id: 6a091336e0905906521bded5
 

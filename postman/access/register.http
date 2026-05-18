@@ -1,25 +1,25 @@
-@base_api_url=http://127.0.0.1:20008/v1/api
-@shop_name=ShopDEV
-@shop_password=!'2@;_Ltg42aK8m6
+@baseApiUrl=http://127.0.0.1:20008/v1/api
+@shopName=ShopDEV
+@shopPassword=!'2@;_Ltg42aK8m6
 
 ### Registers a new shop successfully.
-POST {{base_api_url}}/shop/register
+POST {{baseApiUrl}}/shop/register
 Content-Type: application/json
 x-api-key: xxxxx
 
 {
-  "name": "{{shop_name}}",
+  "name": "{{shopName}}",
   "email": "shopdev24@gmail.com",
-  "password": "{{shop_password}}"
+  "password": "{{shopPassword}}"
 }
 
 ### Registers a new shop should fail when missing shop's email.
-POST {{base_api_url}}/shop/register
+POST {{baseApiUrl}}/shop/register
 Content-Type: application/json
 x-api-key: xxxxx
 
 {
-  "name": "{{shop_name}}",
+  "name": "{{shopName}}",
   "email": "shopdev21@gmail.com",
-  "password": "{{shop_password}}"
+  "password": "{{shopPassword}}"
 }

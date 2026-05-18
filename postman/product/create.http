@@ -1,12 +1,12 @@
-@base_api_url=http://127.0.0.1:20008/v1/api
-@access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTA5MTMzNmUwOTA1OTA2NTIxYmRlZDUiLCJlbWFpbCI6InNob3BkZXYyMUBnbWFpbC5jb20iLCJpYXQiOjE3NzkwNzYxNDMsImV4cCI6MTc3OTI0ODk0M30.4QQVXUG1fuMv4QnHWuxT7jDqXha4vF0Lpsy9dYLWPmw
+@baseApiUrl=http://127.0.0.1:20008/v1/api
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTA5MTMzNmUwOTA1OTA2NTIxYmRlZDUiLCJlbWFpbCI6InNob3BkZXYyMUBnbWFpbC5jb20iLCJpYXQiOjE3NzkwNzYxNDMsImV4cCI6MTc3OTI0ODk0M30.4QQVXUG1fuMv4QnHWuxT7jDqXha4vF0Lpsy9dYLWPmw
 
 # Create a new clothing product.
-POST {{base_api_url}}/product/create
+POST {{baseApiUrl}}/product/create
 Content-Type: application/json
 x-api-key: xxxxx
 x-client-id: 6a091336e0905906521bded5
-Authorization: {{access_token}}
+Authorization: {{accessToken}}
 
 {
   "productName": "Oversized Cotton Hoodie II",
