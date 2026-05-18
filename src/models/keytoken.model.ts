@@ -1,9 +1,9 @@
-import { type InferSchemaType, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const DOCUMENT_NAME = "KeyToken";
 const COLLECTION_NAME = "KeyTokens";
 
-export const keyTokenSchema = new Schema(
+export const KeyTokenSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -33,6 +33,4 @@ export const keyTokenSchema = new Schema(
   },
 );
 
-export type KeyTokenDocument = InferSchemaType<typeof keyTokenSchema>;
-
-export const KeyTokens = model(DOCUMENT_NAME, keyTokenSchema);
+export const KeyTokens = model(DOCUMENT_NAME, KeyTokenSchema);

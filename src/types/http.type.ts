@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "../constants/http.constant.js";
+import { HttpStatusCode } from "../constants/http.constants.js";
 
 export type HttpStatusCodeKey = keyof typeof HttpStatusCode;
 

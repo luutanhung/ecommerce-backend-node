@@ -1,10 +1,10 @@
 import { type HydratedDocument, type InferSchemaType } from "mongoose";
 
-import { ApiKeyPermission } from "../constants/apikey.constant.js";
+import { ApiKeyPermission } from "../constants/apikey.constants.js";
 
-import { apiKeySchema } from "../models/apikey.model.js";
+import { ApiKeySchema } from "../models/apikey.model.js";
 
-export type ApiKey = InferSchemaType<typeof apiKeySchema>;
+export type ApiKey = InferSchemaType<typeof ApiKeySchema>;
 export type ApiKeyDocument = HydratedDocument<ApiKey>;
 
 export type ApiKeyPermission =

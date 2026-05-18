@@ -53,3 +53,8 @@ export type LogoutResult = {
 export type RefreshTokenPayload = {
   refreshToken: string;
 };
+
+export type RefreshTokenResult = {
+  user: AuthPayload;
+  tokens: TokenPair;
+};

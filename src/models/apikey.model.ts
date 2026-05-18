@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
-import { ApiKeyPermission } from "../constants/apikey.constant.js";
+import { ApiKeyPermission } from "../constants/apikey.constants.js";
 
 const DOCUMENT_NAME: string = "ApiKey";
 const COLLECTION_NAME: string = "ApiKeys";
 
-export const apiKeySchema = new Schema(
+export const ApiKeySchema = new Schema(
   {
     key: {
       type: String,
@@ -28,4 +28,4 @@ export const apiKeySchema = new Schema(
   },
 );
 
-export const ApiKeys = model(DOCUMENT_NAME, apiKeySchema);
+export const ApiKeys = model(DOCUMENT_NAME, ApiKeySchema);

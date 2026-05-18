@@ -1,8 +1,8 @@
 import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import { keyTokenSchema } from "../models/keytoken.model.js";
+import { KeyTokenSchema } from "../models/keytoken.model.js";
 
-export type KeyToken = InferSchemaType<typeof keyTokenSchema>;
+export type KeyToken = InferSchemaType<typeof KeyTokenSchema>;
 export type KeyTokenDocument = HydratedDocument<KeyToken>;
 export type KeyTokenLean = KeyToken & {
   _id: Types.ObjectId;

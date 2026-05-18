@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
-import { ShopStatus } from "../constants/shop.constant.js";
+import { ShopStatus } from "../domains/shop/shop.constants.js";
 
 const DOCUMENT_NAME = "Shop";
 const COLLECTION_NAME = "Shops";
 
-export const shopSchema = new Schema(
+export const ShopSchema = new Schema(
   {
     name: {
       type: String,
@@ -41,4 +41,4 @@ export const shopSchema = new Schema(
   },
 );
 
-export const Shops = model(DOCUMENT_NAME, shopSchema);
+export const Shops = model(DOCUMENT_NAME, ShopSchema);
