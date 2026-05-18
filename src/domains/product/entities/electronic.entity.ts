@@ -28,6 +28,6 @@ export class Electronic extends Product<ElectronicAttributes> {
       });
     }
 
-    return await super.createProduct();
+    return await super.createBaseProduct(newElectronic._id);
   }
 }

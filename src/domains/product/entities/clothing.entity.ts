@@ -28,6 +28,6 @@ export class Clothing extends Product<ClothingAttributes> {
       });
     }
 
-    return await super.createProduct();
+    return await super.createBaseProduct(newClothing._id);
   }
 }
