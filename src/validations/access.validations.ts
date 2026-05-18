@@ -13,22 +13,22 @@ const ShopNameSchema = NameSchema.min(2, {
   message: ResCode.EMAIL_INVALID,
 });
 
-export const ShopRegisterSchema = z.object({
+export const RegisterShopRequestSchema = z.object({
   name: ShopNameSchema,
   email: EmailSchema,
   password: PasswordSchema,
 });
 
-export type ShopRegisterPayload = z.infer<typeof ShopRegisterSchema>;
+export type RegisterShopRequest = z.infer<typeof RegisterShopRequestSchema>;
 
-export const ShopLoginSchema = z.object({
+export const LoginShopRequestSchema = z.object({
   email: EmailSchema,
   password: PasswordSchema,
 });
 
-export type ShopLoginPayload = z.infer<typeof ShopLoginSchema>;
+export type LoginShopRequest = z.infer<typeof LoginShopRequestSchema>;
 
-export const RefreshTokenSchema = z.object({
+export const RefreshTokenRequestSchema = z.object({
   refreshToken: z
     .string({
       error: (issue) => {
@@ -47,4 +47,4 @@ export const RefreshTokenSchema = z.object({
     .trim(),
 });
 
-export type RefreshTokenPayload = z.infer<typeof RefreshTokenSchema>;
+export type RefreshTokenRequest = z.infer<typeof RefreshTokenRequestSchema>;

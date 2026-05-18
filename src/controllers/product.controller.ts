@@ -9,11 +9,11 @@ import { ProductService } from "../services/product.service.js";
 import type { AuthPayload } from "../types/access.type.js";
 import type { BodyRequest } from "../types/http.type.js";
 
-import type { CreateProductPayload } from "../validations/product.validations.js";
+import type { CreateProductRequest } from "../validations/product.validations.js";
 
 class ProductController {
   createProduct = async (
-    req: BodyRequest<CreateProductPayload>,
+    req: BodyRequest<CreateProductRequest>,
     res: Response,
   ): Promise<void> => {
     const createdProduct = await ProductService.createProduct({

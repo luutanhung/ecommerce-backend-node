@@ -9,9 +9,9 @@ import {
 } from "../middlewares/access.middleware.js";
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import {
-  RefreshTokenSchema,
-  ShopLoginSchema,
-  ShopRegisterSchema,
+  LoginShopRequestSchema,
+  RefreshTokenRequestSchema,
+  RegisterShopRequestSchema,
 } from "../validations/access.validations.js";
 
 const router = Router();
@@ -19,14 +19,14 @@ const router = Router();
 // Register a new shop.
 router.post(
   "/shop/register",
-  validateRequest({ body: ShopRegisterSchema }),
+  validateRequest({ body: RegisterShopRequestSchema }),
   asyncWrapper(accessController.register),
 );
 
 // Login with shop's information.
 router.post(
   "/shop/login",
-  validateRequest({ body: ShopLoginSchema }),
+  validateRequest({ body: LoginShopRequestSchema }),
   asyncWrapper(accessController.login),
 );
 
@@ -35,7 +35,7 @@ router.post(
   "/shop/refreshToken",
   authenticateClientId,
   validateRequest({
-    body: RefreshTokenSchema,
+    body: RefreshTokenRequestSchema,
   }),
   asyncWrapper(accessController.refreshToken),
 );

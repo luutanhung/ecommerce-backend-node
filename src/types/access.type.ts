@@ -32,7 +32,6 @@ export type RegisterResult = AccessBaseResult;
 export type LoginPayload = {
   email: string;
   password: string;
-  refreshToken: string;
 };
 
 export type LoginResult = AccessBaseResult;

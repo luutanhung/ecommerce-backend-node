@@ -12,13 +12,23 @@ import type {
   RefreshTokenResult,
   RegisterResult,
 } from "../types/access.type.js";
+import type { BodyRequest } from "../types/http.type.js";
 import type { KeyTokenLean } from "../types/keytoken.type.js";
+
+import type {
+  LoginShopRequest,
+  RefreshTokenRequest,
+  RegisterShopRequest,
+} from "../validations/access.validations.js";
 
 class AccessController {
   /**
    * Register a new shop.
    */
-  register = async (req: Request, res: Response): Promise<void> => {
+  register = async (
+    req: BodyRequest<RegisterShopRequest>,
+    res: Response,
+  ): Promise<void> => {
     const registerResult: RegisterResult = await AccessService.register(
       req.body,
     );
@@ -32,7 +42,10 @@ class AccessController {
   /**
    * Logins with shop info.
    */
-  login = async (req: Request, res: Response): Promise<void> => {
+  login = async (
+    req: BodyRequest<LoginShopRequest>,
+    res: Response,
+  ): Promise<void> => {
     const loginResult: LoginResult = await AccessService.login(req.body);
 
     new OKResponse({
@@ -44,7 +57,10 @@ class AccessController {
   /**
    * Refreshes token.
    */
-  refreshToken = async (req: Request, res: Response): Promise<void> => {
+  refreshToken = async (
+    req: BodyRequest<RefreshTokenRequest>,
+    res: Response,
+  ): Promise<void> => {
     const refreshTokenResult: RefreshTokenResult =
       await AccessService.refreshToken({
         refreshToken: req.body.refreshToken,
