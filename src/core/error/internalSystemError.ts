@@ -1,4 +1,4 @@
-import { ResCode } from "../../constants/response.constants.js";
+import { ResCode } from "../../constants/resCode.constants.js";
 import type { PartialAppErrorConstructorParams } from "../../types/core/appError.type.js";
 
 import { AppError } from "./appError.js";

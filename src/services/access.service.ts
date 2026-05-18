@@ -12,7 +12,7 @@ import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
 import { ShopRole } from "../domains/shop/shop.constants.js";
 import type { ShopDocument } from "../domains/shop/shop.type.js";
 
-import { ResCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 import { createKeyPair } from "../utils/generator.utils.js";
 import { sanitizeShop } from "../utils/sanitizer.utils.js";

@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 
 import { CreatedResponse } from "../core/response/created.response.js";
 
-import { ResCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 import { ProductService } from "../services/product.service.js";
 

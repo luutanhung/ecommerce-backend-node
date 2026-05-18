@@ -6,7 +6,7 @@ import { ZodError } from "zod";
 import { BadRequestAppError } from "../core/error/badRequestAppError.js";
 import { InternalSystemError } from "../core/error/internalSystemError.js";
 
-import { ResCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 import type { ResponseCodeKey } from "../types/core/response.type.js";
 

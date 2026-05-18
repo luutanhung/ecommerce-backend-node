@@ -1,4 +1,4 @@
-import { ResCode } from "../../../constants/response.constants.js";
+import { ResCode } from "../../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { Clothes } from "../../../models/product/clothing.model.js";
 import type { CreateProductInput, ProductDocument } from "../product.type.js";

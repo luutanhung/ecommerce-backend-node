@@ -3,7 +3,7 @@ import type { Request, RequestHandler, Response } from "express";
 import { CreatedResponse } from "../core/response/created.response.js";
 import { OKResponse } from "../core/response/ok.response.js";
 
-import { ResCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 import { AccessService } from "../services/access.service.js";
 

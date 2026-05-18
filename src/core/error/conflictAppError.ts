@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "../../constants/http.constants.js";
-import { ResCode, ResMsg } from "../../constants/response.constants.js";
+import { ResCode, ResMsg } from "../../constants/resCode.constants.js";
 import type { PartialAppErrorConstructorParams } from "../../types/core/appError.type.js";
 
 import { AppError } from "./appError.js";

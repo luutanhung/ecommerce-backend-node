@@ -4,7 +4,7 @@ import { AppError } from "../core/error/appError.js";
 import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 
 import { HttpStatusCode } from "../constants/http.constants.js";
-import { ResCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 import { KeyTokens } from "../models/keytoken.model.js";
 

@@ -1,7 +1,7 @@
 import _ from "lodash";
 import z from "zod";
 
-import { ResCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 export const NameSchema = z.string({
   error: (issue) => {

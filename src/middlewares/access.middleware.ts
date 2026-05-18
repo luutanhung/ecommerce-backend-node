@@ -7,7 +7,7 @@ import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
 
 import { RequestHeaders } from "../constants/http.constants.js";
-import { ResCode } from "../constants/response.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 import { findActiveApiKey } from "../services/apikey.service.js";
 import { KeyTokenService } from "../services/keytoken.service.js";
