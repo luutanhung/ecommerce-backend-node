@@ -12,11 +12,13 @@ export class BaseResponse {
   statusCode: number;
   code: ResponseCodeKey;
   data?: AppData;
+  stack?: string;
 
-  constructor({ statusCode, code, data }: ResponseParams) {
+  constructor({ statusCode, code, data, stack }: ResponseParams) {
     this.statusCode = statusCode;
     this.code = code;
     this.data = data;
+    this.stack = stack;
   }
 
   public send(req: Request, res: Response, headers: OutgoingHttpHeaders = {}) {
@@ -24,6 +26,9 @@ export class BaseResponse {
 
     return res.status(this.statusCode).json({
       ...this,
+      ...(this.stack && {
+        stack: this.stack,
+      }),
       message: getResponseMessage(this.code, req.locale),
     });
   }

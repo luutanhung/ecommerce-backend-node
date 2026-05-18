@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 
+import { env } from "../../configs/env.js";
 import { HttpStatusCode } from "../../constants/http.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
-import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
 import { ErrorResponse } from "../response/error.response.js";
 
 import { AppError } from "./appError.js";
@@ -30,8 +30,8 @@ export const handleError = async (
     return new ErrorResponse({
       statusCode: err.statusCode,
       code: err.code,
-      message: getResponseMessage(err.code),
       data: err?.data,
+      stack: env.isDev ? err.stack : undefined,
     }).send(req, res);
   }
 
@@ -40,13 +40,13 @@ export const handleError = async (
     return new ErrorResponse({
       statusCode: HttpStatusCode.BAD_REQUEST,
       code: ResCode.INVALID_JSON,
-      message: getResponseMessage(ResCode.INVALID_JSON),
+      stack: env.isDev ? err.stack : undefined,
     }).send(req, res);
   }
 
   return new ErrorResponse({
     statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
     code: ResCode.INTERNAL_SERVER_ERROR,
-    message: getResponseMessage(ResCode.INVALID_JSON),
+    stack: env.isDev ? err.stack : undefined,
   }).send(req, res);
 };

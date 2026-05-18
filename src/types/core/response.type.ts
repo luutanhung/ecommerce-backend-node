@@ -8,7 +8,6 @@ export type AppData = { [key: string]: any };
 export type ResponseParams = {
   statusCode: number;
   code: ResponseCodeKey;
-  message?: string;
   data?: AppData;
 };
 
