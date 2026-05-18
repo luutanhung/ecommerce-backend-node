@@ -6,6 +6,7 @@ import { ResCode } from "../constants/resCode.constants.js";
 
 import { ProductService } from "../services/product.service.js";
 
+import type { AuthPayload } from "../types/access.type.js";
 import type { BodyRequest } from "../types/http.type.js";
 
 import type { ProductCreatePayload } from "../validations/product.validations.js";
@@ -17,7 +18,7 @@ class ProductController {
   ): Promise<void> => {
     const createdProduct = await ProductService.createProduct({
       ...req.body,
-      productShop: req.user?.userId as string,
+      productShop: (req.user as AuthPayload).userId,
     });
 
     new CreatedResponse({
