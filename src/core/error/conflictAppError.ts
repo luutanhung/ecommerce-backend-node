@@ -3,12 +3,12 @@ import {
   ResponseCode,
   ResponseMessage,
 } from "../../constants/response.constant.js";
-import type { PartialAppErrorParams } from "../../types/core/appError.js";
+import type { PartialAppErrorConstructorParams } from "../../types/core/appError.type.js";
 
 import { AppError } from "./appError.js";
 
 export class ConflictAppError extends AppError {
-  constructor({ message, code, data }: PartialAppErrorParams = {}) {
+  constructor({ message, code, data }: PartialAppErrorConstructorParams = {}) {
     super({
       message: message || ResponseMessage.CONFLICT,
       statusCode: HttpStatusCode.CONFLICT,

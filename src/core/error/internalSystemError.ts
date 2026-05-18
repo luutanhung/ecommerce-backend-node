@@ -1,5 +1,5 @@
 import { ResponseCode } from "../../constants/response.constant.js";
-import type { PartialAppErrorParams } from "../../types/core/appError.type.js";
+import type { PartialAppErrorConstructorParams } from "../../types/core/appError.type.js";
 
 import { AppError } from "./appError.js";
 
@@ -8,7 +8,7 @@ export class InternalSystemError extends AppError {
     message,
     code = ResponseCode.INTERNAL_SERVER_ERROR,
     data,
-  }: PartialAppErrorParams = {}) {
+  }: PartialAppErrorConstructorParams = {}) {
     super({
       message,
       code,

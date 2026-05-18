@@ -78,6 +78,17 @@ export const ResponseCode = {
   SHOP_LOGIN_SUCCESS: "SHOP_LOGIN_SUCCESS",
 
   SHOP_LOGOUT_SUCCESS: "SHOP_LOGOUT_SUCCESS",
+
+  // Product.
+  PRODUCT_TYPE_INVALID: "PRODUCT_TYPE_INVALID",
+
+  PRODUCT_CREATION_SUCCESS: "PRODUCT_CREATION_SUCCESS",
+  PRODUCT_CREATION_FAILURE: "PRODUCT_CREATION_FAILURE",
+
+  CLOTHING_CREATION_FAILURE: "CLOTHING_CREATION_FAILURE",
+  CLOTHING_CREATION_SUCCESS: "CLOTHING_CREATION_SUCCESS",
+
+  ELECTRONIC_CREATION_FAILURE: "ELECTRONIC_CREATION_FAILURE",
 } as const;
 
 export const ResponseMessage: Record<ResponseCodeKey, string> = {
@@ -166,4 +177,15 @@ export const ResponseMessage: Record<ResponseCodeKey, string> = {
   SHOP_NOT_LOGGED_IN: "Chưa đăng nhập trước đó, vui lòng đăng nhập",
   SHOP_LOGIN_SUCCESS: "Đăng nhập thành công",
   SHOP_LOGOUT_SUCCESS: "Đăng xuất khỏi cửa hàng thành công",
+
+  // Product.
+  PRODUCT_TYPE_INVALID: "Loại sản phẩm không hợp lệ",
+
+  PRODUCT_CREATION_SUCCESS: "Tạo sản phẩm thành công",
+  PRODUCT_CREATION_FAILURE: "Tạo sản phẩm thất bại",
+
+  CLOTHING_CREATION_FAILURE: "Tạo sản phẩm quần áo thất bại",
+  CLOTHING_CREATION_SUCCESS: "Tạo sản phẩm quần áo thành công",
+
+  ELECTRONIC_CREATION_FAILURE: "Tạo sản phẩm điện thất bại",
 } as const;

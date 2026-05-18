@@ -2,7 +2,7 @@ import _ from "lodash";
 
 import { HttpStatusCode } from "../../constants/http.constant.js";
 import { ResponseMessage } from "../../constants/response.constant.js";
-import type { AppErrorParams } from "../../types/core/appError.type.js";
+import type { AppErrorConstructorParams } from "../../types/core/appError.type.js";
 import type {
   AppData,
   ResponseCodeKey,
@@ -54,7 +54,7 @@ export class AppError extends Error {
     message = ResponseMessage[code],
     statusCode = HttpStatusCode.BAD_REQUEST,
     data,
-  }: AppErrorParams) {
+  }: AppErrorConstructorParams) {
     super(message);
 
     this.code = code;

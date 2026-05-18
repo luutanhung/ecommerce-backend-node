@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-import { ProductType } from "../constants/product.constant.js";
+import { ProductType } from "../domains/product/product.constants.js";
 
 const DOCUMENT_NAME: string = "Product";
 const COLLECTION_NAME: string = "Products";
@@ -79,14 +79,11 @@ export const clothingAttributesSchema = new Schema(
     },
   },
   {
-    collection: "clothes",
+    collection: "Clothes",
     timestamps: true,
   },
 );
 
 export const Products = model(DOCUMENT_NAME, productSchema);
-export const EletronicAttributes = model(
-  "Eletronic",
-  electronicAttributesSchema,
-);
-export const ClothingAttributes = model("Clothe", clothingAttributesSchema);
+export const Electronics = model("Eletronic", electronicAttributesSchema);
+export const Clothes = model("Clothing", clothingAttributesSchema);
