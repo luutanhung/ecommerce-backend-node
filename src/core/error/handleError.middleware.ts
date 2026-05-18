@@ -20,13 +20,11 @@ export const handleError = async (
   err: Error,
   req: Request,
   res: Response,
-   
   next: NextFunction,
 ) => {
   if (res.headersSent) {
     return next(err);
   }
-  console.log(err);
 
   if (err instanceof AppError) {
     return new ErrorResponse({

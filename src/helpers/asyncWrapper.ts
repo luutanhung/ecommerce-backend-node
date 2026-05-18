@@ -16,13 +16,13 @@ export const asyncWrapper = <
   ReqBody = unknown,
   ReqQuery = unknown,
 >(
-  fn: (
+  fn: RequestHandler<P, ResBody, ReqBody, ReqQuery>,
+): RequestHandler<P, ResBody, ReqBody, ReqQuery> => {
+  return (
     req: Request<P, ResBody, ReqBody, ReqQuery>,
     res: Response,
     next: NextFunction,
-  ) => Promise<unknown>,
-): RequestHandler<P, ResBody, ReqBody, ReqQuery> => {
-  return (req, res, next) => {
+  ) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
 };
