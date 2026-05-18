@@ -16,7 +16,7 @@ export type AuthPayload = {
 };
 
 // Services.
-export type RegisterPlayload = {
+export type RegisterShopInput = {
   name: string;
   email: string;
   password: string;
@@ -27,14 +27,14 @@ export type AccessBaseResult = {
   tokens: TokenPair;
 };
 
-export type RegisterResult = AccessBaseResult;
+export type RegisterShopResult = AccessBaseResult;
 
-export type LoginPayload = {
+export type LoginShopInput = {
   email: string;
   password: string;
 };
 
-export type LoginResult = AccessBaseResult;
+export type LoginShopResult = AccessBaseResult;
 
 export type TokenPair = {
   accessToken: string;
@@ -49,7 +49,7 @@ export type LogoutResult = {
   keyToken: KeyTokenLean;
 };
 
-export type RefreshTokenPayload = {
+export type RefreshTokenInput = {
   refreshToken: string;
 };
 

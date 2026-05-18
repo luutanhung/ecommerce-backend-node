@@ -22,14 +22,14 @@ import { Shops } from "../models/shop.model.js";
 
 import type {
   AuthPayload,
-  LoginPayload,
-  LoginResult,
+  LoginShopInput,
+  LoginShopResult,
   LogoutPayload,
   LogoutResult,
-  RefreshTokenPayload,
+  RefreshTokenInput,
   RefreshTokenResult,
-  RegisterPlayload,
-  RegisterResult,
+  RegisterShopInput,
+  RegisterShopResult,
   TokenPair,
 } from "../types/access.type.js";
 import type { KeyPair } from "../types/utils.type.js";
@@ -41,11 +41,11 @@ export class AccessService {
   /**
    * Registers a new shop.
    */
-  static register = async ({
+  static registerShop = async ({
     name,
     email,
     password,
-  }: RegisterPlayload): Promise<RegisterResult> => {
+  }: RegisterShopInput): Promise<RegisterShopResult> => {
     const existingShop = await Shops.findOne({ email }).lean();
 
     if (existingShop) {
@@ -99,7 +99,7 @@ export class AccessService {
   static login = async ({
     email,
     password,
-  }: LoginPayload): Promise<LoginResult> => {
+  }: LoginShopInput): Promise<LoginShopResult> => {
     // Find shop registered with passed-in email.
     const registeredShop = await ShopService.findShopByEmail(email);
 
@@ -156,7 +156,7 @@ export class AccessService {
    */
   static refreshToken = async ({
     refreshToken,
-  }: RefreshTokenPayload): Promise<RefreshTokenResult> => {
+  }: RefreshTokenInput): Promise<RefreshTokenResult> => {
     const verifyRefreshToken = async (
       privateKey: string,
     ): Promise<AuthPayload> => {

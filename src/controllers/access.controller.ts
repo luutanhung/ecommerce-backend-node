@@ -8,9 +8,9 @@ import { ResCode } from "../constants/resCode.constants.js";
 import { AccessService } from "../services/access.service.js";
 
 import type {
-  LoginResult,
+  LoginShopResult,
   RefreshTokenResult,
-  RegisterResult,
+  RegisterShopResult,
 } from "../types/access.type.js";
 import type { BodyRequest } from "../types/http.type.js";
 import type { KeyTokenLean } from "../types/keytoken.type.js";
@@ -29,7 +29,7 @@ class AccessController {
     req: BodyRequest<RegisterShopRequest>,
     res: Response,
   ): Promise<void> => {
-    const registerResult: RegisterResult = await AccessService.register(
+    const registerResult: RegisterShopResult = await AccessService.registerShop(
       req.body,
     );
 
@@ -46,7 +46,7 @@ class AccessController {
     req: BodyRequest<LoginShopRequest>,
     res: Response,
   ): Promise<void> => {
-    const loginResult: LoginResult = await AccessService.login(req.body);
+    const loginResult: LoginShopResult = await AccessService.login(req.body);
 
     new OKResponse({
       code: ResCode.SHOP_LOGIN_SUCCESS,

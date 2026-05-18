@@ -8,8 +8,8 @@ export class ProductService {
    * Create a new product.
    */
   static createProduct = async (
-    createProductPayload: CreateProductFactoryInput,
+    createProductFactoryInput: CreateProductFactoryInput,
   ): Promise<CreateProductResult> => {
-    return await ProductFactory.createProduct(createProductPayload);
+    return await ProductFactory.createProduct(createProductFactoryInput);
   };
 }
