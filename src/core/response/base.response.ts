@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import _ from "lodash";
 
 import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
 import type {
@@ -24,12 +25,19 @@ export class BaseResponse {
   public send(req: Request, res: Response, headers: OutgoingHttpHeaders = {}) {
     res.set(headers);
 
-    return res.status(this.statusCode).json({
-      ...this,
-      ...(this.stack && {
-        stack: this.stack,
-      }),
+    const response: Record<string, unknown> = {
+      code: this.code,
       message: getResponseMessage(this.code, req.locale),
-    });
+    };
+
+    if (!_.isUndefined(this.stack)) {
+      response.stack = this.stack;
+    }
+
+    if (!_.isUndefined(this.data)) {
+      response.data = this.data;
+    }
+
+    return res.status(this.statusCode).json(response);
   }
 }
