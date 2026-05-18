@@ -5,7 +5,7 @@ import { productController } from "../controllers/product.controller.js";
 import { asyncWrapper } from "../helpers/asyncWrapper.js";
 import { authenticateAccessToken } from "../middlewares/access.middleware.js";
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
-import { ProductCreateSchema } from "../validations/product.validations.js";
+import { CreateProductSchema } from "../validations/product.validations.js";
 
 const router = Router();
 
@@ -15,7 +15,7 @@ router.use(authenticateAccessToken);
 router.post(
   "/product/create",
   authenticateAccessToken,
-  validateRequest({ body: ProductCreateSchema }),
+  validateRequest({ body: CreateProductSchema }),
   asyncWrapper(productController.createProduct),
 );
 

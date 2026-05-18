@@ -79,9 +79,9 @@ const ElectronicProductSchema = BaseProductSchema.extend({
   }),
 });
 
-export const ProductCreateSchema = z.discriminatedUnion("productType", [
+export const CreateProductSchema = z.discriminatedUnion("productType", [
   ClothingProductSchema,
   ElectronicProductSchema,
 ]);
 
-export type ProductCreatePayload = z.infer<typeof ProductCreateSchema>;
+export type CreateProductPayload = z.infer<typeof CreateProductSchema>;
