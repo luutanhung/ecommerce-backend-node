@@ -1,7 +1,7 @@
 import _ from "lodash";
 
-import { HttpStatusCode } from "../../constants/http.constant.js";
-import { ResponseMessage } from "../../constants/response.constant.js";
+import { HttpStatusCode } from "../../constants/http.constants.js";
+import { ResponseMessage } from "../../constants/response.constants.js";
 import type { AppErrorConstructorParams } from "../../types/core/appError.type.js";
 import type {
   AppData,

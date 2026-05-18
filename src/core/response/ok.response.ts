@@ -1,5 +1,5 @@
-import { HttpStatusCode } from "../../constants/http.constant.js";
-import { ResponseCode } from "../../constants/response.constant.js";
+import { HttpStatusCode } from "../../constants/http.constants.js";
+import { ResponseCode } from "../../constants/response.constants.js";
 import type { PartialResponseParams } from "../../types/core/response.type.js";
 
 import { SuccessResponse } from "./success.response.js";

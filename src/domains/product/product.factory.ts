@@ -1,4 +1,4 @@
-import { ResponseCode } from "../../constants/response.constant.js";
+import { ResponseCode } from "../../constants/response.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 
 import {

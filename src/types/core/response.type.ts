@@ -1,4 +1,4 @@
-import { ResponseCode } from "../../constants/response.constant.js";
+import { ResponseCode } from "../../constants/response.constants.js";
 
 export type ResponseCodeKey = keyof typeof ResponseCode;
 

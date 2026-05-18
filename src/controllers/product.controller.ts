@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 
 import { CreatedResponse } from "../core/response/created.response.js";
 
-import { ResponseCode } from "../constants/response.constant.js";
+import { ResponseCode } from "../constants/response.constants.js";
 
 import { ProductFactory } from "../domains/product/product.factory.js";
 
