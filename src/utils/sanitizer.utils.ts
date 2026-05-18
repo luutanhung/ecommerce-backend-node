@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import type { Shop, ShopLean } from "../types/shop.type.js";
+import type { Shop, ShopLean } from "../domains/shop/shop.type.js";
 
 export const pickFields = <
   T extends Record<string, unknown>,

@@ -9,6 +9,7 @@ export type ResponseParams = {
   statusCode: number;
   code: ResponseCodeKey;
   data?: AppData;
+  stack?: string;
 };
 
 export type PartialResponseParams = Partial<ResponseParams>;

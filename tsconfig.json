@@ -20,6 +20,7 @@
 
     /* If transpiling with TypeScript: */
     "module": "nodenext",
+    "moduleResolution": "NodeNext",
 
     // For nodejs:
     "lib": ["es2022"],
