@@ -7,6 +7,7 @@ declare global {
       apiKeyObj?: ApiKeyDocument;
       userId?: string;
       keyToken?: KeyTokenLean;
+      locale?: "en" | "vi";
     }
   }
 }

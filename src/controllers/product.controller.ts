@@ -13,7 +13,7 @@ class ProductController {
     new CreatedResponse({
       code: ResCode.PRODUCT_CREATION_SUCCESS,
       data: createdProduct,
-    }).send(res);
+    }).send(req, res);
   };
 }
 

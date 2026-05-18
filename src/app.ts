@@ -8,6 +8,8 @@ import { handleError } from "./core/error/handleError.middleware.js";
 
 import { mainRouter } from "./routes/index.js";
 
+import { attachLocale } from "./middlewares/locale.middleware.js";
+
 const app: Express = express();
 
 /**
@@ -30,6 +32,8 @@ app.use(
     extended: true,
   }),
 );
+
+app.use(attachLocale);
 
 /**
  * Register routers.

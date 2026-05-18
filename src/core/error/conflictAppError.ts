@@ -1,15 +1,18 @@
 import { HttpStatusCode } from "../../constants/http.constants.js";
-import { ResCode, ResMsg } from "../../constants/resCode.constants.js";
+import { ResCode } from "../../constants/resCode.constants.js";
+import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
 import type { PartialAppErrorConstructorParams } from "../../types/core/appError.type.js";
 
 import { AppError } from "./appError.js";
 
 export class ConflictAppError extends AppError {
-  constructor({ message, code, data }: PartialAppErrorConstructorParams = {}) {
+  constructor({ code, data }: PartialAppErrorConstructorParams = {}) {
+    const ultimateCode = code || ResCode.CONFLICT;
+
     super({
-      message: message || ResMsg.CONFLICT,
+      message: getResponseMessage(ultimateCode),
       statusCode: HttpStatusCode.CONFLICT,
-      code: code || ResCode.CONFLICT,
+      code: ultimateCode,
       data,
     });
   }

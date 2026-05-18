@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 
 import { HttpStatusCode } from "../../constants/http.constants.js";
-import { ResCode, ResMsg } from "../../constants/resCode.constants.js";
+import { ResCode } from "../../constants/resCode.constants.js";
+import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
 import { ErrorResponse } from "../response/error.response.js";
 
 import { AppError } from "./appError.js";
@@ -26,9 +27,9 @@ export const handleError = async (
     return new ErrorResponse({
       statusCode: err.statusCode,
       code: err.code,
-      message: err.message,
+      message: getResponseMessage(err.code),
       data: err?.data,
-    }).send(res);
+    }).send(req, res);
   }
 
   if (err instanceof SyntaxError) {
@@ -36,13 +37,13 @@ export const handleError = async (
     return new ErrorResponse({
       statusCode: HttpStatusCode.BAD_REQUEST,
       code: ResCode.INVALID_JSON,
-      message: ResMsg.INVALID_JSON,
-    }).send(res);
+      message: getResponseMessage(ResCode.INVALID_JSON),
+    }).send(req, res);
   }
 
   return new ErrorResponse({
     statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
     code: ResCode.INTERNAL_SERVER_ERROR,
-    message: ResMsg.INTERNAL_SERVER_ERROR,
-  }).send(res);
+    message: getResponseMessage(ResCode.INVALID_JSON),
+  }).send(req, res);
 };

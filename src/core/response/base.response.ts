@@ -1,5 +1,6 @@
-import type { Response } from "express";
+import type { Request, Response } from "express";
 
+import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
 import type {
   AppData,
   ResponseCodeKey,
@@ -20,9 +21,12 @@ export class BaseResponse {
     this.data = data;
   }
 
-  public send(res: Response, headers: OutgoingHttpHeaders = {}) {
+  public send(req: Request, res: Response, headers: OutgoingHttpHeaders = {}) {
     res.set(headers);
 
-    return res.status(this.statusCode).json(this);
+    return res.status(this.statusCode).json({
+      ...this,
+      message: getResponseMessage(this.code, req.locale),
+    });
   }
 }

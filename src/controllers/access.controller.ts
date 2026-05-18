@@ -29,7 +29,7 @@ class AccessController {
     new CreatedResponse({
       code: ResCode.SHOP_REGISTRATION_SUCCESS,
       data: registerResult,
-    }).send(res);
+    }).send(req, res);
   };
 
   /**
@@ -44,7 +44,7 @@ class AccessController {
     new OKResponse({
       code: ResCode.SHOP_LOGIN_SUCCESS,
       data: loginResult,
-    }).send(res);
+    }).send(req, res);
   };
 
   /**
@@ -62,7 +62,7 @@ class AccessController {
     new OKResponse({
       code: ResCode.REFRESH_TOKEN_SUCCESS,
       data: refreshTokenResult,
-    }).send(res);
+    }).send(req, res);
   };
 
   /**
@@ -78,7 +78,7 @@ class AccessController {
 
     new OKResponse({
       code: ResCode.SHOP_LOGOUT_SUCCESS,
-    }).send(res);
+    }).send(req, res);
   };
 }
 
