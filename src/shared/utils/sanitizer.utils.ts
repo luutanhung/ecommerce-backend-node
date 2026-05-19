@@ -1,4 +1,5 @@
 import _ from "lodash";
+import type { PaginateResult } from "mongoose";
 
 import type { User, UserLean } from "../../domains/access/types/access.type.js";
 import type { ProductLean } from "../../domains/product/types/product.type.js";
@@ -45,6 +46,26 @@ export function sanitizeShop(shop: ShopLean): Partial<Shop> {
   );
 
   return transformMongoId(sanitizedShop);
+}
+
+/**
+ * Sanitize paginated products.
+ */
+type Sanitizer<T, R> = (item: T) => R;
+
+/**
+ * Sanitize paginated result.
+ */
+export function sanitizePagination<T, R>(
+  pagination: PaginateResult<T>,
+
+  sanitizer: Sanitizer<T, R>,
+): PaginateResult<R> {
+  return {
+    ...pagination,
+
+    docs: pagination.docs.map(sanitizer),
+  };
 }
 
 /**

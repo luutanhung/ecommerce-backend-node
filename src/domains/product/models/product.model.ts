@@ -1,7 +1,11 @@
 import { Schema, model } from "mongoose";
+import type { PaginateModel } from "mongoose";
+import paginate from "mongoose-paginate-v2";
 import slugify from "slugify";
 
 import { ProductType } from "../constants/product.constants.js";
+
+import type { Product } from "../types/product.type.js";
 
 import {
   CollectionName,
@@ -85,6 +89,8 @@ export const ProductSchema = new Schema(
   },
 );
 
+ProductSchema.plugin(paginate);
+
 /**
  * Create indexes.
  */
@@ -99,4 +105,7 @@ ProductSchema.pre("save", async function () {
   });
 });
 
-export const Products = model(DocumentName.PRODUCT, ProductSchema);
+export const Products = model<Product, PaginateModel<Product>>(
+  DocumentName.PRODUCT,
+  ProductSchema,
+);

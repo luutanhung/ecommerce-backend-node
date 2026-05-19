@@ -8,6 +8,13 @@ import type { Locale } from "../locale.type.ts";
 declare global {
   namespace Express {
     interface Request {
+      // Common.
+      validated?: {
+        body?: unknown;
+        query?: unknown;
+        params?: unknown;
+      };
+
       apiKeyObj?: ApiKeyDocument;
       locale?: Locale;
 

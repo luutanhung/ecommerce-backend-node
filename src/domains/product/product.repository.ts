@@ -1,3 +1,5 @@
+import type { PaginateResult } from "mongoose";
+
 import { Products } from "./models/product.model.js";
 
 import type {
@@ -8,8 +10,8 @@ import type {
 import type { ProductDocument, ProductLean } from "./types/product.type.js";
 
 import {
-  DEFAULT_PRODUCT_LIMIT,
-  DEFAULT_PRODUCT_SKIP,
+  PAGINATION_DEFAULT_LIMIT,
+  PAGINATION_DEFAULT_PAGE,
 } from "../../constants/pagination.constants.js";
 
 export class ProductRepository {
@@ -41,15 +43,26 @@ export class ProductRepository {
    */
   static findProducts = async ({
     query = {},
-    limit = DEFAULT_PRODUCT_LIMIT,
-    skip = DEFAULT_PRODUCT_SKIP,
-  }: FindProductsRepositoryInput): Promise<ProductLean[]> => {
-    return await Products.find(query)
-      .populate("productShop", "name email -_id")
-      .sort({ updatedAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean()
-      .exec();
+    page = PAGINATION_DEFAULT_PAGE,
+    limit = PAGINATION_DEFAULT_LIMIT,
+  }: FindProductsRepositoryInput): Promise<PaginateResult<ProductLean>> => {
+    return (await Products.paginate(query, {
+      page,
+      limit,
+      lean: true,
+      populate: [
+        {
+          path: "productOwner",
+          select: "email name -_id",
+        },
+        {
+          path: "productShop",
+          select: "shopName shopSlug shopStatus -_id",
+        },
+      ],
+      sort: {
+        updatedAt: -1,
+      },
+    })) as PaginateResult<ProductLean>;
   };
 }

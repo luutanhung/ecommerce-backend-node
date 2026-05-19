@@ -8,7 +8,7 @@ export type ProductUpdateQuery = UpdateQuery<Product>;
 /**
  * Modification operations.
  */
-export type UpdateProductInput = {
+export type UpdateProductRepositoryInput = {
   query: ProductFilterQuery;
   update: ProductUpdateQuery;
 };
@@ -16,12 +16,12 @@ export type UpdateProductInput = {
 /**
  * Searching operations.
  */
-export type FindProductInput = {
+export type FindProductRepositoryInput = {
   query?: ProductFilterQuery;
 };
 
-export type FindProductsInput = {
+export type FindProductsRepositoryInput = {
   query?: ProductFilterQuery;
+  page?: number;
   limit?: number;
-  skip?: number;
 };

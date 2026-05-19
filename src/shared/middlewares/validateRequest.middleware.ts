@@ -50,25 +50,36 @@ export async function parseSchema<T>(
 export const validateRequest = (schemas: ValidationSchemas): RequestHandler => {
   return asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
+      req.validated = {};
+
       if (schemas.params) {
         const parsedParams = await parseSchema<ParamsDictionary>(
           schemas.params,
           req.params,
         );
 
-        Object.assign(req.params, parsedParams);
+        req.validated = {
+          ...req.validated,
+          params: parsedParams,
+        };
       }
 
       if (schemas.query) {
         const parsedQuery = await parseSchema<Query>(schemas.query, req.query);
 
-        Object.assign(req.query, parsedQuery);
+        req.validated = {
+          ...req.validated,
+          query: parsedQuery,
+        };
       }
 
       if (schemas.body) {
         const parsedBody = await parseSchema(schemas.body, req.body);
 
-        Object.assign(req.body, parsedBody);
+        req.validated = {
+          ...req.validated,
+          body: parsedBody,
+        };
       }
 
       return next();

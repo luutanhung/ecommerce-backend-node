@@ -16,12 +16,12 @@ export type FindProductInput = {
 
 export type FindProductsByShopIdInput = {
   shopId: string;
+  page?: number;
   limit?: number;
-  skip?: number;
 };
 
 export type SearchProductsInput = {
   keyword: string;
+  page?: number;
   limit?: number;
-  skip?: number;
 };

@@ -8,6 +8,7 @@ import {
   ObjectIdSchema,
   PositiveNumberSchema,
 } from "../../../shared/validations/common.validations.js";
+import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
 
 const BaseProductSchema = z.object({
   productName: z
@@ -105,9 +106,12 @@ export const ProductParamsSchema = z.object({
 });
 export type ProductParams = z.infer<typeof ProductParamsSchema>;
 
-export const SearchPublishedProductRequestSchema = z.object({
-  keyword: z.string().min(1),
-});
+export const SearchPublishedProductRequestSchema = PaginationQuerySchema.extend(
+  {
+    keyword: z.string().min(1),
+  },
+);
+
 export type SearchPublishedProductRequest = z.infer<
   typeof SearchPublishedProductRequestSchema
 >;

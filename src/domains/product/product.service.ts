@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import type {
   ProductFilterQuery,
   ProductUpdateQuery,
@@ -12,20 +10,20 @@ import type {
   SearchProductsInput,
   UnpublishedProductInput,
 } from "./types/product.service.type.js";
-import type {
-  CreateProductFactoryInput,
-  ProductLean,
-} from "./types/product.type.js";
+import type { CreateProductFactoryInput } from "./types/product.type.js";
 
 import {
-  DEFAULT_PRODUCT_LIMIT,
-  DEFAULT_PRODUCT_SKIP,
+  PAGINATION_DEFAULT_LIMIT,
+  PAGINATION_DEFAULT_PAGE,
 } from "../../constants/pagination.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
-import { sanitizeProduct } from "../../shared/utils/sanitizer.utils.js";
+import {
+  sanitizePagination,
+  sanitizeProduct,
+} from "../../shared/utils/sanitizer.utils.js";
 
 import { ProductFactory } from "./product.factory.js";
 import { ProductRepository } from "./product.repository.js";
@@ -139,8 +137,8 @@ export class ProductService {
    */
   static async searchPublishedProducts({
     keyword,
-    limit = DEFAULT_PRODUCT_LIMIT,
-    skip = DEFAULT_PRODUCT_SKIP,
+    page = PAGINATION_DEFAULT_PAGE,
+    limit = PAGINATION_DEFAULT_LIMIT,
   }: SearchProductsInput) {
     const query = {
       isPublished: true,
@@ -149,13 +147,13 @@ export class ProductService {
       },
     };
 
-    const products = await ProductRepository.findProducts({
+    const paginationResult = await ProductRepository.findProducts({
       query,
+      page,
       limit,
-      skip,
     });
 
-    return _.map(products, sanitizeProduct);
+    return sanitizePagination(paginationResult, sanitizeProduct);
   }
 
   /**
@@ -183,18 +181,18 @@ export class ProductService {
    */
   static findDraftProductsByShopId = async ({
     shopId,
-    limit = DEFAULT_PRODUCT_LIMIT,
-    skip = DEFAULT_PRODUCT_SKIP,
+    page = PAGINATION_DEFAULT_PAGE,
+    limit = PAGINATION_DEFAULT_LIMIT,
   }: FindProductsByShopIdInput) => {
     const query: ProductFilterQuery = { productShop: shopId, isDraft: true };
 
-    const draftProducts: ProductLean[] = await ProductRepository.findProducts({
+    const paginationResult = await ProductRepository.findProducts({
       query,
+      page,
       limit,
-      skip,
     });
 
-    return _.map(draftProducts, sanitizeProduct);
+    return sanitizePagination(paginationResult, sanitizeProduct);
   };
 
   /**
@@ -202,21 +200,20 @@ export class ProductService {
    */
   static findPublishedProductsByShopId = async ({
     shopId,
-    limit = DEFAULT_PRODUCT_LIMIT,
-    skip = DEFAULT_PRODUCT_SKIP,
+    page = PAGINATION_DEFAULT_PAGE,
+    limit = PAGINATION_DEFAULT_LIMIT,
   }: FindProductsByShopIdInput) => {
     const query: ProductFilterQuery = {
       productShop: shopId,
       isPublished: true,
     };
 
-    const publishedProducts: ProductLean[] =
-      await ProductRepository.findProducts({
-        query,
-        limit,
-        skip,
-      });
+    const paginationResult = await ProductRepository.findProducts({
+      query,
+      page,
+      limit,
+    });
 
-    return _.map(publishedProducts, sanitizeProduct);
+    return sanitizePagination(paginationResult, sanitizeProduct);
   };
 }
