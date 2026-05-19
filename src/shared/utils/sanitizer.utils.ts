@@ -20,7 +20,17 @@ export const pickFields = <
  * Sanitize user document instance.
  */
 export function sanitizeUser(user: UserLean): Partial<User> {
-  const sanitizedUser = pickFields(["_id", "name", "email"], user);
+  const sanitizedUser = pickFields(
+    [
+      "_id",
+      "email",
+      "phoneNumber",
+      "name",
+      "nationalId",
+      "taxIdentificationNumber",
+    ],
+    user,
+  );
 
   return transformMongoId(sanitizedUser);
 }

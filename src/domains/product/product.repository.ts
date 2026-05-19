@@ -21,7 +21,6 @@ export class ProductRepository {
     update,
   }: UpdateProductRepositoryInput): Promise<ProductDocument | null> => {
     return await Products.findOneAndUpdate(query, update, {
-      new: true,
       runValidators: true,
     });
   };
