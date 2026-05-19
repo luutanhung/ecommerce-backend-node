@@ -3,35 +3,32 @@ import { Schema, model } from "mongoose";
 import {
   CollectionName,
   DocumentName,
-} from "../../constants/model.constants.js";
+} from "../../../constants/model.constants.js";
 
-/**
- * Furniture schema.
- */
-export const FurnitureAttributesSchema = new Schema(
+export const ElectronicAttributesSchema = new Schema(
   {
     productShop: {
       type: Schema.Types.ObjectId,
       ref: DocumentName.SHOP,
     },
-    brand: {
+    manufacturer: {
       type: String,
       required: true,
     },
-    size: {
+    model: {
       type: String,
     },
-    material: {
+    color: {
       type: String,
     },
   },
   {
-    collection: CollectionName.FURNITURES,
+    collection: CollectionName.ELECTRONICS,
     timestamps: true,
   },
 );
 
-export const Furnitures = model(
-  DocumentName.FURNITURE,
-  FurnitureAttributesSchema,
+export const Electronics = model(
+  DocumentName.ELECTRONIC,
+  ElectronicAttributesSchema,
 );

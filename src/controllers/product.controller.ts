@@ -4,10 +4,9 @@ import { CreatedResponse } from "../core/response/created.response.js";
 import { OKResponse } from "../core/response/ok.response.js";
 
 import type { AuthPayload } from "../domains/access/types/access.type.js";
+import { ProductService } from "../domains/product/product.service.js";
 
 import { ResCode } from "../constants/resCode.constants.js";
-
-import { ProductService } from "../services/product.service.js";
 
 import type { BodyRequest, ParamsRequest } from "../types/http.type.js";
 

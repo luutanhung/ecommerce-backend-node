@@ -1,12 +1,12 @@
 import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import { ProductSchema } from "../../models/product/product.model.js";
+import { ProductType } from "../constants/product.constants.js";
 
-import type { ClothingAttributes } from "./entities/clothing.entity.js";
-import type { ElectronicAttributes } from "./entities/electronic.entity.js";
-import type { FurnitureAttributes } from "./entities/furniture.entity.js";
+import { ProductSchema } from "../models/product.model.js";
 
-import { ProductType } from "./product.constants.js";
+import type { ClothingAttributes } from "../entities/clothing.entity.js";
+import type { ElectronicAttributes } from "../entities/electronic.entity.js";
+import type { FurnitureAttributes } from "../entities/furniture.entity.js";
 
 export type ProductType = (typeof ProductType)[keyof typeof ProductType];
 

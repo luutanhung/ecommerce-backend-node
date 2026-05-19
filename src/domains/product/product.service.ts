@@ -1,34 +1,33 @@
 import _ from "lodash";
 
-import { ConflictAppError } from "../core/error/conflictAppError.js";
-import { NotFoundAppError } from "../core/error/notFoundAppError.js";
-
-import { ProductFactory } from "../domains/product/product.factory.js";
-import { ProductRepository } from "../domains/product/product.repository.js";
-import type {
-  CreateProductFactoryInput,
-  ProductLean,
-} from "../domains/product/product.type.js";
 import type {
   ProductFilterQuery,
   ProductUpdateQuery,
-} from "../domains/product/types/product.repository.type.js";
+} from "./types/product.repository.type.js";
 import type {
   CreateProductResult,
   FindProductInput,
   FindProductsByShopIdInput,
   PublishProductInput,
   UnpublishedProductInput,
-} from "../domains/product/types/product.service.type.js";
+} from "./types/product.service.type.js";
+import type {
+  CreateProductFactoryInput,
+  ProductLean,
+} from "./types/product.type.js";
 
 import {
   DEFAULT_PRODUCT_LIMIT,
   DEFAULT_PRODUCT_SKIP,
-} from "../constants/pagination.constants.js";
-import { ResCode } from "../constants/resCode.constants.js";
+} from "../../constants/pagination.constants.js";
+import { ResCode } from "../../constants/resCode.constants.js";
+import { ConflictAppError } from "../../core/error/conflictAppError.js";
+import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
+import { toObjectId } from "../../utils/mongoose.utils.js";
+import { sanitizeProduct } from "../../utils/sanitizer.utils.js";
 
-import { toObjectId } from "../utils/mongoose.utils.js";
-import { sanitizeProduct } from "../utils/sanitizer.utils.js";
+import { ProductFactory } from "./product.factory.js";
+import { ProductRepository } from "./product.repository.js";
 
 export class ProductService {
   /**

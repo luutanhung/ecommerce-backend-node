@@ -1,16 +1,16 @@
+import { Products } from "./models/product.model.js";
+
 import type {
   FindProductInput,
   FindProductsInput,
   UpdateProductInput,
 } from "./types/product.repository.type.js";
+import type { ProductDocument, ProductLean } from "./types/product.type.js";
 
 import {
   DEFAULT_PRODUCT_LIMIT,
   DEFAULT_PRODUCT_SKIP,
 } from "../../constants/pagination.constants.js";
-import { Products } from "../../models/product/product.model.js";
-
-import type { ProductDocument, ProductLean } from "./product.type.js";
 
 export class ProductRepository {
   /**

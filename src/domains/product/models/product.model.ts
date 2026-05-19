@@ -1,12 +1,13 @@
 import { Schema, model } from "mongoose";
 import slugify from "slugify";
 
+import { ProductType } from "../constants/product.constants.js";
+
 import {
   CollectionName,
   DocumentName,
-} from "../../constants/model.constants.js";
-import { ResCode } from "../../constants/resCode.constants.js";
-import { ProductType } from "../../domains/product/product.constants.js";
+} from "../../../constants/model.constants.js";
+import { ResCode } from "../../../constants/resCode.constants.js";
 
 export const ProductSchema = new Schema(
   {

@@ -1,6 +1,7 @@
-import { Clothes } from "../../../models/product/clothing.model.js";
-import { Products } from "../../../models/product/product.model.js";
-import type { CreateClothingInput } from "../product.type.js";
+import { Clothes } from "../models/clothing.model.js";
+import { Products } from "../models/product.model.js";
+
+import type { CreateClothingInput } from "../types/product.type.js";
 
 import { ProductStrategy } from "./baseProduct.strategy.js";
 

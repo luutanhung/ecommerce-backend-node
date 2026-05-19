@@ -1,4 +1,4 @@
-import { ProductType } from "../domains/product/product.constants.js";
+import { ProductType } from "../domains/product/constants/product.constants.js";
 import { ProductFactory } from "../domains/product/product.factory.js";
 import { ClothingStrategy } from "../domains/product/strategies/clothing.strategy.js";
 import { ElectronicStrategy } from "../domains/product/strategies/electronic.strategy.js";

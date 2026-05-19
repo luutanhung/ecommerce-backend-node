@@ -1,7 +1,12 @@
+import { Furnitures } from "../models/furniture.model.js";
+
+import type {
+  CreateProductInput,
+  ProductDocument,
+} from "../types/product.type.js";
+
 import { ResCode } from "../../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
-import { Furnitures } from "../../../models/product/furniture.model.js";
-import type { CreateProductInput, ProductDocument } from "../product.type.js";
 
 import { Product } from "./baseProduct.entity.js";
 

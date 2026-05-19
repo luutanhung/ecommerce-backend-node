@@ -1,7 +1,12 @@
+import { Clothes } from "../models/clothing.model.js";
+
+import type {
+  CreateProductInput,
+  ProductDocument,
+} from "../types/product.type.js";
+
 import { ResCode } from "../../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
-import { Clothes } from "../../../models/product/clothing.model.js";
-import type { CreateProductInput, ProductDocument } from "../product.type.js";
 
 import { Product } from "./baseProduct.entity.js";
 

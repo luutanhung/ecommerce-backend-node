@@ -1,9 +1,10 @@
-import { Electronics } from "../../../models/product/electronic.model.js";
-import { Products } from "../../../models/product/product.model.js";
+import { Electronics } from "../models/electronic.model.js";
+import { Products } from "../models/product.model.js";
+
 import type {
   CreateElectronicInput,
   ProductDocument,
-} from "../product.type.js";
+} from "../types/product.type.js";
 
 import { ProductStrategy } from "./baseProduct.strategy.js";
 

@@ -1,13 +1,13 @@
-import { ResCode } from "../../constants/resCode.constants.js";
-import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
-
-import { ProductStrategy } from "./strategies/baseProduct.strategy.js";
-
 import type {
   CreateProductFactoryInput,
   ProductDocument,
   ProductType,
-} from "./product.type.js";
+} from "./types/product.type.js";
+
+import { ResCode } from "../../constants/resCode.constants.js";
+import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+
+import { ProductStrategy } from "./strategies/baseProduct.strategy.js";
 
 export class ProductFactory {
   private static registry = new Map<ProductType, ProductStrategy>();

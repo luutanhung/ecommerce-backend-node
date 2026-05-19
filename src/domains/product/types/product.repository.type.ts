@@ -1,6 +1,6 @@
 import type { QueryFilter, UpdateQuery } from "mongoose";
 
-import type { Product } from "../../product/product.type.js";
+import type { Product } from "./product.type.js";
 
 export type ProductFilterQuery = QueryFilter<Product>;
 export type ProductUpdateQuery = UpdateQuery<Product>;

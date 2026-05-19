@@ -1,14 +1,15 @@
+import { ProductType } from "./constants/product.constants.js";
+
+import type {
+  CreateProductFactoryInput,
+  ProductDocument,
+} from "./types/product.type.js";
+
 import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 
 import { Clothing } from "./entities/clothing.entity.js";
 import { Electronic } from "./entities/electronic.entity.js";
-
-import { ProductType } from "./product.constants.js";
-import type {
-  CreateProductFactoryInput,
-  ProductDocument,
-} from "./product.type.js";
 
 /**
  * @deprecated

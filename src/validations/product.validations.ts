@@ -1,7 +1,7 @@
 import _ from "lodash";
 import z from "zod";
 
-import { ProductType } from "../domains/product/product.constants.js";
+import { ProductType } from "../domains/product/constants/product.constants.js";
 
 import { ResCode } from "../constants/resCode.constants.js";
 

@@ -1,4 +1,4 @@
-import type { ProductDocument } from "../../product/product.type.js";
+import type { ProductDocument } from "./product.type.js";
 
 export type CreateProductResult = ProductDocument;
 

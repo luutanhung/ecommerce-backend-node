@@ -1,7 +1,11 @@
 import type { Types } from "mongoose";
 
-import { Products } from "../../../models/product/product.model.js";
-import type { CreateProductInput, ProductDocument } from "../product.type.js";
+import { Products } from "../models/product.model.js";
+
+import type {
+  CreateProductInput,
+  ProductDocument,
+} from "../types/product.type.js";
 
 export abstract class Product<TAttributes> {
   protected readonly payload: CreateProductInput<TAttributes>;

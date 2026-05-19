@@ -1,6 +1,7 @@
-import { Furnitures } from "../../../models/product/furniture.model.js";
-import { Products } from "../../../models/product/product.model.js";
-import type { CreateFurnitureInput } from "../product.type.js";
+import { Furnitures } from "../models/furniture.model.js";
+import { Products } from "../models/product.model.js";
+
+import type { CreateFurnitureInput } from "../types/product.type.js";
 
 import { ProductStrategy } from "./baseProduct.strategy.js";
 
