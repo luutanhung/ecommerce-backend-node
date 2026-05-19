@@ -4,14 +4,14 @@ import { sanitizeShop } from "../../shared/utils/sanitizer.utils.js";
 import { UserRole } from "../access/constants/access.constants.js";
 import { UserService } from "../access/services/user.service.js";
 
-import { Shops } from "./shop.model.js";
+import { ShopRepository } from "./shop.repository.js";
 
 export class ShopService {
   /**
    * Users register their shops.
    */
   static async registerShop(payload: RegisterShopInput) {
-    const registeredShop = await Shops.create(payload);
+    const registeredShop = await ShopRepository.createShop(payload);
 
     await UserService.addRole({
       userId: payload.shopOwner,
@@ -25,6 +25,7 @@ export class ShopService {
    * Finds a registered shop by its email.
    */
   static findShopByEmail = async (email: string): Promise<ShopLean | null> => {
-    return await Shops.findOne({ email }).lean();
+    const query = { email };
+    return await ShopRepository.findShop({ query });
   };
 }
