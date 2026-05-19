@@ -1,9 +1,10 @@
 import { Schema, model } from "mongoose";
 
+import {
+  CollectionName,
+  DocumentName,
+} from "../../constants/model.constants.js";
 import { ProductType } from "../../domains/product/product.constants.js";
-
-const DOCUMENT_NAME: string = "Product";
-const COLLECTION_NAME: string = "Products";
 
 export const ProductSchema = new Schema(
   {
@@ -34,16 +35,16 @@ export const ProductSchema = new Schema(
     },
     productShop: {
       type: Schema.Types.ObjectId,
-      ref: "Shop",
+      ref: DocumentName.SHOP,
     },
     productDescription: {
       type: String,
     },
   },
   {
-    collection: COLLECTION_NAME,
+    collection: CollectionName.PRODUCTS,
     timestamps: true,
   },
 );
 
-export const Products = model(DOCUMENT_NAME, ProductSchema);
+export const Products = model(DocumentName.PRODUCT, ProductSchema);

@@ -1,13 +1,15 @@
 import { Schema, model } from "mongoose";
 
-const DOCUMENT_NAME: string = "Clothing";
-const COLLECTION_NAME: string = "Clothes";
+import {
+  CollectionName,
+  DocumentName,
+} from "../../constants/model.constants.js";
 
 export const ClothingAttributesSchema = new Schema(
   {
     productShop: {
       type: Schema.Types.ObjectId,
-      required: true,
+      ref: DocumentName.SHOP,
     },
     brand: {
       type: String,
@@ -21,9 +23,9 @@ export const ClothingAttributesSchema = new Schema(
     },
   },
   {
-    collection: COLLECTION_NAME,
+    collection: CollectionName.CLOTHES,
     timestamps: true,
   },
 );
 
-export const Clothes = model(DOCUMENT_NAME, ClothingAttributesSchema);
+export const Clothes = model(DocumentName.CLOTHING, ClothingAttributesSchema);

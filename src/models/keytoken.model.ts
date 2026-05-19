@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const DOCUMENT_NAME = "KeyToken";
-const COLLECTION_NAME = "KeyTokens";
+import { CollectionName, DocumentName } from "../constants/model.constants.js";
 
 export const KeyTokenSchema = new Schema(
   {
@@ -29,8 +28,8 @@ export const KeyTokenSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: COLLECTION_NAME,
+    collection: CollectionName.KEY_TOKENS,
   },
 );
 
-export const KeyTokens = model(DOCUMENT_NAME, KeyTokenSchema);
+export const KeyTokens = model(DocumentName.KEY_TOKEN, KeyTokenSchema);

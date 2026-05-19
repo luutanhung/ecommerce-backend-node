@@ -2,8 +2,7 @@ import { Schema, model } from "mongoose";
 
 import { ShopStatus } from "../domains/shop/shop.constants.js";
 
-const DOCUMENT_NAME = "Shop";
-const COLLECTION_NAME = "Shops";
+import { CollectionName, DocumentName } from "../constants/model.constants.js";
 
 export const ShopSchema = new Schema(
   {
@@ -37,8 +36,8 @@ export const ShopSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: COLLECTION_NAME,
+    collection: CollectionName.SHOPS,
   },
 );
 
-export const Shops = model(DOCUMENT_NAME, ShopSchema);
+export const Shops = model(DocumentName.SHOP, ShopSchema);
