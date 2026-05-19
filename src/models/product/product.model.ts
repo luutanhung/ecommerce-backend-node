@@ -57,6 +57,22 @@ export const ProductSchema = new Schema(
       ],
       set: (averageRating: number) => averageRating.toFixed(1),
     },
+    productVariations: {
+      type: Array,
+      default: [],
+    },
+    isDraft: {
+      type: Boolean,
+      default: true,
+      index: true,
+      select: false,
+    },
+    isPublished: {
+      type: Boolean,
+      default: false,
+      index: true,
+      select: false,
+    },
   },
   {
     collection: CollectionName.PRODUCTS,
