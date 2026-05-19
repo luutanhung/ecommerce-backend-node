@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import slugify from "slugify";
 
 import {
   CollectionName,
@@ -79,5 +80,14 @@ export const ProductSchema = new Schema(
     timestamps: true,
   },
 );
+
+/**
+ * Document Middlewares.
+ */
+ProductSchema.pre("save", async function () {
+  this.productSlug = slugify(this.productName, {
+    lower: true,
+  });
+});
 
 export const Products = model(DocumentName.PRODUCT, ProductSchema);
