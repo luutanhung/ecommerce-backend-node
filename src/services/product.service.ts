@@ -22,6 +22,8 @@ import {
 } from "../constants/pagination.constants.js";
 import { ResCode } from "../constants/resCode.constants.js";
 
+import { toObjectId } from "../utils/mongoose.utils.js";
+
 export class ProductService {
   /**
    * Create a new product.
@@ -39,24 +41,29 @@ export class ProductService {
     shopId,
     productId,
   }: PublishProductInput) => {
-    const query: ProductFilterQuery = { productShop: shopId, _id: productId };
-    const update: ProductUpdateQuery = {
-      isDraft: false,
-      isPublished: true,
+    const query: ProductFilterQuery = {
+      productShop: toObjectId(shopId),
+      _id: toObjectId(productId),
     };
 
-    if (
-      await ProductRepository.findProduct({
-        query: {
-          ...query,
-          ...update,
-        },
-      })
-    ) {
+    const foundProduct = await ProductRepository.findProduct({ query });
+
+    if (!foundProduct) {
+      throw new NotFoundAppError({
+        code: ResCode.PRODUCT_NOT_FOUND,
+      });
+    }
+
+    if (foundProduct.isDraft === false && foundProduct.isPublished === true) {
       throw new ConflictAppError({
         code: ResCode.PRODUCT_ALREADY_PUBLISHED,
       });
     }
+
+    const update: ProductUpdateQuery = {
+      isDraft: false,
+      isPublished: true,
+    };
 
     const publishedProduct = await ProductRepository.updateProduct({
       query,
@@ -81,24 +88,29 @@ export class ProductService {
     shopId,
     productId,
   }: UnpublishedProductInput) => {
-    const query: ProductFilterQuery = { productShop: shopId, _id: productId };
-    const update: ProductUpdateQuery = {
-      isDraft: true,
-      isPublished: false,
+    const query: ProductFilterQuery = {
+      productShop: toObjectId(shopId),
+      _id: toObjectId(productId),
     };
 
-    if (
-      await ProductRepository.findProduct({
-        query: {
-          ...query,
-          ...update,
-        },
-      })
-    ) {
+    const foundProduct = await ProductRepository.findProduct({ query });
+
+    if (!foundProduct) {
+      throw new NotFoundAppError({
+        code: ResCode.PRODUCT_NOT_FOUND,
+      });
+    }
+
+    if (foundProduct.isDraft === true || foundProduct.isPublished === false) {
       throw new ConflictAppError({
         code: ResCode.PRODUCT_ALREADY_DRAFT,
       });
     }
+
+    const update: ProductUpdateQuery = {
+      isDraft: true,
+      isPublished: false,
+    };
 
     const unpublishedProduct = await ProductRepository.updateProduct({
       query,

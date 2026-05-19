@@ -1,9 +1,7 @@
 import type {
   FindProductInput,
   FindProductsInput,
-  FindProductsResult,
   UpdateProductInput,
-  UpdateProductResult,
 } from "./types/product.repository.type.js";
 
 import {
@@ -12,7 +10,7 @@ import {
 } from "../../constants/pagination.constants.js";
 import { Products } from "../../models/product/product.model.js";
 
-import type { ProductLean } from "./product.type.js";
+import type { ProductDocument, ProductLean } from "./product.type.js";
 
 export class ProductRepository {
   /**
@@ -21,7 +19,7 @@ export class ProductRepository {
   static updateProduct = async ({
     query,
     update,
-  }: UpdateProductInput): Promise<UpdateProductResult> => {
+  }: UpdateProductInput): Promise<ProductDocument | null> => {
     return await Products.findOneAndUpdate(query, update, {
       new: true,
       runValidators: true,
@@ -33,8 +31,8 @@ export class ProductRepository {
    */
   static findProduct = async ({
     query,
-  }: FindProductInput): Promise<ProductLean | null> => {
-    return await Products.findOne(query).lean();
+  }: FindProductInput): Promise<ProductDocument | null> => {
+    return await Products.findOne(query);
   };
 
   /**
@@ -44,7 +42,7 @@ export class ProductRepository {
     query = {},
     limit = DEFAULT_PRODUCT_LIMIT,
     skip = DEFAULT_PRODUCT_SKIP,
-  }: FindProductsInput): Promise<FindProductsResult> => {
+  }: FindProductsInput): Promise<ProductLean[]> => {
     return await Products.find(query)
       .populate("productShop", "name email -_id")
       .sort({ updatedAt: -1 })

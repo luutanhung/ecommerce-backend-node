@@ -12,8 +12,7 @@ import type { BodyRequest, ParamsRequest } from "../types/http.type.js";
 
 import type {
   CreateProductRequest,
-  PublishProductParams,
-  UnpublishProductParams,
+  ProductParams,
 } from "../validations/product.validations.js";
 
 class ProductController {
@@ -47,7 +46,7 @@ class ProductController {
    * Publish a single product.
    */
   publishProduct = async (
-    req: ParamsRequest<PublishProductParams>,
+    req: ParamsRequest<ProductParams>,
     res: Response,
   ): Promise<void> => {
     new OKResponse({
@@ -63,7 +62,7 @@ class ProductController {
    * Unpublish a single product.
    */
   unpublishProduct = async (
-    req: Request<UnpublishProductParams>,
+    req: Request<ProductParams>,
     res: Response,
   ): Promise<void> => {
     new OKResponse({

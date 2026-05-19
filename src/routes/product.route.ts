@@ -7,8 +7,7 @@ import { authenticateAccessToken } from "../middlewares/access.middleware.js";
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import {
   CreateProductRequestSchema,
-  PublishProductParamsSchema,
-  UnpublishProductParamsSchema,
+  ProductParamsSchema,
 } from "../validations/product.validations.js";
 
 const router = Router();
@@ -30,7 +29,7 @@ router.post(
 router.post(
   "/products/:productId/publish",
   validateRequest({
-    params: PublishProductParamsSchema,
+    params: ProductParamsSchema,
   }),
   asyncWrapper(productController.publishProduct),
 );
@@ -41,7 +40,7 @@ router.post(
 router.post(
   "/products/:productId/unpublish",
   validateRequest({
-    params: UnpublishProductParamsSchema,
+    params: ProductParamsSchema,
   }),
   asyncWrapper(productController.unpublishProduct),
 );

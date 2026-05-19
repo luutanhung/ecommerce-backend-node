@@ -66,13 +66,11 @@ export const ProductSchema = new Schema(
       type: Boolean,
       default: true,
       index: true,
-      select: false,
     },
     isPublished: {
       type: Boolean,
       default: false,
       index: true,
-      select: false,
     },
   },
   {
