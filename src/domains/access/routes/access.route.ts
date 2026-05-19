@@ -1,15 +1,13 @@
 import { Router } from "express";
 
-import { asyncWrapper } from "../shared/helpers/asyncWrapper.js";
-import { validateRequest } from "../shared/middlewares/validateRequest.middleware.js";
+import { accessController } from "../controllers/access.controller.js";
 
+import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
+import { validateRequest } from "../../../shared/middlewares/validateRequest.middleware.js";
 import {
   authenticateAccessToken,
   authenticateClientId,
-} from "../domains/access/middlewares/access.middleware.js";
-
-import { accessController } from "../controllers/access.controller.js";
-
+} from "../middlewares/access.middleware.js";
 import {
   LoginRequestSchema,
   RefreshTokenRequestSchema,

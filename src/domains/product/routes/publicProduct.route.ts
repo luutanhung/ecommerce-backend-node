@@ -18,66 +18,70 @@ const router = Router();
 
 router.use(authenticateAccessToken);
 
+router.use(
+  "/shops/:shopId",
+  validateRequest({
+    params: ShopParamsSchema,
+  }),
+  authorizeShopOwnership,
+);
+
 /**
  * Create a new product.
  */
 router.post(
   "/shops/:shopId/products/create",
-  validateRequest({
-    params: ShopParamsSchema,
-  }),
-  authorizeShopOwnership,
   validateRequest({ body: CreateProductRequestSchema }),
-  asyncWrapper(productController.createProduct),
+  asyncWrapper(productController.createProductByShop),
 );
 
 /**
  * Publish a single product.
  */
 router.post(
-  "/products/:productId/publish",
+  "/shops/:shopId/products/:productId/publish",
   validateRequest({
     params: ProductParamsSchema,
   }),
-  asyncWrapper(productController.publishProduct),
+  asyncWrapper(productController.publishProductByShop),
 );
 
 /**
  * Unpublish a single product.
  */
 router.post(
-  "/products/:productId/unpublish",
+  "/shops/:shopId/products/:productId/unpublish",
   validateRequest({
     params: ProductParamsSchema,
   }),
-  asyncWrapper(productController.unpublishProduct),
+  asyncWrapper(productController.unpublishProductByShop),
 );
 
 /**
  * Find all draft products.
  */
 router.get(
-  "/products/draft",
-  asyncWrapper(productController.findDraftProductsByShopId),
+  "/shops/:shopId/products/draft",
+  asyncWrapper(productController.findDraftProductsByShop),
 );
 
 /**
  * Find all published products.
  */
 router.get(
-  "/products/published",
-  asyncWrapper(productController.findPublishedProductsByShopId),
+  "/shops/:shopId/products/published",
+  asyncWrapper(productController.findPublishedProductsByShop),
 );
 
 /**
  * Find a single product.
  */
 router.get(
-  "/products/:productId",
+  "/shops/:shopId/products/:productId",
   validateRequest({
     params: ProductParamsSchema,
   }),
-  asyncWrapper(productController.findProductByShopId),
+  asyncWrapper(productController.findProductByShop),
 );
 
 export { router as productRouter };

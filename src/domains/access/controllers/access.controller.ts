@@ -1,16 +1,14 @@
 import type { Request, Response } from "express";
 
-import { CreatedResponse } from "../core/response/created.response.js";
-import { OKResponse } from "../core/response/ok.response.js";
+import { AccessService } from "../services/access.service.js";
 
-import { AccessService } from "../domains/access/services/access.service.js";
-import type { RefreshTokenResult } from "../domains/access/types/access.type.js";
-import type { KeyTokenLean } from "../domains/access/types/keytoken.type.js";
+import type { RefreshTokenResult } from "../types/access.type.js";
+import type { KeyTokenLean } from "../types/keytoken.type.js";
 
-import { ResCode } from "../constants/resCode.constants.js";
-
-import type { BodyRequest } from "../types/http.type.js";
-
+import { ResCode } from "../../../constants/resCode.constants.js";
+import { CreatedResponse } from "../../../core/response/created.response.js";
+import { OKResponse } from "../../../core/response/ok.response.js";
+import type { BodyRequest } from "../../../types/http.type.js";
 import type {
   LoginRequest,
   RefreshTokenRequest,

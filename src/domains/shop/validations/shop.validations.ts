@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { ObjectIdSchema } from "./common.validations.js";
+import { ObjectIdSchema } from "../../../shared/validations/common.validations.js";
 
 export const ShopParamsSchema = z.object({
   shopId: ObjectIdSchema,

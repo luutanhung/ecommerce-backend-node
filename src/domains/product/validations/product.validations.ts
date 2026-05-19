@@ -1,11 +1,13 @@
 import _ from "lodash";
 import z from "zod";
 
-import { ProductType } from "../domains/product/constants/product.constants.js";
+import { ProductType } from "../constants/product.constants.js";
 
-import { ResCode } from "../constants/resCode.constants.js";
-
-import { ObjectIdSchema, PositiveNumberSchema } from "./common.validations.js";
+import { ResCode } from "../../../constants/resCode.constants.js";
+import {
+  ObjectIdSchema,
+  PositiveNumberSchema,
+} from "../../../shared/validations/common.validations.js";
 
 const BaseProductSchema = z.object({
   productName: z

@@ -1,9 +1,11 @@
 import _ from "lodash";
 import z from "zod";
 
-import { ResCode } from "../constants/resCode.constants.js";
-
-import { EmailSchema, PasswordSchema } from "./common.validations.js";
+import { ResCode } from "../../../constants/resCode.constants.js";
+import {
+  EmailSchema,
+  PasswordSchema,
+} from "../../../shared/validations/common.validations.js";
 
 // const ShopNameSchema = NameSchema.min(2, {
 //   message: ResCode.EMAIL_INVALID,

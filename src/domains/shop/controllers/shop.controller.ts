@@ -1,11 +1,9 @@
 import type { Request, Response } from "express";
 
-import { CreatedResponse } from "../core/response/created.response.js";
-
-import type { AuthPayload } from "../domains/access/types/access.type.js";
-import { ShopService } from "../domains/shop/shop.service.js";
-
-import { ResCode } from "../constants/resCode.constants.js";
+import { ResCode } from "../../../constants/resCode.constants.js";
+import { CreatedResponse } from "../../../core/response/created.response.js";
+import type { AuthPayload } from "../../access/types/access.type.js";
+import { ShopService } from "../shop.service.js";
 
 export class ShopController {
   async registerShop(req: Request, res: Response) {

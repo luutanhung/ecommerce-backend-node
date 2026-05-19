@@ -1,23 +1,19 @@
 import type { Request, Response } from "express";
 
-import { CreatedResponse } from "../core/response/created.response.js";
-import { OKResponse } from "../core/response/ok.response.js";
-
-import type { AuthPayload } from "../domains/access/types/access.type.js";
-import { ProductService } from "../domains/product/product.service.js";
-import type { ShopLean } from "../domains/shop/types/shop.type.js";
-
-import { ResCode } from "../constants/resCode.constants.js";
-
-import type { ParamsRequest, TypedRequest } from "../types/http.type.js";
-
+import { ResCode } from "../../../constants/resCode.constants.js";
+import { CreatedResponse } from "../../../core/response/created.response.js";
+import { OKResponse } from "../../../core/response/ok.response.js";
+import type { AuthPayload } from "../../../domains/access/types/access.type.js";
+import { ProductService } from "../../../domains/product/product.service.js";
+import type { ShopLean } from "../../../domains/shop/types/shop.type.js";
+import type { ParamsRequest, TypedRequest } from "../../../types/http.type.js";
+import type { ShopParams } from "../../shop/validations/shop.validations.js";
 import type {
   CreateProductRequest,
   ProductParams,
 } from "../validations/product.validations.js";
-import type { ShopParams } from "../validations/shop.validations.js";
 
-class ProductController {
+class SellerProductController {
   /**
    * Creates a new product.
    *
@@ -29,7 +25,7 @@ class ProductController {
    * - On success, a `CreatedResponse` with `ResCode.PRODUCT_CREATION_SUCCESS`
    *   and the created product data is sent to the client.
    */
-  createProduct = async (
+  createProductByShop = async (
     req: TypedRequest<ShopParams, CreateProductRequest>,
     res: Response,
   ): Promise<void> => {
@@ -48,7 +44,7 @@ class ProductController {
   /**
    * Publish a single product.
    */
-  publishProduct = async (
+  publishProductByShop = async (
     req: ParamsRequest<ProductParams>,
     res: Response,
   ): Promise<void> => {
@@ -64,7 +60,7 @@ class ProductController {
   /**
    * Unpublish a single product.
    */
-  unpublishProduct = async (
+  unpublishProductByShop = async (
     req: Request<ProductParams>,
     res: Response,
   ): Promise<void> => {
@@ -80,7 +76,7 @@ class ProductController {
   /**
    * Find a single product by shop.
    */
-  findProductByShopId = async (
+  findProductByShop = async (
     req: ParamsRequest<ProductParams>,
     res: Response,
   ): Promise<void> => {
@@ -96,7 +92,7 @@ class ProductController {
   /**
    * Finds all draft products by shop id.
    */
-  findDraftProductsByShopId = async (
+  findDraftProductsByShop = async (
     req: Request,
     res: Response,
   ): Promise<void> => {
@@ -111,7 +107,7 @@ class ProductController {
   /**
    * Finds all published products by shop id.
    */
-  findPublishedProductsByShopId = async (
+  findPublishedProductsByShop = async (
     req: Request,
     res: Response,
   ): Promise<void> => {
@@ -124,4 +120,4 @@ class ProductController {
   };
 }
 
-export const productController = new ProductController();
+export const sellerProductController = new SellerProductController();

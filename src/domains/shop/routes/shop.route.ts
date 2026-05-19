@@ -1,10 +1,9 @@
 import { Router } from "express";
 
-import { asyncWrapper } from "../shared/helpers/asyncWrapper.js";
-
-import { authenticateAccessToken } from "../domains/access/middlewares/access.middleware.js";
-
 import { shopController } from "../controllers/shop.controller.js";
+
+import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
+import { authenticateAccessToken } from "../../access/middlewares/access.middleware.js";
 
 const router = Router();
 

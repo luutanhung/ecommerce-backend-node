@@ -4,9 +4,9 @@ import { ResCode } from "../../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
-import type { ShopParams } from "../../../validations/shop.validations.js";
 import type { AuthPayload } from "../../access/types/access.type.js";
 import { Shops } from "../shop.model.js";
+import type { ShopParams } from "../validations/shop.validations.js";
 
 /**
  * Ensure shop is owned by user.
