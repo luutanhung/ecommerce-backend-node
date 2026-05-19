@@ -8,7 +8,7 @@ import { handleError } from "./core/error/handleError.middleware.js";
 
 import { attachLocale } from "./shared/middlewares/locale.middleware.js";
 
-import { mainRouter } from "./router.js";
+import { mainRouter } from "./mainRouter.js";
 
 const app: Express = express();
 
