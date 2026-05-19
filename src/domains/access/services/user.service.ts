@@ -1,9 +1,11 @@
-import { Users } from "../models/user.model.js";
-
 import type { UserLean } from "../types/access.type.js";
+
+import { UserRepository } from "../repositories/user.repository.js";
 
 export class UserService {
   static async findUserByEmail(email: string): Promise<UserLean | null> {
-    return await Users.findOne({ email }).lean();
+    const query = { email };
+
+    return await UserRepository.findUser({ query });
   }
 }
