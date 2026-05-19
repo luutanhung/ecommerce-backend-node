@@ -11,6 +11,14 @@ import { ResCode } from "../../../constants/resCode.constants.js";
 
 export const ProductSchema = new Schema(
   {
+    productOwner: {
+      type: Schema.Types.ObjectId,
+      ref: DocumentName.USER,
+    },
+    productShop: {
+      type: Schema.Types.ObjectId,
+      ref: DocumentName.SHOP,
+    },
     productName: {
       type: String,
       required: true,
@@ -36,10 +44,7 @@ export const ProductSchema = new Schema(
       type: Number,
       required: true,
     },
-    productShop: {
-      type: Schema.Types.ObjectId,
-      ref: DocumentName.SHOP,
-    },
+
     productDescription: {
       type: String,
     },

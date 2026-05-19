@@ -4,6 +4,7 @@ import { asyncWrapper } from "../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../shared/middlewares/validateRequest.middleware.js";
 
 import { authenticateAccessToken } from "../domains/access/middlewares/access.middleware.js";
+import { authorizeShopOwnership } from "../domains/shop/middlewares/shop.middleware.js";
 
 import { productController } from "../controllers/product.controller.js";
 
@@ -11,6 +12,7 @@ import {
   CreateProductRequestSchema,
   ProductParamsSchema,
 } from "../validations/product.validations.js";
+import { ShopParamsSchema } from "../validations/shop.validations.js";
 
 const router = Router();
 
@@ -20,7 +22,11 @@ router.use(authenticateAccessToken);
  * Create a new product.
  */
 router.post(
-  "/products/create",
+  "/shops/:shopId/products/create",
+  validateRequest({
+    params: ShopParamsSchema,
+  }),
+  authorizeShopOwnership,
   validateRequest({ body: CreateProductRequestSchema }),
   asyncWrapper(productController.createProduct),
 );

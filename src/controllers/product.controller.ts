@@ -5,15 +5,17 @@ import { OKResponse } from "../core/response/ok.response.js";
 
 import type { AuthPayload } from "../domains/access/types/access.type.js";
 import { ProductService } from "../domains/product/product.service.js";
+import type { ShopLean } from "../domains/shop/types/shop.type.js";
 
 import { ResCode } from "../constants/resCode.constants.js";
 
-import type { BodyRequest, ParamsRequest } from "../types/http.type.js";
+import type { ParamsRequest, TypedRequest } from "../types/http.type.js";
 
 import type {
   CreateProductRequest,
   ProductParams,
 } from "../validations/product.validations.js";
+import type { ShopParams } from "../validations/shop.validations.js";
 
 class ProductController {
   /**
@@ -28,12 +30,13 @@ class ProductController {
    *   and the created product data is sent to the client.
    */
   createProduct = async (
-    req: BodyRequest<CreateProductRequest>,
+    req: TypedRequest<ShopParams, CreateProductRequest>,
     res: Response,
   ): Promise<void> => {
     const createdProduct = await ProductService.createProduct({
       ...req.body,
-      productShop: (req.user as AuthPayload).userId,
+      productOwner: (req.user as AuthPayload).userId,
+      productShop: (req.ownedShop as ShopLean)._id.toString(),
     });
 
     new CreatedResponse({

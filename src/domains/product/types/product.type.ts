@@ -21,6 +21,9 @@ export type ProductLean = Product & {
 export type BaseProductAttributes = Record<string, unknown>;
 
 export type CreateProductInput<TAttributes = BaseProductAttributes> = {
+  productOwner: string;
+  productShop: string;
+
   productName: string;
 
   productThumb: string;
@@ -32,8 +35,6 @@ export type CreateProductInput<TAttributes = BaseProductAttributes> = {
   productQuantity: number;
 
   productType: ProductType;
-
-  productShop: string;
 
   productAttributes: TAttributes;
 };
