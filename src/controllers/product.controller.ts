@@ -75,6 +75,22 @@ class ProductController {
   };
 
   /**
+   * Find a single product by shop.
+   */
+  findProductByShopId = async (
+    req: ParamsRequest<ProductParams>,
+    res: Response,
+  ): Promise<void> => {
+    new OKResponse({
+      code: ResCode.PRODUCT_FIND_SUCCESS,
+      data: await ProductService.findProduct({
+        shopId: (req.user as AuthPayload).userId,
+        productId: req.params.productId,
+      }),
+    }).send(req, res);
+  };
+
+  /**
    * Finds all draft products by shop id.
    */
   findDraftProductsByShopId = async (

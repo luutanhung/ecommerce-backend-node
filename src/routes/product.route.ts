@@ -61,4 +61,15 @@ router.get(
   asyncWrapper(productController.findPublishedProductsByShopId),
 );
 
+/**
+ * Find a single product.
+ */
+router.get(
+  "/products/:productId",
+  validateRequest({
+    params: ProductParamsSchema,
+  }),
+  asyncWrapper(productController.findProductByShopId),
+);
+
 export { router as productRouter };

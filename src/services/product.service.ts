@@ -1,17 +1,23 @@
+import _ from "lodash";
+
 import { ConflictAppError } from "../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 
 import { ProductFactory } from "../domains/product/product.factory.js";
 import { ProductRepository } from "../domains/product/product.repository.js";
-import type { CreateProductFactoryInput } from "../domains/product/product.type.js";
+import type {
+  CreateProductFactoryInput,
+  ProductDocument,
+  ProductLean,
+} from "../domains/product/product.type.js";
 import type {
   ProductFilterQuery,
   ProductUpdateQuery,
 } from "../domains/product/types/product.repository.type.js";
 import type {
   CreateProductResult,
+  FindProductInput,
   FindProductsByShopIdInput,
-  FindProductsByShopIdResult,
   PublishProductInput,
   UnpublishedProductInput,
 } from "../domains/product/types/product.service.type.js";
@@ -130,20 +136,43 @@ export class ProductService {
   };
 
   /**
+   * Find a single product.
+   */
+  static findProduct = async ({ shopId, productId }: FindProductInput) => {
+    const query: ProductFilterQuery = {
+      productShop: toObjectId(shopId),
+      _id: toObjectId(productId),
+    };
+
+    const foundProduct: ProductDocument | null =
+      await ProductRepository.findProduct({ query });
+
+    if (!foundProduct) {
+      throw new NotFoundAppError({
+        code: ResCode.PRODUCT_NOT_FOUND,
+      });
+    }
+
+    return sanitizeProduct(foundProduct.toObject());
+  };
+
+  /**
    * Find all draft products by shop.
    */
   static findDraftProductsByShopId = async ({
     shopId,
     limit = DEFAULT_PRODUCT_LIMIT,
     skip = DEFAULT_PRODUCT_SKIP,
-  }: FindProductsByShopIdInput): Promise<FindProductsByShopIdResult> => {
+  }: FindProductsByShopIdInput) => {
     const query: ProductFilterQuery = { productShop: shopId, isDraft: true };
 
-    return await ProductRepository.findProducts({
+    const draftProducts: ProductLean[] = await ProductRepository.findProducts({
       query,
       limit,
       skip,
     });
+
+    return _.map(draftProducts, sanitizeProduct);
   };
 
   /**
@@ -153,16 +182,19 @@ export class ProductService {
     shopId,
     limit = DEFAULT_PRODUCT_LIMIT,
     skip = DEFAULT_PRODUCT_SKIP,
-  }: FindProductsByShopIdInput): Promise<FindProductsByShopIdResult> => {
+  }: FindProductsByShopIdInput) => {
     const query: ProductFilterQuery = {
       productShop: shopId,
       isPublished: true,
     };
 
-    return await ProductRepository.findProducts({
-      query,
-      limit,
-      skip,
-    });
+    const publishedProducts: ProductLean[] =
+      await ProductRepository.findProducts({
+        query,
+        limit,
+        skip,
+      });
+
+    return _.map(publishedProducts, sanitizeProduct);
   };
 }
