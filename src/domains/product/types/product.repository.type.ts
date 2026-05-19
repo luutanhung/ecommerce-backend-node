@@ -21,6 +21,10 @@ export type UpdateProductResult = ProductDocument | null;
 /**
  * Searching operations.
  */
+export type FindProductInput = {
+  query?: ProductFilterQuery;
+};
+
 export type FindProductsInput = {
   query?: ProductFilterQuery;
   limit?: number;

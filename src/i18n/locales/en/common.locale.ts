@@ -20,6 +20,7 @@ export const CommonEnLocale = {
 
   // Mongoose.
   INVALID_OBJECT_ID: "INVALID_OBJECT_ID",
+  INVALID_ID: "INVALID_ID",
 
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
 

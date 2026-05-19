@@ -22,6 +22,7 @@ export const CommonViLocale = {
 
   // Mongoose.
   INVALID_OBJECT_ID: "Định dạng ID không hợp lệ",
+  INVALID_ID: "INVALID_ID",
 
   INTERNAL_SERVER_ERROR:
     "Hệ thống đang gặp sự cố, mong bạn thông cảm và thư lại sau nhé",

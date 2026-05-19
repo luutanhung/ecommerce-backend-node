@@ -1,3 +1,5 @@
+import { ConflictAppError } from "../core/error/conflictAppError.js";
+
 import { ProductFactory } from "../domains/product/product.factory.js";
 import { ProductRepository } from "../domains/product/product.repository.js";
 import type { CreateProductFactoryInput } from "../domains/product/product.type.js";
@@ -16,6 +18,7 @@ import {
   DEFAULT_PRODUCT_LIMIT,
   DEFAULT_PRODUCT_SKIP,
 } from "../constants/pagination.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 export class ProductService {
   /**
@@ -35,6 +38,21 @@ export class ProductService {
     productId,
   }: PublishProductInput) => {
     const query: ProductFilterQuery = { productShop: shopId, _id: productId };
+
+    if (
+      await ProductRepository.findProduct({
+        query: {
+          ...query,
+          isDraft: false,
+          isPublished: true,
+        },
+      })
+    ) {
+      throw new ConflictAppError({
+        code: ResCode.PRODUCT_ALREADY_PUBLISHED,
+      });
+    }
+
     const update: ProductUpdateQuery = {
       isDraft: false,
       isPublished: true,

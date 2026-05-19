@@ -1,4 +1,5 @@
 import type {
+  FindProductInput,
   FindProductsInput,
   FindProductsResult,
   UpdateProductInput,
@@ -10,6 +11,8 @@ import {
   DEFAULT_PRODUCT_SKIP,
 } from "../../constants/pagination.constants.js";
 import { Products } from "../../models/product/product.model.js";
+
+import type { ProductLean } from "./product.type.js";
 
 export class ProductRepository {
   /**
@@ -23,6 +26,15 @@ export class ProductRepository {
       new: true,
       runValidators: true,
     });
+  };
+
+  /**
+   * Find a single product.
+   */
+  static findProduct = async ({
+    query,
+  }: FindProductInput): Promise<ProductLean | null> => {
+    return await Products.findOne(query).lean();
   };
 
   /**
