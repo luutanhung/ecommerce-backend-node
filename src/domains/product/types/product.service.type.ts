@@ -10,6 +10,8 @@ export type PublishProductInput = {
   productId: string;
 };
 
+export type UnpublishedProductInput = PublishProductInput;
+
 export type FindProductsByShopIdInput = {
   shopId: string;
   limit?: number;

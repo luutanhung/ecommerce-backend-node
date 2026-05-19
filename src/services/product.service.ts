@@ -1,4 +1,5 @@
 import { ConflictAppError } from "../core/error/conflictAppError.js";
+import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 
 import { ProductFactory } from "../domains/product/product.factory.js";
 import { ProductRepository } from "../domains/product/product.repository.js";
@@ -12,6 +13,7 @@ import type {
   FindProductsByShopIdInput,
   FindProductsByShopIdResult,
   PublishProductInput,
+  UnpublishedProductInput,
 } from "../domains/product/types/product.service.type.js";
 
 import {
@@ -38,13 +40,16 @@ export class ProductService {
     productId,
   }: PublishProductInput) => {
     const query: ProductFilterQuery = { productShop: shopId, _id: productId };
+    const update: ProductUpdateQuery = {
+      isDraft: false,
+      isPublished: true,
+    };
 
     if (
       await ProductRepository.findProduct({
         query: {
           ...query,
-          isDraft: false,
-          isPublished: true,
+          ...update,
         },
       })
     ) {
@@ -53,15 +58,62 @@ export class ProductService {
       });
     }
 
-    const update: ProductUpdateQuery = {
-      isDraft: false,
-      isPublished: true,
-    };
-
-    return await ProductRepository.updateProduct({
+    const publishedProduct = await ProductRepository.updateProduct({
       query,
       update,
     });
+
+    if (!publishedProduct) {
+      if (!publishedProduct) {
+        throw new NotFoundAppError({
+          code: ResCode.PRODUCT_NOT_FOUND,
+        });
+      }
+    }
+
+    return publishedProduct;
+  };
+
+  /**
+   * Unpublished a published product.
+   */
+  static unpublishProduct = async ({
+    shopId,
+    productId,
+  }: UnpublishedProductInput) => {
+    const query: ProductFilterQuery = { productShop: shopId, _id: productId };
+    const update: ProductUpdateQuery = {
+      isDraft: true,
+      isPublished: false,
+    };
+
+    if (
+      await ProductRepository.findProduct({
+        query: {
+          ...query,
+          ...update,
+        },
+      })
+    ) {
+      throw new ConflictAppError({
+        code: ResCode.PRODUCT_ALREADY_DRAFT,
+      });
+    }
+
+    const unpublishedProduct = await ProductRepository.updateProduct({
+      query,
+      update,
+    });
+
+    if (!unpublishedProduct) {
+      if (!unpublishedProduct) {
+        throw new NotFoundAppError({
+          code: ResCode.PRODUCT_NOT_FOUND,
+        });
+      }
+    }
+
+    return unpublishedProduct;
   };
 
   /**

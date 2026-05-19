@@ -96,11 +96,16 @@ export const CreateProductRequestSchema = z.discriminatedUnion("productType", [
   ElectronicProductSchema,
   FurnitureProductSchema,
 ]);
-
 export type CreateProductRequest = z.infer<typeof CreateProductRequestSchema>;
 
 export const PublishProductParamsSchema = z.object({
   productId: ObjectIdSchema,
 });
-
 export type PublishProductParams = z.infer<typeof PublishProductParamsSchema>;
+
+export const UnpublishProductParamsSchema = z.object({
+  productId: ObjectIdSchema,
+});
+export type UnpublishProductParams = z.infer<
+  typeof UnpublishProductParamsSchema
+>;

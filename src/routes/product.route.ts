@@ -8,6 +8,7 @@ import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import {
   CreateProductRequestSchema,
   PublishProductParamsSchema,
+  UnpublishProductParamsSchema,
 } from "../validations/product.validations.js";
 
 const router = Router();
@@ -24,7 +25,7 @@ router.post(
 );
 
 /**
- * Publisha a single product.
+ * Publish a single product.
  */
 router.post(
   "/products/:productId/publish",
@@ -32,6 +33,17 @@ router.post(
     params: PublishProductParamsSchema,
   }),
   asyncWrapper(productController.publishProduct),
+);
+
+/**
+ * Unpublish a single product.
+ */
+router.post(
+  "/products/:productId/unpublish",
+  validateRequest({
+    params: UnpublishProductParamsSchema,
+  }),
+  asyncWrapper(productController.unpublishProduct),
 );
 
 /**
