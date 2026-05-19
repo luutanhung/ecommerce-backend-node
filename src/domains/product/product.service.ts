@@ -175,7 +175,7 @@ export class ProductService {
   /**
    * Find all published product by shop.
    */
-  static findPublishedProductByShopId = async ({
+  static findPublishedProductsByShopId = async ({
     shopId,
     limit = DEFAULT_PRODUCT_LIMIT,
     skip = DEFAULT_PRODUCT_SKIP,

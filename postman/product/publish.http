@@ -1,9 +1,0 @@
-@baseApiUrl=http://127.0.0.1:20008/v1/api/products
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBiYzQ5YjMwNTI3MzFmN2Q1NjE5YzciLCJlbWFpbCI6InNob3BkZXYyNUBnbWFpbC5jb20iLCJpYXQiOjE3NzkxNTYxMzMsImV4cCI6MTc3OTMyODkzM30.O1InbwLoqrFgy97zQCFeijRDGZHXymmk-zmasA-PoQ0
-
-### Publish a single product.
-POST {{baseApiUrl}}/6a0bd5d9b74fc98d4cf8ede8/publish
-Content-Type: application/json
-x-api-key: xxxxx
-x-client-id: 6a0bc49b3052731f7d5619c7
-Authorization: {{accessToken}}

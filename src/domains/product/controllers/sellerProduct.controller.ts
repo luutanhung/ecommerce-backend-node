@@ -51,7 +51,7 @@ class SellerProductController {
     new OKResponse({
       code: ResCode.PRODUCT_PUBLISH_SUCCESS,
       data: await ProductService.publishProduct({
-        shopId: (req.user as AuthPayload).userId,
+        shopId: (req.ownedShop as ShopLean)._id.toString(),
         productId: req.params.productId,
       }),
     }).send(req, res);
@@ -67,7 +67,7 @@ class SellerProductController {
     new OKResponse({
       code: ResCode.PRODUCT_UNPUBLISH_SUCCESS,
       data: await ProductService.unpublishProduct({
-        shopId: (req.user as AuthPayload).userId,
+        shopId: (req.ownedShop as ShopLean)._id.toString(),
         productId: req.params.productId,
       }),
     }).send(req, res);
@@ -83,7 +83,7 @@ class SellerProductController {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_SUCCESS,
       data: await ProductService.findProduct({
-        shopId: (req.user as AuthPayload).userId,
+        shopId: (req.ownedShop as ShopLean)._id.toString(),
         productId: req.params.productId,
       }),
     }).send(req, res);
@@ -99,7 +99,7 @@ class SellerProductController {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_DRAFT_PRODUCTS_SUCCESS,
       data: await ProductService.findDraftProductsByShopId({
-        shopId: (req?.user as AuthPayload).userId,
+        shopId: (req.ownedShop as ShopLean)._id.toString(),
       }),
     }).send(req, res);
   };
@@ -113,8 +113,8 @@ class SellerProductController {
   ): Promise<void> => {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
-      data: await ProductService.findPublishedProductByShopId({
-        shopId: (req?.user as AuthPayload).userId,
+      data: await ProductService.findPublishedProductsByShopId({
+        shopId: (req.ownedShop as ShopLean)._id.toString(),
       }),
     }).send(req, res);
   };

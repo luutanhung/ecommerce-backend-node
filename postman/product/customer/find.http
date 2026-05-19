@@ -1,0 +1,15 @@
+@baseApiUrl=http://127.0.0.1:20008/v1/api/shops
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBiYzQ5YjMwNTI3MzFmN2Q1NjE5YzciLCJlbWFpbCI6InNob3BkZXYyNUBnbWFpbC5jb20iLCJpYXQiOjE3NzkxNTYxMzMsImV4cCI6MTc3OTMyODkzM30.O1InbwLoqrFgy97zQCFeijRDGZHXymmk-zmasA-PoQ0
+
+@acceptLanguage=vi
+@contentType=application/json
+@xApiKey=xxxxx
+@xClientId=6a0bc49b3052731f7d5619c7
+
+### Find all published products by shop.
+GET {{baseApiUrl}}/6a0c424ff87be3592286a754/products
+Content-Type: {{contentType}}
+x-api-key: {{xApiKey}}
+x-client-id: {{xClientId}}
+Accept-Language: {{acceptLanguage}}
+Authorization: {{accessToken}}

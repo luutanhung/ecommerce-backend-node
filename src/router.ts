@@ -3,6 +3,7 @@ import { Router } from "express";
 // import { authenticateApiKey } from "../auth/auth.middleware.js";
 
 import { accessRouter } from "./domains/access/routes/access.route.js";
+import { publicProductRouter } from "./domains/product/routes/publicProduct.route.js";
 import { sellerProductRouter } from "./domains/product/routes/sellerProduct.route.js";
 import { shopRouter } from "./domains/shop/routes/shop.route.js";
 
@@ -21,6 +22,7 @@ router.use("/v1/api", accessRouter);
  * Register shop routes.
  */
 router.use("/v1/api", shopRouter);
+router.use("/v1/api", publicProductRouter);
 
 /**
  * Register product routes.

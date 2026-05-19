@@ -1,5 +1,5 @@
 @baseApiUrl=http://127.0.0.1:20008/v1/api/access
-@email=shopdev25@gmail.com
+@email=luutanhung@gmail.com
 @password=!'2@;_Ltg42aK8m6
 
 ### Registers a new user successfully.
