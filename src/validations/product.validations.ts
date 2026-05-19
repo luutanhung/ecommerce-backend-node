@@ -79,9 +79,22 @@ const ElectronicProductSchema = BaseProductSchema.extend({
   }),
 });
 
+export const FurnitureProductSchema = BaseProductSchema.extend({
+  productType: z.literal(ProductType.FURNITURE),
+
+  productAttributes: z.object({
+    brand: z.string().min(1),
+
+    size: z.string().optional(),
+
+    material: z.string().optional(),
+  }),
+});
+
 export const CreateProductRequestSchema = z.discriminatedUnion("productType", [
   ClothingProductSchema,
   ElectronicProductSchema,
+  FurnitureProductSchema,
 ]);
 
 export type CreateProductRequest = z.infer<typeof CreateProductRequestSchema>;
