@@ -20,6 +20,8 @@ export const ProductViLocale = {
 
   PRODUCT_TYPE_INVALID: "Loại sản phẩm không hợp lệ",
   PRODUCT_TYPE_UNSUPPORTED: "Loại sản phẩm chưa được hỗ trợ, vui lòng thử lại",
+  PRODUCT_AVERAGE_RATING_MUST_BE_POSITIVE:
+    "Rating trung bình của sản phẩm phải lớn hơn hoặc bằng 1",
 
   PRODUCT_CREATION_SUCCESS: "Tạo sản phẩm thành công",
   PRODUCT_CREATION_FAILURE: "Tạo sản phẩm thất bại",

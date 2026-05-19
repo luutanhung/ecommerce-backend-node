@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import { env } from "../../configs/env.js";
 import { HttpStatusCode } from "../../constants/http.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
+import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
+import type { ResponseCodeKey } from "../../types/core/response.type.js";
 import { ErrorResponse } from "../response/error.response.js";
 
 import { AppError } from "./appError.js";
@@ -44,16 +46,22 @@ export const handleError = async (
    * Handle validation errors.
    */
   if (err instanceof mongoose.Error.ValidationError) {
+    const firstError = Object.values(err.errors)[0];
+    const code = firstError?.message as ResponseCodeKey;
+
     return new ErrorResponse({
       statusCode: HttpStatusCode.BAD_REQUEST,
 
-      code: ResCode.INVALID_REQUEST,
+      code,
 
       data: {
         errors: Object.values(err.errors).map((error) => ({
           field: error.path,
 
-          message: error.message,
+          message: getResponseMessage(
+            error.message as ResponseCodeKey,
+            req.locale,
+          ),
         })),
       },
 
@@ -68,7 +76,7 @@ export const handleError = async (
     return new ErrorResponse({
       statusCode: HttpStatusCode.BAD_REQUEST,
 
-      code: ResCode.INVALID_REQUEST,
+      code: err.message as ResponseCodeKey,
 
       data: {
         field: err.path,

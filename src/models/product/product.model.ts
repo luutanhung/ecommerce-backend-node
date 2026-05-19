@@ -4,6 +4,7 @@ import {
   CollectionName,
   DocumentName,
 } from "../../constants/model.constants.js";
+import { ResCode } from "../../constants/resCode.constants.js";
 import { ProductType } from "../../domains/product/product.constants.js";
 
 export const ProductSchema = new Schema(
@@ -39,6 +40,14 @@ export const ProductSchema = new Schema(
     },
     productDescription: {
       type: String,
+    },
+    productSlug: {
+      type: String,
+    },
+    productAverageRating: {
+      type: Number,
+      default: 4.5,
+      min: [1, ResCode.PRODUCT_AVERAGE_RATING_MUST_BE_POSITIVE],
     },
   },
   {
