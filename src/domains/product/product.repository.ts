@@ -31,8 +31,10 @@ export class ProductRepository {
    */
   static findProduct = async ({
     query,
-  }: FindProductInput): Promise<ProductDocument | null> => {
-    return await Products.findOne(query);
+  }: FindProductInput): Promise<ProductLean | null> => {
+    return await Products.findOne(query)
+      .populate("productShop", "name email -_id")
+      .lean();
   };
 
   /**

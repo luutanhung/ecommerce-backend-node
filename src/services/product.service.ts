@@ -7,7 +7,6 @@ import { ProductFactory } from "../domains/product/product.factory.js";
 import { ProductRepository } from "../domains/product/product.repository.js";
 import type {
   CreateProductFactoryInput,
-  ProductDocument,
   ProductLean,
 } from "../domains/product/product.type.js";
 import type {
@@ -144,8 +143,7 @@ export class ProductService {
       _id: toObjectId(productId),
     };
 
-    const foundProduct: ProductDocument | null =
-      await ProductRepository.findProduct({ query });
+    const foundProduct = await ProductRepository.findProduct({ query });
 
     if (!foundProduct) {
       throw new NotFoundAppError({
@@ -153,7 +151,7 @@ export class ProductService {
       });
     }
 
-    return sanitizeProduct(foundProduct.toObject());
+    return sanitizeProduct(foundProduct);
   };
 
   /**

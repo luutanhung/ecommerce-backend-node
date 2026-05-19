@@ -1,4 +1,4 @@
-import type { ProductDocument } from "../../domains/product/product.type.ts";
+import type { ProductLean } from "../../domains/product/product.type.ts";
 import type { ApiKeyDocument } from "../../models/apikey.model.ts";
 import type { AuthPayload } from "../access.type.ts";
 import type { KeyTokenLean } from "../keytoken.type.ts";
@@ -12,7 +12,7 @@ declare global {
       user?: AuthPayload;
       keyToken?: KeyTokenLean;
       locale?: Locale;
-      product?: ProductDocument;
+      product?: ProductLean;
     }
   }
 }
