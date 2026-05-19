@@ -104,3 +104,10 @@ export const ProductParamsSchema = z.object({
   productId: ObjectIdSchema,
 });
 export type ProductParams = z.infer<typeof ProductParamsSchema>;
+
+export const SearchPublishedProductRequestSchema = z.object({
+  keyword: z.string().min(1),
+});
+export type SearchPublishedProductRequest = z.infer<
+  typeof SearchPublishedProductRequestSchema
+>;

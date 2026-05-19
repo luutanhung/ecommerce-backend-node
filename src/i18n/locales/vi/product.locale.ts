@@ -40,6 +40,8 @@ export const ProductViLocale = {
 
   PRODUCT_FIND_SUCCESS: "Tìm thấy sản phẩm thành công",
 
+  PRODUCT_SEARCH_PUBLISHED_SUCCESS: "PRODUCT_SEARCH_PUBLISHED_SUCCESS",
+
   PRODUCT_FIND_DRAFT_PRODUCTS_SUCCESS:
     "Tìm tất cả các sản phẩm nháp thành công",
   PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS:

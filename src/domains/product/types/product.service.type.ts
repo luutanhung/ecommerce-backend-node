@@ -19,3 +19,9 @@ export type FindProductsByShopIdInput = {
   limit?: number;
   skip?: number;
 };
+
+export type SearchProductsInput = {
+  keyword: string;
+  limit?: number;
+  skip?: number;
+};

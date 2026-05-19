@@ -9,6 +9,7 @@ import type {
   FindProductInput,
   FindProductsByShopIdInput,
   PublishProductInput,
+  SearchProductsInput,
   UnpublishedProductInput,
 } from "./types/product.service.type.js";
 import type {
@@ -132,6 +133,31 @@ export class ProductService {
 
     return sanitizeProduct(unpublishedProduct);
   };
+
+  /**
+   * Searches products.
+   */
+  static async searchPublishedProducts({
+    keyword,
+    limit = DEFAULT_PRODUCT_LIMIT,
+    skip = DEFAULT_PRODUCT_SKIP,
+  }: SearchProductsInput) {
+    const query = {
+      isDraft: false,
+      isPublished: true,
+      $text: {
+        $search: keyword,
+      },
+    };
+
+    const products = await ProductRepository.findProducts({
+      query,
+      limit,
+      skip,
+    });
+
+    return _.map(products, sanitizeProduct);
+  }
 
   /**
    * Find a single product.
