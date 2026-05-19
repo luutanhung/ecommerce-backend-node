@@ -1,8 +1,7 @@
 import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import type { ShopSchema } from "../../models/shop.model.js";
-
-import { ShopRole, ShopStatus } from "./shop.constants.js";
+import { ShopRole, ShopStatus } from "../shop.constants.js";
+import type { ShopSchema } from "../shop.model.js";
 
 // Raw object shop.
 export type Shop = InferSchemaType<typeof ShopSchema>;

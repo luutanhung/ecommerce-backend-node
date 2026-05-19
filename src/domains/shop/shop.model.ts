@@ -1,37 +1,41 @@
 import { Schema, model } from "mongoose";
 
-import { ShopStatus } from "../domains/shop/shop.constants.js";
+import {
+  CollectionName,
+  DocumentName,
+} from "../../constants/model.constants.js";
 
-import { CollectionName, DocumentName } from "../constants/model.constants.js";
+import { ShopStatus } from "./shop.constants.js";
 
 export const ShopSchema = new Schema(
   {
-    name: {
+    shopOwner: {
+      type: Schema.Types.ObjectId,
+      ref: DocumentName.USER,
+      required: true,
+      index: true,
+    },
+    shopName: {
       type: String,
       trim: true,
       maxLength: 150,
     },
-    email: {
+    shopSlug: {
       type: String,
       unique: true,
-      trim: true,
-    },
-    password: {
-      type: String,
       required: true,
     },
-    status: {
+    shopLogo: {
+      type: String,
+    },
+    shopStatus: {
       type: String,
       enum: Object.values(ShopStatus),
       default: ShopStatus.INACTIVE,
     },
-    verify: {
+    isVerified: {
       type: Schema.Types.Boolean,
       default: false,
-    },
-    roles: {
-      type: Array,
-      default: [],
     },
   },
   {

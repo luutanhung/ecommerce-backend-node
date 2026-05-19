@@ -1,9 +1,10 @@
 import { Router } from "express";
 
+import { authenticateAccessToken } from "../domains/access/middlewares/access.middleware.js";
+
 import { productController } from "../controllers/product.controller.js";
 
 import { asyncWrapper } from "../helpers/asyncWrapper.js";
-import { authenticateAccessToken } from "../middlewares/access.middleware.js";
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import {
   CreateProductRequestSchema,

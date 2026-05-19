@@ -1,6 +1,6 @@
-import type { ShopLean } from "../domains/shop/shop.type.js";
+import type { ShopLean } from "./types/shop.type.js";
 
-import { Shops } from "../models/shop.model.js";
+import { Shops } from "./shop.model.js";
 
 export class ShopService {
   /**

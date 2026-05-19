@@ -3,30 +3,25 @@ import z from "zod";
 
 import { ResCode } from "../constants/resCode.constants.js";
 
-import {
-  EmailSchema,
-  NameSchema,
-  PasswordSchema,
-} from "./common.validations.js";
+import { EmailSchema, PasswordSchema } from "./common.validations.js";
 
-const ShopNameSchema = NameSchema.min(2, {
-  message: ResCode.EMAIL_INVALID,
-});
+// const ShopNameSchema = NameSchema.min(2, {
+//   message: ResCode.EMAIL_INVALID,
+// });
 
-export const RegisterShopRequestSchema = z.object({
-  name: ShopNameSchema,
+export const RegisterRequestSchema = z.object({
   email: EmailSchema,
   password: PasswordSchema,
 });
 
-export type RegisterShopRequest = z.infer<typeof RegisterShopRequestSchema>;
+export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
 
-export const LoginShopRequestSchema = z.object({
+export const LoginRequestSchema = z.object({
   email: EmailSchema,
   password: PasswordSchema,
 });
 
-export type LoginShopRequest = z.infer<typeof LoginShopRequestSchema>;
+export type LoginRequest = z.infer<typeof LoginRequestSchema>;
 
 export const RefreshTokenRequestSchema = z.object({
   refreshToken: z

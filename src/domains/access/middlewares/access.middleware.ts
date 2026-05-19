@@ -1,22 +1,20 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { AppError } from "../core/error/appError.js";
-import { AuthenticationFailedAppError } from "../core/error/authenticationFailedAppError.js";
-import { NotFoundAppError } from "../core/error/notFoundAppError.js";
-import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
-
-import { RequestHeaders } from "../constants/http.constants.js";
-import { ResCode } from "../constants/resCode.constants.js";
-
 import { findActiveApiKey } from "../services/apikey.service.js";
 import { KeyTokenService } from "../services/keytoken.service.js";
 
 import type { AuthPayload } from "../types/access.type.js";
 import type { ApiKeyPermission } from "../types/apikey.type.js";
 
-import { asyncWrapper } from "../helpers/asyncWrapper.js";
-import { composeMiddlewares } from "../helpers/composeMiddlewares.js";
+import { RequestHeaders } from "../../../constants/http.constants.js";
+import { ResCode } from "../../../constants/resCode.constants.js";
+import { AppError } from "../../../core/error/appError.js";
+import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
+import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
+import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
+import { asyncWrapper } from "../../../helpers/asyncWrapper.js";
+import { composeMiddlewares } from "../../../helpers/composeMiddlewares.js";
 
 /**
  * Check if there is an active api key document stored. If there are any, attach it to req object and move on.
@@ -99,7 +97,7 @@ export const authenticateClientId = asyncWrapper(
 
     if (!keyToken) {
       throw new NotFoundAppError({
-        code: ResCode.SHOP_NOT_LOGGED_IN,
+        code: ResCode.USER_NOT_LOGGED_IN,
       });
     }
 
@@ -121,7 +119,7 @@ export const authenticateAccessToken = composeMiddlewares([
 
     if (!keyToken || !userId) {
       throw new UnauthorizedAppError({
-        code: ResCode.SHOP_IS_NOT_REGISTERED,
+        code: ResCode.USER_IS_NOT_REGISTERED,
       });
     }
 

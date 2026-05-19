@@ -1,17 +1,15 @@
-@baseApiUrl=http://127.0.0.1:20008/v1/api
-@shopName=ShopDEV
-@shopEmail=shopdev25@gmail.com
-
-@shopPassword=!'2@;_Ltg42aK8m6
+@baseApiUrl=http://127.0.0.1:20008/v1/api/access
+@email=shopdev25@gmail.com
+@password=!'2@;_Ltg42aK8m6
 @acceptLanguage=vi
 
 ### Shop logins successfully.
-POST {{baseApiUrl}}/shop/login
+POST {{baseApiUrl}}/login
 Content-Type: application/json
 Accept-Language: {{acceptLanguage}}
 x-api-key: xxxxx
 
 {
-  "email": "{{shopEmail}}",
-  "password": "{{shopPassword}}"
+  "email": "{{email}}",
+  "password": "{{password}}"
 }

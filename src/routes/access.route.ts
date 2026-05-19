@@ -1,38 +1,39 @@
 import { Router } from "express";
 
-import { accessController } from "../controllers/access.controller.js";
-
-import { asyncWrapper } from "../helpers/asyncWrapper.js";
 import {
   authenticateAccessToken,
   authenticateClientId,
-} from "../middlewares/access.middleware.js";
+} from "../domains/access/middlewares/access.middleware.js";
+
+import { accessController } from "../controllers/access.controller.js";
+
+import { asyncWrapper } from "../helpers/asyncWrapper.js";
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import {
-  LoginShopRequestSchema,
+  LoginRequestSchema,
   RefreshTokenRequestSchema,
-  RegisterShopRequestSchema,
+  RegisterRequestSchema,
 } from "../validations/access.validations.js";
 
 const router = Router();
 
 // Register a new shop.
 router.post(
-  "/shop/register",
-  validateRequest({ body: RegisterShopRequestSchema }),
+  "/access/register",
+  validateRequest({ body: RegisterRequestSchema }),
   asyncWrapper(accessController.register),
 );
 
 // Login with shop's information.
 router.post(
-  "/shop/login",
-  validateRequest({ body: LoginShopRequestSchema }),
+  "/access/login",
+  validateRequest({ body: LoginRequestSchema }),
   asyncWrapper(accessController.login),
 );
 
 // Refresh token.
 router.post(
-  "/shop/refreshToken",
+  "/access/refreshToken",
   authenticateClientId,
   validateRequest({
     body: RefreshTokenRequestSchema,
@@ -46,6 +47,6 @@ router.post(
 router.use(authenticateAccessToken);
 
 // Logout.
-router.post("/shop/logout", asyncWrapper(accessController.logout));
+router.post("/access/logout", asyncWrapper(accessController.logout));
 
 export { router as accessRouter };

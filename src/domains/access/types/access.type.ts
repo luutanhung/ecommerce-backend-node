@@ -1,6 +1,16 @@
-import { sanitizeShop } from "../utils/sanitizer.utils.js";
+import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import type { KeyTokenLean } from "./keytoken.type.js";
+import type { UserSchema } from "../models/user.model.js";
+
+import type { KeyTokenLean } from "../types/keytoken.type.js";
+
+import { sanitizeUser } from "../../../utils/sanitizer.utils.js";
+
+export type User = InferSchemaType<typeof UserSchema>;
+export type UserDocument = HydratedDocument<User>;
+export type UserLean = User & {
+  _id: Types.ObjectId;
+};
 
 export type CreateTokenPairPayload = Record<string, string>;
 
@@ -16,25 +26,24 @@ export type AuthPayload = {
 };
 
 // Services.
-export type RegisterShopInput = {
-  name: string;
+export type RegisterUserInput = {
   email: string;
   password: string;
 };
 
 export type AccessBaseResult = {
-  shop: ReturnType<typeof sanitizeShop>;
+  user: ReturnType<typeof sanitizeUser>;
   tokens: TokenPair;
 };
 
-export type RegisterShopResult = Pick<AccessBaseResult, "shop">;
+export type RegisterUserResult = Pick<AccessBaseResult, "user">;
 
-export type LoginShopInput = {
+export type LoginInput = {
   email: string;
   password: string;
 };
 
-export type LoginShopResult = AccessBaseResult;
+export type LoginResult = AccessBaseResult;
 
 export type TokenPair = {
   accessToken: string;

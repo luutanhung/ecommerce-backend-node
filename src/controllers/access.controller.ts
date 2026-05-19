@@ -3,22 +3,18 @@ import type { Request, Response } from "express";
 import { CreatedResponse } from "../core/response/created.response.js";
 import { OKResponse } from "../core/response/ok.response.js";
 
+import { AccessService } from "../domains/access/services/access.service.js";
+import type { RefreshTokenResult } from "../domains/access/types/access.type.js";
+import type { KeyTokenLean } from "../domains/access/types/keytoken.type.js";
+
 import { ResCode } from "../constants/resCode.constants.js";
 
-import { AccessService } from "../services/access.service.js";
-
-import type {
-  LoginShopResult,
-  RefreshTokenResult,
-  RegisterShopResult,
-} from "../types/access.type.js";
 import type { BodyRequest } from "../types/http.type.js";
-import type { KeyTokenLean } from "../types/keytoken.type.js";
 
 import type {
-  LoginShopRequest,
+  LoginRequest,
   RefreshTokenRequest,
-  RegisterShopRequest,
+  RegisterRequest,
 } from "../validations/access.validations.js";
 
 class AccessController {
@@ -26,15 +22,13 @@ class AccessController {
    * Register a new shop.
    */
   register = async (
-    req: BodyRequest<RegisterShopRequest>,
+    req: BodyRequest<RegisterRequest>,
     res: Response,
   ): Promise<void> => {
-    const registerResult: RegisterShopResult = await AccessService.registerShop(
-      req.body,
-    );
+    const registerResult = await AccessService.register(req.body);
 
     new CreatedResponse({
-      code: ResCode.SHOP_REGISTRATION_SUCCESS,
+      code: ResCode.USER_REGISTER_SUCCESS,
       data: registerResult,
     }).send(req, res);
   };
@@ -43,13 +37,13 @@ class AccessController {
    * Logins with shop info.
    */
   login = async (
-    req: BodyRequest<LoginShopRequest>,
+    req: BodyRequest<LoginRequest>,
     res: Response,
   ): Promise<void> => {
-    const loginResult: LoginShopResult = await AccessService.login(req.body);
+    const loginResult = await AccessService.login(req.body);
 
     new OKResponse({
-      code: ResCode.SHOP_LOGIN_SUCCESS,
+      code: ResCode.USER_LOGIN_SUCCESS,
       data: loginResult,
     }).send(req, res);
   };
@@ -81,7 +75,7 @@ class AccessController {
     });
 
     new OKResponse({
-      code: ResCode.SHOP_LOGOUT_SUCCESS,
+      code: ResCode.USER_LOGOUT_SUCCESS,
     }).send(req, res);
   };
 }

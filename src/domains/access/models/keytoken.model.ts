@@ -1,13 +1,16 @@
 import { Schema, model } from "mongoose";
 
-import { CollectionName, DocumentName } from "../constants/model.constants.js";
+import {
+  CollectionName,
+  DocumentName,
+} from "../../../constants/model.constants.js";
 
 export const KeyTokenSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Shop",
+      ref: DocumentName.USER,
     },
     privateKey: {
       type: String,

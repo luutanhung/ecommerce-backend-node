@@ -1,7 +1,11 @@
 import { Schema, model } from "mongoose";
 
 import { ApiKeyPermission } from "../constants/apikey.constants.js";
-import { CollectionName, DocumentName } from "../constants/model.constants.js";
+
+import {
+  CollectionName,
+  DocumentName,
+} from "../../../constants/model.constants.js";
 
 export const ApiKeySchema = new Schema(
   {

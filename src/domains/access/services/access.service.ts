@@ -3,69 +3,68 @@ import jwt from "jsonwebtoken";
 import _ from "lodash";
 import type { Types } from "mongoose";
 
-import { AppError } from "../core/error/appError.js";
-import { AuthenticationFailedAppError } from "../core/error/authenticationFailedAppError.js";
-import { ForbiddenAppError } from "../core/error/forbiddenAppError.js";
-import { NotFoundAppError } from "../core/error/notFoundAppError.js";
-import { UnauthorizedAppError } from "../core/error/unauthorizedAppError.js";
+import { UserRole } from "../constants/access.constants.js";
 
-import { ShopRole } from "../domains/shop/shop.constants.js";
-import type { ShopDocument } from "../domains/shop/shop.type.js";
-
-import { ResCode } from "../constants/resCode.constants.js";
-
-import { createKeyPair } from "../utils/generator.utils.js";
-import { sanitizeShop } from "../utils/sanitizer.utils.js";
-import { createTokenPair, verifyJSONWebToken } from "../utils/token.utils.js";
-
-import { Shops } from "../models/shop.model.js";
+import { Users } from "../models/user.model.js";
 
 import type {
   AuthPayload,
-  LoginShopInput,
-  LoginShopResult,
+  LoginInput,
+  LoginResult,
   LogoutPayload,
   LogoutResult,
   RefreshTokenInput,
   RefreshTokenResult,
-  RegisterShopInput,
-  RegisterShopResult,
+  RegisterUserInput,
+  RegisterUserResult,
   TokenPair,
+  UserDocument,
 } from "../types/access.type.js";
-import type { KeyPair } from "../types/utils.type.js";
+
+import { ResCode } from "../../../constants/resCode.constants.js";
+import { AppError } from "../../../core/error/appError.js";
+import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
+import { ForbiddenAppError } from "../../../core/error/forbiddenAppError.js";
+import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
+import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
+import type { KeyPair } from "../../../types/utils.type.js";
+import { createKeyPair } from "../../../utils/generator.utils.js";
+import { sanitizeUser } from "../../../utils/sanitizer.utils.js";
+import {
+  createTokenPair,
+  verifyJSONWebToken,
+} from "../../../utils/token.utils.js";
 
 import { KeyTokenService } from "./keytoken.service.js";
-import { ShopService } from "./shop.service.js";
+import { UserService } from "./user.service.js";
 
 export class AccessService {
   /**
    * Registers a new shop.
    */
-  static registerShop = async ({
-    name,
+  static register = async ({
     email,
     password,
-  }: RegisterShopInput): Promise<RegisterShopResult> => {
-    const existingShop = await Shops.findOne({ email }).lean();
+  }: RegisterUserInput): Promise<RegisterUserResult> => {
+    const existingUser = await Users.findOne({ email }).lean();
 
-    if (existingShop) {
+    if (existingUser) {
       throw new AppError({
-        code: ResCode.SHOP_ALREADY_EXISTS,
+        code: ResCode.USER_ALREADY_EXISTS,
       });
     }
 
     const hashedPassword: string = await bcrypt.hash(password, 10);
 
-    // Register a new shop.
-    const newCreatedShop: ShopDocument = await Shops.create({
-      name,
+    // Register a new user account.
+    const createdUser: UserDocument = await Users.create({
       email,
       password: hashedPassword,
-      roles: [ShopRole.SHOP],
+      roles: [UserRole.CUSTOMER],
     });
 
     return {
-      shop: sanitizeShop(newCreatedShop.toObject()),
+      user: sanitizeUser(createdUser),
     };
   };
 
@@ -75,20 +74,20 @@ export class AccessService {
   static login = async ({
     email,
     password,
-  }: LoginShopInput): Promise<LoginShopResult> => {
-    // Find shop registered with passed-in email.
-    const registeredShop = await ShopService.findShopByEmail(email);
+  }: LoginInput): Promise<LoginResult> => {
+    // Find user registered with passed-in email.
+    const registerUser = await Users.findOne({ email }).lean();
 
-    if (!registeredShop) {
+    if (!registerUser) {
       throw new NotFoundAppError({
-        code: ResCode.SHOP_NOT_FOUND,
+        code: ResCode.USER_NOT_FOUND,
       });
     }
 
     // Check if provided password is matched with stored password.
     const passwordIsMatched: boolean = await bcrypt.compare(
       password,
-      registeredShop.password,
+      registerUser.password,
     );
 
     if (!passwordIsMatched) {
@@ -98,7 +97,7 @@ export class AccessService {
     // Generate a pair of publicKey and privateKey.
     const { privateKey, publicKey }: KeyPair = await createKeyPair();
 
-    const userIdToCreateTokenPair: Types.ObjectId = registeredShop._id;
+    const userIdToCreateTokenPair: Types.ObjectId = registerUser._id;
 
     const authPayload: AuthPayload = {
       userId: userIdToCreateTokenPair.toString(),
@@ -119,7 +118,7 @@ export class AccessService {
     });
 
     return {
-      shop: sanitizeShop(registeredShop),
+      user: sanitizeUser(registerUser),
       tokens: tokenPair,
     };
   };
@@ -191,13 +190,13 @@ export class AccessService {
     const refreshAuthPayload: AuthPayload = await verifyRefreshToken(
       currentUsedKeyToken.privateKey,
     );
-    const foundShop = await ShopService.findShopByEmail(
+    const foundUser = await UserService.findUserByEmail(
       refreshAuthPayload.email,
     );
 
-    if (!foundShop) {
+    if (!foundUser) {
       throw new AuthenticationFailedAppError({
-        code: ResCode.SHOP_IS_NOT_REGISTERED,
+        code: ResCode.USER_IS_NOT_REGISTERED,
       });
     }
 
