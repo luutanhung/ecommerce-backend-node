@@ -1,9 +1,9 @@
 import { Products } from "./models/product.model.js";
 
 import type {
-  FindProductInput,
-  FindProductsInput,
-  UpdateProductInput,
+  FindProductRepositoryInput,
+  FindProductsRepositoryInput,
+  UpdateProductRepositoryInput,
 } from "./types/product.repository.type.js";
 import type { ProductDocument, ProductLean } from "./types/product.type.js";
 
@@ -19,7 +19,7 @@ export class ProductRepository {
   static updateProduct = async ({
     query,
     update,
-  }: UpdateProductInput): Promise<ProductDocument | null> => {
+  }: UpdateProductRepositoryInput): Promise<ProductDocument | null> => {
     return await Products.findOneAndUpdate(query, update, {
       new: true,
       runValidators: true,
@@ -31,7 +31,7 @@ export class ProductRepository {
    */
   static findProduct = async ({
     query,
-  }: FindProductInput): Promise<ProductLean | null> => {
+  }: FindProductRepositoryInput): Promise<ProductLean | null> => {
     return await Products.findOne(query)
       .populate("productShop", "name email -_id")
       .lean();
@@ -44,7 +44,7 @@ export class ProductRepository {
     query = {},
     limit = DEFAULT_PRODUCT_LIMIT,
     skip = DEFAULT_PRODUCT_SKIP,
-  }: FindProductsInput): Promise<ProductLean[]> => {
+  }: FindProductsRepositoryInput): Promise<ProductLean[]> => {
     return await Products.find(query)
       .populate("productShop", "name email -_id")
       .sort({ updatedAt: -1 })
