@@ -24,7 +24,7 @@ export class Clothing extends Product<ClothingAttributes> {
 
     if (!newClothing) {
       throw new BadRequestAppError({
-        code: ResCode.CLOTHING_CREATION_FAILURE,
+        code: ResCode.PRODUCT_CLOTHING_CREATION_FAILURE,
       });
     }
 

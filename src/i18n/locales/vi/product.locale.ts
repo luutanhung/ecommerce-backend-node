@@ -23,8 +23,10 @@ export const ProductViLocale = {
   PRODUCT_CREATION_SUCCESS: "Tạo sản phẩm thành công",
   PRODUCT_CREATION_FAILURE: "Tạo sản phẩm thất bại",
 
-  CLOTHING_CREATION_FAILURE: "Tạo sản phẩm quần áo thất bại",
-  CLOTHING_CREATION_SUCCESS: "Tạo sản phẩm quần áo thành công",
+  PRODUCT_CLOTHING_CREATION_FAILURE: "Tạo sản phẩm quần áo thất bại",
+  PRODUCT_CLOTHING_CREATION_SUCCESS: "Tạo sản phẩm quần áo thành công",
 
-  ELECTRONIC_CREATION_FAILURE: "Tạo sản phẩm điện thất bại",
+  PRODUCT_ELECTRONIC_CREATION_FAILURE: "Tạo sản phẩm điện thất bại",
+
+  PRODUCT_FURNITURE_CREATION_FAILURE: "Tạo sản phẩm nội thất thất bại",
 } as const;
