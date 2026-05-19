@@ -4,6 +4,7 @@ import type { Express } from "express";
 
 import { env } from "./configs/env.js";
 
+import { registerProductStrategies } from "./bootstrap/registerProductStrategies.js";
 import {
   connectToDatabase,
   disconnectFromDatabase,
@@ -36,6 +37,11 @@ export const startServer = async (): Promise<StartServerResult> => {
   }
 
   await connectToDatabase();
+
+  /**
+   * Bootstrap activities.
+   */
+  registerProductStrategies();
 
   /**
    * Monitor MongoDB connection status.

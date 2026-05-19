@@ -1,5 +1,6 @@
 @baseApiUrl=http://127.0.0.1:20008/v1/api
 @shopName=ShopDEV
+@shopEmail=shopdev25@gmail.com
 @shopPassword=!'2@;_Ltg42aK8m6
 
 ### Registers a new shop successfully.
@@ -9,7 +10,7 @@ x-api-key: xxxxx
 
 {
   "name": "{{shopName}}",
-  "email": "shopdev25@gmail.com",
+  "email": "{{shopEmail}}",
   "password": "{{shopPassword}}"
 }
 

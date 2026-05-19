@@ -1,12 +1,12 @@
-import { Clothes } from "../../../models/product/clothing.model.js";
+import { Furnitures } from "../../../models/product/furniture.model.js";
 import { Products } from "../../../models/product/product.model.js";
-import type { CreateClothingInput } from "../product.type.js";
+import type { CreateFurnitureInput } from "../product.type.js";
 
 import { ProductStrategy } from "./baseProduct.strategy.js";
 
-export class ClothingStrategy extends ProductStrategy<CreateClothingInput> {
-  override async create(payload: CreateClothingInput) {
-    const clothing = await Clothes.create({
+export class FurnitureStrategy extends ProductStrategy<CreateFurnitureInput> {
+  override async create(payload: CreateFurnitureInput) {
+    const clothing = await Furnitures.create({
       ...payload.productAttributes,
       productShop: payload.productShop,
     });

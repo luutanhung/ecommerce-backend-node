@@ -4,6 +4,7 @@ import { ProductSchema } from "../../models/product/product.model.js";
 
 import type { ClothingAttributes } from "./entities/clothing.entity.js";
 import type { ElectronicAttributes } from "./entities/electronic.entity.js";
+import type { FurnitureAttributes } from "./entities/furniture.entity.js";
 
 import { ProductType } from "./product.constants.js";
 
@@ -43,6 +44,10 @@ export type CreateClothingInput = CreateProductInput<ClothingAttributes> & {
 
 export type CreateElectronicInput = CreateProductInput<ElectronicAttributes> & {
   productType: typeof ProductType.ELECTRONICS;
+};
+
+export type CreateFurnitureInput = CreateProductInput<FurnitureAttributes> & {
+  productType: typeof ProductType.FURNITURE;
 };
 
 export type CreateProductFactoryInput =
