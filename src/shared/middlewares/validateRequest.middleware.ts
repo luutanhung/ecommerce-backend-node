@@ -1,6 +1,6 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import type { ParamsDictionary, Query } from "express-serve-static-core";
-import type { ZodType } from "zod";
+import type { ZodType, z } from "zod";
 import { ZodError } from "zod";
 
 import { ResCode } from "../../constants/resCode.constants.js";
@@ -11,16 +11,16 @@ import { asyncWrapper } from "../helpers/asyncWrapper.js";
 
 type ValidationSchemas = {
   params?: ZodType<ParamsDictionary>;
-  query?: ZodType<Query>;
-  body?: ZodType;
+  query?: z.ZodTypeAny;
+  body?: z.ZodTypeAny;
 };
 
 export async function parseSchema<T>(
-  schema: ZodType<T>,
+  schema: z.ZodTypeAny,
   data: unknown,
 ): Promise<T> {
   try {
-    return await schema.parseAsync(data);
+    return (await schema.parseAsync(data)) as Promise<T>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     if (err instanceof ZodError) {

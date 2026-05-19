@@ -22,11 +22,11 @@ router.use("/api/v1", accessRouter);
  * Register shop routes.
  */
 router.use("/api/v1", shopRouter);
-router.use("/api/v1", publicProductRouter);
 
 /**
  * Register product routes.
  */
 router.use("/api/v1", sellerProductRouter);
+router.use("/api/v1", publicProductRouter);
 
 export { router as mainRouter };
