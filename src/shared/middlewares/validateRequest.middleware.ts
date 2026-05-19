@@ -51,18 +51,24 @@ export const validateRequest = (schemas: ValidationSchemas): RequestHandler => {
   return asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
       if (schemas.params) {
-        req.params = await parseSchema<ParamsDictionary>(
+        const parsedParams = await parseSchema<ParamsDictionary>(
           schemas.params,
           req.params,
         );
+
+        Object.assign(req.params, parsedParams);
       }
 
       if (schemas.query) {
-        req.query = await parseSchema<Query>(schemas.query, req.query);
+        const parsedQuery = await parseSchema<Query>(schemas.query, req.query);
+
+        Object.assign(req.query, parsedQuery);
       }
 
       if (schemas.body) {
-        req.body = await parseSchema(schemas.body, req.body);
+        const parsedBody = await parseSchema(schemas.body, req.body);
+
+        Object.assign(req.body, parsedBody);
       }
 
       return next();

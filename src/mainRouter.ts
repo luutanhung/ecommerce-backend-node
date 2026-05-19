@@ -16,17 +16,17 @@ const router = Router();
  * Register access routes.
  */
 
-router.use("/v1/api", accessRouter);
+router.use("/api/v1", accessRouter);
 
 /**
  * Register shop routes.
  */
-router.use("/v1/api", shopRouter);
-router.use("/v1/api", publicProductRouter);
+router.use("/api/v1", shopRouter);
+router.use("/api/v1", publicProductRouter);
 
 /**
  * Register product routes.
  */
-router.use("/v1/api", sellerProductRouter);
+router.use("/api/v1", sellerProductRouter);
 
 export { router as mainRouter };

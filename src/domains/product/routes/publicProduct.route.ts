@@ -13,7 +13,7 @@ const router = Router();
  * Search published products across shop.
  */
 router.get(
-  "/products",
+  "/products/search",
   validateRequest({
     query: SearchPublishedProductRequestSchema,
   }),

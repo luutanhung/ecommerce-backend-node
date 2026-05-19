@@ -143,7 +143,6 @@ export class ProductService {
     skip = DEFAULT_PRODUCT_SKIP,
   }: SearchProductsInput) {
     const query = {
-      isDraft: false,
       isPublished: true,
       $text: {
         $search: keyword,

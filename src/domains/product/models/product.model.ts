@@ -86,6 +86,11 @@ export const ProductSchema = new Schema(
 );
 
 /**
+ * Create indexes.
+ */
+ProductSchema.index({ productName: "text", productDescription: "text" });
+
+/**
  * Document Middlewares.
  */
 ProductSchema.pre("save", async function () {
