@@ -140,6 +140,7 @@ export class ProductService {
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
   }: SearchProductsInput) {
+    // CRITICAL: Only search published products.
     const query = {
       isPublished: true,
       $text: {
