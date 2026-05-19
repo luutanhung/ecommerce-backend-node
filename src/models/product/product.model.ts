@@ -47,7 +47,15 @@ export const ProductSchema = new Schema(
     productAverageRating: {
       type: Number,
       default: 4.5,
-      min: [1, ResCode.PRODUCT_AVERAGE_RATING_MUST_BE_POSITIVE],
+      min: [
+        1,
+        ResCode.PRODUCT_AVERAGE_RATING_MUST_BE_GREATER_THAN_OR_EQUAL_TO_ONE,
+      ],
+      max: [
+        5,
+        ResCode.PRODUCT_AVERAGE_RATING_MUST_BE_LESS_THAN_OR_EQUAL_TO_FIVE,
+      ],
+      set: (averageRating: number) => averageRating.toFixed(1),
     },
   },
   {
