@@ -1,11 +1,15 @@
 import { ProductFactory } from "../domains/product/product.factory.js";
 import { ProductRepository } from "../domains/product/product.repository.js";
 import type { CreateProductFactoryInput } from "../domains/product/product.type.js";
-import type { ProductFilterQuery } from "../domains/product/types/product.repository.type.js";
+import type {
+  ProductFilterQuery,
+  ProductUpdateQuery,
+} from "../domains/product/types/product.repository.type.js";
 import type {
   CreateProductResult,
   FindProductsByShopIdInput,
   FindProductsByShopIdResult,
+  PublishProductInput,
 } from "../domains/product/types/product.service.type.js";
 
 import {
@@ -26,9 +30,21 @@ export class ProductService {
   /**
    * Publish a draft product.
    */
-  static publishProduct = async () =>
-    // publishProductInput: PublishProductInput,
-    {};
+  static publishProduct = async ({
+    shopId,
+    productId,
+  }: PublishProductInput) => {
+    const query: ProductFilterQuery = { productShop: shopId, _id: productId };
+    const update: ProductUpdateQuery = {
+      isDraft: false,
+      isPublished: true,
+    };
+
+    return await ProductRepository.updateProduct({
+      query,
+      update,
+    });
+  };
 
   /**
    * Find all draft products by shop.

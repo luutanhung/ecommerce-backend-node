@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 
+import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 import { CreatedResponse } from "../core/response/created.response.js";
 import { OKResponse } from "../core/response/ok.response.js";
 
@@ -8,9 +9,12 @@ import { ResCode } from "../constants/resCode.constants.js";
 import { ProductService } from "../services/product.service.js";
 
 import type { AuthPayload } from "../types/access.type.js";
-import type { BodyRequest } from "../types/http.type.js";
+import type { BodyRequest, ParamsRequest } from "../types/http.type.js";
 
-import type { CreateProductRequest } from "../validations/product.validations.js";
+import type {
+  CreateProductRequest,
+  PublishProductParams,
+} from "../validations/product.validations.js";
 
 class ProductController {
   /**
@@ -36,6 +40,30 @@ class ProductController {
     new CreatedResponse({
       code: ResCode.PRODUCT_CREATION_SUCCESS,
       data: createdProduct,
+    }).send(req, res);
+  };
+
+  /**
+   * Publish a single product.
+   */
+  publishProduct = async (
+    req: ParamsRequest<PublishProductParams>,
+    res: Response,
+  ): Promise<void> => {
+    const updatedProduct = await ProductService.publishProduct({
+      shopId: (req.user as AuthPayload).userId,
+      productId: req.params.productId,
+    });
+
+    if (!updatedProduct) {
+      throw new NotFoundAppError({
+        code: ResCode.PRODUCT_NOT_FOUND,
+      });
+    }
+
+    new OKResponse({
+      code: ResCode.PRODUCT_FIND_SUCCESS,
+      data: updatedProduct,
     }).send(req, res);
   };
 

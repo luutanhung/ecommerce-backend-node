@@ -1,5 +1,7 @@
 export const ProductViLocale = {
   // Product.
+  PRODUCT_NOT_FOUND: "Không tìm thấy sản phẩm này, vui lòng thử lại",
+
   PRODUCT_NAME_REQUIRED: "Tên sản phẩm không được để trống",
   PRODUCT_NAME_INVALID_TYPE: "Tên sản phẩm phải là kiểu kí tự",
 
@@ -27,6 +29,10 @@ export const ProductViLocale = {
 
   PRODUCT_CREATION_SUCCESS: "Tạo sản phẩm thành công",
   PRODUCT_CREATION_FAILURE: "Tạo sản phẩm thất bại",
+
+  PRODUCT_UPDATE_SUCCESS: "Cập nhật sản phẩm thành công",
+
+  PRODUCT_FIND_SUCCESS: "Tìm thấy sản phẩm thành công",
 
   PRODUCT_FIND_DRAFT_PRODUCTS_SUCCESS:
     "Tìm tất cả các sản phẩm nháp thành công",

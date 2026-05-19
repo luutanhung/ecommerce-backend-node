@@ -1,7 +1,14 @@
 import _ from "lodash";
+import mongoose from "mongoose";
 import z from "zod";
 
 import { ResCode } from "../constants/resCode.constants.js";
+
+export const ObjectIdSchema = z
+  .string()
+  .refine(mongoose.Types.ObjectId.isValid, {
+    message: ResCode.INVALID_OBJECT_ID,
+  });
 
 export const NameSchema = z.string({
   error: (issue) => {

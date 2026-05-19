@@ -5,7 +5,10 @@ import { productController } from "../controllers/product.controller.js";
 import { asyncWrapper } from "../helpers/asyncWrapper.js";
 import { authenticateAccessToken } from "../middlewares/access.middleware.js";
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
-import { CreateProductRequestSchema } from "../validations/product.validations.js";
+import {
+  CreateProductRequestSchema,
+  PublishProductParamsSchema,
+} from "../validations/product.validations.js";
 
 const router = Router();
 
@@ -18,6 +21,17 @@ router.post(
   "/products/create",
   validateRequest({ body: CreateProductRequestSchema }),
   asyncWrapper(productController.createProduct),
+);
+
+/**
+ * Publisha a single product.
+ */
+router.post(
+  "/products/:productId/publish",
+  validateRequest({
+    params: PublishProductParamsSchema,
+  }),
+  asyncWrapper(productController.publishProduct),
 );
 
 /**
