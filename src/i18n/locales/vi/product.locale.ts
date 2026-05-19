@@ -19,6 +19,7 @@ export const ProductViLocale = {
     "Cửa hàng liên kết với sản phẩm này phải là kiểu kí tự",
 
   PRODUCT_TYPE_INVALID: "Loại sản phẩm không hợp lệ",
+  PRODUCT_TYPE_UNSUPPORTED: "Loại sản phẩm chưa được hỗ trợ, vui lòng thử lại",
 
   PRODUCT_CREATION_SUCCESS: "Tạo sản phẩm thành công",
   PRODUCT_CREATION_FAILURE: "Tạo sản phẩm thất bại",
