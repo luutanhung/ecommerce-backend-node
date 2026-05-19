@@ -28,6 +28,11 @@ export const ProductViLocale = {
   PRODUCT_CREATION_SUCCESS: "Tạo sản phẩm thành công",
   PRODUCT_CREATION_FAILURE: "Tạo sản phẩm thất bại",
 
+  PRODUCT_FIND_DRAFT_PRODUCTS_SUCCESS:
+    "Tìm tất cả các sản phẩm nháp thành công",
+  PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS:
+    "Tìm tất cả các sản phẩm được công bố thành công",
+
   PRODUCT_CLOTHING_CREATION_FAILURE: "Tạo sản phẩm quần áo thất bại",
   PRODUCT_CLOTHING_CREATION_SUCCESS: "Tạo sản phẩm quần áo thành công",
 

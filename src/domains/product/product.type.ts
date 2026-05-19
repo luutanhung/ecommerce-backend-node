@@ -52,4 +52,5 @@ export type CreateFurnitureInput = CreateProductInput<FurnitureAttributes> & {
 
 export type CreateProductFactoryInput =
   | CreateClothingInput
-  | CreateElectronicInput;
+  | CreateElectronicInput
+  | CreateFurnitureInput;

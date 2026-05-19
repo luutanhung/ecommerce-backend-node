@@ -1,6 +1,7 @@
-import type { Response } from "express";
+import type { Request, Response } from "express";
 
 import { CreatedResponse } from "../core/response/created.response.js";
+import { OKResponse } from "../core/response/ok.response.js";
 
 import { ResCode } from "../constants/resCode.constants.js";
 
@@ -35,6 +36,36 @@ class ProductController {
     new CreatedResponse({
       code: ResCode.PRODUCT_CREATION_SUCCESS,
       data: createdProduct,
+    }).send(req, res);
+  };
+
+  /**
+   * Finds all draft products by shop id.
+   */
+  findDraftProductsByShopId = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
+    new OKResponse({
+      code: ResCode.PRODUCT_FIND_DRAFT_PRODUCTS_SUCCESS,
+      data: await ProductService.findDraftProductsByShopId({
+        shopId: (req?.user as AuthPayload).userId,
+      }),
+    }).send(req, res);
+  };
+
+  /**
+   * Finds all published products by shop id.
+   */
+  findPublishedProductsByShopId = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
+    new OKResponse({
+      code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
+      data: await ProductService.findPublishedProductByShopId({
+        shopId: (req?.user as AuthPayload).userId,
+      }),
     }).send(req, res);
   };
 }

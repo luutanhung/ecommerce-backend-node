@@ -11,12 +11,29 @@ const router = Router();
 
 router.use(authenticateAccessToken);
 
-// Create a new product.
+/**
+ * Create a new product.
+ */
 router.post(
-  "/product/create",
-  authenticateAccessToken,
+  "/products/create",
   validateRequest({ body: CreateProductRequestSchema }),
   asyncWrapper(productController.createProduct),
+);
+
+/**
+ * Find all draft products.
+ */
+router.get(
+  "/products/draft",
+  asyncWrapper(productController.findDraftProductsByShopId),
+);
+
+/**
+ * Find all published products.
+ */
+router.get(
+  "/products/published",
+  asyncWrapper(productController.findPublishedProductsByShopId),
 );
 
 export { router as productRouter };

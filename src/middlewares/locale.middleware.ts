@@ -9,8 +9,8 @@ export const attachLocale = asyncWrapper(
     const acceptLanguage = req.headers["accept-language"]?.toString();
 
     req.locale = acceptLanguage?.startsWith(Locale.ENGLISH)
-      ? Locale.VIETNAMESE
-      : Locale.ENGLISH;
+      ? Locale.ENGLISH
+      : Locale.VIETNAMESE;
 
     return next();
   },
