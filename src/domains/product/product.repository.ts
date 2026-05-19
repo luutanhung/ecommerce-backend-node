@@ -1,14 +1,30 @@
+import type {
+  FindProductsInput,
+  FindProductsResult,
+  UpdateProductInput,
+  UpdateProductResult,
+} from "./types/product.repository.type.js";
+
 import {
   DEFAULT_PRODUCT_LIMIT,
   DEFAULT_PRODUCT_SKIP,
 } from "../../constants/pagination.constants.js";
 import { Products } from "../../models/product/product.model.js";
-import type {
-  FindProductsInput,
-  FindProductsResult,
-} from "../../types/product.type.js";
 
 export class ProductRepository {
+  /**
+   * Update a single product.
+   */
+  static updateProduct = async ({
+    query,
+    update,
+  }: UpdateProductInput): Promise<UpdateProductResult> => {
+    return await Products.findOneAndUpdate(query, update, {
+      new: true,
+      runValidators: true,
+    });
+  };
+
   /**
    * Find products.
    */
