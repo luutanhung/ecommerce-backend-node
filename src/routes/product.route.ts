@@ -1,11 +1,12 @@
 import { Router } from "express";
 
+import { asyncWrapper } from "../shared/helpers/asyncWrapper.js";
+import { validateRequest } from "../shared/middlewares/validateRequest.middleware.js";
+
 import { authenticateAccessToken } from "../domains/access/middlewares/access.middleware.js";
 
 import { productController } from "../controllers/product.controller.js";
 
-import { asyncWrapper } from "../helpers/asyncWrapper.js";
-import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import {
   CreateProductRequestSchema,
   ProductParamsSchema,

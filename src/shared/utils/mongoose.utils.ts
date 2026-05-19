@@ -1,9 +1,8 @@
 import type { Types } from "mongoose";
 import mongoose from "mongoose";
 
-import { BadRequestAppError } from "../core/error/badRequestAppError.js";
-
-import { ResCode } from "../constants/resCode.constants.js";
+import { ResCode } from "../../constants/resCode.constants.js";
+import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 
 /**
  * Convert string value to ObjectId.

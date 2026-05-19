@@ -6,9 +6,9 @@ import morgan from "morgan";
 
 import { handleError } from "./core/error/handleError.middleware.js";
 
-import { mainRouter } from "./routes/index.js";
+import { attachLocale } from "./shared/middlewares/locale.middleware.js";
 
-import { attachLocale } from "./middlewares/locale.middleware.js";
+import { mainRouter } from "./routes/index.js";
 
 const app: Express = express();
 

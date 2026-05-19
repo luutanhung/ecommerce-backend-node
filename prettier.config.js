@@ -18,7 +18,11 @@ export default {
     "^@/core/(.*)$",
     "^\\.\\.?/core/(.*)$",
 
-    // Constants
+    // Shared resources.
+    "^@/shared/(.*)$",
+    "^\\.\\.?/shared/(.*)$",
+
+    // Domains.
     "^@/domains/(.*)$",
     "^\\.\\.?/domains/(.*)$",
 

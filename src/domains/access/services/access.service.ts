@@ -27,13 +27,13 @@ import { AuthenticationFailedAppError } from "../../../core/error/authentication
 import { ForbiddenAppError } from "../../../core/error/forbiddenAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
-import type { KeyPair } from "../../../types/utils.type.js";
-import { createKeyPair } from "../../../utils/generator.utils.js";
-import { sanitizeUser } from "../../../utils/sanitizer.utils.js";
+import { createKeyPair } from "../../../shared/utils/generator.utils.js";
+import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
 import {
   createTokenPair,
   verifyJSONWebToken,
-} from "../../../utils/token.utils.js";
+} from "../../../shared/utils/token.utils.js";
+import type { KeyPair } from "../../../types/utils.type.js";
 
 import { KeyTokenService } from "./keytoken.service.js";
 import { UserService } from "./user.service.js";

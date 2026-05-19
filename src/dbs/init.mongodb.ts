@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
+import { countNumOfConnections } from "../shared/helpers/investigateMongoDBHealth.js";
+
 import { env } from "../configs/env.js";
 import { config } from "../configs/index.js";
-
-import { countNumOfConnections } from "../helpers/investigateMongoDBHealth.js";
 
 const MONGODB_MAX_POOL_SIZE: number = 50;
 

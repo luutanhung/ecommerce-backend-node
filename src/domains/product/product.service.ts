@@ -23,8 +23,8 @@ import {
 import { ResCode } from "../../constants/resCode.constants.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
-import { toObjectId } from "../../utils/mongoose.utils.js";
-import { sanitizeProduct } from "../../utils/sanitizer.utils.js";
+import { toObjectId } from "../../shared/utils/mongoose.utils.js";
+import { sanitizeProduct } from "../../shared/utils/sanitizer.utils.js";
 
 import { ProductFactory } from "./product.factory.js";
 import { ProductRepository } from "./product.repository.js";

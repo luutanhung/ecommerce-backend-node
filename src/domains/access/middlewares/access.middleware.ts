@@ -13,8 +13,8 @@ import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
-import { asyncWrapper } from "../../../helpers/asyncWrapper.js";
-import { composeMiddlewares } from "../../../helpers/composeMiddlewares.js";
+import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
+import { composeMiddlewares } from "../../../shared/helpers/composeMiddlewares.js";
 
 /**
  * Check if there is an active api key document stored. If there are any, attach it to req object and move on.

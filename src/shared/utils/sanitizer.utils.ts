@@ -1,8 +1,8 @@
 import _ from "lodash";
 
-import type { User, UserLean } from "../domains/access/types/access.type.js";
-import type { ProductLean } from "../domains/product/types/product.type.js";
-import type { Shop, ShopLean } from "../domains/shop/types/shop.type.js";
+import type { User, UserLean } from "../../domains/access/types/access.type.js";
+import type { ProductLean } from "../../domains/product/types/product.type.js";
+import type { Shop, ShopLean } from "../../domains/shop/types/shop.type.js";
 
 import { transformMongoId } from "./mongoose.utils.js";
 

@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-import type { KeyPair } from "../types/utils.type.js";
+import type { KeyPair } from "../../types/utils.type.js";
 
 /**
  * Returns a pair of keys generated using cryto module.

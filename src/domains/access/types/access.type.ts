@@ -4,7 +4,7 @@ import type { UserSchema } from "../models/user.model.js";
 
 import type { KeyTokenLean } from "../types/keytoken.type.js";
 
-import { sanitizeUser } from "../../../utils/sanitizer.utils.js";
+import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
 
 export type User = InferSchemaType<typeof UserSchema>;
 export type UserDocument = HydratedDocument<User>;

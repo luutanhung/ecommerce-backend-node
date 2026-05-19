@@ -1,7 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 
-import { Locale } from "../constants/locale.constants.js";
-
+import { Locale } from "../../constants/locale.constants.js";
 import { asyncWrapper } from "../helpers/asyncWrapper.js";
 
 export const attachLocale = asyncWrapper(

@@ -4,8 +4,8 @@ import type { ProductFilterQuery } from "../types/product.repository.type.js";
 
 import { ResCode } from "../../../constants/resCode.constants.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
-import { asyncWrapper } from "../../../helpers/asyncWrapper.js";
-import { toObjectId } from "../../../utils/mongoose.utils.js";
+import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
+import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import type { ProductParams } from "../../../validations/product.validations.js";
 import type { AuthPayload } from "../../access/types/access.type.js";
 import { ProductRepository } from "../product.repository.js";

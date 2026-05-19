@@ -2,6 +2,8 @@ import type { Server } from "node:http";
 
 import type { Express } from "express";
 
+import { checkOverloadedConnections } from "./shared/helpers/investigateMongoDBHealth.js";
+
 import { env } from "./configs/env.js";
 
 import { registerProductStrategies } from "./bootstrap/registerProductStrategies.js";
@@ -9,7 +11,6 @@ import {
   connectToDatabase,
   disconnectFromDatabase,
 } from "./dbs/init.mongodb.js";
-import { checkOverloadedConnections } from "./helpers/investigateMongoDBHealth.js";
 
 import { app } from "./app.js";
 

@@ -1,5 +1,8 @@
 import { Router } from "express";
 
+import { asyncWrapper } from "../shared/helpers/asyncWrapper.js";
+import { validateRequest } from "../shared/middlewares/validateRequest.middleware.js";
+
 import {
   authenticateAccessToken,
   authenticateClientId,
@@ -7,8 +10,6 @@ import {
 
 import { accessController } from "../controllers/access.controller.js";
 
-import { asyncWrapper } from "../helpers/asyncWrapper.js";
-import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import {
   LoginRequestSchema,
   RefreshTokenRequestSchema,
