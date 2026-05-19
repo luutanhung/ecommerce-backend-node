@@ -23,6 +23,7 @@ import {
 import { ResCode } from "../constants/resCode.constants.js";
 
 import { toObjectId } from "../utils/mongoose.utils.js";
+import { sanitizeProduct } from "../utils/sanitizer.utils.js";
 
 export class ProductService {
   /**
@@ -78,7 +79,7 @@ export class ProductService {
       }
     }
 
-    return publishedProduct;
+    return sanitizeProduct(publishedProduct);
   };
 
   /**
@@ -125,7 +126,7 @@ export class ProductService {
       }
     }
 
-    return unpublishedProduct;
+    return sanitizeProduct(unpublishedProduct);
   };
 
   /**

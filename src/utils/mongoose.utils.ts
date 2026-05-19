@@ -17,3 +17,23 @@ export const toObjectId = (value: string): Types.ObjectId => {
 
   return new mongoose.Types.ObjectId(value);
 };
+
+/**
+ * Transform mongoose _id to id.
+ */
+export const transformMongoId = <
+  T extends {
+    _id: Types.ObjectId;
+  },
+>(
+  obj: T,
+): Omit<T, "_id"> & {
+  id: string;
+} => {
+  const { _id, ...rest } = obj;
+
+  return {
+    ...rest,
+    id: _id.toString(),
+  };
+};
