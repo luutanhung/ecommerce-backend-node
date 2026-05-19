@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import slugify from "slugify";
 
 import {
   CollectionName,
@@ -17,13 +18,13 @@ export const ShopSchema = new Schema(
     },
     shopName: {
       type: String,
+      required: true,
       trim: true,
       maxLength: 150,
     },
     shopSlug: {
       type: String,
       unique: true,
-      required: true,
     },
     shopLogo: {
       type: String,
@@ -43,5 +44,11 @@ export const ShopSchema = new Schema(
     collection: CollectionName.SHOPS,
   },
 );
+
+ShopSchema.pre("save", function () {
+  this.shopSlug = slugify(this.shopName, {
+    lower: true,
+  });
+});
 
 export const Shops = model(DocumentName.SHOP, ShopSchema);

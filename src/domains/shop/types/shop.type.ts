@@ -14,3 +14,8 @@ export type ShopLean = Shop & {
 
 export type ShopStatus = (typeof ShopStatus)[keyof typeof ShopStatus];
 export type ShopRole = (typeof ShopRole)[keyof typeof ShopRole];
+
+export type RegisterShopInput = {
+  shopOwner: string;
+  shopName: string;
+};

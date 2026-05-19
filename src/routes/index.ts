@@ -4,6 +4,7 @@ import { Router } from "express";
 
 import { accessRouter } from "./access.route.js";
 import { productRouter } from "./product.route.js";
+import { shopRouter } from "./shop.route.js";
 
 const router = Router();
 
@@ -15,5 +16,6 @@ const router = Router();
  */
 router.use("/v1/api", accessRouter);
 router.use("/v1/api", productRouter);
+router.use("/v1/api", shopRouter);
 
 export { router as mainRouter };

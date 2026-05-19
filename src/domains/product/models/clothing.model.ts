@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 import {
   CollectionName,
   DocumentName,
-} from "../../constants/model.constants.js";
+} from "../../../constants/model.constants.js";
 
 export const ClothingAttributesSchema = new Schema(
   {
