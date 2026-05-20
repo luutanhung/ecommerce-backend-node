@@ -31,4 +31,12 @@ router.get(
   asyncWrapper(publicProductController.findPublishedProductsByShop),
 );
 
+/**
+ * Find all published product across shops.
+ */
+router.get(
+  "/products",
+  asyncWrapper(publicProductController.findPublishedProducts),
+);
+
 export { router as publicProductRouter };

@@ -6,6 +6,7 @@ import type {
   CreateProductResult,
   FindProductOwnedByShopInput,
   FindProductsOwnedByShopInput,
+  FindPublishedProductsInput,
   PublishShopProductInput,
   SearchProductsInput,
   UnpublishedShopProductInput,
@@ -218,6 +219,26 @@ export class ProductService {
       $text: {
         $search: keyword,
       },
+    };
+
+    const paginationResult = await ProductRepository.findProducts({
+      query,
+      page,
+      limit,
+    });
+
+    return sanitizePagination(paginationResult, sanitizeProduct);
+  }
+
+  /**
+   * Find all published products.
+   */
+  static async findPublishedProducts({
+    page = PAGINATION_DEFAULT_PAGE,
+    limit = PAGINATION_DEFAULT_LIMIT,
+  }: FindPublishedProductsInput = {}) {
+    const query = {
+      isPublished: true,
     };
 
     const paginationResult = await ProductRepository.findProducts({

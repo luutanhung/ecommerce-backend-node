@@ -23,3 +23,5 @@ export type FindProductsOwnedByShopInput = PartialPaginationQuery & {
 export type SearchProductsInput = PartialPaginationQuery & {
   keyword: string;
 };
+
+export type FindPublishedProductsInput = PartialPaginationQuery;

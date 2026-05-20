@@ -24,14 +24,24 @@ export class PublicProductController {
   }
 
   /**
-   * Returns published product by shop.
+   * Returns all published products owned by a shop.
    */
   async findPublishedProductsByShop(req: Request<ShopParams>, res: Response) {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
-      data: await ProductService.findPublishedProductsByShopId({
+      data: await ProductService.findPublishedProductsOwnedByShop({
         shopId: req.params.shopId,
       }),
+    }).send(req, res);
+  }
+
+  /**
+   * Returns all published products.
+   */
+  async findPublishedProducts(req: Request, res: Response) {
+    new OKResponse({
+      code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
+      data: await ProductService.findPublishedProducts(),
     }).send(req, res);
   }
 }
