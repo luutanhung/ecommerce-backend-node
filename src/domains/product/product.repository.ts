@@ -14,7 +14,7 @@ import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
 } from "../../constants/pagination.constants.js";
-import { buildSort } from "../../shared/utils/mongoose.utils.js";
+import { buildSelect, buildSort } from "../../shared/utils/mongoose.utils.js";
 
 import { DEFAULT_PRODUCT_SELECT_FIELDS } from "./product.sanitizer.js";
 
@@ -53,19 +53,21 @@ export class ProductRepository {
     // Pagination options.
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
-    select = DEFAULT_PRODUCT_SELECT_FIELDS.join(" "),
+    select = DEFAULT_PRODUCT_SELECT_FIELDS,
   }: FindProductsRepositoryInput): Promise<PaginateResult<ProductLean>> => {
     const sortOptions = buildSort({
       sortBy,
       sortOrder,
     });
 
+    const selectOptions = buildSelect(select);
+
     return (await Products.paginate(query, {
       page,
       limit,
       lean: true,
       sort: sortOptions,
-      select,
+      select: selectOptions,
       populate: [
         {
           path: "productOwner",

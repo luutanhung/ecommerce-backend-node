@@ -4,5 +4,5 @@ export type SortOptions = {
 };
 
 export type SelectFields = {
-  select?: string;
+  select?: string[];
 };

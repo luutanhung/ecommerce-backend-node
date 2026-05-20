@@ -56,3 +56,20 @@ export function buildSort(options?: SortOptions): Record<string, number> {
     [sortBy]: sortOrder === SortOrder.ASC ? 1 : -1,
   };
 }
+
+/**
+ * Transform select options.
+ */
+export function buildSelect(
+  selectFields: string[] = [],
+): Record<string, number> {
+  if (selectFields.length === 0) return {};
+
+  const selectOptions: Record<string, number> = {};
+
+  for (const field of selectFields) {
+    selectOptions[field] = 1;
+  }
+
+  return selectOptions;
+}
