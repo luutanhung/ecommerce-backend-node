@@ -13,6 +13,9 @@ export const DocumentName = {
   CLOTHING: "Clothing",
   ELECTRONIC: "Electronic",
   FURNITURE: "Furniture",
+
+  // Inventory.
+  INVENTORY: "Inventory",
 } as const;
 
 export const CollectionName = {
@@ -30,4 +33,7 @@ export const CollectionName = {
   CLOTHES: "Clothes",
   ELECTRONICS: "Electronics",
   FURNITURES: "Furnitures",
+
+  // Inventory.
+  INVENTORIES: "Inventories",
 } as const;
