@@ -4,11 +4,11 @@ import type {
 } from "./types/product.repository.type.js";
 import type {
   CreateProductResult,
-  FindProductInput,
-  FindProductsByShopIdInput,
-  PublishProductInput,
+  FindProductOwnedByShopInput,
+  FindProductsOwnedByShopInput,
+  PublishShopProductInput,
   SearchProductsInput,
-  UnpublishedProductInput,
+  UnpublishedShopProductInput,
 } from "./types/product.service.type.js";
 import type { CreateProductFactoryInput } from "./types/product.type.js";
 
@@ -29,10 +29,13 @@ import { ProductFactory } from "./product.factory.js";
 import { ProductRepository } from "./product.repository.js";
 
 export class ProductService {
+  //==========
+  // Sellers
+  //==========
   /**
-   * Create a new product.
+   * Create a new shop product.
    */
-  static createProduct = async (
+  static createShopProduct = async (
     createProductFactoryInput: CreateProductFactoryInput,
   ): Promise<CreateProductResult> => {
     return await ProductFactory.createProduct(createProductFactoryInput);
@@ -41,10 +44,10 @@ export class ProductService {
   /**
    * Publish a draft product.
    */
-  static publishProduct = async ({
+  static publishShopProduct = async ({
     shopId,
     productId,
-  }: PublishProductInput) => {
+  }: PublishShopProductInput) => {
     const query: ProductFilterQuery = {
       productShop: toObjectId(shopId),
       _id: toObjectId(productId),
@@ -88,10 +91,10 @@ export class ProductService {
   /**
    * Unpublished a published product.
    */
-  static unpublishProduct = async ({
+  static unpublishShopProduct = async ({
     shopId,
     productId,
-  }: UnpublishedProductInput) => {
+  }: UnpublishedShopProductInput) => {
     const query: ProductFilterQuery = {
       productShop: toObjectId(shopId),
       _id: toObjectId(productId),
@@ -133,6 +136,75 @@ export class ProductService {
   };
 
   /**
+   * Find a product owned by user's shop.
+   */
+  static findProductOwnedByShop = async ({
+    shopId,
+    productId,
+  }: FindProductOwnedByShopInput) => {
+    const query: ProductFilterQuery = {
+      productShop: toObjectId(shopId),
+      _id: toObjectId(productId),
+    };
+
+    const foundProductOwnedByShop = await ProductRepository.findProduct({
+      query,
+    });
+
+    if (!foundProductOwnedByShop) {
+      throw new NotFoundAppError({
+        code: ResCode.PRODUCT_NOT_FOUND,
+      });
+    }
+
+    return sanitizeProduct(foundProductOwnedByShop);
+  };
+
+  /**
+   * Find all draft products owned by shop.
+   */
+  static findDraftProductsOwnedByShop = async ({
+    shopId,
+    page = PAGINATION_DEFAULT_PAGE,
+    limit = PAGINATION_DEFAULT_LIMIT,
+  }: FindProductsOwnedByShopInput) => {
+    const query: ProductFilterQuery = { productShop: shopId, isDraft: true };
+
+    const paginationResult = await ProductRepository.findProducts({
+      query,
+      page,
+      limit,
+    });
+
+    return sanitizePagination(paginationResult, sanitizeProduct);
+  };
+
+  /**
+   * Find all published product by shop.
+   */
+  static findPublishedProductsOwnedByShop = async ({
+    shopId,
+    page = PAGINATION_DEFAULT_PAGE,
+    limit = PAGINATION_DEFAULT_LIMIT,
+  }: FindProductsOwnedByShopInput) => {
+    const query: ProductFilterQuery = {
+      productShop: shopId,
+      isPublished: true,
+    };
+
+    const paginationResult = await ProductRepository.findProducts({
+      query,
+      page,
+      limit,
+    });
+
+    return sanitizePagination(paginationResult, sanitizeProduct);
+  };
+
+  //==========
+  // Public
+  //==========
+  /**
    * Searches products.
    */
   static async searchPublishedProducts({
@@ -156,65 +228,4 @@ export class ProductService {
 
     return sanitizePagination(paginationResult, sanitizeProduct);
   }
-
-  /**
-   * Find a single product.
-   */
-  static findProduct = async ({ shopId, productId }: FindProductInput) => {
-    const query: ProductFilterQuery = {
-      productShop: toObjectId(shopId),
-      _id: toObjectId(productId),
-    };
-
-    const foundProduct = await ProductRepository.findProduct({ query });
-
-    if (!foundProduct) {
-      throw new NotFoundAppError({
-        code: ResCode.PRODUCT_NOT_FOUND,
-      });
-    }
-
-    return sanitizeProduct(foundProduct);
-  };
-
-  /**
-   * Find all draft products by shop.
-   */
-  static findDraftProductsByShopId = async ({
-    shopId,
-    page = PAGINATION_DEFAULT_PAGE,
-    limit = PAGINATION_DEFAULT_LIMIT,
-  }: FindProductsByShopIdInput) => {
-    const query: ProductFilterQuery = { productShop: shopId, isDraft: true };
-
-    const paginationResult = await ProductRepository.findProducts({
-      query,
-      page,
-      limit,
-    });
-
-    return sanitizePagination(paginationResult, sanitizeProduct);
-  };
-
-  /**
-   * Find all published product by shop.
-   */
-  static findPublishedProductsByShopId = async ({
-    shopId,
-    page = PAGINATION_DEFAULT_PAGE,
-    limit = PAGINATION_DEFAULT_LIMIT,
-  }: FindProductsByShopIdInput) => {
-    const query: ProductFilterQuery = {
-      productShop: shopId,
-      isPublished: true,
-    };
-
-    const paginationResult = await ProductRepository.findProducts({
-      query,
-      page,
-      limit,
-    });
-
-    return sanitizePagination(paginationResult, sanitizeProduct);
-  };
 }

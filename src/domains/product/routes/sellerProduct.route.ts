@@ -25,61 +25,61 @@ router.use(
 );
 
 /**
- * Create a new product.
+ * Create a new shop product.
  */
 router.post(
   "/shops/:shopId/products/create",
   validateRequest({ body: CreateProductRequestSchema }),
-  asyncWrapper(sellerProductController.createProductByShop),
+  asyncWrapper(sellerProductController.createShopProduct),
 );
 
 /**
- * Publish a single product.
+ * Publish a single product owned by shop.
  */
 router.post(
   "/shops/:shopId/products/:productId/publish",
   validateRequest({
     params: ProductParamsSchema,
   }),
-  asyncWrapper(sellerProductController.publishProductByShop),
+  asyncWrapper(sellerProductController.publishShopProduct),
 );
 
 /**
- * Unpublish a single product.
+ * Unpublish a shop product owned by shop.
  */
 router.post(
   "/shops/:shopId/products/:productId/unpublish",
   validateRequest({
     params: ProductParamsSchema,
   }),
-  asyncWrapper(sellerProductController.unpublishProductByShop),
+  asyncWrapper(sellerProductController.unpublishShopProduct),
 );
 
 /**
- * Find all draft products.
+ * Find all draft products owned by shop.
  */
 router.get(
   "/shops/:shopId/products/draft",
-  asyncWrapper(sellerProductController.findDraftProductsByShop),
+  asyncWrapper(sellerProductController.findDraftProductsOwnedByShop),
 );
 
 /**
- * Find all published products.
+ * Find all published products owned by shop.
  */
 router.get(
   "/shops/:shopId/products/published",
-  asyncWrapper(sellerProductController.findPublishedProductsByShop),
+  asyncWrapper(sellerProductController.findPublishedProductsOwnedByShop),
 );
 
 /**
- * Find a single product.
+ * Find a single product owned by shop.
  */
 router.get(
   "/shops/:shopId/products/:productId",
   validateRequest({
     params: ProductParamsSchema,
   }),
-  asyncWrapper(sellerProductController.findProductByShop),
+  asyncWrapper(sellerProductController.findProductOwnedByShop),
 );
 
 export { router as sellerProductRouter };

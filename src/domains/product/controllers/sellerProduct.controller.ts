@@ -25,11 +25,11 @@ class SellerProductController {
    * - On success, a `CreatedResponse` with `ResCode.PRODUCT_CREATION_SUCCESS`
    *   and the created product data is sent to the client.
    */
-  createProductByShop = async (
+  async createShopProduct(
     req: TypedRequest<ShopParams, CreateProductRequest>,
     res: Response,
-  ): Promise<void> => {
-    const createdProduct = await ProductService.createProduct({
+  ): Promise<void> {
+    const createdProduct = await ProductService.createShopProduct({
       ...req.body,
       productOwner: (req.user as AuthPayload).userId,
       productShop: (req.ownedShop as ShopLean)._id.toString(),
@@ -39,18 +39,18 @@ class SellerProductController {
       code: ResCode.PRODUCT_CREATION_SUCCESS,
       data: createdProduct,
     }).send(req, res);
-  };
+  }
 
   /**
    * Publish a single product.
    */
-  publishProductByShop = async (
+  publishShopProduct = async (
     req: ParamsRequest<ProductParams>,
     res: Response,
   ): Promise<void> => {
     new OKResponse({
       code: ResCode.PRODUCT_PUBLISH_SUCCESS,
-      data: await ProductService.publishProduct({
+      data: await ProductService.publishShopProduct({
         shopId: (req.ownedShop as ShopLean)._id.toString(),
         productId: req.params.productId,
       }),
@@ -60,13 +60,13 @@ class SellerProductController {
   /**
    * Unpublish a single product.
    */
-  unpublishProductByShop = async (
+  unpublishShopProduct = async (
     req: Request<ProductParams>,
     res: Response,
   ): Promise<void> => {
     new OKResponse({
       code: ResCode.PRODUCT_UNPUBLISH_SUCCESS,
-      data: await ProductService.unpublishProduct({
+      data: await ProductService.unpublishShopProduct({
         shopId: (req.ownedShop as ShopLean)._id.toString(),
         productId: req.params.productId,
       }),
@@ -82,7 +82,7 @@ class SellerProductController {
   ): Promise<void> => {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_SUCCESS,
-      data: await ProductService.findProduct({
+      data: await ProductService.findProductOwnedByShop({
         shopId: (req.ownedShop as ShopLean)._id.toString(),
         productId: req.params.productId,
       }),
@@ -92,13 +92,13 @@ class SellerProductController {
   /**
    * Finds all draft products by shop id.
    */
-  findDraftProductsByShop = async (
+  findDraftProductsOwnedByShop = async (
     req: Request,
     res: Response,
   ): Promise<void> => {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_DRAFT_PRODUCTS_SUCCESS,
-      data: await ProductService.findDraftProductsByShopId({
+      data: await ProductService.findDraftProductsOwnedByShop({
         shopId: (req.ownedShop as ShopLean)._id.toString(),
       }),
     }).send(req, res);
@@ -107,13 +107,13 @@ class SellerProductController {
   /**
    * Finds all published products by shop id.
    */
-  findPublishedProductsByShop = async (
+  findPublishedProductsOwnedByShop = async (
     req: Request,
     res: Response,
   ): Promise<void> => {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
-      data: await ProductService.findPublishedProductsByShopId({
+      data: await ProductService.findPublishedProductsOwnedByShop({
         shopId: (req.ownedShop as ShopLean)._id.toString(),
       }),
     }).send(req, res);

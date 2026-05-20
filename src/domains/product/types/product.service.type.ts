@@ -1,27 +1,25 @@
+import type { PartialPaginationQuery } from "../../../shared/validations/pagination.validations.js";
+
 import type { ProductDocument } from "./product.type.js";
 
 export type CreateProductResult = ProductDocument;
 
-export type PublishProductInput = {
+export type PublishShopProductInput = {
   shopId: string;
   productId: string;
 };
 
-export type UnpublishedProductInput = PublishProductInput;
+export type UnpublishedShopProductInput = PublishShopProductInput;
 
-export type FindProductInput = {
+export type FindProductOwnedByShopInput = {
   shopId: string;
   productId: string;
 };
 
-export type FindProductsByShopIdInput = {
+export type FindProductsOwnedByShopInput = PartialPaginationQuery & {
   shopId: string;
-  page?: number;
-  limit?: number;
 };
 
-export type SearchProductsInput = {
+export type SearchProductsInput = PartialPaginationQuery & {
   keyword: string;
-  page?: number;
-  limit?: number;
 };

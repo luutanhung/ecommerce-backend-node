@@ -7,3 +7,5 @@ export const PaginationQuerySchema = z.object({
 });
 
 export type PaginationQuery = z.infer<typeof PaginationQuerySchema>;
+
+export type PartialPaginationQuery = Partial<PaginationQuery>;
