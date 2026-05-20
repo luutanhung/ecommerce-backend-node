@@ -62,13 +62,13 @@ export function buildSort(options?: SortOptions): Record<string, number> {
  */
 export function buildSelect(
   selectFields: string[] = [],
-): Record<string, 1 | -1> {
-  return selectFields.reduce<Record<string, 1 | -1>>((acc, field) => {
+): Record<string, 1 | 0> {
+  return selectFields.reduce<Record<string, 1 | 0>>((acc, field) => {
     const isExcluded = field.startsWith("-");
 
     const key = isExcluded ? field.slice(1) : field;
 
-    acc[key] = isExcluded ? -1 : 1;
+    acc[key] = isExcluded ? 0 : 1;
 
     return acc;
   }, {});
