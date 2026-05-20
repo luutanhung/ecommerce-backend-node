@@ -15,7 +15,7 @@ export class InventoryRepository {
       location = "",
       reservations = [],
     }: CreateInventoryRepositoryInput,
-    options: TransactionOptions,
+    options: TransactionOptions = {},
   ): Promise<InventoryLean | null> {
     const [createdInventory] = await Inventories.create(
       [
