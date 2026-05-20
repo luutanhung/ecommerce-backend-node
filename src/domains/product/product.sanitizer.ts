@@ -10,7 +10,6 @@ export const DEFAULT_PRODUCT_SELECT_FIELDS: Array<keyof ProductLean> = [
   "productType",
   "productAttributes",
   "productPrice",
-  "productQuantity",
   "productShop",
   "productDescription",
   "productAverageRating",
