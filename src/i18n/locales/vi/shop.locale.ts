@@ -1,6 +1,7 @@
 export const ShopViLocale = {
   // Shop.
   SHOP_NOT_OWNED_BY_USER: "SHOP_NOT_OWNED_BY_USER",
+  SHOP_REGISTER_FAILED: "SHOP_REGISTER_FAILED",
 
   SHOP_NOT_FOUND: "Cửa hàng chưa được đăng kí",
   SHOP_INVALID_NAME: "Tên cửa hàng không hợp lệ",

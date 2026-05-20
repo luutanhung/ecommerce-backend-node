@@ -6,15 +6,16 @@ import type {
   UpdateUserRepositoryInput,
 } from "../types/user.repository.type.js";
 
+import type { TransactionOptions } from "../../../types/mongoose.type.js";
+
 export class UserRepository {
-  static async updateUser({
-    query,
-    update,
-    session,
-  }: UpdateUserRepositoryInput): Promise<UserLean | null> {
+  static async updateUser(
+    { query, update }: UpdateUserRepositoryInput,
+    options: TransactionOptions = {},
+  ): Promise<UserLean | null> {
     return await Users.findOneAndUpdate(query, update, {
       runValidators: true,
-      session,
+      session: options?.session,
     }).lean();
   }
   /**

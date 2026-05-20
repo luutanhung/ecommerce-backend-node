@@ -1,17 +1,35 @@
-import type {
-  CreateShopRepositoryInput,
-  FindShopRepositoryInput,
-} from "./types/shop.repository.type.js";
+import type { FindShopRepositoryInput } from "./types/shop.repository.type.js";
 import type { ShopLean } from "./types/shop.type.js";
+
+import type { TransactionOptions } from "../../types/mongoose.type.js";
+
+import type { Shop } from "./entities/shop.entity.js";
 
 import { Shops } from "./shop.model.js";
 
+/**
+ * ShopRepository
+ *
+ * @remark Shop repository receives domain entity objects.
+ * @remark Repository returns lean objects.
+ */
 export class ShopRepository {
   /**
    * Creates a new shop.
    */
-  static async createShop(payload: CreateShopRepositoryInput) {
-    return await Shops.create(payload);
+  static async createShop(
+    shop: Shop,
+    options: TransactionOptions,
+  ): Promise<ShopLean | null> {
+    const [createdShop] = await Shops.create([shop.toPersistence()], {
+      session: options.session,
+    });
+
+    if (!createdShop) {
+      return null;
+    }
+
+    return createdShop.toObject();
   }
 
   /**

@@ -5,7 +5,7 @@ import { ResCode } from "../../../constants/resCode.constants.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
-import type { TransationOptions } from "../../../types/mongoose.type.js";
+import type { TransactionOptions } from "../../../types/mongoose.type.js";
 import { UserRepository } from "../repositories/user.repository.js";
 
 export class UserService {
@@ -14,7 +14,7 @@ export class UserService {
    */
   static async addRole(
     { userId, role }: AddRoleInput,
-    options: TransationOptions = {},
+    options: TransactionOptions = {},
   ) {
     const query = {
       _id: toObjectId(userId),
@@ -25,11 +25,13 @@ export class UserService {
       },
     };
 
-    const updatedUser = await UserRepository.updateUser({
-      query,
-      update,
-      session: options.session,
-    });
+    const updatedUser = await UserRepository.updateUser(
+      {
+        query,
+        update,
+      },
+      options,
+    );
 
     if (!updatedUser) {
       throw new NotFoundAppError({

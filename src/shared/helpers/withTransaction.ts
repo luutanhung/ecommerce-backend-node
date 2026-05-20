@@ -1,18 +1,17 @@
 import mongoose from "mongoose";
 
+/**
+ * Wrapper to initiate transaction in MongoDB.
+ */
 export async function withTransaction<T>(
   callback: (session: mongoose.ClientSession) => Promise<T>,
-) {
+): Promise<T> {
   const session = await mongoose.startSession();
 
   try {
-    let result!: T;
-
-    await session.withTransaction(async () => {
-      result = await callback(session);
+    return await session.withTransaction(async () => {
+      return await callback(session);
     });
-
-    return result;
   } finally {
     await session.endSession();
   }

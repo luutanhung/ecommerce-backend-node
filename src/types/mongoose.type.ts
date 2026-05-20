@@ -1,5 +1,5 @@
 import type { ClientSession } from "mongoose";
 
-export type TransationOptions = {
+export type TransactionOptions = {
   session?: ClientSession;
 };
