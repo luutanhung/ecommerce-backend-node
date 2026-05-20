@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 
 import { ResCode } from "../../../constants/resCode.constants.js";
+import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import type { AuthPayload } from "../../../domains/access/types/access.type.js";
@@ -35,6 +36,12 @@ class SellerProductController {
       productOwner: (req.user as AuthPayload).userId,
       productShop: (req.ownedShop as ShopLean)._id.toString(),
     });
+
+    if (!createdProduct) {
+      throw new BadRequestAppError({
+        code: ResCode.PRODUCT_CREATION_FAILURE,
+      });
+    }
 
     new CreatedResponse({
       code: ResCode.PRODUCT_CREATION_SUCCESS,

@@ -1,14 +1,4 @@
-import { Electronics } from "../models/electronic.model.js";
-
-import type {
-  CreateProductInput,
-  ProductDocument,
-} from "../types/product.type.js";
-
-import { ResCode } from "../../../constants/resCode.constants.js";
-import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
-
-import { Product } from "./baseProduct.entity.js";
+import { Product, type ProductProps } from "./baseProduct.entity.js";
 
 export type ElectronicAttributes = {
   manufacturer: string;
@@ -17,22 +7,42 @@ export type ElectronicAttributes = {
 };
 
 export class Electronic extends Product<ElectronicAttributes> {
-  constructor(payload: CreateProductInput<ElectronicAttributes>) {
+  constructor(payload: ProductProps<ElectronicAttributes>) {
     super(payload);
   }
 
-  override async createProduct(): Promise<ProductDocument> {
-    const newElectronic = await Electronics.create({
-      ...this.payload.productAttributes,
-      productShop: this.payload.productShop,
-    });
+  toPersistence() {
+    return {
+      ...this.props,
+    };
+  }
 
-    if (!newElectronic) {
-      throw new BadRequestAppError({
-        code: ResCode.PRODUCT_ELECTRONIC_CREATION_FAILURE,
-      });
-    }
+  toAttributesPersistence() {
+    return {
+      ...this.props.productAttributes,
 
-    return await super.createBaseProduct(newElectronic._id);
+      productShop: this.props.productShop,
+    };
   }
 }
+
+// export class Electronic extends Product<ElectronicAttributes> {
+//   constructor(payload: CreateProductInput<ElectronicAttributes>) {
+//     super(payload);
+//   }
+
+//   override async createProduct(): Promise<ProductDocument> {
+//     const newElectronic = await Electronics.create({
+//       ...this.payload.productAttributes,
+//       productShop: this.payload.productShop,
+//     });
+
+//     if (!newElectronic) {
+//       throw new BadRequestAppError({
+//         code: ResCode.PRODUCT_ELECTRONIC_CREATION_FAILURE,
+//       });
+//     }
+
+//     return await super.createBaseProduct(newElectronic._id);
+//   }
+// }

@@ -1,9 +1,10 @@
+import type { ClientSession } from "mongoose";
+
 import type {
   ProductFilterQuery,
   ProductUpdateQuery,
 } from "./types/product.repository.type.js";
 import type {
-  CreateProductResult,
   FindProductOwnedByShopInput,
   FindProductsOwnedByShopInput,
   FindPublishedProductInput,
@@ -21,6 +22,7 @@ import {
 import { ResCode } from "../../constants/resCode.constants.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
+import { withTransaction } from "../../shared/helpers/withTransaction.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
 
@@ -38,8 +40,16 @@ export class ProductService {
    */
   static async createShopProduct(
     createProductFactoryInput: CreateProductFactoryInput,
-  ): Promise<CreateProductResult> {
-    return await ProductFactory.createProduct(createProductFactoryInput);
+  ) {
+    return await withTransaction(async (session: ClientSession) => {
+      const productToCreate = await ProductFactory.createProduct(
+        createProductFactoryInput,
+      );
+
+      return await ProductRepository.createProduct(productToCreate, {
+        session,
+      });
+    });
   }
 
   /**

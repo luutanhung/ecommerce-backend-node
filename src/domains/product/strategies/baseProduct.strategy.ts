@@ -1,8 +1,8 @@
-import type {
-  CreateProductInput,
-  ProductDocument,
-} from "../types/product.type.js";
+import { Product } from "../entities/baseProduct.entity.js";
 
-export abstract class ProductStrategy<TPayload = CreateProductInput> {
-  abstract create(payload: TPayload): Promise<ProductDocument>;
+export abstract class ProductCreationStrategy<
+  TPayload,
+  TProduct extends Product<unknown>,
+> {
+  abstract create(payload: TPayload): TProduct;
 }

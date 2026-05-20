@@ -1,14 +1,4 @@
-import { Clothes } from "../models/clothing.model.js";
-
-import type {
-  CreateProductInput,
-  ProductDocument,
-} from "../types/product.type.js";
-
-import { ResCode } from "../../../constants/resCode.constants.js";
-import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
-
-import { Product } from "./baseProduct.entity.js";
+import { Product, type ProductProps } from "./baseProduct.entity.js";
 
 export type ClothingAttributes = {
   brand: string;
@@ -17,22 +7,21 @@ export type ClothingAttributes = {
 };
 
 export class Clothing extends Product<ClothingAttributes> {
-  constructor(payload: CreateProductInput<ClothingAttributes>) {
+  constructor(payload: ProductProps<ClothingAttributes>) {
     super(payload);
   }
 
-  override async createProduct(): Promise<ProductDocument> {
-    const newClothing = await Clothes.create({
-      ...this.payload.productAttributes,
-      productShop: this.payload.productShop,
-    });
+  toPersistence() {
+    return {
+      ...this.props,
+    };
+  }
 
-    if (!newClothing) {
-      throw new BadRequestAppError({
-        code: ResCode.PRODUCT_CLOTHING_CREATION_FAILURE,
-      });
-    }
+  toAttributesPersistence() {
+    return {
+      ...this.props.productAttributes,
 
-    return await super.createBaseProduct(newClothing._id);
+      productShop: this.props.productShop,
+    };
   }
 }

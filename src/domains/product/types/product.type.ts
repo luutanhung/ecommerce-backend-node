@@ -4,6 +4,7 @@ import { ProductType } from "../constants/product.constants.js";
 
 import { ProductSchema } from "../models/product.model.js";
 
+import type { ProductProps } from "../entities/baseProduct.entity.js";
 import type { ClothingAttributes } from "../entities/clothing.entity.js";
 import type { ElectronicAttributes } from "../entities/electronic.entity.js";
 import type { FurnitureAttributes } from "../entities/furniture.entity.js";
@@ -20,25 +21,10 @@ export type ProductLean = Product & {
 
 export type BaseProductAttributes = Record<string, unknown>;
 
-export type CreateProductInput<TAttributes = BaseProductAttributes> = {
-  productOwner: string;
-
-  productShop: string;
-
-  productName: string;
-
-  productThumb: string;
-
-  productDescription?: string;
-
-  productPrice: number;
-
-  productQuantity: number;
-
-  productType: ProductType;
-
-  productAttributes: TAttributes;
-};
+export type CreateProductInput<TAttributes> = Omit<
+  ProductProps<TAttributes>,
+  "isDraft" | "isPublished"
+>;
 
 export type CreateClothingInput = CreateProductInput<ClothingAttributes> & {
   productType: typeof ProductType.CLOTHING;
