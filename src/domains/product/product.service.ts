@@ -42,6 +42,9 @@ export class ProductService {
     return await ProductFactory.createProduct(createProductFactoryInput);
   }
 
+  /**
+   * Update a shop product.
+   */
   static async updateShopProduct() {}
 
   /**
