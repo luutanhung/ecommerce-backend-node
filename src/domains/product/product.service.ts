@@ -38,6 +38,7 @@ import {
   flattenObject,
   toObjectId,
 } from "../../shared/utils/mongoose.utils.js";
+import { cleanObject } from "../../shared/utils/object.utils.js";
 import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
 
 import { ProductFactory } from "./product.factory.js";
@@ -74,7 +75,7 @@ export class ProductService {
     payload,
   }: UpdateShopProductInput): Promise<ProductLean | null> {
     return await withTransaction(async (session: ClientSession) => {
-      const { productAttributes, ...baseProductPayload } = payload;
+      const { productAttributes, ...baseProductPayload } = cleanObject(payload);
 
       const flattenedAttributes = productAttributes
         ? flattenObject({
