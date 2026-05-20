@@ -79,7 +79,7 @@ export class ProductService {
       await InventoryService.createInventory(
         {
           productId: createdProduct._id.toString(),
-          shopId: productToCreate.productShop,
+          shopId: createdProduct.productShop.toString(),
           stock: 0,
           location: "",
           reservations: [],

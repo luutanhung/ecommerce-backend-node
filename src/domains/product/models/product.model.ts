@@ -18,10 +18,12 @@ export const ProductSchema = new Schema(
     productOwner: {
       type: Schema.Types.ObjectId,
       ref: DocumentName.USER,
+      required: true,
     },
     productShop: {
       type: Schema.Types.ObjectId,
       ref: DocumentName.SHOP,
+      required: true,
     },
     productName: {
       type: String,
