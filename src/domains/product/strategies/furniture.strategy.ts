@@ -14,17 +14,3 @@ export class FurnitureCreationStrategy extends ProductCreationStrategy<
     return new Furniture(payload);
   }
 }
-
-// export class FurnitureStrategy extends ProductStrategy<CreateFurnitureInput> {
-//   override async create(payload: CreateFurnitureInput) {
-//     const clothing = await Furnitures.create({
-//       ...payload.productAttributes,
-//       productShop: payload.productShop,
-//     });
-
-//     return await Products.create({
-//       ...payload,
-//       productAttributes: clothing._id,
-//     });
-//   }
-// }

@@ -1,5 +1,12 @@
 import type { ClientSession } from "mongoose";
 
+import { ProductType } from "./constants/product.constants.js";
+
+import { Clothes } from "./models/clothing.model.js";
+import { Electronics } from "./models/electronic.model.js";
+import { Furnitures } from "./models/furniture.model.js";
+import { Products } from "./models/product.model.js";
+
 import type {
   ProductFilterQuery,
   ProductUpdateQuery,
@@ -13,7 +20,11 @@ import type {
   SearchProductsInput,
   UnpublishedShopProductInput,
 } from "./types/product.service.type.js";
-import type { CreateProductFactoryInput } from "./types/product.type.js";
+import type {
+  CreateProductFactoryInput,
+  ProductLean,
+  UpdateShopProductInput,
+} from "./types/product.type.js";
 
 import {
   PAGINATION_DEFAULT_LIMIT,
@@ -23,7 +34,10 @@ import { ResCode } from "../../constants/resCode.constants.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { withTransaction } from "../../shared/helpers/withTransaction.js";
-import { toObjectId } from "../../shared/utils/mongoose.utils.js";
+import {
+  flattenObject,
+  toObjectId,
+} from "../../shared/utils/mongoose.utils.js";
 import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
 
 import { ProductFactory } from "./product.factory.js";
@@ -55,7 +69,69 @@ export class ProductService {
   /**
    * Update a shop product.
    */
-  static async updateShopProduct() {}
+  static async updateShopProduct({
+    productId,
+    payload,
+  }: UpdateShopProductInput): Promise<ProductLean | null> {
+    return await withTransaction(async (session: ClientSession) => {
+      const { productAttributes, ...baseProductPayload } = payload;
+
+      const flattenedAttributes = productAttributes
+        ? flattenObject({
+            productAttributes,
+          } as Record<string, unknown>)
+        : {};
+
+      const updatedBaseProductPayload = {
+        ...baseProductPayload,
+        ...flattenedAttributes,
+      };
+
+      const updatedBaseProduct = await Products.findOneAndUpdate(
+        {
+          _id: toObjectId(productId),
+        },
+        {
+          $set: updatedBaseProductPayload,
+        },
+        {
+          new: true,
+          session,
+        },
+      );
+
+      if (!updatedBaseProduct) {
+        throw new NotFoundAppError({
+          code: ResCode.PRODUCT_NOT_FOUND,
+        });
+      }
+
+      if (productAttributes) {
+        const updatedBaseProductType = updatedBaseProduct.productType;
+
+        // eslint-disable-next-line
+        let childProductModel: any;
+        if (updatedBaseProductType === ProductType.CLOTHING) {
+          childProductModel = Clothes;
+        } else if (updatedBaseProductType === ProductType.ELECTRONICS) {
+          childProductModel = Electronics;
+        } else if (updatedBaseProductType === ProductType.FURNITURE) {
+          childProductModel = Furnitures;
+        }
+
+        await childProductModel.findByIdAndUpdate(
+          { _id: toObjectId(productId) },
+          flattenObject(productAttributes as Record<string, unknown>),
+          {
+            new: true,
+            session,
+          },
+        );
+      }
+
+      return updatedBaseProduct;
+    });
+  }
 
   /**
    * Publish a draft product.

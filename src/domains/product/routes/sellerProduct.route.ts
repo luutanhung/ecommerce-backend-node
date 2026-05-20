@@ -34,6 +34,17 @@ router.post(
 );
 
 /**
+ * Update a shop product.
+ */
+router.post(
+  "/shops/:shopId/products/:productId/update",
+  validateRequest({
+    params: ProductParamsSchema,
+  }),
+  asyncWrapper(sellerProductController.updateShopProduct),
+);
+
+/**
  * Publish a single product owned by shop.
  */
 router.post(

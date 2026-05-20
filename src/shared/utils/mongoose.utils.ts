@@ -73,3 +73,46 @@ export function buildSelect(
     return acc;
   }, {});
 }
+
+/**
+ * Flatten object.
+ */
+export function flattenObject(
+  obj: Record<string, unknown>,
+
+  prefix = "",
+): Record<string, unknown> {
+  return Object.keys(obj).reduce(
+    (
+      acc,
+
+      key,
+    ) => {
+      const prefixedKey = prefix ? `${prefix}.${key}` : key;
+
+      const value = obj[key];
+
+      if (
+        typeof value === "object" &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
+        Object.assign(
+          acc,
+
+          flattenObject(
+            value as Record<string, unknown>,
+
+            prefixedKey,
+          ),
+        );
+      } else {
+        acc[prefixedKey] = value;
+      }
+
+      return acc;
+    },
+
+    {} as Record<string, unknown>,
+  );
+}

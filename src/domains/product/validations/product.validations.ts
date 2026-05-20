@@ -58,6 +58,8 @@ const BaseProductSchema = z.object({
   ).int({
     error: ResCode.PRODUCT_QUANTITY_INVALID_TYPE,
   }),
+
+  productType: z.literal(ProductType.CLOTHING),
 });
 
 const ClothingProductSchema = BaseProductSchema.extend({

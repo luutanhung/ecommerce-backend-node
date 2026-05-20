@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 
 import { ResCode } from "../../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
+import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import type { AuthPayload } from "../../../domains/access/types/access.type.js";
@@ -46,6 +47,27 @@ class SellerProductController {
     new CreatedResponse({
       code: ResCode.PRODUCT_CREATION_SUCCESS,
       data: sanitizeProduct(createdProduct),
+    }).send(req, res);
+  }
+
+  /**
+   * Update a shop product.
+   */
+  async updateShopProduct(req: Request, res: Response) {
+    const updatedProduct = await ProductService.updateShopProduct({
+      productId: (req.validated?.params as ProductParams).productId,
+      payload: req.body,
+    });
+
+    if (!updatedProduct) {
+      throw new NotFoundAppError({
+        code: ResCode.PRODUCT_NOT_FOUND,
+      });
+    }
+
+    new OKResponse({
+      code: ResCode.PRODUCT_UPDATE_SUCCESS,
+      data: sanitizeProduct(updatedProduct),
     }).send(req, res);
   }
 

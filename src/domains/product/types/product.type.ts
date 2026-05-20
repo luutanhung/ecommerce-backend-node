@@ -42,3 +42,8 @@ export type CreateProductFactoryInput =
   | CreateClothingInput
   | CreateElectronicInput
   | CreateFurnitureInput;
+
+export type UpdateShopProductInput = {
+  productId: string;
+  payload: Record<string, unknown>;
+};
