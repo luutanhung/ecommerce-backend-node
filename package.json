@@ -12,7 +12,8 @@
     "lint:check": "eslint \"./src/**/*.{js,ts}\"",
     "lint:fix": "eslint --fix \"./src/**/*.{js,ts}\"",
     "prepare": "husky",
-    "test": "vitest"
+    "test": "vitest",
+    "start:services": "podman-compose up -d"
   },
   "keywords": [
     "nodejs",
