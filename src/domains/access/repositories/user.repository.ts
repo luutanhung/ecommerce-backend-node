@@ -10,9 +10,11 @@ export class UserRepository {
   static async updateUser({
     query,
     update,
+    session,
   }: UpdateUserRepositoryInput): Promise<UserLean | null> {
     return await Users.findOneAndUpdate(query, update, {
       runValidators: true,
+      session,
     }).lean();
   }
   /**

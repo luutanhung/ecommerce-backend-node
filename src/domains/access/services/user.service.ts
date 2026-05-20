@@ -5,13 +5,17 @@ import { ResCode } from "../../../constants/resCode.constants.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
+import type { TransationOptions } from "../../../types/mongoose.type.js";
 import { UserRepository } from "../repositories/user.repository.js";
 
 export class UserService {
   /**
    * Add a new role.
    */
-  static async addRole({ userId, role }: AddRoleInput) {
+  static async addRole(
+    { userId, role }: AddRoleInput,
+    options: TransationOptions = {},
+  ) {
     const query = {
       _id: toObjectId(userId),
     };
@@ -24,6 +28,7 @@ export class UserService {
     const updatedUser = await UserRepository.updateUser({
       query,
       update,
+      session: options.session,
     });
 
     if (!updatedUser) {
