@@ -13,6 +13,7 @@ import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
 } from "../../constants/pagination.constants.js";
+import { DEFAULT_SORT_OPTIONS } from "../../constants/sort.constants.js";
 
 export class ProductRepository {
   /**
@@ -43,6 +44,7 @@ export class ProductRepository {
    */
   static findProducts = async ({
     query = {},
+    sort = DEFAULT_SORT_OPTIONS,
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
   }: FindProductsRepositoryInput): Promise<PaginateResult<ProductLean>> => {
@@ -50,6 +52,7 @@ export class ProductRepository {
       page,
       limit,
       lean: true,
+      sort,
       populate: [
         {
           path: "productOwner",
@@ -60,9 +63,6 @@ export class ProductRepository {
           select: "shopName shopSlug shopStatus -_id",
         },
       ],
-      sort: {
-        updatedAt: -1,
-      },
     })) as PaginateResult<ProductLean>;
   };
 }

@@ -20,7 +20,7 @@ import {
 import { ResCode } from "../../constants/resCode.constants.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
-import { toObjectId } from "../../shared/utils/mongoose.utils.js";
+import { buildSort, toObjectId } from "../../shared/utils/mongoose.utils.js";
 import {
   sanitizePagination,
   sanitizeProduct,
@@ -41,6 +41,8 @@ export class ProductService {
   ): Promise<CreateProductResult> => {
     return await ProductFactory.createProduct(createProductFactoryInput);
   };
+
+  static async updateShopProduct() {}
 
   /**
    * Publish a draft product.
@@ -234,15 +236,23 @@ export class ProductService {
    * Find all published products.
    */
   static async findPublishedProducts({
+    sortBy,
+    sortOrder,
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
-  }: FindPublishedProductsInput = {}) {
+  }: FindPublishedProductsInput) {
     const query = {
       isPublished: true,
     };
 
+    const sortOptions = buildSort({
+      sortBy,
+      sortOrder,
+    });
+
     const paginationResult = await ProductRepository.findProducts({
       query,
+      sort: sortOptions,
       page,
       limit,
     });

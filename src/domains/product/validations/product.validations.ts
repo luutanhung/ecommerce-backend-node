@@ -7,6 +7,8 @@ import { ResCode } from "../../../constants/resCode.constants.js";
 import {
   ObjectIdSchema,
   PositiveNumberSchema,
+  SearchKeywordSchema,
+  SortOrderSchema,
 } from "../../../shared/validations/common.validations.js";
 import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
 
@@ -106,12 +108,34 @@ export const ProductParamsSchema = z.object({
 });
 export type ProductParams = z.infer<typeof ProductParamsSchema>;
 
-export const SearchPublishedProductRequestSchema = PaginationQuerySchema.extend(
-  {
-    keyword: z.string().min(1),
-  },
-);
+export const SearchPublishedProductRequestSchema =
+  PaginationQuerySchema.merge(SearchKeywordSchema);
 
 export type SearchPublishedProductRequest = z.infer<
   typeof SearchPublishedProductRequestSchema
 >;
+
+export const SellerProductFilterSchema = z.object({
+  productType: z.enum(Object.values(ProductType)).optional(),
+  isPublished: z.boolean().optional(),
+});
+
+export const PublicProductFilterSchema = SellerProductFilterSchema.extend({
+  isPublished: z.boolean().optional().default(true),
+});
+
+export const ProductSortSchema = z
+  .object({
+    sortBy: z
+      .enum(["ctime", "productName", "productPrice", "productAverageRating"])
+      .default("ctime"),
+  })
+  .extend(SortOrderSchema.shape);
+
+export const FindPublishedProductsSchema = z.object({
+  ...PaginationQuerySchema.shape,
+  ...SearchKeywordSchema.shape,
+  ...ProductSortSchema.shape,
+  ...PublicProductFilterSchema.shape,
+});
+export type FindPublishedProducts = z.infer<typeof FindPublishedProductsSchema>;

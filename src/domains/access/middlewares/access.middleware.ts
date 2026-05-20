@@ -104,7 +104,7 @@ export const authenticateClientId = asyncWrapper(
     req.userId = userId;
     req.keyToken = keyToken;
 
-    next();
+    return next();
   },
 );
 

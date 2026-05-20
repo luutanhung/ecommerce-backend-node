@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import type { SortOptions } from "../validations/common.validations.js";
 
 /**
  * Convert string value to ObjectId.
@@ -36,3 +37,21 @@ export const transformMongoId = <
     id: _id.toString(),
   };
 };
+
+/**
+ * Transform sort options
+ * to mongoose sort object.
+ */
+export function buildSort(options?: SortOptions): Record<string, number> {
+  if (!options) {
+    return {
+      ctime: -1,
+    };
+  }
+
+  const { sortBy, sortOrder } = options;
+
+  return {
+    [sortBy]: sortOrder === "asc" ? 1 : -1,
+  };
+}

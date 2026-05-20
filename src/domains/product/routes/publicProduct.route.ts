@@ -5,7 +5,10 @@ import { publicProductController } from "../controllers/publicProduct.controller
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../../../shared/middlewares/validateRequest.middleware.js";
 import { ShopParamsSchema } from "../../shop/validations/shop.validations.js";
-import { SearchPublishedProductRequestSchema } from "../validations/product.validations.js";
+import {
+  FindPublishedProductsSchema,
+  SearchPublishedProductRequestSchema,
+} from "../validations/product.validations.js";
 
 const router = Router();
 
@@ -36,6 +39,9 @@ router.get(
  */
 router.get(
   "/products",
+  validateRequest({
+    query: FindPublishedProductsSchema,
+  }),
   asyncWrapper(publicProductController.findPublishedProducts),
 );
 

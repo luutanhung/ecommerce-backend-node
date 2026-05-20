@@ -72,3 +72,16 @@ export const PositiveNumberSchema = (
       error: positiveMessage,
     });
 };
+
+export const SearchKeywordSchema = z.object({
+  keyword: z.string().min(1).optional().default(""),
+});
+
+export const SortOrderSchema = z.object({
+  sortOrder: z.enum(["asc", "desc"]).optional().default("desc"),
+});
+
+export type SortOptions = {
+  sortBy: string;
+  sortOrder: "asc" | "desc";
+};

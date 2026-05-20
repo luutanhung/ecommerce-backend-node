@@ -63,6 +63,29 @@ export class AccessService {
       roles: [UserRole.CUSTOMER],
     });
 
+    const userIdToCreateTokenPair: Types.ObjectId = createdUser._id;
+
+    const authPayload: AuthPayload = {
+      userId: userIdToCreateTokenPair.toString(),
+      email,
+    };
+
+    // Generate a pair of publicKey and privateKey.
+    const { privateKey, publicKey }: KeyPair = await createKeyPair();
+
+    const tokenPair: TokenPair = await createTokenPair({
+      payload: authPayload,
+      publicKey,
+      privateKey,
+    });
+
+    await KeyTokenService.createKeyToken({
+      userId: userIdToCreateTokenPair,
+      publicKey,
+      privateKey,
+      refreshToken: tokenPair.refreshToken,
+    });
+
     return {
       user: sanitizeUser(createdUser),
     };

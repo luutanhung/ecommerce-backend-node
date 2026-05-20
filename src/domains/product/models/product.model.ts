@@ -48,7 +48,6 @@ export const ProductSchema = new Schema(
       type: Number,
       required: true,
     },
-
     productDescription: {
       type: String,
     },

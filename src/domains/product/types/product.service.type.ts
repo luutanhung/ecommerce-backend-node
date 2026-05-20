@@ -1,3 +1,4 @@
+import type { SortOptions } from "../../../shared/validations/common.validations.js";
 import type { PartialPaginationQuery } from "../../../shared/validations/pagination.validations.js";
 
 import type { ProductDocument } from "./product.type.js";
@@ -24,4 +25,4 @@ export type SearchProductsInput = PartialPaginationQuery & {
   keyword: string;
 };
 
-export type FindPublishedProductsInput = PartialPaginationQuery;
+export type FindPublishedProductsInput = PartialPaginationQuery & SortOptions;
