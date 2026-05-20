@@ -62,14 +62,14 @@ export function buildSort(options?: SortOptions): Record<string, number> {
  */
 export function buildSelect(
   selectFields: string[] = [],
-): Record<string, number> {
-  if (selectFields.length === 0) return {};
+): Record<string, 1 | -1> {
+  return selectFields.reduce<Record<string, 1 | -1>>((acc, field) => {
+    const isExcluded = field.startsWith("-");
 
-  const selectOptions: Record<string, number> = {};
+    const key = isExcluded ? field.slice(1) : field;
 
-  for (const field of selectFields) {
-    selectOptions[field] = 1;
-  }
+    acc[key] = isExcluded ? -1 : 1;
 
-  return selectOptions;
+    return acc;
+  }, {});
 }
