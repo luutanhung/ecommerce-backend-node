@@ -13,7 +13,7 @@
     "lint:fix": "eslint --fix \"./src/**/*.{js,ts}\"",
     "prepare": "husky",
     "test": "vitest",
-    "start:services": "podman-compose up -d"
+    "start:containers": "podman-compose up -d"
   },
   "keywords": [
     "nodejs",
