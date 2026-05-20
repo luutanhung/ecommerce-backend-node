@@ -36,7 +36,7 @@ router.post(
 /**
  * Update a shop product.
  */
-router.post(
+router.patch(
   "/shops/:shopId/products/:productId/update",
   validateRequest({
     params: ProductParamsSchema,
