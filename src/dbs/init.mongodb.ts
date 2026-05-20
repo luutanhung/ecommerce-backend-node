@@ -7,9 +7,32 @@ import { config } from "../configs/index.js";
 
 const MONGODB_MAX_POOL_SIZE: number = 50;
 
-const MONGODB_CONNECTION_STRING =
-  `mongodb://${config.db.username}:${config.db.password}` +
-  `@${config.db.host}:${config.db.port}/${config.db.name}?authSource=admin`;
+export function buildMongoConnectionString(): string {
+  const db = config.db;
+
+  const credentials =
+    db.username && db.password ? `${db.username}:${db.password}@` : "";
+
+  const queryParams = new URLSearchParams({
+    ...(db.replicaSet && {
+      replicaSet: db.replicaSet,
+    }),
+
+    ...(db.username && {
+      authSource: "admin",
+    }),
+
+    retryWrites: "true",
+
+    w: "majority",
+  });
+
+  return (
+    `mongodb://${credentials}` +
+    `${db.host}:${db.port}/${db.name}` +
+    `?${queryParams.toString()}`
+  );
+}
 
 export class Database {
   private static instance: Database;
@@ -23,6 +46,8 @@ export class Database {
       mongoose.set("debug", true);
       mongoose.set("debug", { color: true });
     }
+
+    const MONGODB_CONNECTION_STRING = buildMongoConnectionString();
 
     try {
       await mongoose.connect(MONGODB_CONNECTION_STRING, {

@@ -19,6 +19,7 @@ const env = cleanEnv(process.env, {
   MONGODB_USERNAME: str({ default: "" }),
   MONGODB_PASSWORD: str({ default: "" }),
   MONGODB_DBNAME: str({ default: "" }),
+  MONGODB_REPLICA_SET: str({ default: "rs0" }),
 });
 
 export { env };
