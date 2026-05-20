@@ -9,11 +9,12 @@ import type {
 } from "./types/product.repository.type.js";
 import type { ProductDocument, ProductLean } from "./types/product.type.js";
 
+import { SortOrder } from "../../constants/common.constants.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
 } from "../../constants/pagination.constants.js";
-import { DEFAULT_SORT_OPTIONS } from "../../constants/sort.constants.js";
+import { buildSort } from "../../shared/utils/mongoose.utils.js";
 
 export class ProductRepository {
   /**
@@ -44,15 +45,23 @@ export class ProductRepository {
    */
   static findProducts = async ({
     query = {},
-    sort = DEFAULT_SORT_OPTIONS,
+    // Sort Options.
+    sortBy = "time",
+    sortOrder = SortOrder.DESC,
+    // Pagination options.
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
   }: FindProductsRepositoryInput): Promise<PaginateResult<ProductLean>> => {
+    const sortOptions = buildSort({
+      sortBy,
+      sortOrder,
+    });
+
     return (await Products.paginate(query, {
       page,
       limit,
       lean: true,
-      sort,
+      sort: sortOptions,
       populate: [
         {
           path: "productOwner",

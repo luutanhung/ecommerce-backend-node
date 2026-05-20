@@ -1,6 +1,6 @@
 import type { QueryFilter, UpdateQuery } from "mongoose";
 
-import type { RepositorySortOptions } from "../../../types/repository.type.js";
+import type { SortOptions } from "../../../types/common.type.js";
 
 import type { Product } from "./product.type.js";
 
@@ -22,7 +22,7 @@ export type FindProductRepositoryInput = {
   query?: ProductFilterQuery;
 };
 
-export type FindProductsRepositoryInput = RepositorySortOptions & {
+export type FindProductsRepositoryInput = Partial<SortOptions> & {
   query?: ProductFilterQuery;
   page?: number;
   limit?: number;

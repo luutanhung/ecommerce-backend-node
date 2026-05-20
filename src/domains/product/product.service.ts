@@ -20,7 +20,7 @@ import {
 import { ResCode } from "../../constants/resCode.constants.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
-import { buildSort, toObjectId } from "../../shared/utils/mongoose.utils.js";
+import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 import {
   sanitizePagination,
   sanitizeProduct,
@@ -245,14 +245,10 @@ export class ProductService {
       isPublished: true,
     };
 
-    const sortOptions = buildSort({
-      sortBy,
-      sortOrder,
-    });
-
     const paginationResult = await ProductRepository.findProducts({
       query,
-      sort: sortOptions,
+      sortBy,
+      sortOrder,
       page,
       limit,
     });

@@ -80,8 +80,3 @@ export const SearchKeywordSchema = z.object({
 export const SortOrderSchema = z.object({
   sortOrder: z.enum(["asc", "desc"]).optional().default("desc"),
 });
-
-export type SortOptions = {
-  sortBy: string;
-  sortOrder: "asc" | "desc";
-};

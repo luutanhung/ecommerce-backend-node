@@ -1,9 +1,10 @@
 import type { Types } from "mongoose";
 import mongoose from "mongoose";
 
+import { SortOrder } from "../../constants/common.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
-import type { SortOptions } from "../validations/common.validations.js";
+import type { SortOptions } from "../../types/common.type.js";
 
 /**
  * Convert string value to ObjectId.
@@ -52,6 +53,6 @@ export function buildSort(options?: SortOptions): Record<string, number> {
   const { sortBy, sortOrder } = options;
 
   return {
-    [sortBy]: sortOrder === "asc" ? 1 : -1,
+    [sortBy]: sortOrder === SortOrder.ASC ? 1 : -1,
   };
 }
