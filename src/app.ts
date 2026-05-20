@@ -3,10 +3,13 @@ import type { Express } from "express";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
 
 import { handleError } from "./core/error/handleError.middleware.js";
 
 import { attachLocale } from "./shared/middlewares/locale.middleware.js";
+
+import { swaggerSpec } from "./configs/swagger.js";
 
 import { handleNotFoundRoute } from "./handlers/notFoundRoute.handler.js";
 
@@ -36,6 +39,11 @@ app.use(
 );
 
 app.use(attachLocale);
+
+/**
+ * Swagger API.
+ */
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /**
  * Register routers.
