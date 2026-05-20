@@ -16,6 +16,9 @@ export const DocumentName = {
 
   // Inventory.
   INVENTORY: "Inventory",
+
+  // Pricing.
+  DISCOUNT: "Discount",
 } as const;
 
 export const CollectionName = {
@@ -36,4 +39,7 @@ export const CollectionName = {
 
   // Inventory.
   INVENTORIES: "Inventories",
+
+  // Pricing.
+  DISCOUNTS: "DISCOUNTS",
 } as const;

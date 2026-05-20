@@ -12,6 +12,7 @@ import {
   DocumentName,
 } from "../../../constants/model.constants.js";
 import { ResCode } from "../../../constants/resCode.constants.js";
+import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
 
 export const ProductSchema = new Schema(
   {
@@ -45,6 +46,10 @@ export const ProductSchema = new Schema(
     productPrice: {
       type: Number,
       required: true,
+    },
+    productCurrency: {
+      type: String,
+      default: CURRENCY.USD,
     },
     productQuantity: {
       type: Number,
