@@ -47,10 +47,11 @@ export class PublicProductController {
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
       data: await ProductService.findPublishedProducts(
         _.pick(req.validated?.query as FindPublishedProducts, [
-          "page",
-          "limit",
+          "productType",
           "sortBy",
           "sortOrder",
+          "page",
+          "limit",
         ]),
       ),
     }).send(req, res);

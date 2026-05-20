@@ -115,14 +115,15 @@ export type SearchPublishedProductRequest = z.infer<
   typeof SearchPublishedProductRequestSchema
 >;
 
-export const SellerProductFilterSchema = z.object({
+export const PublicProductFilterSchema = z.object({
   productType: z.enum(Object.values(ProductType)).optional(),
-  isPublished: z.boolean().optional(),
 });
 
-export const PublicProductFilterSchema = SellerProductFilterSchema.extend({
-  isPublished: z.boolean().optional().default(true),
-});
+export const SellerProductFilterSchema = z
+  .object({
+    isPublished: z.boolean().optional(),
+  })
+  .extend(PublicProductFilterSchema.shape);
 
 export const ProductSortSchema = z
   .object({

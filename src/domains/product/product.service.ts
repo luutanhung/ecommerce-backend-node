@@ -28,6 +28,7 @@ import {
 
 import { ProductFactory } from "./product.factory.js";
 import { ProductRepository } from "./product.repository.js";
+import { buildProductsQuery } from "./product.utils.js";
 
 export class ProductService {
   //==========
@@ -238,12 +239,13 @@ export class ProductService {
   static async findPublishedProducts({
     sortBy,
     sortOrder,
+
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
+
+    ...filters
   }: FindPublishedProductsInput) {
-    const query = {
-      isPublished: true,
-    };
+    const query = buildProductsQuery(filters);
 
     const paginationResult = await ProductRepository.findProducts({
       query,
