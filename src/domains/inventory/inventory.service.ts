@@ -2,12 +2,19 @@ import type { CreateInventoryInput } from "./types/inventory.service.types.js";
 
 import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import type { TransactionOptions } from "../../types/mongoose.type.js";
 
 import { InventoryRepository } from "./inventory.repository.js";
 
 export class InventoryService {
-  static async createInventory(payload: CreateInventoryInput) {
-    const createdInventory = await InventoryRepository.createInventory(payload);
+  static async createInventory(
+    payload: CreateInventoryInput,
+    options: TransactionOptions = {},
+  ) {
+    const createdInventory = await InventoryRepository.createInventory(
+      payload,
+      options,
+    );
 
     if (!createdInventory) {
       throw new BadRequestAppError({

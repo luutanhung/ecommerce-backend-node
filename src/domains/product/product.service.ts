@@ -31,6 +31,7 @@ import {
   PAGINATION_DEFAULT_PAGE,
 } from "../../constants/pagination.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
+import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { withTransaction } from "../../shared/helpers/withTransaction.js";
@@ -40,6 +41,7 @@ import {
 } from "../../shared/utils/mongoose.utils.js";
 import { cleanObject } from "../../shared/utils/object.utils.js";
 import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
+import { InventoryService } from "../inventory/inventory.service.js";
 
 import { ProductFactory } from "./product.factory.js";
 import { ProductRepository } from "./product.repository.js";
@@ -61,9 +63,33 @@ export class ProductService {
         createProductFactoryInput,
       );
 
-      return await ProductRepository.createProduct(productToCreate, {
-        session,
-      });
+      const createdProduct = await ProductRepository.createProduct(
+        productToCreate,
+        {
+          session,
+        },
+      );
+
+      if (!createdProduct) {
+        throw new BadRequestAppError({
+          code: ResCode.PRODUCT_CREATE_FAILED,
+        });
+      }
+
+      await InventoryService.createInventory(
+        {
+          productId: createdProduct._id.toString(),
+          shopId: productToCreate.productShop,
+          stock: 0,
+          location: "",
+          reservations: [],
+        },
+        {
+          session,
+        },
+      );
+
+      return createdProduct;
     });
   }
 

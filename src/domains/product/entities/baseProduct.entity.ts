@@ -1,6 +1,8 @@
 import type { ProductType } from "../types/product.type.js";
 
-export type ProductProps<TAttributes> = {
+export type BaseProductAttributes = Record<string, unknown>;
+
+export type ProductProps<TAttributes = BaseProductAttributes> = {
   productOwner: string;
 
   productShop: string;
@@ -22,7 +24,7 @@ export type ProductProps<TAttributes> = {
   isPublished: boolean;
 };
 
-export abstract class Product<TAttributes> {
+export abstract class Product<TAttributes = BaseProductAttributes> {
   protected props: ProductProps<TAttributes>;
 
   protected constructor(props: ProductProps<TAttributes>) {
@@ -43,6 +45,10 @@ export abstract class Product<TAttributes> {
     this.props.isPublished = false;
 
     this.props.isDraft = true;
+  }
+
+  get productShop() {
+    return this.props.productShop;
   }
 }
 
