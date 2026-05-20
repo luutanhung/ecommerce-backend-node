@@ -35,21 +35,21 @@ export class ProductService {
   /**
    * Create a new shop product.
    */
-  static createShopProduct = async (
+  static async createShopProduct(
     createProductFactoryInput: CreateProductFactoryInput,
-  ): Promise<CreateProductResult> => {
+  ): Promise<CreateProductResult> {
     return await ProductFactory.createProduct(createProductFactoryInput);
-  };
+  }
 
   static async updateShopProduct() {}
 
   /**
    * Publish a draft product.
    */
-  static publishShopProduct = async ({
+  static async publishShopProduct({
     shopId,
     productId,
-  }: PublishShopProductInput) => {
+  }: PublishShopProductInput) {
     const query: ProductFilterQuery = {
       productShop: toObjectId(shopId),
       _id: toObjectId(productId),
@@ -88,15 +88,15 @@ export class ProductService {
     }
 
     return sanitizeProduct(publishedProduct);
-  };
+  }
 
   /**
    * Unpublished a published product.
    */
-  static unpublishShopProduct = async ({
+  static async unpublishShopProduct({
     shopId,
     productId,
-  }: UnpublishedShopProductInput) => {
+  }: UnpublishedShopProductInput) {
     const query: ProductFilterQuery = {
       productShop: toObjectId(shopId),
       _id: toObjectId(productId),
@@ -135,15 +135,15 @@ export class ProductService {
     }
 
     return sanitizeProduct(unpublishedProduct);
-  };
+  }
 
   /**
    * Find a product owned by user's shop.
    */
-  static findProductOwnedByShop = async ({
+  static async findProductOwnedByShop({
     shopId,
     productId,
-  }: FindProductOwnedByShopInput) => {
+  }: FindProductOwnedByShopInput) {
     const query: ProductFilterQuery = {
       productShop: toObjectId(shopId),
       _id: toObjectId(productId),
@@ -160,16 +160,16 @@ export class ProductService {
     }
 
     return sanitizeProduct(foundProductOwnedByShop);
-  };
+  }
 
   /**
    * Find all draft products owned by shop.
    */
-  static findDraftProductsOwnedByShop = async ({
+  static async findDraftProductsOwnedByShop({
     shopId,
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
-  }: FindProductsOwnedByShopInput) => {
+  }: FindProductsOwnedByShopInput) {
     const query: ProductFilterQuery = { productShop: shopId, isDraft: true };
 
     const paginationResult = await ProductRepository.findProducts({
@@ -179,16 +179,16 @@ export class ProductService {
     });
 
     return sanitizePagination(paginationResult, sanitizeProduct);
-  };
+  }
 
   /**
    * Find all published product by shop.
    */
-  static findPublishedProductsOwnedByShop = async ({
+  static async findPublishedProductsOwnedByShop({
     shopId,
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
-  }: FindProductsOwnedByShopInput) => {
+  }: FindProductsOwnedByShopInput) {
     const query: ProductFilterQuery = {
       productShop: shopId,
       isPublished: true,
@@ -201,7 +201,7 @@ export class ProductService {
     });
 
     return sanitizePagination(paginationResult, sanitizeProduct);
-  };
+  }
 
   //==========
   // Public
