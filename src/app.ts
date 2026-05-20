@@ -8,7 +8,7 @@ import { handleError } from "./core/error/handleError.middleware.js";
 
 import { attachLocale } from "./shared/middlewares/locale.middleware.js";
 
-import { handleNotFound } from "./handlers/notFound.handler.js";
+import { handleNotFoundRoute } from "./handlers/notFoundRoute.handler.js";
 
 import { mainRouter } from "./mainRouter.js";
 
@@ -40,14 +40,16 @@ app.use(attachLocale);
 /**
  * Register routers.
  */
-app.use("", mainRouter);
+app.use(mainRouter);
 
 /**
- * Handle 404 Not Found.
+ * Handle 404 Not found route.
  */
-app.use(handleNotFound);
+app.use(handleNotFoundRoute);
 
-// Universal error handler.
+/**
+ * Universal error handler.
+ */
 app.use(handleError);
 
 export { app };

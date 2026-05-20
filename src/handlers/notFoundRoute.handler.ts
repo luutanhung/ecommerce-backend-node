@@ -4,9 +4,8 @@ import { NotFoundAppError } from "../core/error/notFoundAppError.js";
 
 import { asyncWrapper } from "../shared/helpers/asyncWrapper.js";
 
-export const handleNotFound = asyncWrapper(
-  // eslint-disable-next-line
+export const handleNotFoundRoute = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    throw new NotFoundAppError({});
+    return next(new NotFoundAppError({}));
   },
 );
