@@ -5,11 +5,11 @@ import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import type { AuthPayload } from "../../../domains/access/types/access.type.js";
-import { ProductService } from "../../../domains/product/product.service.js";
 import type { ShopLean } from "../../../domains/shop/types/shop.type.js";
 import type { ParamsRequest, TypedRequest } from "../../../types/http.type.js";
 import type { ShopParams } from "../../shop/validations/shop.validations.js";
 import { sanitizeProduct } from "../product.sanitizer.js";
+import { ProductService } from "../product.service.js";
 import type {
   CreateProductRequest,
   ProductParams,

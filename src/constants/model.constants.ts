@@ -12,7 +12,7 @@ export const DocumentName = {
   PRODUCT: "Product",
   CLOTHING: "Clothing",
   ELECTRONIC: "Electronic",
-  FURNITURE: "FURNITURE",
+  FURNITURE: "Furniture",
 } as const;
 
 export const CollectionName = {
@@ -29,5 +29,5 @@ export const CollectionName = {
   PRODUCTS: "Products",
   CLOTHES: "Clothes",
   ELECTRONICS: "Electronics",
-  FURNITURES: "FURNITURES",
+  FURNITURES: "Furnitures",
 } as const;
