@@ -6,7 +6,7 @@ import {
   DocumentName,
 } from "../../constants/model.constants.js";
 
-import { ShopStatus } from "./shop.constants.js";
+import { SHOP_STATUS } from "./shop.constants.js";
 
 export const ShopSchema = new Schema(
   {
@@ -31,8 +31,8 @@ export const ShopSchema = new Schema(
     },
     shopStatus: {
       type: String,
-      enum: Object.values(ShopStatus),
-      default: ShopStatus.INACTIVE,
+      enum: Object.values(SHOP_STATUS),
+      default: SHOP_STATUS.INACTIVE,
     },
     isVerified: {
       type: Schema.Types.Boolean,

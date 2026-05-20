@@ -1,6 +1,6 @@
 import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import { ShopRole, ShopStatus } from "../shop.constants.js";
+import { SHOP_STATUS, ShopRole } from "../shop.constants.js";
 import type { ShopSchema } from "../shop.model.js";
 
 // Raw object shop.
@@ -12,7 +12,7 @@ export type ShopLean = Shop & {
   _id: Types.ObjectId;
 };
 
-export type ShopStatus = (typeof ShopStatus)[keyof typeof ShopStatus];
+export type ShopStatus = (typeof SHOP_STATUS)[keyof typeof SHOP_STATUS];
 export type ShopRole = (typeof ShopRole)[keyof typeof ShopRole];
 
 export type RegisterShopInput = {
