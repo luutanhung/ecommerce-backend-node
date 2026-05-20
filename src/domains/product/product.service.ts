@@ -21,13 +21,11 @@ import { ResCode } from "../../constants/resCode.constants.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
-import {
-  sanitizePagination,
-  sanitizeProduct,
-} from "../../shared/utils/sanitizer.utils.js";
+import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
 
 import { ProductFactory } from "./product.factory.js";
 import { ProductRepository } from "./product.repository.js";
+import { sanitizeProduct } from "./product.sanitizer.js";
 import { buildProductsQuery } from "./product.utils.js";
 
 export class ProductService {

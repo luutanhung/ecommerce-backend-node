@@ -2,7 +2,6 @@ import _ from "lodash";
 import type { PaginateResult } from "mongoose";
 
 import type { User, UserLean } from "../../domains/access/types/access.type.js";
-import type { ProductLean } from "../../domains/product/types/product.type.js";
 import type { Shop, ShopLean } from "../../domains/shop/types/shop.type.js";
 
 import { transformMongoId } from "./mongoose.utils.js";
@@ -66,30 +65,4 @@ export function sanitizePagination<T, R>(
 
     docs: pagination.docs.map(sanitizer),
   };
-}
-
-/**
- * Sanitize product document instance.
- */
-export function sanitizeProduct(product: ProductLean): Partial<ProductLean> {
-  const sanitizedProduct = pickFields(
-    [
-      "_id",
-      "productName",
-      "productThumb",
-      "productType",
-      "productAttributes",
-      "productPrice",
-      "productQuantity",
-      "productShop",
-      "productDescription",
-      "productAverageRating",
-      "productVariations",
-      "createdAt",
-      "updatedAt",
-    ],
-    product,
-  );
-
-  return transformMongoId(sanitizedProduct);
 }

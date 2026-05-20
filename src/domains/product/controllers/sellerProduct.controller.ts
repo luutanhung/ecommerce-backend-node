@@ -6,9 +6,9 @@ import { OKResponse } from "../../../core/response/ok.response.js";
 import type { AuthPayload } from "../../../domains/access/types/access.type.js";
 import { ProductService } from "../../../domains/product/product.service.js";
 import type { ShopLean } from "../../../domains/shop/types/shop.type.js";
-import { sanitizeProduct } from "../../../shared/utils/sanitizer.utils.js";
 import type { ParamsRequest, TypedRequest } from "../../../types/http.type.js";
 import type { ShopParams } from "../../shop/validations/shop.validations.js";
+import { sanitizeProduct } from "../product.sanitizer.js";
 import type {
   CreateProductRequest,
   ProductParams,
