@@ -52,6 +52,11 @@ const BaseProductSchema = z.object({
     ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
   ),
 
+  productQuantity: PositiveNumberSchema(
+    ResCode.PRODUCT_QUANTITY_INVALID_TYPE,
+    ResCode.PRODUCT_QUANTITY_MUST_BE_POSITIVE,
+  ),
+
   productType: z.literal(ProductType.CLOTHING),
 });
 

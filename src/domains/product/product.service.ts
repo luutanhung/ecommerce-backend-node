@@ -80,7 +80,7 @@ export class ProductService {
         {
           productId: createdProduct._id.toString(),
           shopId: createdProduct.productShop.toString(),
-          stock: 0,
+          stock: createdProduct.productQuantity,
           location: "",
           reservations: [],
         },

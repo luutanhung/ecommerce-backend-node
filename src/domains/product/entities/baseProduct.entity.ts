@@ -15,6 +15,8 @@ export type ProductProps<TAttributes = BaseProductAttributes> = {
 
   productPrice: number;
 
+  productQuantity: number;
+
   productType: ProductType;
 
   productAttributes: TAttributes;
