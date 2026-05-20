@@ -33,3 +33,7 @@ export type ProductFilters = {
 export type FindPublishedProductsInput = ProductFilters &
   SortOptions &
   PartialPaginationQuery;
+
+export type FindPublishedProductInput = {
+  productId: string;
+};

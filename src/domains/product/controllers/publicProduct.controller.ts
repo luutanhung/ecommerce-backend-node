@@ -4,9 +4,11 @@ import _ from "lodash";
 import { ResCode } from "../../../constants/resCode.constants.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import type { ShopParams } from "../../shop/validations/shop.validations.js";
+import { sanitizeProduct } from "../product.sanitizer.js";
 import { ProductService } from "../product.service.js";
 import type {
   FindPublishedProducts,
+  ProductParams,
   SearchPublishedProductRequest,
 } from "../validations/product.validations.js";
 
@@ -53,6 +55,20 @@ export class PublicProductController {
           "page",
           "limit",
         ]),
+      ),
+    }).send(req, res);
+  }
+
+  /**
+   * Returns a single published product.
+   */
+  async findPublishedProduct(req: Request, res: Response) {
+    new OKResponse({
+      code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
+      data: sanitizeProduct(
+        await ProductService.findPublishedProduct({
+          productId: (req.validated?.params as ProductParams).productId,
+        }),
       ),
     }).send(req, res);
   }

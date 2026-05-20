@@ -6,6 +6,7 @@ import type {
   CreateProductResult,
   FindProductOwnedByShopInput,
   FindProductsOwnedByShopInput,
+  FindPublishedProductInput,
   FindPublishedProductsInput,
   PublishShopProductInput,
   SearchProductsInput,
@@ -254,5 +255,25 @@ export class ProductService {
     });
 
     return sanitizePagination(paginationResult, sanitizeProduct);
+  }
+
+  /**
+   * Find a single published product.
+   */
+  static async findPublishedProduct({ productId }: FindPublishedProductInput) {
+    const foundProduct = await ProductRepository.findProduct({
+      query: {
+        _id: toObjectId(productId),
+        isPublished: true,
+      },
+    });
+
+    if (!foundProduct) {
+      throw new NotFoundAppError({
+        code: ResCode.PRODUCT_NOT_FOUND,
+      });
+    }
+
+    return foundProduct;
   }
 }

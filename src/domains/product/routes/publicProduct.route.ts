@@ -7,6 +7,7 @@ import { validateRequest } from "../../../shared/middlewares/validateRequest.mid
 import { ShopParamsSchema } from "../../shop/validations/shop.validations.js";
 import {
   FindPublishedProductsSchema,
+  ProductParamsSchema,
   SearchPublishedProductRequestSchema,
 } from "../validations/product.validations.js";
 
@@ -43,6 +44,17 @@ router.get(
     query: FindPublishedProductsSchema,
   }),
   asyncWrapper(publicProductController.findPublishedProducts),
+);
+
+/**
+ * Find a single published product.
+ */
+router.get(
+  "/products/:productId",
+  validateRequest({
+    params: ProductParamsSchema,
+  }),
+  asyncWrapper(publicProductController.findPublishedProduct),
 );
 
 export { router as publicProductRouter };
