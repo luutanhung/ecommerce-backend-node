@@ -8,6 +8,8 @@ import { handleError } from "./core/error/handleError.middleware.js";
 
 import { attachLocale } from "./shared/middlewares/locale.middleware.js";
 
+import { handleNotFound } from "./handlers/notFound.handler.js";
+
 import { mainRouter } from "./mainRouter.js";
 
 const app: Express = express();
@@ -39,6 +41,11 @@ app.use(attachLocale);
  * Register routers.
  */
 app.use("", mainRouter);
+
+/**
+ * Handle 404 Not Found.
+ */
+app.use(handleNotFound);
 
 // Universal error handler.
 app.use(handleError);
