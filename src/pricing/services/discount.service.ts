@@ -1,6 +1,6 @@
 import { DISCOUNT_APPLIES_TO } from "../constants/discount.constants.js";
 
-import type { CreateDiscountInput } from "../types/discount.service.types.js";
+import type { CreateShopDiscountInput } from "../types/discount.service.types.js";
 
 import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
@@ -9,8 +9,11 @@ import type { TransactionOptions } from "../../types/mongoose.type.js";
 import { Discounts } from "../discount.model.js";
 
 export class DiscountService {
-  static async createDiscount(
-    input: CreateDiscountInput,
+  /**
+   * Create a new shop discount.
+   */
+  static async createShopDiscount(
+    input: CreateShopDiscountInput,
     options: TransactionOptions = {},
   ) {
     const {
@@ -30,7 +33,7 @@ export class DiscountService {
       applicableCategories = [],
     } = input;
 
-    const [createdDiscount] = await Discounts.create(
+    const [createdShopDiscount] = await Discounts.create(
       [
         {
           discountShop: toObjectId(shopId),
@@ -54,12 +57,12 @@ export class DiscountService {
       },
     );
 
-    if (!createdDiscount) {
+    if (!createdShopDiscount) {
       throw new BadRequestAppError({
         code: ResCode.DISCOUNT_CREATE_FAILED,
       });
     }
 
-    return createdDiscount;
+    return createdShopDiscount;
   }
 }

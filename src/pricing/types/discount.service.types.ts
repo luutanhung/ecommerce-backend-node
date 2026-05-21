@@ -2,7 +2,7 @@ import type { ProductType } from "../../domains/product/types/product.type.js";
 
 import type { DiscountAppliesTo, DiscountType } from "./discount.types.js";
 
-export type CreateDiscountInput = {
+export type CreateShopDiscountInput = {
   shopId: string;
   name: string;
   description: string;
