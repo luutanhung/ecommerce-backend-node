@@ -1,0 +1,7 @@
+export const DiscountViLocale = {
+  /**
+   * Pricing.
+   */
+  DISCOUNT_CREATE_FAILED: "DISCOUNT_CREATE_FAILED",
+  DISCOUNT_CREATE_SUCCESS: "DISCOUNT_CREATE_SUCCESS",
+};
