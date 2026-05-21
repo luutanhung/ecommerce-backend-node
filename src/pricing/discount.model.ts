@@ -1,18 +1,18 @@
 import { Schema, model } from "mongoose";
 
+import { ProductType } from "../domains/product/constants/product.constants.js";
+
 import { DocumentName } from "../constants/model.constants.js";
-import { DISCOUNT_TYPE } from "./constants/discount.constants.js";
+import {
+  DISCOUNT_APPLIES_TO,
+  DISCOUNT_TYPE,
+} from "./constants/discount.constants.js";
 
 export const DiscountSchema = new Schema({
   discountShop: {
     type: Schema.Types.ObjectId,
     ref: DocumentName.SHOP,
     required: true,
-  },
-  // List of products to apply this discount.
-  discountProductIds: {
-    type: Array,
-    default: [],
   },
   discountName: {
     type: String,
@@ -66,6 +66,34 @@ export const DiscountSchema = new Schema({
   discountIsActive: {
     type: Boolean,
     default: true,
+  },
+  discountMinOrderValue: {
+    type: Number,
+    default: 0,
+  },
+  // List of products to apply this discount.
+  discountAppliesTo: {
+    type: String,
+    enum: Object.values(DISCOUNT_APPLIES_TO),
+    default: DISCOUNT_APPLIES_TO.ALL,
+  },
+  discountApplicableProducts: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: DocumentName.PRODUCT,
+      },
+    ],
+    default: [],
+  },
+  discountApplicableCategories: {
+    type: [
+      {
+        type: String,
+        enum: Object.values(ProductType),
+      },
+    ],
+    default: [],
   },
 });
 

@@ -42,3 +42,11 @@ export const DISCOUNT_TYPE = {
    */
   SEASONAL_DISCOUNT: "SEASONAL_DISCOUNT",
 } as const;
+
+export const DISCOUNT_APPLIES_TO = {
+  ALL: "all",
+
+  PRODUCTS: "products",
+
+  CATEGORIES: "categories",
+} as const;
