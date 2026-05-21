@@ -41,5 +41,5 @@ export const CollectionName = {
   INVENTORIES: "Inventories",
 
   // Pricing.
-  DISCOUNTS: "DISCOUNTS",
+  DISCOUNTS: "Discounts",
 } as const;

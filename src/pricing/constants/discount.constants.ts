@@ -44,9 +44,9 @@ export const DISCOUNT_TYPE = {
 } as const;
 
 export const DISCOUNT_APPLIES_TO = {
-  ALL: "all",
+  ALL: "ALL",
 
-  PRODUCTS: "products",
+  PRODUCTS: "PRODUCTS",
 
-  CATEGORIES: "categories",
+  CATEGORIES: "CATEGORIES",
 } as const;

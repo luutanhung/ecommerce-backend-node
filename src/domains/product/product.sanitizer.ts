@@ -20,7 +20,7 @@ export const DEFAULT_PRODUCT_SELECT_FIELDS: Array<keyof ProductLean> = [
 ] as const;
 
 /*
- * Sanitize product document instance.
+ * Sanitize product.
  */
 export function sanitizeProduct(product: ProductLean): Partial<ProductLean> {
   const sanitizedProduct = pickFields(DEFAULT_PRODUCT_SELECT_FIELDS, product);

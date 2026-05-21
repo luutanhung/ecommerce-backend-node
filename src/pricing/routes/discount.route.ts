@@ -5,18 +5,23 @@ import { discountController } from "../controllers/discount.controller.js";
 import { authenticateAccessToken } from "../../domains/access/middlewares/access.middleware.js";
 import { authorizeShopOwnership } from "../../domains/shop/middlewares/shop.middleware.js";
 import { asyncWrapper } from "../../shared/helpers/asyncWrapper.js";
+import { validateRequest } from "../../shared/middlewares/validateRequest.middleware.js";
+import { CreateShopDiscountRequestSchema } from "../validations/discount.validations.js";
 
 const router = Router();
 
 router.use(authenticateAccessToken);
 
 /**
- * Create a new discount.
+ * Create a new shop discount.
  */
 router.post(
   "/shops/:shopId/discounts/create",
   authorizeShopOwnership,
-  asyncWrapper(discountController.createDiscount),
+  validateRequest({
+    body: CreateShopDiscountRequestSchema,
+  }),
+  asyncWrapper(discountController.createShopDiscount),
 );
 
 export { router as discountRouter };

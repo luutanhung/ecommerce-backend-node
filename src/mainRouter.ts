@@ -7,6 +7,8 @@ import { publicProductRouter } from "./domains/product/routes/publicProduct.rout
 import { sellerProductRouter } from "./domains/product/routes/sellerProduct.route.js";
 import { shopRouter } from "./domains/shop/routes/shop.route.js";
 
+import { discountRouter } from "./pricing/routes/discount.route.js";
+
 const router = Router();
 
 // Authenticate API Key.
@@ -28,5 +30,10 @@ router.use("/api/v1", shopRouter);
  */
 router.use("/api/v1", sellerProductRouter);
 router.use("/api/v1", publicProductRouter);
+
+/**
+ * Register pricing routes.
+ */
+router.use("/api/v1", discountRouter);
 
 export { router as mainRouter };
