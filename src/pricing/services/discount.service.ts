@@ -4,6 +4,7 @@ import type { CreateShopDiscountInput } from "../types/discount.service.types.js
 
 import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 import type { TransactionOptions } from "../../types/mongoose.type.js";
 import { Discounts } from "../discount.model.js";
@@ -32,6 +33,17 @@ export class DiscountService {
       applicableProducts = [],
       applicableCategories = [],
     } = input;
+
+    const foundDiscountWithCode = await Discounts.findOne({
+      discountCode: code,
+      discountShop: toObjectId(shopId),
+    });
+
+    if (foundDiscountWithCode) {
+      throw new ConflictAppError({
+        code: ResCode.DISCOUNT_WITH_CODE_ALREADY_EXISTS,
+      });
+    }
 
     const [createdShopDiscount] = await Discounts.create(
       [

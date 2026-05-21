@@ -9,8 +9,6 @@ import { ProductType } from "../../domains/product/constants/product.constants.j
 
 export const CreateShopDiscountRequestSchema = z
   .object({
-    shopId: z.string().min(1),
-
     name: z.string().min(1).max(150),
 
     description: z.string().max(1000),
