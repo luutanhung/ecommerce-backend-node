@@ -110,7 +110,7 @@ export class DiscountService {
       productShop: toObjectId(shopId),
     };
 
-    if (discountAppliesTo !== DISCOUNT_APPLIES_TO.ALL) {
+    if (discountAppliesTo === DISCOUNT_APPLIES_TO.PRODUCTS) {
       query._id = {
         $in: discountApplicableProducts,
       };
