@@ -159,6 +159,11 @@ export const ResCode = {
   INVENTORY_CREATE_FAILED: "INVENTORY_CREATE_FAILED",
 
   /**
+   * Cart.
+   */
+  CART_NOT_FOUND: "CART_NOT_FOUND",
+
+  /**
    * Pricing.
    */
   DISCOUNT_CREATE_FAILED: "DISCOUNT_CREATE_FAILED",

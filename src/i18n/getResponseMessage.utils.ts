@@ -3,12 +3,14 @@ import { Locale } from "../constants/locale.constants.js";
 import type { ResponseCodeKey } from "../types/core/response.type.js";
 
 import { AccessEnLocale } from "./locales/en/access.locale.js";
+import { CartEnLocale } from "./locales/en/cart.locale.js";
 import { CommonEnLocale } from "./locales/en/common.locale.js";
 import { DiscountEnLocale } from "./locales/en/discount.locale.js";
 import { InventoryEnLocale } from "./locales/en/inventory.locale.js";
 import { ProductEnLocale } from "./locales/en/product.locale.js";
 import { ShopEnLocale } from "./locales/en/shop.locale.js";
 import { AccessViLocale } from "./locales/vi/access.locale.js";
+import { CartViLocale } from "./locales/vi/cart.locale.js";
 import { CommonViLocale } from "./locales/vi/common.locale.js";
 import { DiscountViLocale } from "./locales/vi/discount.locale.js";
 import { InventoryViLocale } from "./locales/vi/inventory.locale.js";
@@ -31,6 +33,9 @@ export const ResMsg = {
     // Inventory.
     ...InventoryEnLocale,
 
+    // Cart.
+    ...CartEnLocale,
+
     // Pricing.
     ...DiscountEnLocale,
   },
@@ -49,6 +54,9 @@ export const ResMsg = {
 
     // Inventory.
     ...InventoryViLocale,
+
+    // Cart.
+    ...CartViLocale,
 
     // Pricing.
     ...DiscountViLocale,
