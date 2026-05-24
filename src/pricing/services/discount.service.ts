@@ -3,7 +3,9 @@ import { DISCOUNT_TYPE } from "../constants/discount.constants.js";
 
 import type {
   ApplyDiscountToProductsInput,
+  CancelDiscountByDiscountCodeInput,
   CreateShopDiscountInput,
+  DeleteDiscountByDiscountCodeInput,
   FindApplicableProductsByDiscountCodeInput,
   FindDiscountsByShopInput,
   FindShopDiscountByDiscountCodeInput,
@@ -96,84 +98,6 @@ export class DiscountService {
   }
 
   /**
-   * Find applicable products with discount code.
-   */
-  static async findApplicableProductsByDiscountCode({
-    shopId,
-    code,
-    page = PAGINATION_DEFAULT_PAGE,
-    limit = PAGINATION_DEFAULT_LIMIT,
-  }: FindApplicableProductsByDiscountCodeInput) {
-    const foundActiveDiscount = await this.findShopDiscountByDiscountCode({
-      shopId,
-      code,
-    });
-
-    const { discountAppliesTo, discountApplicableProducts } =
-      foundActiveDiscount;
-
-    const query: Record<string, unknown> = {
-      productShop: toObjectId(shopId),
-      isPublished: true,
-    };
-
-    if (discountAppliesTo === DISCOUNT_APPLIES_TO.PRODUCTS) {
-      query._id = {
-        $in: discountApplicableProducts,
-      };
-    }
-
-    return await ProductRepository.findProducts({
-      query,
-      page,
-      limit,
-      select: ["productName"],
-    });
-  }
-
-  /**
-   * Find shop discount.
-   */
-  static async findShopDiscountByDiscountCode({
-    shopId,
-    code,
-  }: FindShopDiscountByDiscountCodeInput): Promise<DiscountLean> {
-    const foundDiscount = await Discounts.findOne({
-      discountShop: toObjectId(shopId),
-      discountCode: code,
-    }).lean();
-
-    if (!foundDiscount || !foundDiscount.discountIsActive) {
-      throw new NotFoundAppError({
-        code: ResCode.DISCOUNT_NOT_FOUND,
-      });
-    }
-
-    return foundDiscount;
-  }
-
-  /**
-   * Find discounts by shop.
-   */
-  static async findDiscountsByShop({
-    shopId,
-    page,
-    limit,
-  }: FindDiscountsByShopInput) {
-    const query: Record<string, unknown> = {
-      discountShop: toObjectId(shopId),
-    };
-
-    const paginationResult = await DiscountRepository.findDiscountsPaginated({
-      query,
-      page,
-      limit,
-    });
-
-    return sanitizePagination(paginationResult, sanitizeDiscount);
-  }
-
-  /**
    * Apply discount to products.
    */
   static async applyDiscountToProducts({
@@ -252,5 +176,145 @@ export class DiscountService {
       discountAmount,
       remainingBalance,
     };
+  }
+
+  /**
+   * Delete a discount.
+   */
+  static async deleteDiscountByDiscountCode({
+    shopId,
+    code,
+  }: DeleteDiscountByDiscountCodeInput): Promise<DiscountLean> {
+    const deletedDiscount = await Discounts.findOneAndDelete({
+      discountShop: toObjectId(shopId),
+      discountCode: code,
+    }).lean();
+
+    if (!deletedDiscount) {
+      throw new NotFoundAppError({
+        code: ResCode.DISCOUNT_NOT_FOUND,
+      });
+    }
+
+    return deletedDiscount;
+  }
+
+  /**
+   * Cancel discount.
+   */
+  static async cancelDiscountByDiscountCode({
+    shopId,
+    code,
+    userId,
+  }: CancelDiscountByDiscountCodeInput) {
+    const foundDiscount = await Discounts.findOne({
+      discountShop: toObjectId(shopId),
+      discountCode: code,
+    });
+
+    if (!foundDiscount) {
+      throw new NotFoundAppError({
+        code: ResCode.DISCOUNT_NOT_FOUND,
+      });
+    }
+
+    if (foundDiscount.discountIsActive === false) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_NOT_ACTIVE,
+      });
+    }
+
+    const updatedDiscount = (await Discounts.findByIdAndUpdate(
+      foundDiscount._id,
+      {
+        $pull: {
+          discountUsersUsed: userId,
+        },
+        $inc: {
+          discountUsageLimit: 1,
+          discountUsedCount: -1,
+        },
+      },
+    )) as DiscountLean;
+
+    return updatedDiscount;
+  }
+
+  /**
+   * Find applicable products with discount code.
+   */
+  static async findApplicableProductsByDiscountCode({
+    shopId,
+    code,
+    page = PAGINATION_DEFAULT_PAGE,
+    limit = PAGINATION_DEFAULT_LIMIT,
+  }: FindApplicableProductsByDiscountCodeInput) {
+    const foundActiveDiscount = await this.findShopDiscountByDiscountCode({
+      shopId,
+      code,
+    });
+
+    const { discountAppliesTo, discountApplicableProducts } =
+      foundActiveDiscount;
+
+    const query: Record<string, unknown> = {
+      productShop: toObjectId(shopId),
+      isPublished: true,
+    };
+
+    if (discountAppliesTo === DISCOUNT_APPLIES_TO.PRODUCTS) {
+      query._id = {
+        $in: discountApplicableProducts,
+      };
+    }
+
+    return await ProductRepository.findProducts({
+      query,
+      page,
+      limit,
+      select: ["productName"],
+    });
+  }
+
+  /**
+   * Find shop discount.
+   */
+  static async findShopDiscountByDiscountCode({
+    shopId,
+    code,
+  }: FindShopDiscountByDiscountCodeInput): Promise<DiscountLean> {
+    const foundDiscount = await Discounts.findOne({
+      discountShop: toObjectId(shopId),
+      discountCode: code,
+    }).lean();
+
+    if (!foundDiscount || !foundDiscount.discountIsActive) {
+      throw new NotFoundAppError({
+        code: ResCode.DISCOUNT_NOT_FOUND,
+      });
+    }
+
+    return foundDiscount;
+  }
+
+  /**
+   * Find discounts by shop.
+   */
+  static async findDiscountsByShop({
+    shopId,
+    page,
+    limit,
+  }: FindDiscountsByShopInput) {
+    const query: Record<string, unknown> = {
+      discountShop: toObjectId(shopId),
+    };
+
+    const paginationResult = await DiscountRepository.findDiscountsPaginated({
+      query,
+      page,
+      limit,
+    });
+
+    return sanitizePagination(paginationResult, sanitizeDiscount);
   }
 }

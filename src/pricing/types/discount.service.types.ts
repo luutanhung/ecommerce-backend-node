@@ -20,6 +20,17 @@ export type CreateShopDiscountInput = {
   applicableCategories?: ProductType[];
 };
 
+export type DeleteDiscountByDiscountCodeInput = {
+  shopId: string;
+  code: string;
+};
+
+export type CancelDiscountByDiscountCodeInput = {
+  shopId: string;
+  code: string;
+  userId: string;
+};
+
 export type FindShopDiscountByDiscountCodeInput = {
   shopId: string;
   code: string;

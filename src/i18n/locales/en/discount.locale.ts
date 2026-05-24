@@ -16,6 +16,8 @@ export const DiscountEnLocale = {
 
   DISCOUNT_EXPIRED: "DISCOUNT_EXPIRED",
 
+  DISCOUNT_NOT_ACTIVE: "DISCOUNT_NOT_ACTIVE",
+
   DISCOUNT_LIMIT_REACHED:
     "This discount code has reached its maximum usage limit.",
 
