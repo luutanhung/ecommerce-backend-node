@@ -108,6 +108,7 @@ export class DiscountService {
 
     const query: Record<string, unknown> = {
       productShop: toObjectId(shopId),
+      isPublished: true,
     };
 
     if (discountAppliesTo === DISCOUNT_APPLIES_TO.PRODUCTS) {
