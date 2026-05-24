@@ -6,7 +6,10 @@ import { authenticateAccessToken } from "../../domains/access/middlewares/access
 import { authorizeShopOwnership } from "../../domains/shop/middlewares/shop.middleware.js";
 import { asyncWrapper } from "../../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../../shared/middlewares/validateRequest.middleware.js";
-import { CreateShopDiscountRequestSchema } from "../validations/discount.validations.js";
+import {
+  CreateShopDiscountRequestSchema,
+  FindApplicableProductsByDiscountCodeRequestSchema,
+} from "../validations/discount.validations.js";
 
 const router = Router();
 
@@ -22,6 +25,17 @@ router.post(
     body: CreateShopDiscountRequestSchema,
   }),
   asyncWrapper(discountController.createShopDiscount),
+);
+
+/**
+ * Find applicable products with discount code.
+ */
+router.get(
+  "/shops/:shopId/products/discounted",
+  validateRequest({
+    query: FindApplicableProductsByDiscountCodeRequestSchema,
+  }),
+  asyncWrapper(discountController.findApplicableProductsByDiscountCode),
 );
 
 export { router as discountRouter };

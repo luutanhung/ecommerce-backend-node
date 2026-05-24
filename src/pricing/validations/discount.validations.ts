@@ -6,6 +6,14 @@ import {
 } from "../constants/discount.constants.js";
 
 import { ProductType } from "../../domains/product/constants/product.constants.js";
+import { PaginationQuerySchema } from "../../shared/validations/pagination.validations.js";
+
+export const DiscountCodeSchema = z
+  .string()
+  .trim()
+  .min(3)
+  .max(50)
+  .transform((v) => v.toUpperCase());
 
 export const CreateShopDiscountRequestSchema = z
   .object({
@@ -17,12 +25,7 @@ export const CreateShopDiscountRequestSchema = z
 
     value: z.number().positive(),
 
-    code: z
-      .string()
-      .trim()
-      .min(3)
-      .max(50)
-      .transform((v) => v.toUpperCase()),
+    code: DiscountCodeSchema,
 
     startsAt: z.coerce.date(),
 
@@ -81,7 +84,18 @@ export const CreateShopDiscountRequestSchema = z
       }
     }
   });
-
 export type CreateShopDiscountRequest = z.infer<
   typeof CreateShopDiscountRequestSchema
+>;
+
+export const DiscountQuerySchema = z.object({
+  code: DiscountCodeSchema,
+});
+
+export type DiscountQuery = z.infer<typeof DiscountQuerySchema>;
+
+export const FindApplicableProductsByDiscountCodeRequestSchema =
+  DiscountQuerySchema.extend(PaginationQuerySchema.shape);
+export type FindApplicableProductsByDiscountCode = z.infer<
+  typeof FindApplicableProductsByDiscountCodeRequestSchema
 >;
