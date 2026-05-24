@@ -117,7 +117,12 @@ export class DiscountService {
       };
     }
 
-    return await ProductRepository.findProducts({ query, page, limit });
+    return await ProductRepository.findProducts({
+      query,
+      page,
+      limit,
+      select: ["productName"],
+    });
   }
 
   /**
