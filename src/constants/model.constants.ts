@@ -17,6 +17,9 @@ export const DocumentName = {
   // Inventory.
   INVENTORY: "Inventory",
 
+  // Cart.
+  CART: "Cart",
+
   // Pricing.
   DISCOUNT: "Discount",
 } as const;
@@ -39,6 +42,9 @@ export const CollectionName = {
 
   // Inventory.
   INVENTORIES: "Inventories",
+
+  // Cart.
+  CARTS: "Carts",
 
   // Pricing.
   DISCOUNTS: "Discounts",

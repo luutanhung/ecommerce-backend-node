@@ -3,6 +3,7 @@ import { Router } from "express";
 // import { authenticateApiKey } from "../auth/auth.middleware.js";
 
 import { accessRouter } from "./domains/access/routes/access.route.js";
+import { cartRouter } from "./domains/cart/cart.route.js";
 import { publicProductRouter } from "./domains/product/routes/publicProduct.route.js";
 import { sellerProductRouter } from "./domains/product/routes/sellerProduct.route.js";
 import { shopRouter } from "./domains/shop/routes/shop.route.js";
@@ -30,6 +31,11 @@ router.use("/api/v1", shopRouter);
  */
 router.use("/api/v1", sellerProductRouter);
 router.use("/api/v1", publicProductRouter);
+
+/**
+ * Register cart routes.
+ */
+router.use("/api/v1/", cartRouter);
 
 /**
  * Register pricing routes.
