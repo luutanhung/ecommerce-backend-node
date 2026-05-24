@@ -5,7 +5,6 @@ import { DiscountService } from "../services/discount.service.js";
 import { ResCode } from "../../constants/resCode.constants.js";
 import { CreatedResponse } from "../../core/response/created.response.js";
 import { OKResponse } from "../../core/response/ok.response.js";
-import type { AuthPayload } from "../../domains/access/types/access.type.js";
 import type { ShopLean } from "../../domains/shop/types/shop.type.js";
 import type { ShopParams } from "../../domains/shop/validations/shop.validations.js";
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
@@ -22,7 +21,7 @@ export class DiscountController {
   async createShopDiscount(req: Request, res: Response): Promise<void> {
     const createdDiscount = await DiscountService.createShopDiscount({
       ...(req.validated?.body as CreateShopDiscountRequest),
-      shopId: (req.user as AuthPayload).userId,
+      shopId: (req.ownedShop as ShopLean)._id.toString(),
     });
 
     new CreatedResponse({
