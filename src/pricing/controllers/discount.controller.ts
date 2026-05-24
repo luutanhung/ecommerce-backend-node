@@ -10,6 +10,7 @@ import type { ShopParams } from "../../domains/shop/validations/shop.validations
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
 import { sanitizeDiscount } from "../sanitizers/discount.sanitizer.js";
 import type {
+  ApplyDiscountToProductsRequest,
   CreateShopDiscountRequest,
   FindApplicableProductsByDiscountCode,
 } from "../validations/discount.validations.js";
@@ -31,9 +32,28 @@ export class DiscountController {
   }
 
   /**
+   * Apply discount to products.
+   */
+  async applyDiscountToProducts(req: Request, res: Response): Promise<void> {
+    const { shopId } = req.validated?.params as ShopParams;
+    const { code } = req.validated?.body as ApplyDiscountToProductsRequest;
+
+    new OKResponse({
+      code: ResCode.DISCOUNT_APPLY_DISCOUNT_TO_PRODUCTS,
+      data: await DiscountService.applyDiscountToProducts({
+        shopId,
+        code,
+      }),
+    }).send(req, res);
+  }
+
+  /**
    * Find applicable products with discount code.
    */
-  async findApplicableProductsByDiscountCode(req: Request, res: Response) {
+  async findApplicableProductsByDiscountCode(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
     const { code, page, limit } = req.validated
       ?.query as FindApplicableProductsByDiscountCode;
 
@@ -51,7 +71,7 @@ export class DiscountController {
   /**
    * Find discounts by shop.
    */
-  async findDiscountsByShop(req: Request, res: Response) {
+  async findDiscountsByShop(req: Request, res: Response): Promise<void> {
     const { shopId } = req.validated?.params as ShopParams;
     const { page, limit } = req.validated?.query as PaginationQuery;
 

@@ -1,6 +1,8 @@
 import { DISCOUNT_APPLIES_TO } from "../constants/discount.constants.js";
+import { DISCOUNT_TYPE } from "../constants/discount.constants.js";
 
 import type {
+  ApplyDiscountToProductsInput,
   CreateShopDiscountInput,
   FindApplicableProductsByDiscountCodeInput,
   FindDiscountsByShopInput,
@@ -169,5 +171,86 @@ export class DiscountService {
     });
 
     return sanitizePagination(paginationResult, sanitizeDiscount);
+  }
+
+  /**
+   * Apply discount to products.
+   */
+  static async applyDiscountToProducts({
+    shopId,
+    code,
+  }: ApplyDiscountToProductsInput) {
+    const foundActiveDiscount = await DiscountRepository.findDiscount({
+      query: {
+        shopId: toObjectId(shopId),
+        discountCode: code,
+      },
+    });
+
+    const {
+      discountIsActive,
+      discountUsageLimit,
+      discountStartsAt,
+      discountEndsAt,
+      discountMinOrderValue,
+      discountType,
+      discountValue,
+    } = foundActiveDiscount;
+
+    if (discountIsActive === false) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_EXPIRED,
+      });
+    }
+
+    if (discountUsageLimit === 0) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_LIMIT_REACHED,
+      });
+    }
+
+    const currentTime = new Date().getTime();
+    const startTime = new Date(discountStartsAt).getTime();
+    const endTime = new Date(discountEndsAt).getTime();
+
+    if (currentTime < startTime) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_NOT_STARTED,
+      });
+    }
+
+    if (currentTime > endTime) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_EXPIRED,
+      });
+    }
+
+    /**
+     * Get grand total from order.
+     */
+    const grandTotal: number = 0;
+
+    if (discountMinOrderValue > 0) {
+      if (grandTotal < discountMinOrderValue) {
+        throw new BadRequestAppError({
+          code: ResCode.DISCOUNT_MIN_ORDER_VALUE_NOT_MET,
+        });
+      }
+    }
+
+    let discountAmount: number = 0;
+    if (discountType === DISCOUNT_TYPE.FIXED_AMOUNT) {
+      discountAmount = discountValue;
+    } else if (discountType === DISCOUNT_TYPE.PERCENTAGE) {
+      discountAmount = grandTotal * (discountValue / 100);
+    }
+
+    const remainingBalance: number = grandTotal - discountAmount;
+
+    return {
+      grandTotal,
+      discountAmount,
+      remainingBalance,
+    };
   }
 }

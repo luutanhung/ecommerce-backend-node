@@ -99,3 +99,10 @@ export const FindApplicableProductsByDiscountCodeRequestSchema =
 export type FindApplicableProductsByDiscountCode = z.infer<
   typeof FindApplicableProductsByDiscountCodeRequestSchema
 >;
+
+export const ApplyDiscountToProductsRequestSchema = z.object({
+  code: DiscountCodeSchema,
+});
+export type ApplyDiscountToProductsRequest = z.infer<
+  typeof ApplyDiscountToProductsRequestSchema
+>;

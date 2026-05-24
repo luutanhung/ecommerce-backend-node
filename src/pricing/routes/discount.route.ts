@@ -9,6 +9,7 @@ import { asyncWrapper } from "../../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../../shared/middlewares/validateRequest.middleware.js";
 import { PaginationQuerySchema } from "../../shared/validations/pagination.validations.js";
 import {
+  ApplyDiscountToProductsRequestSchema,
   CreateShopDiscountRequestSchema,
   FindApplicableProductsByDiscountCodeRequestSchema,
 } from "../validations/discount.validations.js";
@@ -27,6 +28,18 @@ router.post(
     body: CreateShopDiscountRequestSchema,
   }),
   asyncWrapper(discountController.createShopDiscount),
+);
+
+/**
+ * Apply discount to products.
+ */
+router.post(
+  "/shops/:shopId/discounts/products/apply",
+  validateRequest({
+    params: ShopParamsSchema,
+    body: ApplyDiscountToProductsRequestSchema,
+  }),
+  asyncWrapper(discountController.applyDiscountToProducts),
 );
 
 /**

@@ -13,4 +13,16 @@ export const DiscountEnLocale = {
     "DISCOUNT_FIND_APPLICABLE_PRODUCTS_BY_DISCOUNT_CODE_SUCCESS",
 
   DISCOUNT_FIND_DISCOUNTS_BY_SHOP: "DISCOUNT_FIND_DISCOUNTS_BY_SHOP",
+
+  DISCOUNT_EXPIRED: "DISCOUNT_EXPIRED",
+
+  DISCOUNT_LIMIT_REACHED:
+    "This discount code has reached its maximum usage limit.",
+
+  DISCOUNT_NOT_STARTED: "This discount is not active yet",
+
+  DISCOUNT_MIN_ORDER_VALUE_NOT_MET:
+    "This discount requires a minimum order value",
+
+  DISCOUNT_APPLY_DISCOUNT_TO_PRODUCTS: "DISCOUNT_APPLY_DISCOUNT_TO_PRODUCTS",
 };

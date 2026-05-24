@@ -8,6 +8,10 @@ import type { Discount } from "./discount.types.js";
 export type DiscountFilterQuery = QueryFilter<Discount>;
 export type DiscountUpdateQuery = UpdateQuery<Discount>;
 
+export type FindDiscountInput = {
+  query?: DiscountFilterQuery;
+};
+
 export type FindDiscountsPaginatedRepositoryInput = Partial<SortOptions> &
   PartialPaginationQuery & {
     query?: DiscountFilterQuery;
