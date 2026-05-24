@@ -29,3 +29,7 @@ export type FindApplicableProductsByDiscountCodeInput = PaginationQuery & {
   shopId: string;
   code: string;
 };
+
+export type FindDiscountsByShopInput = PaginationQuery & {
+  shopId: string;
+};

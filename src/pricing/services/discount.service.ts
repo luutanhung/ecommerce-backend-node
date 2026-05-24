@@ -3,6 +3,7 @@ import { DISCOUNT_APPLIES_TO } from "../constants/discount.constants.js";
 import type {
   CreateShopDiscountInput,
   FindApplicableProductsByDiscountCodeInput,
+  FindDiscountsByShopInput,
   FindShopDiscountByDiscountCodeInput,
 } from "../types/discount.service.types.js";
 import type { DiscountLean } from "../types/discount.types.js";
@@ -17,8 +18,11 @@ import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { ProductRepository } from "../../domains/product/product.repository.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
+import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
 import type { TransactionOptions } from "../../types/mongoose.type.js";
 import { Discounts } from "../discount.model.js";
+import { DiscountRepository } from "../repositories/discount.repository.js";
+import { sanitizeDiscount } from "../sanitizers/discount.sanitizer.js";
 
 export class DiscountService {
   /**
@@ -144,5 +148,26 @@ export class DiscountService {
     }
 
     return foundDiscount;
+  }
+
+  /**
+   * Find discounts by shop.
+   */
+  static async findDiscountsByShop({
+    shopId,
+    page,
+    limit,
+  }: FindDiscountsByShopInput) {
+    const query: Record<string, unknown> = {
+      discountShop: toObjectId(shopId),
+    };
+
+    const paginationResult = await DiscountRepository.findDiscountsPaginated({
+      query,
+      page,
+      limit,
+    });
+
+    return sanitizePagination(paginationResult, sanitizeDiscount);
   }
 }

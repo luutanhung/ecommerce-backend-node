@@ -22,6 +22,8 @@ export const DEFAULT_DISCOUNT_SELECT_FIELDS: Array<keyof DiscountLean> = [
   "discountAppliesTo",
   "discountApplicableProducts",
   "discountApplicableCategories",
+  "createdAt",
+  "updatedAt",
 ] as const;
 
 /**

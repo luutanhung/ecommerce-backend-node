@@ -1,4 +1,5 @@
-import { Schema, model } from "mongoose";
+import { type PaginateModel, Schema, model } from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 import { ProductType } from "../domains/product/constants/product.constants.js";
 
@@ -7,6 +8,8 @@ import {
   DISCOUNT_APPLIES_TO,
   DISCOUNT_TYPE,
 } from "./constants/discount.constants.js";
+
+import type { Discount } from "./types/discount.types.js";
 
 export const DiscountSchema = new Schema(
   {
@@ -103,4 +106,9 @@ export const DiscountSchema = new Schema(
   },
 );
 
-export const Discounts = model(DocumentName.DISCOUNT, DiscountSchema);
+DiscountSchema.plugin(paginate);
+
+export const Discounts = model<Discount, PaginateModel<Discount>>(
+  DocumentName.DISCOUNT,
+  DiscountSchema,
+);

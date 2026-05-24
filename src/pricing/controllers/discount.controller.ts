@@ -7,6 +7,8 @@ import { CreatedResponse } from "../../core/response/created.response.js";
 import { OKResponse } from "../../core/response/ok.response.js";
 import type { AuthPayload } from "../../domains/access/types/access.type.js";
 import type { ShopLean } from "../../domains/shop/types/shop.type.js";
+import type { ShopParams } from "../../domains/shop/validations/shop.validations.js";
+import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
 import { sanitizeDiscount } from "../sanitizers/discount.sanitizer.js";
 import type {
   CreateShopDiscountRequest,
@@ -41,6 +43,23 @@ export class DiscountController {
       data: await DiscountService.findApplicableProductsByDiscountCode({
         shopId: (req.ownedShop as ShopLean)._id.toString(),
         code,
+        page,
+        limit,
+      }),
+    }).send(req, res);
+  }
+
+  /**
+   * Find discounts by shop.
+   */
+  async findDiscountsByShop(req: Request, res: Response) {
+    const { shopId } = req.validated?.params as ShopParams;
+    const { page, limit } = req.validated?.query as PaginationQuery;
+
+    new OKResponse({
+      code: ResCode.DISCOUNT_FIND_DISCOUNTS_BY_SHOP,
+      data: await DiscountService.findDiscountsByShop({
+        shopId,
         page,
         limit,
       }),
