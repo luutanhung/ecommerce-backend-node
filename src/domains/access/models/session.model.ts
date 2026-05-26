@@ -22,9 +22,15 @@ export const SessionSchema = new Schema(
       required: true,
       index: true,
     },
-    refreshTokenHash: {
+    privateKey: {
       type: String,
       required: true,
+      select: false,
+    },
+    publicKey: {
+      type: String,
+      required: true,
+      select: false,
     },
     /**
      * Increment on every refresh token rotation.
@@ -34,6 +40,11 @@ export const SessionSchema = new Schema(
       required: true,
       default: 1,
     },
+    expiresAt: {
+      type: Date,
+      required: true,
+      index: true,
+    },
   },
   {
     timestamps: true,
@@ -41,4 +52,26 @@ export const SessionSchema = new Schema(
   },
 );
 
-export const Devices = model(DOCUMENT_NAME.SESSION, SessionSchema);
+SessionSchema.index(
+  {
+    sessionUser: 1,
+    sessionDeviceId: 1,
+  },
+  {
+    unique: true,
+  },
+);
+
+/**
+ * Auto delete expired sessions.
+ */
+SessionSchema.index(
+  {
+    expiredAt: 1,
+  },
+  {
+    expireAfterSeconds: 0,
+  },
+);
+
+export const Sessions = model(DOCUMENT_NAME.SESSION, SessionSchema);

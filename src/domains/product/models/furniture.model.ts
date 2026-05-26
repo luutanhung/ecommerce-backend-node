@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../../constants/model.constants.js";
 
 /**
@@ -12,7 +12,7 @@ export const FurnitureAttributesSchema = new Schema(
   {
     productShop: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.SHOP,
+      ref: DOCUMENT_NAME.SHOP,
     },
     brand: {
       type: String,
@@ -26,12 +26,12 @@ export const FurnitureAttributesSchema = new Schema(
     },
   },
   {
-    collection: CollectionName.FURNITURES,
+    collection: COLLECTION_NAME.FURNITURES,
     timestamps: true,
   },
 );
 
 export const Furnitures = model(
-  DocumentName.FURNITURE,
+  DOCUMENT_NAME.FURNITURE,
   FurnitureAttributesSchema,
 );

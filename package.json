@@ -29,6 +29,7 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/bcrypt": "^6.0.0",
     "@types/compression": "^1.8.1",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
     "@types/helmet": "^0.0.48",
     "@types/i18n": "^0.13.12",
@@ -60,6 +61,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "envalid": "^8.1.1",

@@ -1,4 +1,5 @@
 import compression from "compression";
+import cookieParser from "cookie-parser";
 import type { Express } from "express";
 import express from "express";
 import helmet from "helmet";
@@ -30,6 +31,7 @@ app.use(
 
 // Parse application/json
 app.use(express.json());
+app.use(cookieParser());
 
 // Parse URL-encoded payloads.
 app.use(

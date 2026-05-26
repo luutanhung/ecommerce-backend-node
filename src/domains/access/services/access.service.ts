@@ -1,46 +1,40 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import _ from "lodash";
-import type { Types } from "mongoose";
 
 import { UserRole } from "../constants/access.constants.js";
 
+import { Sessions } from "../models/session.model.js";
 import { Users } from "../models/user.model.js";
 
 import type {
-  AuthPayload,
   LoginInput,
-  LoginResult,
+  LogoutAllSessionsInput,
   LogoutPayload,
-  LogoutResult,
   RefreshTokenInput,
-  RefreshTokenResult,
+  RefreshTokenPayload,
   RegisterUserInput,
   RegisterUserResult,
-  TokenPair,
   UserDocument,
 } from "../types/access.type.js";
 
 import { ResCode } from "../../../constants/resCode.constants.js";
 import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
-import { ForbiddenAppError } from "../../../core/error/forbiddenAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
-import type { KeyPair } from "../../../shared/types/utils.type.js";
-import { createKeyPair } from "../../../shared/utils/generator.utils.js";
+import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
 import {
-  createTokenPair,
+  generateAccessToken,
+  generateRefreshToken,
   verifyJSONWebToken,
 } from "../../../shared/utils/token.utils.js";
 
-import { KeyTokenService } from "./keytoken.service.js";
-import { UserService } from "./user.service.js";
+import { SessionService } from "./session.service.js";
 
 export class AccessService {
   /**
-   * Registers a new shop.
+   * Registers a new user account.
    */
   static async register({
     email,
@@ -59,7 +53,7 @@ export class AccessService {
     // Register a new user account.
     const createdUser: UserDocument = await Users.create({
       email,
-      password: hashedPassword,
+      hashedPassword: hashedPassword,
       roles: [UserRole.CUSTOMER],
     });
 
@@ -69,16 +63,15 @@ export class AccessService {
   }
 
   /**
-   * Logins with shop's payload.
+   * Logins with user's payload.
    */
-  static login = async ({
-    email,
-    password,
-  }: LoginInput): Promise<LoginResult> => {
+  static async login({ email, password, deviceId }: LoginInput) {
     // Find user registered with passed-in email.
-    const registerUser = await Users.findOne({ email }).lean();
+    const user = await Users.findOne({ email })
+      .select("+hashedPassword")
+      .lean();
 
-    if (!registerUser) {
+    if (!user) {
       throw new NotFoundAppError({
         code: ResCode.USER_NOT_FOUND,
       });
@@ -87,41 +80,27 @@ export class AccessService {
     // Check if provided password is matched with stored password.
     const passwordIsMatched: boolean = await bcrypt.compare(
       password,
-      registerUser.password,
+      user.hashedPassword,
     );
 
     if (!passwordIsMatched) {
       throw new AuthenticationFailedAppError();
     }
 
-    // Generate a pair of publicKey and privateKey.
-    const { privateKey, publicKey }: KeyPair = await createKeyPair();
-
-    const userIdToCreateTokenPair: Types.ObjectId = registerUser._id;
-
-    const authPayload: AuthPayload = {
-      userId: userIdToCreateTokenPair.toString(),
-      email,
-    };
-
-    const tokenPair: TokenPair = await createTokenPair({
-      payload: authPayload,
-      publicKey,
-      privateKey,
-    });
-
-    await KeyTokenService.createKeyToken({
-      userId: userIdToCreateTokenPair,
-      publicKey,
-      privateKey,
-      refreshToken: tokenPair.refreshToken,
+    /** Create session. */
+    const { accessToken, refreshToken } = await SessionService.createSession({
+      userId: user._id.toString(),
+      deviceId,
     });
 
     return {
-      user: sanitizeUser(registerUser),
-      tokens: tokenPair,
+      user,
+      tokens: {
+        accessToken,
+        refreshToken,
+      },
     };
-  };
+  }
 
   /**
    * Verifies provided refresh token and generates a pair of tokens.
@@ -129,17 +108,17 @@ export class AccessService {
    * @remarks
    * Ensures that refresh token is used exactly one time to generate a new pair of tokens.
    */
-  static refreshToken = async ({
-    refreshToken,
-  }: RefreshTokenInput): Promise<RefreshTokenResult> => {
+  static refreshToken = async ({ refreshToken }: RefreshTokenInput) => {
     const verifyRefreshToken = async (
+      refreshToken: string,
       privateKey: string,
-    ): Promise<AuthPayload> => {
+    ): Promise<RefreshTokenPayload> => {
       try {
-        const refreshAuthPayload = await verifyJSONWebToken<AuthPayload>(
-          refreshToken,
-          privateKey,
-        );
+        const refreshAuthPayload =
+          await verifyJSONWebToken<RefreshTokenPayload>(
+            refreshToken,
+            privateKey,
+          );
         return refreshAuthPayload;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
@@ -157,76 +136,81 @@ export class AccessService {
       }
     };
 
-    // Find key token associated to refresh token argument.
-    const foundKeyTokenWithUsedRefreshToken =
-      await KeyTokenService.findKeyTokenByRefreshTokenUsed({
-        refreshToken,
-      });
+    /**
+     * Decode only.
+     */
+    const decodedRefreshTokenPayload = jwt.decode(
+      refreshToken,
+    ) as RefreshTokenPayload | null;
+    if (!decodedRefreshTokenPayload?.sid) {
+      throw new UnauthorizedAppError();
+    }
 
-    if (foundKeyTokenWithUsedRefreshToken) {
+    const session = await Sessions.findById(
+      decodedRefreshTokenPayload.sid,
+    ).select("+publicKey +privateKey");
+
+    if (!session) {
+      throw new UnauthorizedAppError();
+    }
+
+    if (session.expiresAt < new Date()) {
+      await Sessions.findByIdAndDelete(session._id);
+      throw new UnauthorizedAppError();
+    }
+
+    const payload: RefreshTokenPayload = await verifyRefreshToken(
+      refreshToken,
+      session.privateKey,
+    );
+
+    if (payload.ver !== session.refreshTokenVersion) {
       // CRITICAL: Detected a user who has reused refresh token.
-      const { userId }: AuthPayload = await verifyRefreshToken(
-        foundKeyTokenWithUsedRefreshToken.privateKey,
-      );
-      // Delete all key token instances connected with this user.
-      await KeyTokenService.deleteKeyTokenByUserId({ userId });
-
-      throw new ForbiddenAppError({
-        code: ResCode.REFRESH_TOKEN_REUSED,
-      });
+      throw new UnauthorizedAppError();
     }
 
-    const currentUsedKeyToken =
-      await KeyTokenService.findKeyTokenByRefreshToken({
-        refreshToken,
-      });
+    /**
+     * Rotate refresh token.
+     */
+    session.refreshTokenVersion += 1;
+    await session.save();
 
-    if (!currentUsedKeyToken) {
-      throw new UnauthorizedAppError({
-        code: ResCode.REFRESH_TOKEN_NOT_FOUND,
-      });
-    }
-
-    const refreshAuthPayload: AuthPayload = await verifyRefreshToken(
-      currentUsedKeyToken.privateKey,
-    );
-    const foundUser = await UserService.findUserByEmail(
-      refreshAuthPayload.email,
+    const newAccessToken: string = await generateAccessToken(
+      {
+        sub: session.sessionUser.toString(),
+        sid: session._id.toString(),
+      },
+      session.privateKey,
     );
 
-    if (!foundUser) {
-      throw new AuthenticationFailedAppError({
-        code: ResCode.USER_IS_NOT_REGISTERED,
-      });
-    }
-
-    // Creates a new pair of keys.
-    const keyPair: KeyPair = await createKeyPair();
-    const tokenPair: TokenPair = await createTokenPair({
-      payload: _.pick(refreshAuthPayload, ["userId", "email"]),
-      ...keyPair,
-    });
-
-    await KeyTokenService.updateRefreshToken({ refreshToken });
+    const newRefreshToken: string = await generateRefreshToken(
+      {
+        sub: session.sessionUser.toString(),
+        sid: session._id.toString(),
+        ver: session.refreshTokenVersion,
+      },
+      session.privateKey,
+    );
 
     return {
-      user: refreshAuthPayload,
-      tokens: tokenPair,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
     };
   };
 
   /**
-   * Logouts.
+   * Logout one session.
    */
-  static logout = async ({
-    keyToken,
-  }: LogoutPayload): Promise<LogoutResult> => {
-    const deletedKeyToken = await KeyTokenService.deleteKeyTokenById({
-      id: keyToken._id,
-    });
+  static async logoutOneSession({ sessionId }: LogoutPayload) {
+    await Sessions.findByIdAndDelete(toObjectId(sessionId));
+  }
 
-    return {
-      keyToken: deletedKeyToken,
-    };
-  };
+  /**
+   * Logout all sessions.
+   */
+  static async logoutAllSessions({ userId }: LogoutAllSessionsInput) {
+    await Sessions.deleteMany({
+      sessionUser: toObjectId(userId),
+    });
+  }
 }

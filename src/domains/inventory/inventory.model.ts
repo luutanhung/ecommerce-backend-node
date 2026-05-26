@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../constants/model.constants.js";
 
 /**
@@ -13,11 +13,11 @@ export const InventorySchema = new Schema(
     inventoryProduct: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: DocumentName.PRODUCT,
+      ref: DOCUMENT_NAME.PRODUCT,
     },
     inventoryShop: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.SHOP,
+      ref: DOCUMENT_NAME.SHOP,
       required: true,
     },
     inventoryLocation: {
@@ -35,8 +35,8 @@ export const InventorySchema = new Schema(
   },
   {
     timestamps: true,
-    collection: CollectionName.INVENTORIES,
+    collection: COLLECTION_NAME.INVENTORIES,
   },
 );
 
-export const Inventories = model(DocumentName.INVENTORY, InventorySchema);
+export const Inventories = model(DOCUMENT_NAME.INVENTORY, InventorySchema);

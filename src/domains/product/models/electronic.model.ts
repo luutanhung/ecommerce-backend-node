@@ -1,15 +1,15 @@
 import { Schema, model } from "mongoose";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../../constants/model.constants.js";
 
 export const ElectronicAttributesSchema = new Schema(
   {
     productShop: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.SHOP,
+      ref: DOCUMENT_NAME.SHOP,
     },
     manufacturer: {
       type: String,
@@ -23,12 +23,12 @@ export const ElectronicAttributesSchema = new Schema(
     },
   },
   {
-    collection: CollectionName.ELECTRONICS,
+    collection: COLLECTION_NAME.ELECTRONICS,
     timestamps: true,
   },
 );
 
 export const Electronics = model(
-  DocumentName.ELECTRONIC,
+  DOCUMENT_NAME.ELECTRONIC,
   ElectronicAttributesSchema,
 );

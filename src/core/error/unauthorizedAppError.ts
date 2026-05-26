@@ -8,7 +8,7 @@ export class UnauthorizedAppError extends AppError {
   constructor({
     code = ResCode.UNAUTHORIZED,
     data,
-  }: PartialAppErrorConstructorParams) {
+  }: PartialAppErrorConstructorParams = {}) {
     super({
       statusCode: HttpStatusCode.UNAUTHORIZED,
       code,

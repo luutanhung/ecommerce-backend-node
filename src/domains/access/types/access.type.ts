@@ -24,9 +24,15 @@ export type CreateTokenPairInput = {
   publicKey: string;
 };
 
-export type AuthPayload = {
-  userId: string;
-  email: string;
+export type AccessTokenPayload = {
+  sub: string;
+  sid: string;
+};
+
+export type RefreshTokenPayload = {
+  sub: string; // userId
+  sid: string; // sessionId
+  ver: number; // refreshTokenVersion
 };
 
 // Services.
@@ -45,9 +51,8 @@ export type RegisterUserResult = Pick<AccessBaseResult, "user">;
 export type LoginInput = {
   email: string;
   password: string;
+  deviceId: string;
 };
-
-export type LoginResult = AccessBaseResult;
 
 export type TokenPair = {
   accessToken: string;
@@ -55,7 +60,7 @@ export type TokenPair = {
 };
 
 export type LogoutPayload = {
-  keyToken: KeyTokenLean;
+  sessionId: string;
 };
 
 export type LogoutResult = {
@@ -67,6 +72,10 @@ export type RefreshTokenInput = {
 };
 
 export type RefreshTokenResult = {
-  user: AuthPayload;
-  tokens: TokenPair;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type LogoutAllSessionsInput = {
+  userId: string;
 };

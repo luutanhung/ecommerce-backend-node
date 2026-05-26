@@ -10,7 +10,6 @@ import {
 } from "../middlewares/access.middleware.js";
 import {
   LoginRequestSchema,
-  RefreshTokenRequestSchema,
   RegisterRequestSchema,
 } from "../validations/access.validations.js";
 
@@ -60,9 +59,6 @@ router.post(
 router.post(
   "/access/refreshToken",
   authenticateClientId,
-  validateRequest({
-    body: RefreshTokenRequestSchema,
-  }),
   asyncWrapper(accessController.refreshToken),
 );
 

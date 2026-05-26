@@ -16,13 +16,16 @@ export const UserSchema = new Schema(
       lowercase: true,
       trim: true,
     },
-    password: {
+    hashedPassword: {
       type: String,
       required: true,
+      select: false,
     },
     phoneNumber: {
       type: String,
+      trim: true,
       unique: true,
+      sparse: true,
     },
     name: {
       type: String,

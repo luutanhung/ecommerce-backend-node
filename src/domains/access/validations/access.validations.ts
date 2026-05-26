@@ -7,9 +7,7 @@ import {
   PasswordSchema,
 } from "../../../shared/validations/common.validations.js";
 
-// const ShopNameSchema = NameSchema.min(2, {
-//   message: ResCode.EMAIL_INVALID,
-// });
+const DeviceIdSchema = z.string().min(8);
 
 export const RegisterRequestSchema = z.object({
   email: EmailSchema,
@@ -21,6 +19,7 @@ export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
 export const LoginRequestSchema = z.object({
   email: EmailSchema,
   password: PasswordSchema,
+  deviceId: DeviceIdSchema,
 });
 
 export type LoginRequest = z.infer<typeof LoginRequestSchema>;

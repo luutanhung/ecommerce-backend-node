@@ -1,10 +1,12 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { findActiveApiKey } from "../services/apikey.service.js";
-import { KeyTokenService } from "../services/keytoken.service.js";
+import { Sessions } from "../models/session.model.js";
+import { Users } from "../models/user.model.js";
 
-import type { AuthPayload } from "../types/access.type.js";
+import { findActiveApiKey } from "../services/apikey.service.js";
+
+import type { AccessTokenPayload } from "../types/access.type.js";
 import type { ApiKeyPermission } from "../types/apikey.type.js";
 
 import { RequestHeaders } from "../../../constants/http.constants.js";
@@ -15,6 +17,7 @@ import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { composeMiddlewares } from "../../../shared/helpers/composeMiddlewares.js";
+import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 
 /**
  * Check if there is an active api key document stored. If there are any, attach it to req object and move on.
@@ -90,38 +93,41 @@ export const authenticateClientId = asyncWrapper(
       });
     }
 
-    // Check whether there is a keyToken instance associciated with this user id.
-    const keyToken = await KeyTokenService.findKeyTokenByUserId({
-      userId,
-    });
+    const user = await Users.findById(toObjectId(userId)).lean();
 
-    if (!keyToken) {
+    if (!user) {
       throw new NotFoundAppError({
-        code: ResCode.USER_NOT_LOGGED_IN,
+        code: ResCode.USER_IS_NOT_REGISTERED,
       });
     }
-
-    req.userId = userId;
-    req.keyToken = keyToken;
 
     return next();
   },
 );
+
+export const authenticateDeviceId = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const deviceId = req.headers[RequestHeaders.DEVICE_ID]?.toString();
+  if (!deviceId) {
+    throw new AuthenticationFailedAppError({
+      code: ResCode.DEVICE_ID_REQUIRED,
+    });
+  }
+
+  return next();
+};
 
 /**
  * Authenticate middlware to verify access token and attach user's details to request.
  */
 export const authenticateAccessToken = composeMiddlewares([
   authenticateClientId,
+  authenticateDeviceId,
   asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.userId;
-    const keyToken = req.keyToken;
-
-    if (!keyToken || !userId) {
-      throw new UnauthorizedAppError({
-        code: ResCode.USER_IS_NOT_REGISTERED,
-      });
-    }
+    const userId = req.headers[RequestHeaders.CLIENT_ID]?.toString() as string;
 
     // Verify access token.
     const accessToken = req.headers[RequestHeaders.AUTHORIZATION]?.toString();
@@ -131,21 +137,45 @@ export const authenticateAccessToken = composeMiddlewares([
       });
     }
 
-    try {
-      const decodedAuthPayload = (await jwt.verify(
-        accessToken,
-        keyToken.publicKey,
-      )) as AuthPayload;
+    const decodedAccessTokenPayload = jwt.decode(
+      accessToken,
+    ) as AccessTokenPayload | null;
+    if (!decodedAccessTokenPayload) {
+      throw new AuthenticationFailedAppError({
+        code: ResCode.ACCESS_TOKEN_REQUIRED,
+      });
+    }
 
-      if (userId !== decodedAuthPayload.userId) {
+    console.log(decodedAccessTokenPayload);
+
+    const session = await Sessions.findById(
+      toObjectId(decodedAccessTokenPayload.sid),
+    ).select("+publicKey");
+    console.log(session);
+
+    if (!session) {
+      throw new UnauthorizedAppError();
+    }
+
+    if (session.expiresAt < new Date()) {
+      await Sessions.findByIdAndDelete(session._id);
+      throw new UnauthorizedAppError();
+    }
+
+    try {
+      const payload = (await jwt.verify(
+        accessToken,
+        session.publicKey,
+      )) as AccessTokenPayload;
+
+      if (userId !== payload.sub) {
         throw new AuthenticationFailedAppError({
           code: ResCode.USER_INVALID,
         });
       }
 
       // Attach key token instance to req.
-      req.user = decodedAuthPayload;
-      req.keyToken = keyToken;
+      req.user = payload;
 
       return next();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
