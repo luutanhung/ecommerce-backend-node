@@ -1,7 +1,10 @@
 import jwt from "jsonwebtoken";
 import _ from "lodash";
 
-import type { CreateTokenPairInput, TokenPair } from "../types/access.type.js";
+import type {
+  CreateTokenPairInput,
+  TokenPair,
+} from "../../domains/access/types/access.type.js";
 
 /**
  * Creates a pair of access token and refresh token based on public key and private key.
