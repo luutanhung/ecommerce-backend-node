@@ -4,6 +4,7 @@
   "description": "Ecommerce Backend written in Nodejs",
   "main": "./src/server.js",
   "scripts": {
+    "dev:mongodb": "podman-compose up -d",
     "dev": "cross-env NODE_ENV=development tsx --watch ./src/server.ts",
     "copy-locales": "copyfiles -u 1 \"src/locales/**/*\" dist/locales",
     "build": "tsc -p tsconfig.build.json && npm run copy-locales",
@@ -13,8 +14,7 @@
     "lint:check": "eslint \"./src/**/*.{js,ts}\"",
     "lint:fix": "eslint --fix \"./src/**/*.{js,ts}\"",
     "prepare": "husky",
-    "test": "vitest",
-    "start:containers": "podman-compose up -d"
+    "test": "vitest"
   },
   "keywords": [
     "nodejs",
