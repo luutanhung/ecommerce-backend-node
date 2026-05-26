@@ -8,6 +8,7 @@ import { Users } from "../models/user.model.js";
 
 import type {
   LoginInput,
+  LogoutAllExceptCurrentInput,
   LogoutAllSessionsInput,
   LogoutPayload,
   RefreshTokenInput,
@@ -175,9 +176,13 @@ export class AccessService {
     session.refreshTokenVersion += 1;
     await session.save();
 
+    const userId = session.sessionUser.toString();
+    const deviceId = session.sessionDeviceId;
+
     const newAccessToken: string = await generateAccessToken(
       {
-        sub: session.sessionUser.toString(),
+        uid: userId,
+        did: deviceId,
         sid: session._id.toString(),
       },
       session.privateKey,
@@ -185,7 +190,8 @@ export class AccessService {
 
     const newRefreshToken: string = await generateRefreshToken(
       {
-        sub: session.sessionUser.toString(),
+        uid: userId,
+        did: deviceId,
         sid: session._id.toString(),
         ver: session.refreshTokenVersion,
       },
@@ -199,10 +205,25 @@ export class AccessService {
   };
 
   /**
-   * Logout one session.
+   * Logout from current device.
    */
   static async logoutOneSession({ sessionId }: LogoutPayload) {
     await Sessions.findByIdAndDelete(toObjectId(sessionId));
+  }
+
+  /**
+   * Logout from all devices except current.
+   */
+  static async logoutAllSessionsExceptCurrent({
+    userId,
+    deviceId,
+  }: LogoutAllExceptCurrentInput): Promise<void> {
+    await Sessions.deleteMany({
+      sessionUser: toObjectId(userId),
+      sessionDeviceId: {
+        $ne: deviceId,
+      },
+    });
   }
 
   /**

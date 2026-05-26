@@ -51,12 +51,14 @@ export class SessionService {
     const sessionId: string = session._id.toString();
 
     const accessTokenPayload: AccessTokenPayload = {
-      sub: userId,
+      uid: userId,
+      did: deviceId,
       sid: sessionId,
     };
 
     const refreshTokenPayload: RefreshTokenPayload = {
-      sub: userId,
+      uid: userId,
+      did: deviceId,
       sid: sessionId,
       ver: refreshTokenVersion,
     };

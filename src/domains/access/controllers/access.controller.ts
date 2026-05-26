@@ -4,7 +4,10 @@ import { REFRESH_TOKEN_EXPIRES_IN_DAYS } from "../constants/access.constants.js"
 
 import { AccessService } from "../services/access.service.js";
 
-import type { RefreshTokenResult } from "../types/access.type.js";
+import type {
+  AccessTokenPayload,
+  RefreshTokenResult,
+} from "../types/access.type.js";
 
 import { env } from "../../../configs/env.js";
 import { ResCode } from "../../../constants/resCode.constants.js";
@@ -86,9 +89,9 @@ class AccessController {
   };
 
   /**
-   * Logout.
+   * Logout from current device.
    */
-  logout = async (req: Request, res: Response): Promise<void> => {
+  async logout(req: Request, res: Response): Promise<void> {
     await AccessService.logoutOneSession({
       sessionId: req.user?.sid as string,
     });
@@ -96,7 +99,21 @@ class AccessController {
     new OKResponse({
       code: ResCode.USER_LOGOUT_SUCCESS,
     }).send(req, res);
-  };
+  }
+
+  /**
+   * Logout from all devices.
+   */
+  async logoutAll(req: Request, res: Response): Promise<void> {
+    const { uid } = req.user as AccessTokenPayload;
+    await AccessService.logoutAllSessions({
+      userId: uid,
+    });
+
+    new OKResponse({
+      code: ResCode.USER_LOGOUT_ALL_DEVICES_SUCCESS,
+    }).send(req, res);
+  }
 }
 
 export const accessController = new AccessController();

@@ -25,12 +25,14 @@ export type CreateTokenPairInput = {
 };
 
 export type AccessTokenPayload = {
-  sub: string;
+  uid: string;
+  did: string;
   sid: string;
 };
 
 export type RefreshTokenPayload = {
-  sub: string; // userId
+  uid: string; // userId
+  did: string; // deviceId
   sid: string; // sessionId
   ver: number; // refreshTokenVersion
 };
@@ -78,4 +80,9 @@ export type RefreshTokenResult = {
 
 export type LogoutAllSessionsInput = {
   userId: string;
+};
+
+export type LogoutAllExceptCurrentInput = {
+  userId: string;
+  deviceId: string;
 };

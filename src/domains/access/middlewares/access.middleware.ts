@@ -128,6 +128,9 @@ export const authenticateAccessToken = composeMiddlewares([
   authenticateDeviceId,
   asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.headers[RequestHeaders.CLIENT_ID]?.toString() as string;
+    const deviceId = req.headers[
+      RequestHeaders.DEVICE_ID
+    ]?.toString() as string;
 
     // Verify access token.
     const accessToken = req.headers[RequestHeaders.AUTHORIZATION]?.toString();
@@ -146,12 +149,9 @@ export const authenticateAccessToken = composeMiddlewares([
       });
     }
 
-    console.log(decodedAccessTokenPayload);
-
     const session = await Sessions.findById(
       toObjectId(decodedAccessTokenPayload.sid),
     ).select("+publicKey");
-    console.log(session);
 
     if (!session) {
       throw new UnauthorizedAppError();
@@ -168,9 +168,15 @@ export const authenticateAccessToken = composeMiddlewares([
         session.publicKey,
       )) as AccessTokenPayload;
 
-      if (userId !== payload.sub) {
+      if (userId !== payload.uid) {
         throw new AuthenticationFailedAppError({
           code: ResCode.USER_INVALID,
+        });
+      }
+
+      if (deviceId !== payload.did) {
+        throw new AuthenticationFailedAppError({
+          code: ResCode.DEVICE_ID_INVALID,
         });
       }
 
