@@ -8,6 +8,11 @@ import type { Locale } from "../locale.type.ts";
 declare global {
   namespace Express {
     interface Request {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      t: (phrase: string, options?: any) => string;
+      getLocale: () => string;
+      setLocale: (locale: Locale) => void;
+
       // Common.
       validated?: {
         body?: unknown;

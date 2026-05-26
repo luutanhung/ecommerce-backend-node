@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import { env } from "../../configs/env.js";
 import { HttpStatusCode } from "../../constants/http.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
-import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
 import type { ResponseCodeKey } from "../../shared/types/core/response.type.js";
 import { ErrorResponse } from "../response/error.response.js";
 
@@ -57,11 +56,7 @@ export const handleError = async (
       data: {
         errors: Object.values(err.errors).map((error) => ({
           field: error.path,
-
-          message: getResponseMessage(
-            error.message as ResponseCodeKey,
-            req.locale,
-          ),
+          message: req.t(error.message),
         })),
       },
 

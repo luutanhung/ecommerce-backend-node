@@ -13,6 +13,7 @@ import type {
   ApplyDiscountToProductsRequest,
   CreateShopDiscountRequest,
   FindApplicableProductsByDiscountCode,
+  FindShopDiscountByDiscountCodeRequest,
 } from "../validations/discount.validations.js";
 
 export class DiscountController {
@@ -81,6 +82,26 @@ export class DiscountController {
         shopId,
         page,
         limit,
+      }),
+    }).send(req, res);
+  }
+
+  /**
+   *
+   */
+  async findShopDiscountByDiscountCode(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
+    const { shopId } = req.validated?.params as ShopParams;
+    const { code } = req.validated
+      ?.query as FindShopDiscountByDiscountCodeRequest;
+
+    new OKResponse({
+      code: ResCode.DISCOUNT_FIND_SHOP_DISCOUNT_BY_DISCOUNT_CODE_SUCCESS,
+      data: await DiscountService.findShopDiscountByDiscountCode({
+        shopId,
+        code,
       }),
     }).send(req, res);
   }

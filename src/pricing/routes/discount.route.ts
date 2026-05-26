@@ -12,6 +12,7 @@ import {
   ApplyDiscountToProductsRequestSchema,
   CreateShopDiscountRequestSchema,
   FindApplicableProductsByDiscountCodeRequestSchema,
+  FindShopDiscountByDiscountCodeRequestSchema,
 } from "../validations/discount.validations.js";
 
 const router = Router();
@@ -57,12 +58,24 @@ router.get(
  * Find discounts by shop.
  */
 router.get(
-  "/shops/:shopId/discounts",
+  "/shops/:shopId/discounts/get-list",
   validateRequest({
     params: ShopParamsSchema,
     query: PaginationQuerySchema,
   }),
   asyncWrapper(discountController.findDiscountsByShop),
+);
+
+/**
+ * Find shop discount by discount code.
+ */
+router.get(
+  "/shops/:shopId/discounts",
+  validateRequest({
+    params: ShopParamsSchema,
+    query: FindShopDiscountByDiscountCodeRequestSchema,
+  }),
+  asyncWrapper(discountController.findShopDiscountByDiscountCode),
 );
 
 export { router as discountRouter };

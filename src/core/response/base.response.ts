@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import _ from "lodash";
 
-import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
 import type {
   AppData,
   ResponseCodeKey,
@@ -27,7 +26,7 @@ export class BaseResponse {
 
     const response: Record<string, unknown> = {
       code: this.code,
-      message: getResponseMessage(this.code, req.locale),
+      message: req.t(this.code),
     };
 
     if (!_.isUndefined(this.stack)) {

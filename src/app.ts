@@ -7,7 +7,7 @@ import swaggerUi from "swagger-ui-express";
 
 import { handleError } from "./core/error/handleError.middleware.js";
 
-import { attachLocale } from "./shared/middlewares/locale.middleware.js";
+import { i18nMiddleware } from "./shared/middlewares/i18n.middleware.js";
 
 import { swaggerSpec } from "./configs/swagger.js";
 
@@ -38,7 +38,7 @@ app.use(
   }),
 );
 
-app.use(attachLocale);
+app.use(i18nMiddleware);
 
 /**
  * Swagger API.
