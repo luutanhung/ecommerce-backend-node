@@ -42,10 +42,10 @@ export class AccessService {
   /**
    * Registers a new shop.
    */
-  static register = async ({
+  static async register({
     email,
     password,
-  }: RegisterUserInput): Promise<RegisterUserResult> => {
+  }: RegisterUserInput): Promise<RegisterUserResult> {
     const existingUser = await Users.findOne({ email }).lean();
 
     if (existingUser) {
@@ -66,7 +66,7 @@ export class AccessService {
     return {
       user: sanitizeUser(createdUser),
     };
-  };
+  }
 
   /**
    * Logins with shop's payload.

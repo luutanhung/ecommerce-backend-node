@@ -8,8 +8,8 @@ import { ProductType } from "../constants/product.constants.js";
 import type { Product } from "../types/product.type.js";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../../constants/model.constants.js";
 import { ResCode } from "../../../constants/resCode.constants.js";
 import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
@@ -18,12 +18,12 @@ export const ProductSchema = new Schema(
   {
     productOwner: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.USER,
+      ref: DOCUMENT_NAME.USER,
       required: true,
     },
     productShop: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.SHOP,
+      ref: DOCUMENT_NAME.SHOP,
       required: true,
     },
     productName: {
@@ -90,7 +90,7 @@ export const ProductSchema = new Schema(
     },
   },
   {
-    collection: CollectionName.PRODUCTS,
+    collection: COLLECTION_NAME.PRODUCTS,
     timestamps: true,
   },
 );
@@ -112,6 +112,6 @@ ProductSchema.pre("save", async function () {
 });
 
 export const Products = model<Product, PaginateModel<Product>>(
-  DocumentName.PRODUCT,
+  DOCUMENT_NAME.PRODUCT,
   ProductSchema,
 );

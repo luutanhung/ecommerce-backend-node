@@ -3,8 +3,8 @@ import { Schema, model } from "mongoose";
 import { UserRole } from "../constants/access.constants.js";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../../constants/model.constants.js";
 
 export const UserSchema = new Schema(
@@ -50,8 +50,8 @@ export const UserSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: CollectionName.USERS,
+    collection: COLLECTION_NAME.USERS,
   },
 );
 
-export const Users = model(DocumentName.USER, UserSchema);
+export const Users = model(DOCUMENT_NAME.USER, UserSchema);

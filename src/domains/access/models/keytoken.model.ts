@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../../constants/model.constants.js";
 
 export const KeyTokenSchema = new Schema(
@@ -10,7 +10,7 @@ export const KeyTokenSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: DocumentName.USER,
+      ref: DOCUMENT_NAME.USER,
     },
     privateKey: {
       type: String,
@@ -31,8 +31,8 @@ export const KeyTokenSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: CollectionName.KEY_TOKENS,
+    collection: COLLECTION_NAME.KEY_TOKENS,
   },
 );
 
-export const KeyTokens = model(DocumentName.KEY_TOKEN, KeyTokenSchema);
+export const KeyTokens = model(DOCUMENT_NAME.KEY_TOKEN, KeyTokenSchema);

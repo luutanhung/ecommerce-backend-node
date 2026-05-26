@@ -3,8 +3,8 @@ import { Schema, model } from "mongoose";
 import { ApiKeyPermission } from "../constants/apikey.constants.js";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../../constants/model.constants.js";
 
 export const ApiKeySchema = new Schema(
@@ -26,8 +26,8 @@ export const ApiKeySchema = new Schema(
   },
   {
     timestamps: true,
-    collection: CollectionName.API_KEYS,
+    collection: COLLECTION_NAME.API_KEYS,
   },
 );
 
-export const ApiKeys = model(DocumentName.API_KEY, ApiKeySchema);
+export const ApiKeys = model(DOCUMENT_NAME.API_KEY, ApiKeySchema);

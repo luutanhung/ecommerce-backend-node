@@ -2,8 +2,8 @@ import { Schema, model } from "mongoose";
 import slugify from "slugify";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../constants/model.constants.js";
 
 import { SHOP_STATUS } from "./shop.constants.js";
@@ -12,7 +12,7 @@ export const ShopSchema = new Schema(
   {
     shopOwner: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.USER,
+      ref: DOCUMENT_NAME.USER,
       required: true,
       index: true,
     },
@@ -41,7 +41,7 @@ export const ShopSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: CollectionName.SHOPS,
+    collection: COLLECTION_NAME.SHOPS,
   },
 );
 
@@ -51,4 +51,4 @@ ShopSchema.pre("save", function () {
   });
 });
 
-export const Shops = model(DocumentName.SHOP, ShopSchema);
+export const Shops = model(DOCUMENT_NAME.SHOP, ShopSchema);

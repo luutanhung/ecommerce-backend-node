@@ -19,32 +19,32 @@ class AccessController {
   /**
    * Register a new shop.
    */
-  register = async (
+  async register(
     req: BodyRequest<RegisterRequest>,
     res: Response,
-  ): Promise<void> => {
+  ): Promise<void> {
     const registerResult = await AccessService.register(req.body);
 
     new CreatedResponse({
       code: ResCode.USER_REGISTER_SUCCESS,
       data: registerResult,
     }).send(req, res);
-  };
+  }
 
   /**
    * Logins with shop info.
    */
-  login = async (
-    req: BodyRequest<LoginRequest>,
-    res: Response,
-  ): Promise<void> => {
-    const loginResult = await AccessService.login(req.body);
+  async login(req: Request, res: Response): Promise<void> {
+    console.log(req);
+    const loginResult = await AccessService.login(
+      req?.validated?.body as LoginRequest,
+    );
 
     new OKResponse({
       code: ResCode.USER_LOGIN_SUCCESS,
       data: loginResult,
     }).send(req, res);
-  };
+  }
 
   /**
    * Refreshes token.

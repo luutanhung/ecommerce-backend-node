@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 
 import {
-  CollectionName,
-  DocumentName,
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
 } from "../../../constants/model.constants.js";
 import { CART_STATE } from "../cart.contants.js";
 
@@ -10,12 +10,12 @@ const CartItemSchema = new Schema(
   {
     productId: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.PRODUCT,
+      ref: DOCUMENT_NAME.PRODUCT,
       required: true,
     },
     shopId: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.SHOP,
+      ref: DOCUMENT_NAME.SHOP,
       required: true,
     },
 
@@ -45,7 +45,7 @@ export const CartSchema = new Schema(
   {
     cartUser: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.USER,
+      ref: DOCUMENT_NAME.USER,
       required: true,
     },
     cartItems: {
@@ -66,8 +66,8 @@ export const CartSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: CollectionName.CARTS,
+    collection: COLLECTION_NAME.CARTS,
   },
 );
 
-export const Carts = model(DocumentName.CART, CartSchema);
+export const Carts = model(DOCUMENT_NAME.CART, CartSchema);

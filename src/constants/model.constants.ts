@@ -1,8 +1,9 @@
-export const DocumentName = {
+export const DOCUMENT_NAME = {
   API_KEY: "ApiKey",
 
   // Access.
   USER: "User",
+  SESSION: "Session",
   KEY_TOKEN: "KeyToken",
 
   // Shop.
@@ -24,11 +25,12 @@ export const DocumentName = {
   DISCOUNT: "Discount",
 } as const;
 
-export const CollectionName = {
+export const COLLECTION_NAME = {
   API_KEYS: "ApiKeys",
 
   // Access.
   USERS: "Users",
+  SESSIONS: "Sessions",
   KEY_TOKENS: "KeyTokens",
 
   // Shop.

@@ -3,7 +3,10 @@ import paginate from "mongoose-paginate-v2";
 
 import { ProductType } from "../domains/product/constants/product.constants.js";
 
-import { CollectionName, DocumentName } from "../constants/model.constants.js";
+import {
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
+} from "../constants/model.constants.js";
 import {
   DISCOUNT_APPLIES_TO,
   DISCOUNT_TYPE,
@@ -15,7 +18,7 @@ export const DiscountSchema = new Schema(
   {
     discountShop: {
       type: Schema.Types.ObjectId,
-      ref: DocumentName.SHOP,
+      ref: DOCUMENT_NAME.SHOP,
       required: true,
     },
     discountName: {
@@ -85,7 +88,7 @@ export const DiscountSchema = new Schema(
       type: [
         {
           type: Schema.Types.ObjectId,
-          ref: DocumentName.PRODUCT,
+          ref: DOCUMENT_NAME.PRODUCT,
         },
       ],
       default: [],
@@ -102,13 +105,13 @@ export const DiscountSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: CollectionName.DISCOUNTS,
+    collection: COLLECTION_NAME.DISCOUNTS,
   },
 );
 
 DiscountSchema.plugin(paginate);
 
 export const Discounts = model<Discount, PaginateModel<Discount>>(
-  DocumentName.DISCOUNT,
+  DOCUMENT_NAME.DISCOUNT,
   DiscountSchema,
 );
