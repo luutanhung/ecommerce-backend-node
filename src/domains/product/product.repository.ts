@@ -19,8 +19,8 @@ import {
 } from "../../constants/pagination.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { buildSelect, buildSort } from "../../shared/utils/mongoose.utils.js";
-import type { TransactionOptions } from "../../types/mongoose.type.js";
 
 import type { Product } from "./entities/baseProduct.entity.js";
 import { Clothing } from "./entities/clothing.entity.js";

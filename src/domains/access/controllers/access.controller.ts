@@ -8,7 +8,7 @@ import type { KeyTokenLean } from "../types/keytoken.type.js";
 import { ResCode } from "../../../constants/resCode.constants.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
-import type { BodyRequest } from "../../../types/http.type.js";
+import type { BodyRequest } from "../../../shared/types/http.type.js";
 import type {
   LoginRequest,
   RefreshTokenRequest,

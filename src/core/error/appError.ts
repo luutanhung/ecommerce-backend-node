@@ -2,11 +2,11 @@ import _ from "lodash";
 
 import { HttpStatusCode } from "../../constants/http.constants.js";
 import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
-import type { AppErrorConstructorParams } from "../../types/core/appError.type.js";
+import type { AppErrorConstructorParams } from "../../shared/types/core/appError.type.js";
 import type {
   AppData,
   ResponseCodeKey,
-} from "../../types/core/response.type.js";
+} from "../../shared/types/core/response.type.js";
 
 /**
  * Custom error class for handling application-specific errors with consistent formatting.

@@ -5,7 +5,7 @@ import { env } from "../../configs/env.js";
 import { HttpStatusCode } from "../../constants/http.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
 import { getResponseMessage } from "../../i18n/getResponseMessage.utils.js";
-import type { ResponseCodeKey } from "../../types/core/response.type.js";
+import type { ResponseCodeKey } from "../../shared/types/core/response.type.js";
 import { ErrorResponse } from "../response/error.response.js";
 
 import { AppError } from "./appError.js";

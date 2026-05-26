@@ -1,7 +1,10 @@
 import type { QueryFilter, UpdateQuery } from "mongoose";
 
+import type {
+  SelectFields,
+  SortOptions,
+} from "../../../shared/types/common.type.js";
 import type { PartialPaginationQuery } from "../../../shared/validations/pagination.validations.js";
-import type { SelectFields, SortOptions } from "../../../types/common.type.js";
 
 import type { Product } from "./product.type.js";
 

@@ -1,7 +1,7 @@
 import type { FindShopRepositoryInput } from "./types/shop.repository.type.js";
 import type { ShopLean } from "./types/shop.type.js";
 
-import type { TransactionOptions } from "../../types/mongoose.type.js";
+import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 
 import type { Shop } from "./entities/shop.entity.js";
 

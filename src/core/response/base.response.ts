@@ -6,8 +6,8 @@ import type {
   AppData,
   ResponseCodeKey,
   ResponseParams,
-} from "../../types/core/response.type.js";
-import type { OutgoingHttpHeaders } from "../../types/http.type.js";
+} from "../../shared/types/core/response.type.js";
+import type { OutgoingHttpHeaders } from "../../shared/types/http.type.js";
 
 export class BaseResponse {
   statusCode: number;

@@ -1,6 +1,6 @@
-import { Locale } from "../constants/locale.constants.js";
+import type { ResponseCodeKey } from "../shared/types/core/response.type.js";
 
-import type { ResponseCodeKey } from "../types/core/response.type.js";
+import { Locale } from "../constants/locale.constants.js";
 
 import { AccessEnLocale } from "./locales/en/access.locale.js";
 import { CartEnLocale } from "./locales/en/cart.locale.js";

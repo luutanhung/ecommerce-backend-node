@@ -1,5 +1,5 @@
+import type { SortOptions } from "../../../shared/types/common.type.js";
 import type { PartialPaginationQuery } from "../../../shared/validations/pagination.validations.js";
-import type { SortOptions } from "../../../types/common.type.js";
 
 import type { ProductDocument, ProductType } from "./product.type.js";
 

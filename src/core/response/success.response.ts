@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "../../constants/http.constants.js";
 import { ResCode } from "../../constants/resCode.constants.js";
-import type { PartialResponseParams } from "../../types/core/response.type.js";
+import type { PartialResponseParams } from "../../shared/types/core/response.type.js";
 
 import { BaseResponse } from "./base.response.js";
 

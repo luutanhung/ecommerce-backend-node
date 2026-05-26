@@ -6,7 +6,7 @@ import type {
   UpdateUserRepositoryInput,
 } from "../types/user.repository.type.js";
 
-import type { TransactionOptions } from "../../../types/mongoose.type.js";
+import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
 
 export class UserRepository {
   static async updateUser(

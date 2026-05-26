@@ -1,5 +1,5 @@
-import type { ResponseCodeKey } from "../core/response.type.js";
-import type { AppData } from "../core/response.type.js";
+import type { ResponseCodeKey } from "./response.type.js";
+import type { AppData } from "./response.type.js";
 
 export type AppErrorConstructorParams = {
   code: ResponseCodeKey;

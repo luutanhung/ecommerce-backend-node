@@ -1,8 +1,8 @@
 import type { InventoryLean } from "./types/inventory.model.types.js";
 import type { CreateInventoryRepositoryInput } from "./types/inventory.repository.types.js";
 
+import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
-import type { TransactionOptions } from "../../types/mongoose.type.js";
 
 import { Inventories } from "./inventory.model.js";
 

@@ -2,7 +2,7 @@ import type { CreateInventoryInput } from "./types/inventory.service.types.js";
 
 import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
-import type { TransactionOptions } from "../../types/mongoose.type.js";
+import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 
 import { InventoryRepository } from "./inventory.repository.js";
 
