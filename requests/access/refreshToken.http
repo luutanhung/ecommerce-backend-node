@@ -1,9 +1,0 @@
-@baseApiUrl=http://127.0.0.1:20008/v1/api/access
-
-POST {{baseApiUrl}}/refreshToken
-Content-Type: application/json
-x-client-id: 6a091336e0905906521bded5
-
-{
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTA5MTMzNmUwOTA1OTA2NTIxYmRlZDUiLCJlbWFpbCI6InNob3BkZXYyMUBnbWFpbC5jb20iLCJpYXQiOjE3NzkwMTAzNTEsImV4cCI6MTc3OTYxNTE1MX0.rg3YLjwOcBhY2rcNwQm_Kn34pbJ-DpRk-vFOzVvZSLM"
-}

@@ -1,7 +1,0 @@
-@baseApiUrl=http://127.0.0.1:20008/v1/api/access
-
-### Shop logouts successfully.
-POST {{baseApiUrl}}/logout
-Content-Type: application/json
-x-client-id: 6a0c280403456aa98b5bc909
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBjMjgwNDAzNDU2YWE5OGI1YmM5MDkiLCJlbWFpbCI6InNob3BkZXYyNUBnbWFpbC5jb20iLCJpYXQiOjE3NzkxODE4NzAsImV4cCI6MTc3OTM1NDY3MH0.jVVvxmcJV99cM9FVQ2hPdkaIxgUl0os36U5kjBtUj2w
