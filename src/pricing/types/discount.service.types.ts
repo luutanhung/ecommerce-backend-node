@@ -1,18 +1,13 @@
 import type { ProductType } from "../../domains/product/types/product.type.js";
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
 
-import type {
-  DiscountAppliesTo,
-  DiscountScope,
-  DiscountType,
-} from "./discount.types.js";
+import type { DiscountAppliesTo, DiscountType } from "./discount.types.js";
 
 export type CreateShopDiscountInput = {
   shopId: string;
   name: string;
   description: string;
   type: DiscountType;
-  scope: DiscountScope;
   config: Record<string, unknown>;
   code: string;
   startsAt: Date;

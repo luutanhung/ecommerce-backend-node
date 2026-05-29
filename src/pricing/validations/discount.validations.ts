@@ -15,15 +15,11 @@ export const DiscountCodeSchema = z
   .max(50)
   .transform((v) => v.toUpperCase());
 
-export const CreateShopDiscountRequestSchema = z
+export const BaseDiscountSchema = z
   .object({
     name: z.string().min(1).max(150),
 
     description: z.string().max(1000),
-
-    type: z.enum(Object.values(DISCOUNT_TYPE)),
-
-    value: z.number().positive(),
 
     code: DiscountCodeSchema,
 
@@ -60,7 +56,7 @@ export const CreateShopDiscountRequestSchema = z
   )
 
   .superRefine((data, ctx) => {
-    if (data.appliesTo === DISCOUNT_APPLIES_TO.PRODUCTS) {
+    if (data.appliesTo === DISCOUNT_APPLIES_TO.PRODUCT) {
       if (!data.applicableProducts?.length) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -72,7 +68,7 @@ export const CreateShopDiscountRequestSchema = z
       }
     }
 
-    if (data.appliesTo === DISCOUNT_APPLIES_TO.CATEGORIES) {
+    if (data.appliesTo === DISCOUNT_APPLIES_TO.CATEGORY) {
       if (!data.applicableCategories?.length) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -84,6 +80,28 @@ export const CreateShopDiscountRequestSchema = z
       }
     }
   });
+
+export const PercentageDiscountSchema = BaseDiscountSchema.extend({
+  type: z.literal(DISCOUNT_TYPE.PERCENTAGE),
+  config: z.object({
+    percent: z.number().min(1).max(100),
+
+    maxDiscountAmount: z.number().positive().optional(),
+  }),
+});
+
+export const FixedAmountDiscountSchema = BaseDiscountSchema.extend({
+  type: z.literal(DISCOUNT_TYPE.FIXED_AMOUNT),
+  config: z.object({
+    amount: z.number().positive(),
+  }),
+});
+
+export const CreateShopDiscountRequestSchema = z.discriminatedUnion("type", [
+  PercentageDiscountSchema,
+  FixedAmountDiscountSchema,
+]);
+
 export type CreateShopDiscountRequest = z.infer<
   typeof CreateShopDiscountRequestSchema
 >;

@@ -48,7 +48,6 @@ export class DiscountService {
       description,
       type,
       config,
-      scope,
       code,
       startsAt,
       endsAt,
@@ -79,7 +78,6 @@ export class DiscountService {
           discountDescription: description,
           discountType: type,
           discountConfig: config,
-          discountScope: scope,
           discountCode: code,
           discountStartsAt: startsAt,
           discountEndsAt: endsAt,
@@ -112,12 +110,18 @@ export class DiscountService {
     shopId,
     code,
   }: ApplyDiscountToProductsInput) {
-    const foundActiveDiscount = await DiscountRepository.findDiscount({
+    const foundDiscount = await DiscountRepository.findOne({
       query: {
         shopId: toObjectId(shopId),
         discountCode: code,
       },
     });
+
+    if (!foundDiscount) {
+      throw new NotFoundAppError({
+        code: ResCode.DISCOUNT_NOT_FOUND,
+      });
+    }
 
     const {
       discountIsActive,
@@ -128,11 +132,11 @@ export class DiscountService {
       discountType,
       discountConfig,
       discountUsedCount,
-    } = foundActiveDiscount;
+    } = foundDiscount;
 
     if (discountIsActive === false) {
       throw new BadRequestAppError({
-        code: ResCode.DISCOUNT_EXPIRED,
+        code: ResCode.DISCOUNT_NOT_ACTIVE,
       });
     }
 
@@ -277,7 +281,7 @@ export class DiscountService {
       isPublished: true,
     };
 
-    if (discountAppliesTo === DISCOUNT_APPLIES_TO.PRODUCTS) {
+    if (discountAppliesTo === DISCOUNT_APPLIES_TO.PRODUCT) {
       query._id = {
         $in: discountApplicableProducts,
       };

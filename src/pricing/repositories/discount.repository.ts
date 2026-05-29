@@ -6,13 +6,11 @@ import type {
 } from "../types/discount.repository.types.js";
 import type { DiscountLean } from "../types/discount.types.js";
 
-import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { SortOrder } from "../../shared/constants/common.constants.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
 } from "../../shared/constants/pagination.constants.js";
-import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { buildSelect, buildSort } from "../../shared/utils/mongoose.utils.js";
 import { Discounts } from "../discount.model.js";
 import { DEFAULT_DISCOUNT_SELECT_FIELDS } from "../sanitizers/discount.sanitizer.js";
@@ -21,18 +19,10 @@ export class DiscountRepository {
   /**
    * Find a single discount.
    */
-  static async findDiscount({
+  static async findOne({
     query = {},
-  }: FindDiscountRepositoryInput): Promise<DiscountLean> {
-    const foundDiscount = await Discounts.findOne(query).lean();
-
-    if (!foundDiscount) {
-      throw new NotFoundAppError({
-        code: ResCode.DISCOUNT_NOT_FOUND,
-      });
-    }
-
-    return foundDiscount;
+  }: FindDiscountRepositoryInput): Promise<DiscountLean | null> {
+    return await Discounts.findOne(query).lean();
   }
 
   /**

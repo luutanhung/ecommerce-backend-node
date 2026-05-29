@@ -10,7 +10,6 @@ import { ProductType } from "../domains/product/constants/product.constants.js";
 
 import {
   DISCOUNT_APPLIES_TO,
-  DISCOUNT_SCOPE,
   DISCOUNT_TYPE,
 } from "./constants/discount.constants.js";
 
@@ -39,14 +38,6 @@ export const DiscountSchema = new Schema(
       enum: Object.values(DISCOUNT_TYPE),
       required: true,
       default: DISCOUNT_TYPE.FIXED_AMOUNT,
-    },
-    /**
-     * Where discount applies.
-     */
-    discountScope: {
-      type: String,
-      enum: Object.values(DISCOUNT_SCOPE),
-      required: true,
     },
     discountConfig: {
       type: Schema.Types.Mixed,
@@ -93,7 +84,9 @@ export const DiscountSchema = new Schema(
       type: Number,
       default: 0,
     },
-    // List of products to apply this discount.
+    /**
+     * List of products to apply this discount.
+     */
     discountAppliesTo: {
       type: String,
       enum: Object.values(DISCOUNT_APPLIES_TO),
