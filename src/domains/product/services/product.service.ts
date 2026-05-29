@@ -68,8 +68,8 @@ export class ProductService {
       await InventoryService.createInventory(
         {
           productId: createdProduct._id.toString(),
-          shopId: createdProduct.productShop.toString(),
-          stock: createdProduct.productQuantity,
+          shopId: createdProduct.shop.toString(),
+          stock: createdProduct.quantity,
           location: "",
           reservations: [],
         },
@@ -90,11 +90,11 @@ export class ProductService {
     payload,
   }: UpdateShopProductInput): Promise<ProductLean | null> {
     return await withTransaction(async (session: ClientSession) => {
-      const { productAttributes, ...baseProductPayload } = cleanObject(payload);
+      const { attributes, ...baseProductPayload } = cleanObject(payload);
 
-      const flattenedAttributes = productAttributes
+      const flattenedAttributes = attributes
         ? flattenObject({
-            productAttributes,
+            attributes,
           } as Record<string, unknown>)
         : {};
 

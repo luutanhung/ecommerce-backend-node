@@ -48,27 +48,27 @@ export class ProductRepository {
     const [createdProduct] = await Products.create(
       [
         {
-          productUser: toObjectId(userId),
+          user: toObjectId(userId),
 
-          productShop: toObjectId(shopId),
+          shop: toObjectId(shopId),
 
-          productName: name,
+          name: name,
 
-          productThumb: thumb,
+          thumb: thumb,
 
-          productDescription: description,
+          description: description,
 
-          productPrice: price,
+          price: price,
 
-          productQuantity: quantity,
+          quantity: quantity,
 
-          productCategory: categoryId ? toObjectId(categoryId) : undefined,
+          category: categoryId ? toObjectId(categoryId) : undefined,
 
-          productAttributes: attributes,
+          attributes: attributes,
 
-          productImages: images,
+          images: images,
 
-          productSlug: slug,
+          slug: slug,
 
           isPublished,
         },

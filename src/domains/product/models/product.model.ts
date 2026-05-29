@@ -14,47 +14,47 @@ import { ResCode } from "../../../shared/constants/resCode.constants.js";
 
 export const ProductSchema = new Schema(
   {
-    productUser: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.USER,
       required: true,
     },
-    productShop: {
+    shop: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.SHOP,
       required: true,
     },
-    productCategory: {
+    category: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.PRODUCT_CATEGORY,
     },
-    productName: {
+    name: {
       type: String,
       required: true,
     },
-    productThumb: {
+    thumb: {
       type: String,
       required: true,
     },
-    productPrice: {
+    price: {
       type: Number,
       required: true,
     },
-    productCurrency: {
+    currency: {
       type: String,
       default: CURRENCY.USD,
     },
-    productQuantity: {
+    quantity: {
       type: Number,
       required: true,
     },
-    productDescription: {
+    description: {
       type: String,
     },
-    productSlug: {
+    slug: {
       type: String,
     },
-    productAverageRating: {
+    averageRating: {
       type: Number,
       default: 4.5,
       min: [
@@ -71,12 +71,12 @@ export const ProductSchema = new Schema(
     /**
      * Dynamic attributes.
      */
-    productAttributes: {
+    attributes: {
       type: Schema.Types.Mixed,
       default: {},
     },
 
-    productImages: {
+    images: {
       type: [String],
       default: [],
     },
@@ -104,7 +104,7 @@ ProductSchema.index({ productName: "text", productDescription: "text" });
  * Document Middlewares.
  */
 ProductSchema.pre("save", async function () {
-  this.productSlug = slugify(this.productName, {
+  this.slug = slugify(this.name, {
     lower: true,
   });
 });

@@ -15,6 +15,7 @@ import type {
   RefreshTokenPayload,
   RegisterInput,
   UserDocument,
+  UserLean,
 } from "../types/access.types.js";
 
 import { AppError } from "../../../core/error/appError.js";
@@ -65,7 +66,7 @@ export class AccessService {
    * Logins with user's payload.
    */
   static async login({ email, password, deviceId }: LoginInput): Promise<{
-    user: ReturnType<typeof sanitizeUser>;
+    user: UserLean;
     tokens: {
       accessToken: string;
       refreshToken: string;

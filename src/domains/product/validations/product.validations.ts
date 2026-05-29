@@ -64,7 +64,7 @@ export const BaseProductSchema = z.object({
       error: ResCode.PRODUCT_QUANTITY_MUST_BE_POSITIVE,
     }),
 
-  categoryId: z.string().min(1),
+  categoryId: z.string().min(1).optional(),
 
   /**
    * Dynamic attributes.

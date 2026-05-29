@@ -7,13 +7,13 @@ import { AccessService } from "../services/access.service.js";
 import type {
   AccessTokenPayload,
   RefreshTokenResult,
-} from "../types/access.type.js";
+} from "../types/access.types.js";
 
 import { env } from "../../../configs/env.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
+import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 import type {
   LoginRequest,
   RegisterRequest,
@@ -106,7 +106,7 @@ class AccessController {
    */
   async logoutAll(req: Request, res: Response): Promise<void> {
     const { uid } = req.user as AccessTokenPayload;
-    await AccessService.logoutAllSessions({
+    await AccessService.logoutAll({
       userId: uid,
     });
 

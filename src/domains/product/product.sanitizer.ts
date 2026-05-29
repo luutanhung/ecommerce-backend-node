@@ -5,14 +5,15 @@ import { pickFields } from "../../shared/utils/sanitizer.utils.js";
 
 export const DEFAULT_PRODUCT_SELECT_FIELDS: Array<keyof ProductLean> = [
   "_id",
-  "productName",
-  "productThumb",
-  "productAttributes",
-  "productPrice",
-  "productCurrency",
-  "productShop",
-  "productDescription",
-  "productAverageRating",
+  "name",
+  "shop",
+  "thumb",
+  "attributes",
+  "price",
+  "currency",
+  "description",
+  "attributes",
+  "averageRating",
   "createdAt",
   "updatedAt",
 ] as const;
