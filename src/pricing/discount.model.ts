@@ -1,12 +1,13 @@
 import { type PaginateModel, Schema, model } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
-import { ProductType } from "../domains/product/constants/product.constants.js";
-
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
-} from "../constants/model.constants.js";
+} from "../shared/constants/model.constants.js";
+
+import { ProductType } from "../domains/product/constants/product.constants.js";
+
 import {
   DISCOUNT_APPLIES_TO,
   DISCOUNT_TYPE,

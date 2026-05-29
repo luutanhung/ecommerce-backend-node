@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
-} from "../../constants/model.constants.js";
+} from "../../shared/constants/model.constants.js";
 
 /**
  * Inventory model.

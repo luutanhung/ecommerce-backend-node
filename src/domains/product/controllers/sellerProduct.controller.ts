@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 
-import { ResCode } from "../../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import type { AuthPayload } from "../../../domains/access/types/access.type.js";
 import type { ShopLean } from "../../../domains/shop/types/shop.type.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type {
   ParamsRequest,
   TypedRequest,

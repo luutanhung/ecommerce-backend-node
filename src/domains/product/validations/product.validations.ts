@@ -3,7 +3,7 @@ import z from "zod";
 
 import { ProductType } from "../constants/product.constants.js";
 
-import { ResCode } from "../../../constants/resCode.constants.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import {
   ObjectIdSchema,
   PositiveNumberSchema,

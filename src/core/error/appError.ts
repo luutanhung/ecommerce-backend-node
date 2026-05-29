@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { HttpStatusCode } from "../../constants/http.constants.js";
+import { HttpStatusCode } from "../../shared/constants/http.constants.js";
 import type { AppErrorConstructorParams } from "../../shared/types/core/appError.type.js";
 import type {
   AppData,

@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 
-import { ResCode } from "../../../constants/resCode.constants.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { AuthPayload } from "../../access/types/access.type.js";
 import { ShopService } from "../shop.service.js";
 

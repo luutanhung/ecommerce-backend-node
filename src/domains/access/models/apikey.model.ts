@@ -5,7 +5,7 @@ import { ApiKeyPermission } from "../constants/apikey.constants.js";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
-} from "../../../constants/model.constants.js";
+} from "../../../shared/constants/model.constants.js";
 
 export const ApiKeySchema = new Schema(
   {

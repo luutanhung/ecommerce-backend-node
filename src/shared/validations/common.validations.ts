@@ -2,7 +2,7 @@ import _ from "lodash";
 import mongoose from "mongoose";
 import z from "zod";
 
-import { ResCode } from "../../constants/resCode.constants.js";
+import { ResCode } from "../constants/resCode.constants.js";
 
 export const ObjectIdSchema = z
   .string()

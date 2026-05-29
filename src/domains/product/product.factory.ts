@@ -3,8 +3,8 @@ import type {
   ProductType,
 } from "./types/product.type.js";
 
-import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import { ResCode } from "../../shared/constants/resCode.constants.js";
 
 import type {
   BaseProductAttributes,

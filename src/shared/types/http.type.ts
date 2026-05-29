@@ -1,7 +1,7 @@
 import type { Request } from "express";
 import type { ParsedQs } from "qs";
 
-import { HttpStatusCode } from "../../constants/http.constants.js";
+import { HttpStatusCode } from "../constants/http.constants.js";
 
 export type HttpStatusCodeKey = keyof typeof HttpStatusCode;
 

@@ -2,8 +2,8 @@ import { type ClientSession } from "mongoose";
 
 import type { RegisterShopInput, ShopLean } from "./types/shop.type.js";
 
-import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { withTransaction } from "../../shared/helpers/withTransaction.js";
 import { sanitizeShop } from "../../shared/utils/sanitizer.utils.js";
 import { UserRole } from "../access/constants/access.constants.js";

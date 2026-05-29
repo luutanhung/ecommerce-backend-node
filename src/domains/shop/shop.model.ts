@@ -4,7 +4,7 @@ import slugify from "slugify";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
-} from "../../constants/model.constants.js";
+} from "../../shared/constants/model.constants.js";
 
 import { SHOP_STATUS } from "./shop.constants.js";
 

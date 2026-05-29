@@ -10,9 +10,9 @@ import type {
 } from "../types/access.type.js";
 
 import { env } from "../../../configs/env.js";
-import { ResCode } from "../../../constants/resCode.constants.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
 import type {
   LoginRequest,

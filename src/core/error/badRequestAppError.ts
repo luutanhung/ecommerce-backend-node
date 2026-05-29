@@ -1,5 +1,5 @@
-import { HttpStatusCode } from "../../constants/http.constants.js";
-import { ResCode } from "../../constants/resCode.constants.js";
+import { HttpStatusCode } from "../../shared/constants/http.constants.js";
+import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { PartialAppErrorConstructorParams } from "../../shared/types/core/appError.type.js";
 
 import { AppError } from "./appError.js";

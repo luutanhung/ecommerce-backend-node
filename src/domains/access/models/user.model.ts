@@ -5,7 +5,7 @@ import { UserRole } from "../constants/access.constants.js";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
-} from "../../../constants/model.constants.js";
+} from "../../../shared/constants/model.constants.js";
 
 export const UserSchema = new Schema(
   {

@@ -3,9 +3,10 @@ import type { ParamsDictionary, Query } from "express-serve-static-core";
 import type { ZodType, z } from "zod";
 import { ZodError } from "zod";
 
+import { ResCode } from "../constants/resCode.constants.js";
+
 import type { ResponseCodeKey } from "../types/core/response.type.js";
 
-import { ResCode } from "../../constants/resCode.constants.js";
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import { InternalSystemError } from "../../core/error/internalSystemError.js";
 import { asyncWrapper } from "../helpers/asyncWrapper.js";

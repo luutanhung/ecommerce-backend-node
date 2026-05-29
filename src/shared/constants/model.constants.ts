@@ -4,7 +4,6 @@ export const DOCUMENT_NAME = {
   // Access.
   USER: "User",
   SESSION: "Session",
-  KEY_TOKEN: "KeyToken",
 
   // Shop.
   SHOP: "Shop",
@@ -31,7 +30,6 @@ export const COLLECTION_NAME = {
   // Access.
   USERS: "Users",
   SESSIONS: "Sessions",
-  KEY_TOKENS: "KeyTokens",
 
   // Shop.
   SHOPS: "Shops",

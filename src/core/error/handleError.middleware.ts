@@ -2,8 +2,8 @@ import type { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
 import { env } from "../../configs/env.js";
-import { HttpStatusCode } from "../../constants/http.constants.js";
-import { ResCode } from "../../constants/resCode.constants.js";
+import { HttpStatusCode } from "../../shared/constants/http.constants.js";
+import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { ResponseCodeKey } from "../../shared/types/core/response.type.js";
 import { ErrorResponse } from "../response/error.response.js";
 

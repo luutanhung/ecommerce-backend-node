@@ -1,8 +1,8 @@
 import type { UserLean } from "../types/access.type.js";
 import type { AddRoleInput } from "../types/user.service.type.js";
 
-import { ResCode } from "../../../constants/resCode.constants.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";

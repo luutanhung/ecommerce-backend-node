@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import _ from "lodash";
 
-import { ResCode } from "../../../constants/resCode.constants.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { ShopParams } from "../../shop/validations/shop.validations.js";
 import { sanitizeProduct } from "../product.sanitizer.js";
 import { ProductService } from "../product.service.js";

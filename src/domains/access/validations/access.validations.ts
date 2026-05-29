@@ -1,7 +1,7 @@
 import _ from "lodash";
 import z from "zod";
 
-import { ResCode } from "../../../constants/resCode.constants.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import {
   EmailSchema,
   PasswordSchema,

@@ -7,12 +7,12 @@ import { ProductType } from "../constants/product.constants.js";
 
 import type { Product } from "../types/product.type.js";
 
+import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
-} from "../../../constants/model.constants.js";
-import { ResCode } from "../../../constants/resCode.constants.js";
-import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
+} from "../../../shared/constants/model.constants.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 
 export const ProductSchema = new Schema(
   {
