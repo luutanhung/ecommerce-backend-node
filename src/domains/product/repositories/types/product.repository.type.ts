@@ -43,7 +43,11 @@ export type FindProductRepositoryInput = {
   query?: ProductFilterQuery;
 };
 
-export type FindProductsRepositoryInput = Partial<SortOptions> &
-  PartialPaginationQuery & {
-    query?: ProductFilterQuery;
-  } & SelectFields;
+export type FindPaginatedOptions = Partial<SortOptions> &
+  SelectFields &
+  PartialPaginationQuery;
+
+export type FindPaginatedRepositoryInput = {
+  filters?: ProductFilterQuery;
+  options?: FindPaginatedOptions;
+};

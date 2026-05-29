@@ -252,12 +252,14 @@ export class ProductService {
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
   }: FindProductsOwnedByShopInput) {
-    const query: ProductFilterQuery = { productShop: shopId, isDraft: true };
+    const filters: ProductFilterQuery = { productShop: shopId, isDraft: true };
 
-    const paginationResult = await ProductRepository.findProducts({
-      query,
-      page,
-      limit,
+    const paginationResult = await ProductRepository.findPaginated({
+      filters,
+      options: {
+        page,
+        limit,
+      },
     });
 
     return sanitizePagination(paginationResult, sanitizeProduct);
@@ -271,15 +273,17 @@ export class ProductService {
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
   }: FindProductsOwnedByShopInput) {
-    const query: ProductFilterQuery = {
+    const filters: ProductFilterQuery = {
       productShop: shopId,
       isPublished: true,
     };
 
-    const paginationResult = await ProductRepository.findProducts({
-      query,
-      page,
-      limit,
+    const paginationResult = await ProductRepository.findPaginated({
+      filters,
+      options: {
+        page,
+        limit,
+      },
     });
 
     return sanitizePagination(paginationResult, sanitizeProduct);
@@ -297,17 +301,19 @@ export class ProductService {
     limit = PAGINATION_DEFAULT_LIMIT,
   }: SearchProductsInput) {
     // CRITICAL: Only search published products.
-    const query = {
+    const filters = {
       isPublished: true,
       $text: {
         $search: keyword,
       },
     };
 
-    const paginationResult = await ProductRepository.findProducts({
-      query,
-      page,
-      limit,
+    const paginationResult = await ProductRepository.findPaginated({
+      filters,
+      options: {
+        page,
+        limit,
+      },
     });
 
     return sanitizePagination(paginationResult, sanitizeProduct);
@@ -327,12 +333,14 @@ export class ProductService {
   }: FindPublishedProductsInput) {
     const query = buildProductsQuery(filters);
 
-    const paginationResult = await ProductRepository.findProducts({
-      query,
-      sortBy,
-      sortOrder,
-      page,
-      limit,
+    const paginationResult = await ProductRepository.findPaginated({
+      filters: query,
+      options: {
+        sortBy,
+        sortOrder,
+        page,
+        limit,
+      },
     });
 
     return sanitizePagination(paginationResult, sanitizeProduct);

@@ -5,8 +5,8 @@ import { Products } from "../models/product.model.js";
 import type { ProductDocument, ProductLean } from "../types/product.type.js";
 import type {
   CreateProductInput,
+  FindPaginatedRepositoryInput,
   FindProductRepositoryInput,
-  FindProductsRepositoryInput,
   UpdateProductRepositoryInput,
 } from "./types/product.repository.type.js";
 
@@ -107,16 +107,20 @@ export class ProductRepository {
   /**
    * Find products.
    */
-  static async findProducts({
-    query = {},
-    // Sort Options.
-    sortBy = "time",
-    sortOrder = SortOrder.DESC,
-    // Pagination options.
-    page = PAGINATION_DEFAULT_PAGE,
-    limit = PAGINATION_DEFAULT_LIMIT,
-    select = DEFAULT_PRODUCT_SELECT_FIELDS,
-  }: FindProductsRepositoryInput): Promise<PaginateResult<ProductLean>> {
+  static async findPaginated({
+    filters,
+    options,
+  }: FindPaginatedRepositoryInput): Promise<PaginateResult<ProductLean>> {
+    const {
+      // Sort Options.
+      sortBy = "time",
+      sortOrder = SortOrder.DESC,
+      // Pagination options.
+      page = PAGINATION_DEFAULT_PAGE,
+      limit = PAGINATION_DEFAULT_LIMIT,
+      select = DEFAULT_PRODUCT_SELECT_FIELDS,
+    } = options || {};
+
     const sortOptions = buildSort({
       sortBy,
       sortOrder,
@@ -124,7 +128,7 @@ export class ProductRepository {
 
     const selectOptions = buildSelect(select);
 
-    return (await Products.paginate(query, {
+    return (await Products.paginate(filters, {
       page,
       limit,
       lean: true,
