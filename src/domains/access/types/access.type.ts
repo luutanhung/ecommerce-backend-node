@@ -38,7 +38,7 @@ export type RefreshTokenPayload = {
 };
 
 // Services.
-export type RegisterUserInput = {
+export type RegisterInput = {
   email: string;
   password: string;
 };
@@ -47,8 +47,6 @@ export type AccessBaseResult = {
   user: ReturnType<typeof sanitizeUser>;
   tokens: TokenPair;
 };
-
-export type RegisterUserResult = Pick<AccessBaseResult, "user">;
 
 export type LoginInput = {
   email: string;

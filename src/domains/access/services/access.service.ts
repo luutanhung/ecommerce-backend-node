@@ -13,8 +13,7 @@ import type {
   LogoutPayload,
   RefreshTokenInput,
   RefreshTokenPayload,
-  RegisterUserInput,
-  RegisterUserResult,
+  RegisterInput,
   UserDocument,
 } from "../types/access.type.js";
 
@@ -37,10 +36,9 @@ export class AccessService {
   /**
    * Registers a new user account.
    */
-  static async register({
-    email,
-    password,
-  }: RegisterUserInput): Promise<RegisterUserResult> {
+  static async register({ email, password }: RegisterInput): Promise<{
+    user: ReturnType<typeof sanitizeUser>;
+  }> {
     const existingUser = await Users.findOne({ email }).lean();
 
     if (existingUser) {
@@ -66,7 +64,13 @@ export class AccessService {
   /**
    * Logins with user's payload.
    */
-  static async login({ email, password, deviceId }: LoginInput) {
+  static async login({ email, password, deviceId }: LoginInput): Promise<{
+    user: ReturnType<typeof sanitizeUser>;
+    tokens: {
+      accessToken: string;
+      refreshToken: string;
+    };
+  }> {
     // Find user registered with passed-in email.
     const user = await Users.findOne({ email })
       .select("+hashedPassword")
@@ -109,7 +113,10 @@ export class AccessService {
    * @remarks
    * Ensures that refresh token is used exactly one time to generate a new pair of tokens.
    */
-  static refreshToken = async ({ refreshToken }: RefreshTokenInput) => {
+  static async refreshToken({ refreshToken }: RefreshTokenInput): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
     const verifyRefreshToken = async (
       refreshToken: string,
       privateKey: string,
@@ -202,12 +209,12 @@ export class AccessService {
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
     };
-  };
+  }
 
   /**
    * Logout from current device.
    */
-  static async logoutOneSession({ sessionId }: LogoutPayload) {
+  static async logoutOneSession({ sessionId }: LogoutPayload): Promise<void> {
     await Sessions.findByIdAndDelete(toObjectId(sessionId));
   }
 
@@ -229,7 +236,9 @@ export class AccessService {
   /**
    * Logout all sessions.
    */
-  static async logoutAllSessions({ userId }: LogoutAllSessionsInput) {
+  static async logoutAllSessions({
+    userId,
+  }: LogoutAllSessionsInput): Promise<void> {
     await Sessions.deleteMany({
       sessionUser: toObjectId(userId),
     });
