@@ -16,12 +16,6 @@ export type UserLean = User & {
 
 export type CreateTokenPairPayload = Record<string, string>;
 
-export type CreateTokenPairInput = {
-  payload: CreateTokenPairPayload;
-  privateKey: string;
-  publicKey: string;
-};
-
 export type AccessTokenPayload = {
   uid: string; // userId
   did: string; // deviceId
@@ -39,6 +33,10 @@ export type RefreshTokenPayload = {
 export type RegisterInput = {
   email: string;
   password: string;
+};
+
+export type SendVerificationEmailInput = {
+  userId: string;
 };
 
 export type AccessBaseResult = {

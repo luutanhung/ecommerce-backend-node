@@ -14,6 +14,13 @@ export const RegisterRequestSchema = z.object({
   password: PasswordSchema,
 });
 
+export const SendVerificationEmailRequestBodySchema = z.object({
+  uid: z.string(),
+});
+export type SendVerificationEmailRequestBody = z.infer<
+  typeof SendVerificationEmailRequestBodySchema
+>;
+
 export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
 
 export const LoginRequestSchema = z.object({

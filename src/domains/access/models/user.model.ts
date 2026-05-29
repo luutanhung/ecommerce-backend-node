@@ -29,6 +29,7 @@ export const UserSchema = new Schema(
     },
     name: {
       type: String,
+      required: true,
     },
     nationalId: {
       // CCCD.
@@ -56,5 +57,16 @@ export const UserSchema = new Schema(
     collection: COLLECTION_NAME.USERS,
   },
 );
+
+UserSchema.pre("validate", function () {
+  if (!this.name || this.name.trim() === "") {
+    if (this.email && this.email.includes("@")) {
+      const extractedName = this.email.split("@")[0];
+      if (extractedName) {
+        this.name = extractedName;
+      }
+    }
+  }
+});
 
 export const Users = model(DOCUMENT_NAME.USER, UserSchema);

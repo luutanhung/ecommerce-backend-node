@@ -17,9 +17,12 @@ import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 import type {
   LoginRequest,
   RegisterRequest,
+  SendVerificationEmailRequestBody,
 } from "../validations/access.validations.js";
 
 class AccessController {
+  // Unauthenticated.
+
   /**
    * Register a new shop.
    */
@@ -87,6 +90,23 @@ class AccessController {
       },
     }).send(req, res);
   };
+
+  // Authenticated.
+  async sendVerificationEmail(req: Request, res: Response): Promise<void> {
+    const userId = (req.body as SendVerificationEmailRequestBody).uid;
+
+    await AccessService.sendVerificationEmail({
+      userId,
+    });
+
+    new OKResponse({
+      code: ResCode.ACCESS_SEND_VERIFICATION_EMAIL_SUCCESS,
+    }).send(req, res);
+  }
+
+  /**
+   *
+   */
 
   /**
    * Logout from current device.

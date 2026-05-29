@@ -20,6 +20,16 @@ const env = cleanEnv(process.env, {
   MONGODB_PASSWORD: str({ default: "" }),
   MONGODB_DBNAME: str({ default: "" }),
   MONGODB_REPLICA_SET: str({ default: "rs0" }),
+
+  // Mail.
+  SMTP_HOST: host(),
+  SMTP_PORT: port(),
+  SMTP_USER: str(),
+  SMTP_PASSWORD: str(),
+
+  JWT_MAIL_SECRET: str(),
+
+  CLIENT_URL: str(),
 });
 
 export { env };

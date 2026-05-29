@@ -14,22 +14,27 @@ import type {
   RefreshTokenInput,
   RefreshTokenPayload,
   RegisterInput,
+  SendVerificationEmailInput,
   UserDocument,
   UserLean,
 } from "../types/access.types.js";
 
+import { config } from "../../../configs/index.js";
 import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
+import { MailService } from "../../../libs/mail/mail.service.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import {
   generateAccessToken,
+  generateEmailVerificationToken,
   generateRefreshToken,
   verifyJSONWebToken,
 } from "../../../shared/utils/token.utils.js";
 import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
+import { buildVerifyEmailTemplate } from "../templates/access.templates.js";
 
 import { SessionService } from "./session.service.js";
 
@@ -60,6 +65,33 @@ export class AccessService {
     return {
       user: sanitizeUser(createdUser),
     };
+  }
+
+  static async sendVerificationEmail({ userId }: SendVerificationEmailInput) {
+    const foundUser = await Users.findOne({
+      _id: toObjectId(userId),
+    }).lean();
+
+    if (!foundUser) {
+      throw new NotFoundAppError({
+        code: ResCode.USER_NOT_FOUND,
+      });
+    }
+
+    const token = generateEmailVerificationToken(foundUser._id.toString());
+
+    const verificationUrl = `${config.client.url}/verify-email?token=${token}`;
+
+    const html = buildVerifyEmailTemplate({
+      name: foundUser.name,
+      verificationUrl,
+    });
+
+    await MailService.send({
+      to: foundUser.email,
+      subject: "Verify your email",
+      html,
+    });
   }
 
   /**

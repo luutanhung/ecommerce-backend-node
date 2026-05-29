@@ -1,16 +1,15 @@
 import jwt from "jsonwebtoken";
 import _ from "lodash";
 
+import { config } from "../../configs/index.js";
 import {
   ACCESS_TOKEN_EXPIRES_IN_DAYS,
   REFRESH_TOKEN_EXPIRES_IN_DAYS,
 } from "../../domains/access/constants/access.constants.js";
 import type {
   AccessTokenPayload,
-  CreateTokenPairInput,
   RefreshTokenPayload,
-  TokenPair,
-} from "../../domains/access/types/access.type.js";
+} from "../../domains/access/types/access.types.js";
 
 /**
  * Generate access token.
@@ -25,6 +24,22 @@ export const generateAccessToken = async (
 };
 
 /**
+ * Generate email verficiation token.
+ */
+export const generateEmailVerificationToken = (userId: string): string => {
+  return jwt.sign(
+    {
+      userId,
+      type: "EMAIL_VERIFICATION",
+    },
+    config.mail.secret,
+    {
+      expiresIn: "1d",
+    },
+  );
+};
+
+/**
  * Generate refresh token.
  */
 export const generateRefreshToken = async (
@@ -34,38 +49,6 @@ export const generateRefreshToken = async (
   return await jwt.sign(payload, privateKey, {
     expiresIn: REFRESH_TOKEN_EXPIRES_IN_DAYS * 60 * 60 * 24,
   });
-};
-
-/**
- * Creates a pair of access token and refresh token based on public key and private key.
- *
- * @param payload - Information to be encoded
- * @param publicKey - Key to encode access tokenrm
- * @param privateKey - Key to encode refresh token
- *
- * @returns A pair of tokens generated.
- */
-export const createTokenPair = async ({
-  payload,
-  privateKey,
-  publicKey,
-}: CreateTokenPairInput): Promise<TokenPair> => {
-  try {
-    const accessToken: string = await jwt.sign(payload, publicKey, {
-      algorithm: "HS256",
-      expiresIn: ACCESS_TOKEN_EXPIRES_IN_DAYS * 60 * 60 * 24,
-    });
-
-    const refreshToken: string = await jwt.sign(payload, privateKey, {
-      algorithm: "HS256",
-      expiresIn: REFRESH_TOKEN_EXPIRES_IN_DAYS * 60 * 60 * 24,
-    });
-
-    return { accessToken, refreshToken };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    return err;
-  }
 };
 
 /**

@@ -11,6 +11,7 @@ import {
 import {
   LoginRequestSchema,
   RegisterRequestSchema,
+  SendVerificationEmailRequestBodySchema,
 } from "../validations/access.validations.js";
 
 const router = Router();
@@ -20,6 +21,15 @@ router.post(
   "/access/register",
   validateRequest({ body: RegisterRequestSchema }),
   asyncWrapper(accessController.register),
+);
+
+/**
+ * Send verification mail.
+ */
+router.post(
+  "/access/send-verification-email",
+  validateRequest({ body: SendVerificationEmailRequestBodySchema }),
+  asyncWrapper(accessController.sendVerificationEmail),
 );
 
 // Login with shop's information.
@@ -55,7 +65,9 @@ router.post(
   asyncWrapper(accessController.login),
 );
 
-// Refresh token.
+/**
+ * Refresh token.
+ */
 router.post(
   "/access/refreshToken",
   authenticateClientId,
