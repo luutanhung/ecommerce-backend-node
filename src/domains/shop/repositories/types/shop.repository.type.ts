@@ -1,6 +1,6 @@
 import type { QueryFilter } from "mongoose";
 
-import type { Shop, ShopStatus } from "../../types/shop.type.js";
+import type { Shop, ShopStatus } from "../../types/shop.types.js";
 
 export type ShopFilterQuery = QueryFilter<Shop>;
 

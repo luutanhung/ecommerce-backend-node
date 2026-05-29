@@ -1,6 +1,6 @@
 import { type ClientSession } from "mongoose";
 
-import type { RegisterShopInput, ShopLean } from "../types/shop.type.js";
+import type { RegisterShopInput, ShopLean } from "../types/shop.types.js";
 
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";

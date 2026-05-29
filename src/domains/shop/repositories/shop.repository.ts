@@ -2,7 +2,7 @@ import { SHOP_STATUS } from "../constants/shop.constants.js";
 
 import { Shops } from "../models/shop.model.js";
 
-import type { ShopLean } from "../types/shop.type.js";
+import type { ShopLean } from "../types/shop.types.js";
 import type {
   CreateShopInput,
   FindShopRepositoryInput,
