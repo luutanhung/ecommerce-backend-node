@@ -23,25 +23,25 @@ export const DOCUMENT_NAME = {
 } as const;
 
 export const COLLECTION_NAME = {
-  API_KEYS: "ApiKeys",
+  API_KEYS: "api_keys",
 
   // Access.
-  USERS: "Users",
-  SESSIONS: "Sessions",
+  USERS: "users",
+  SESSIONS: "sessions",
 
   // Shop.
-  SHOPS: "Shops",
+  SHOPS: "shops",
 
   // Product.
-  PRODUCTS: "Products",
-  PRODUCT_CATEGORIES: "PRODUCT_CATEGORIES",
+  PRODUCTS: "products",
+  PRODUCT_CATEGORIES: "product_categories",
 
   // Inventory.
-  INVENTORIES: "Inventories",
+  INVENTORIES: "inventories",
 
   // Cart.
-  CARTS: "Carts",
+  CARTS: "carts",
 
   // Pricing.
-  DISCOUNTS: "Discounts",
+  DISCOUNTS: "discounts",
 } as const;
