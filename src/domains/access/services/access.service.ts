@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { UserRole } from "../constants/access.constants.js";
+import { USER_ROLE } from "../constants/access.constants.js";
 
 import { Sessions } from "../models/session.model.js";
 import { Users } from "../models/user.model.js";
@@ -53,7 +53,7 @@ export class AccessService {
     const createdUser: UserDocument = await Users.create({
       email,
       hashedPassword: hashedPassword,
-      roles: [UserRole.CUSTOMER],
+      roles: [USER_ROLE.CUSTOMER],
     });
 
     return {

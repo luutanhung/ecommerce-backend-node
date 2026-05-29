@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-import { UserRole } from "../constants/access.constants.js";
+import { USER_ROLE } from "../constants/access.constants.js";
 
 import {
   COLLECTION_NAME,
@@ -46,8 +46,8 @@ export const UserSchema = new Schema(
     },
     roles: {
       type: [String],
-      enum: Object.values(UserRole),
-      default: UserRole.CUSTOMER,
+      enum: Object.values(USER_ROLE),
+      default: USER_ROLE.CUSTOMER,
       required: true,
     },
   },

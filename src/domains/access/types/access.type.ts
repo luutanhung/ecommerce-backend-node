@@ -1,12 +1,12 @@
 import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import type { UserRole } from "../constants/access.constants.js";
+import type { USER_ROLE } from "../constants/access.constants.js";
 
 import type { UserSchema } from "../models/user.model.js";
 
 import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
 
-export type UserRole = (typeof UserRole)[keyof typeof UserRole];
+export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export type User = InferSchemaType<typeof UserSchema>;
 export type UserDocument = HydratedDocument<User>;
