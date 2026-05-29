@@ -76,7 +76,7 @@ export type RefreshTokenResult = {
   refreshToken: string;
 };
 
-export type LogoutAllSessionsInput = {
+export type LogoutAllInput = {
   userId: string;
 };
 

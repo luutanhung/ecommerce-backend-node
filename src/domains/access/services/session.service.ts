@@ -17,6 +17,9 @@ import {
 } from "../../../shared/utils/token.utils.js";
 
 export class SessionService {
+  /**
+   * Initiate a new session for user's device.
+   */
   static async createSession({
     userId,
     deviceId,

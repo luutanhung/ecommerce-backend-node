@@ -9,7 +9,7 @@ import { Users } from "../models/user.model.js";
 import type {
   LoginInput,
   LogoutAllExceptCurrentInput,
-  LogoutAllSessionsInput,
+  LogoutAllInput,
   LogoutPayload,
   RefreshTokenInput,
   RefreshTokenPayload,
@@ -221,7 +221,7 @@ export class AccessService {
   /**
    * Logout from all devices except current.
    */
-  static async logoutAllSessionsExceptCurrent({
+  static async logoutAllExceptCurrent({
     userId,
     deviceId,
   }: LogoutAllExceptCurrentInput): Promise<void> {
@@ -236,9 +236,7 @@ export class AccessService {
   /**
    * Logout all sessions.
    */
-  static async logoutAllSessions({
-    userId,
-  }: LogoutAllSessionsInput): Promise<void> {
+  static async logoutAll({ userId }: LogoutAllInput): Promise<void> {
     await Sessions.deleteMany({
       sessionUser: toObjectId(userId),
     });
