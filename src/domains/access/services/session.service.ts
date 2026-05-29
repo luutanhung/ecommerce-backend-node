@@ -5,8 +5,8 @@ import { Sessions } from "../models/session.model.js";
 import type {
   AccessTokenPayload,
   RefreshTokenPayload,
-} from "../types/access.type.js";
-import type { CreateSessionInput } from "../types/session.service.types.js";
+} from "../types/access.types.js";
+import type { CreateSessionInput } from "./types/session.service.types.js";
 
 import type { KeyPair } from "../../../shared/types/utils.type.js";
 import { createKeyPair } from "../../../shared/utils/generator.utils.js";

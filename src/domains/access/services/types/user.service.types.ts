@@ -1,4 +1,4 @@
-import type { UserRole } from "./access.type.js";
+import type { UserRole } from "../../types/access.types.js";
 
 export type AddRoleInput = {
   userId: string;

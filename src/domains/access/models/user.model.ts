@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-import { USER_ROLE } from "../constants/access.constants.js";
+import { USER_ROLE } from "../constants/user.constants.js";
 
 import {
   COLLECTION_NAME,

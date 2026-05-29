@@ -1,6 +1,6 @@
 import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import type { USER_ROLE } from "../constants/access.constants.js";
+import { USER_ROLE } from "../constants/user.constants.js";
 
 import type { UserSchema } from "../models/user.model.js";
 

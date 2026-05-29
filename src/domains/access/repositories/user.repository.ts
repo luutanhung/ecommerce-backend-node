@@ -1,10 +1,10 @@
 import { Users } from "../models/user.model.js";
 
-import type { UserLean } from "../types/access.type.js";
+import type { UserLean } from "../types/access.types.js";
 import type {
   FindUserRepositoryInput,
   UpdateUserRepositoryInput,
-} from "../types/user.repository.type.js";
+} from "./types/user.repository.type.js";
 
 import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
 

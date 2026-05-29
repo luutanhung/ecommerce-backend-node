@@ -1,5 +1,5 @@
-import type { UserLean } from "../types/access.type.js";
-import type { AddRoleInput } from "../types/user.service.type.js";
+import type { UserLean } from "../types/access.types.js";
+import type { AddRoleInput } from "./types/user.service.types.js";
 
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";

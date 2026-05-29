@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { USER_ROLE } from "../constants/access.constants.js";
+import { USER_ROLE } from "../constants/user.constants.js";
 
 import { Sessions } from "../models/session.model.js";
 import { Users } from "../models/user.model.js";
@@ -15,7 +15,7 @@ import type {
   RefreshTokenPayload,
   RegisterInput,
   UserDocument,
-} from "../types/access.type.js";
+} from "../types/access.types.js";
 
 import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";

@@ -6,7 +6,7 @@ import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { withTransaction } from "../../../shared/helpers/withTransaction.js";
 import { sanitizeShop } from "../../../shared/utils/sanitizer.utils.js";
-import { USER_ROLE } from "../../access/constants/access.constants.js";
+import { USER_ROLE } from "../../access/constants/user.constants.js";
 import { UserService } from "../../access/services/user.service.js";
 import { ShopRepository } from "../repositories/shop.repository.js";
 
