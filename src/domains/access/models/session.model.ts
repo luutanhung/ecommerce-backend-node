@@ -7,7 +7,7 @@ import {
 
 export const SessionSchema = new Schema(
   {
-    sessionUser: {
+    user: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: DOCUMENT_NAME.USER,
@@ -17,7 +17,7 @@ export const SessionSchema = new Schema(
      * Client generated UUID.
      * Stored in localeStorage / mobile secure storage.
      */
-    sessionDeviceId: {
+    deviceId: {
       type: String,
       required: true,
       index: true,

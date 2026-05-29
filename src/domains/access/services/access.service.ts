@@ -23,12 +23,12 @@ import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
-import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
 import {
   generateAccessToken,
   generateRefreshToken,
   verifyJSONWebToken,
 } from "../../../shared/utils/token.utils.js";
+import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 
 import { SessionService } from "./session.service.js";
 
@@ -183,8 +183,8 @@ export class AccessService {
     session.refreshTokenVersion += 1;
     await session.save();
 
-    const userId = session.sessionUser.toString();
-    const deviceId = session.sessionDeviceId;
+    const userId = session.user.toString();
+    const deviceId = session.deviceId;
 
     const newAccessToken: string = await generateAccessToken(
       {
@@ -226,8 +226,8 @@ export class AccessService {
     deviceId,
   }: LogoutAllExceptCurrentInput): Promise<void> {
     await Sessions.deleteMany({
-      sessionUser: toObjectId(userId),
-      sessionDeviceId: {
+      user: toObjectId(userId),
+      deviceId: {
         $ne: deviceId,
       },
     });
@@ -238,7 +238,7 @@ export class AccessService {
    */
   static async logoutAll({ userId }: LogoutAllInput): Promise<void> {
     await Sessions.deleteMany({
-      sessionUser: toObjectId(userId),
+      user: toObjectId(userId),
     });
   }
 }

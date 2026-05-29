@@ -4,7 +4,7 @@ import { USER_ROLE } from "../constants/user.constants.js";
 
 import type { UserSchema } from "../models/user.model.js";
 
-import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
+import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 
 export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 

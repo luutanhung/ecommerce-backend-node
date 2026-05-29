@@ -1,13 +1,6 @@
 import _ from "lodash";
 import type { PaginateResult } from "mongoose";
 
-import type {
-  User,
-  UserLean,
-} from "../../domains/access/types/access.types.js";
-
-import { transformMongoId } from "./mongoose.utils.js";
-
 export const pickFields = <
   T extends Record<string, unknown>,
   K extends keyof T,
@@ -17,25 +10,6 @@ export const pickFields = <
 ): Pick<T, K> => {
   return _.pick(obj, fields) as Pick<T, K>;
 };
-
-/**
- * Sanitize user document instance.
- */
-export function sanitizeUser(user: UserLean): Partial<User> {
-  const sanitizedUser = pickFields(
-    [
-      "_id",
-      "email",
-      "phoneNumber",
-      "name",
-      "nationalId",
-      "taxIdentificationNumber",
-    ],
-    user,
-  );
-
-  return transformMongoId(sanitizedUser);
-}
 
 /**
  * Sanitize paginated products.

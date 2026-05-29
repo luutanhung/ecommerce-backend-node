@@ -32,8 +32,8 @@ export class SessionService {
      * Remove existing session for this device.
      */
     await Sessions.deleteOne({
-      sessionUser: toObjectId(userId),
-      sessionDeviceId: deviceId,
+      user: toObjectId(userId),
+      deviceId: deviceId,
     });
 
     const { privateKey, publicKey }: KeyPair = await createKeyPair();
@@ -41,8 +41,8 @@ export class SessionService {
     const refreshTokenVersion: number = 1;
 
     const session = await Sessions.create({
-      sessionUser: userId,
-      sessionDeviceId: deviceId,
+      user: toObjectId(userId),
+      deviceId,
       refreshTokenVersion,
       privateKey,
       publicKey,

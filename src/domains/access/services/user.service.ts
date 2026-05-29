@@ -5,8 +5,8 @@ import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
-import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
 import { UserRepository } from "../repositories/user.repository.js";
+import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 
 export class UserService {
   /**
