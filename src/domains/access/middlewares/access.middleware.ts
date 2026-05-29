@@ -6,8 +6,8 @@ import { Users } from "../models/user.model.js";
 
 import { findActiveApiKey } from "../services/apikey.service.js";
 
-import type { AccessTokenPayload } from "../types/access.type.js";
-import type { ApiKeyPermission } from "../types/apikey.type.js";
+import type { AccessTokenPayload } from "../types/access.types.js";
+import type { ApiKeyPermission } from "../types/apikey.types.js";
 
 import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
