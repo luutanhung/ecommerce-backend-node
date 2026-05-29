@@ -6,7 +6,8 @@ import type { ShopLean } from "../types/shop.types.js";
 import type {
   CreateShopInput,
   FindShopRepositoryInput,
-} from "./types/shop.repository.type.js";
+  UpdateShopRepositoryInput,
+} from "./types/shop.repository.types.js";
 
 import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
@@ -19,7 +20,7 @@ import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
  */
 export class ShopRepository {
   /**
-   * Creates a new shop.
+   * Create a new shop.
    */
   static async create(
     input: CreateShopInput,
@@ -36,12 +37,12 @@ export class ShopRepository {
     const [createdShop] = await Shops.create(
       [
         {
-          shopUser: toObjectId(userId),
-          shopName: name,
-          shopSlug: slug ?? undefined,
-          shopLogo: logo ?? undefined,
-          shopDescription: description,
-          shopStatus: status,
+          user: toObjectId(userId),
+          name: name,
+          slug: slug ?? undefined,
+          logo: logo ?? undefined,
+          description,
+          status,
         },
       ],
       {
@@ -54,6 +55,26 @@ export class ShopRepository {
     }
 
     return createdShop.toObject();
+  }
+
+  /**
+   * Update a single shop.
+   */
+  static async update({
+    query,
+    update,
+  }: UpdateShopRepositoryInput): Promise<ShopLean | null> {
+    // Find the document first.
+    const shop = await Shops.findOne(query);
+    if (!shop) return null;
+
+    // Apply the updates to the document.
+    Object.assign(shop, update);
+
+    // Save it (triggers the hooks).
+    await shop.save();
+
+    return shop.toObject();
   }
 
   /**

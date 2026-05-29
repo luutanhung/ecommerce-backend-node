@@ -10,30 +10,30 @@ import {
 
 export const ShopSchema = new Schema(
   {
-    shopUser: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.USER,
       required: true,
       index: true,
     },
-    shopName: {
+    name: {
       type: String,
       required: true,
       trim: true,
       maxLength: 150,
     },
-    shopSlug: {
+    slug: {
       type: String,
       unique: true,
     },
-    shopDescription: {
+    description: {
       type: String,
       default: "",
     },
-    shopLogo: {
+    logo: {
       type: String,
     },
-    shopStatus: {
+    status: {
       type: String,
       enum: Object.values(SHOP_STATUS),
       default: SHOP_STATUS.INACTIVE,
@@ -50,7 +50,7 @@ export const ShopSchema = new Schema(
 );
 
 ShopSchema.pre("save", function () {
-  this.shopSlug = slugify(this.shopName, {
+  this.slug = slugify(this.name, {
     lower: true,
   });
 });

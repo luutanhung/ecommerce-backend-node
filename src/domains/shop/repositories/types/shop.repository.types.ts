@@ -1,8 +1,9 @@
-import type { QueryFilter } from "mongoose";
+import type { QueryFilter, UpdateQuery } from "mongoose";
 
 import type { Shop, ShopStatus } from "../../types/shop.types.js";
 
 export type ShopFilterQuery = QueryFilter<Shop>;
+export type ShopUpdateQuery = UpdateQuery<Shop>;
 
 export type FindShopRepositoryInput = {
   query?: ShopFilterQuery;
@@ -15,4 +16,9 @@ export type CreateShopInput = {
   slug?: string;
   logo?: string;
   status?: ShopStatus;
+};
+
+export type UpdateShopRepositoryInput = {
+  query: ShopFilterQuery;
+  update: ShopUpdateQuery;
 };

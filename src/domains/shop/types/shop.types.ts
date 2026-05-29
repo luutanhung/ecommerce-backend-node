@@ -15,10 +15,3 @@ export type ShopLean = Shop & {
 
 export type ShopStatus = (typeof SHOP_STATUS)[keyof typeof SHOP_STATUS];
 export type ShopRole = (typeof ShopRole)[keyof typeof ShopRole];
-
-export type RegisterShopInput = {
-  userId: string;
-  name: string;
-  slug?: string;
-  description?: string;
-};

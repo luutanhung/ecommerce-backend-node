@@ -48,7 +48,5 @@ export const i18nMiddleware = (
   }
   req.setLocale(locale);
 
-  console.log("SUCCESS:", req.t("SUCCESS"));
-
   next();
 };

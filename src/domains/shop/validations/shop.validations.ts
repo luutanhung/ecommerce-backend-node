@@ -35,7 +35,19 @@ export const BaseShopSchema = z.object({
 });
 
 export const RegisterShopRequestBodySchema = BaseShopSchema;
-
 export type RegisterShopRequestBody = z.infer<
   typeof RegisterShopRequestBodySchema
+>;
+
+export const UpdateShopInformationRequestBodySchema =
+  BaseShopSchema.partial().refine(
+    (data) => {
+      return !_.isEmpty(data);
+    },
+    {
+      message: ResCode.SHOP_UPDATE_INFORMATION_EMPTY,
+    },
+  );
+export type UpdateShopInformationRequestBody = z.infer<
+  typeof UpdateShopInformationRequestBodySchema
 >;

@@ -8,14 +8,7 @@ import { pickFields } from "../../../shared/utils/sanitizer.utils.js";
  */
 export function sanitizeShop(shop: ShopLean): Partial<ShopLean> {
   const sanitizedShop = pickFields(
-    [
-      "_id",
-      "shopUser",
-      "shopName",
-      "shopStatus",
-      "shopStatus",
-      "shopDescription",
-    ],
+    ["_id", "user", "name", "slug", "description", "logo", "status"],
     shop,
   );
 
