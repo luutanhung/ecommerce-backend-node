@@ -12,10 +12,6 @@ export const DOCUMENT_NAME = {
   PRODUCT: "Product",
   PRODUCT_CATEGORY: "PRODUCT_CATEGORY",
 
-  CLOTHING: "Clothing",
-  ELECTRONIC: "Electronic",
-  FURNITURE: "Furniture",
-
   // Inventory.
   INVENTORY: "Inventory",
 
@@ -39,10 +35,6 @@ export const COLLECTION_NAME = {
   // Product.
   PRODUCTS: "Products",
   PRODUCT_CATEGORIES: "PRODUCT_CATEGORIES",
-
-  CLOTHES: "Clothes",
-  ELECTRONICS: "Electronics",
-  FURNITURES: "Furnitures",
 
   // Inventory.
   INVENTORIES: "Inventories",

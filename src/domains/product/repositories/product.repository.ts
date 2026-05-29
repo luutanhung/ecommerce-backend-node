@@ -1,28 +1,27 @@
 import type { PaginateResult } from "mongoose";
 
-import { Products } from "./models/product.model.js";
+import { Products } from "../models/product.model.js";
 
+import type { ProductDocument, ProductLean } from "../types/product.type.js";
 import type {
   CreateProductInput,
   FindProductRepositoryInput,
   FindProductsRepositoryInput,
   UpdateProductRepositoryInput,
 } from "./types/product.repository.type.js";
-import type { ProductDocument, ProductLean } from "./types/product.type.js";
 
-import { SortOrder } from "../../shared/constants/common.constants.js";
+import { SortOrder } from "../../../shared/constants/common.constants.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
-} from "../../shared/constants/pagination.constants.js";
-import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
+} from "../../../shared/constants/pagination.constants.js";
+import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
 import {
   buildSelect,
   buildSort,
   toObjectId,
-} from "../../shared/utils/mongoose.utils.js";
-
-import { DEFAULT_PRODUCT_SELECT_FIELDS } from "./product.sanitizer.js";
+} from "../../../shared/utils/mongoose.utils.js";
+import { DEFAULT_PRODUCT_SELECT_FIELDS } from "../product.sanitizer.js";
 
 export class ProductRepository {
   /**

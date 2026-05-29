@@ -1,11 +1,11 @@
 import type { ClientSession } from "mongoose";
 
-import { Products } from "./models/product.model.js";
+import { Products } from "../models/product.model.js";
 
 import type {
-  ProductFilterQuery,
-  ProductUpdateQuery,
-} from "./types/product.repository.type.js";
+  ProductLean,
+  UpdateShopProductInput,
+} from "../types/product.type.js";
 import type {
   CreateShopProductInput,
   FindProductOwnedByShopInput,
@@ -16,31 +16,30 @@ import type {
   SearchProductsInput,
   UnpublishedShopProductInput,
 } from "./types/product.service.type.js";
-import type {
-  ProductLean,
-  UpdateShopProductInput,
-} from "./types/product.type.js";
 
-import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
-import { ConflictAppError } from "../../core/error/conflictAppError.js";
-import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
+import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
+import { ConflictAppError } from "../../../core/error/conflictAppError.js";
+import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
-} from "../../shared/constants/pagination.constants.js";
-import { ResCode } from "../../shared/constants/resCode.constants.js";
-import { withTransaction } from "../../shared/helpers/withTransaction.js";
+} from "../../../shared/constants/pagination.constants.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
+import { withTransaction } from "../../../shared/helpers/withTransaction.js";
 import {
   flattenObject,
   toObjectId,
-} from "../../shared/utils/mongoose.utils.js";
-import { cleanObject } from "../../shared/utils/object.utils.js";
-import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
-import { InventoryService } from "../inventory/inventory.service.js";
-
-import { ProductRepository } from "./product.repository.js";
-import { sanitizeProduct } from "./product.sanitizer.js";
-import { buildProductsQuery } from "./product.utils.js";
+} from "../../../shared/utils/mongoose.utils.js";
+import { cleanObject } from "../../../shared/utils/object.utils.js";
+import { sanitizePagination } from "../../../shared/utils/sanitizer.utils.js";
+import { InventoryService } from "../../inventory/inventory.service.js";
+import { sanitizeProduct } from "../product.sanitizer.js";
+import { buildProductsQuery } from "../product.utils.js";
+import { ProductRepository } from "../repositories/product.repository.js";
+import type {
+  ProductFilterQuery,
+  ProductUpdateQuery,
+} from "../repositories/types/product.repository.type.js";
 
 export class ProductService {
   //==========

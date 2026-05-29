@@ -1,5 +1,7 @@
 import type { Request, Response } from "express";
 
+import { ProductService } from "../services/product.service.js";
+
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
@@ -9,7 +11,6 @@ import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { ParamsRequest } from "../../../shared/types/http.type.js";
 import type { AccessTokenPayload } from "../../access/types/access.type.js";
 import { sanitizeProduct } from "../product.sanitizer.js";
-import { ProductService } from "../product.service.js";
 import type {
   CreateProductRequest,
   ProductParams,
@@ -70,10 +71,10 @@ class SellerProductController {
   /**
    * Publish a single product.
    */
-  publishShopProduct = async (
+  async publishShopProduct(
     req: ParamsRequest<ProductParams>,
     res: Response,
-  ): Promise<void> => {
+  ): Promise<void> {
     new OKResponse({
       code: ResCode.PRODUCT_PUBLISH_SUCCESS,
       data: await ProductService.publishShopProduct({
@@ -81,15 +82,15 @@ class SellerProductController {
         productId: req.params.productId,
       }),
     }).send(req, res);
-  };
+  }
 
   /**
    * Unpublish a single product.
    */
-  unpublishShopProduct = async (
+  async unpublishShopProduct(
     req: Request<ProductParams>,
     res: Response,
-  ): Promise<void> => {
+  ): Promise<void> {
     new OKResponse({
       code: ResCode.PRODUCT_UNPUBLISH_SUCCESS,
       data: await ProductService.unpublishShopProduct({
@@ -97,15 +98,15 @@ class SellerProductController {
         productId: req.params.productId,
       }),
     }).send(req, res);
-  };
+  }
 
   /**
    * Find a single product by shop.
    */
-  findProductOwnedByShop = async (
+  async findProductOwnedByShop(
     req: ParamsRequest<ProductParams>,
     res: Response,
-  ): Promise<void> => {
+  ): Promise<void> {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_SUCCESS,
       data: await ProductService.findProductOwnedByShop({
@@ -113,37 +114,37 @@ class SellerProductController {
         productId: req.params.productId,
       }),
     }).send(req, res);
-  };
+  }
 
   /**
    * Finds all draft products by shop id.
    */
-  findDraftProductsOwnedByShop = async (
+  async findDraftProductsOwnedByShop(
     req: Request,
     res: Response,
-  ): Promise<void> => {
+  ): Promise<void> {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_DRAFT_PRODUCTS_SUCCESS,
       data: await ProductService.findDraftProductsOwnedByShop({
         shopId: (req.ownedShop as ShopLean)._id.toString(),
       }),
     }).send(req, res);
-  };
+  }
 
   /**
    * Finds all published products by shop id.
    */
-  findPublishedProductsOwnedByShop = async (
+  async findPublishedProductsOwnedByShop(
     req: Request,
     res: Response,
-  ): Promise<void> => {
+  ): Promise<void> {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
       data: await ProductService.findPublishedProductsOwnedByShop({
         shopId: (req.ownedShop as ShopLean)._id.toString(),
       }),
     }).send(req, res);
-  };
+  }
 }
 
 export const sellerProductController = new SellerProductController();

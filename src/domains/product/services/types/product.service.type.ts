@@ -1,7 +1,6 @@
-import type { SortOptions } from "../../../shared/types/common.type.js";
-import type { PartialPaginationQuery } from "../../../shared/validations/pagination.validations.js";
-
-import type { ProductType } from "./product.type.js";
+import type { SortOptions } from "../../../../shared/types/common.type.js";
+import type { PartialPaginationQuery } from "../../../../shared/validations/pagination.validations.js";
+import type { ProductType } from "../../types/product.type.js";
 
 /**
  * Create a new shop product.
