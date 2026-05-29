@@ -1,16 +1,16 @@
 import { Schema, model } from "mongoose";
 import slugify from "slugify";
 
+import { SHOP_STATUS } from "../constants/shop.constants.js";
+
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
-} from "../../shared/constants/model.constants.js";
-
-import { SHOP_STATUS } from "./shop.constants.js";
+} from "../../../shared/constants/model.constants.js";
 
 export const ShopSchema = new Schema(
   {
-    shopOwner: {
+    shopUser: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.USER,
       required: true,

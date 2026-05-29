@@ -1,11 +1,12 @@
 import type { NextFunction, Request, Response } from "express";
 
+import { Shops } from "../models/shop.model.js";
+
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import type { AccessTokenPayload } from "../../access/types/access.type.js";
-import { Shops } from "../shop.model.js";
 import type { ShopParams } from "../validations/shop.validations.js";
 
 /**

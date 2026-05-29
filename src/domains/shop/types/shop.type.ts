@@ -1,7 +1,8 @@
 import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
 
-import { SHOP_STATUS, ShopRole } from "../shop.constants.js";
-import type { ShopSchema } from "../shop.model.js";
+import { SHOP_STATUS, ShopRole } from "../constants/shop.constants.js";
+
+import type { ShopSchema } from "../models/shop.model.js";
 
 // Raw object shop.
 export type Shop = InferSchemaType<typeof ShopSchema>;
@@ -16,6 +17,6 @@ export type ShopStatus = (typeof SHOP_STATUS)[keyof typeof SHOP_STATUS];
 export type ShopRole = (typeof ShopRole)[keyof typeof ShopRole];
 
 export type RegisterShopInput = {
-  shopOwner: string;
-  shopName: string;
+  userId: string;
+  name: string;
 };
