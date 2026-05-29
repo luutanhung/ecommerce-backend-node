@@ -25,7 +25,14 @@ export class ShopRepository {
     input: CreateShopInput,
     options: TransactionOptions,
   ): Promise<ShopLean | null> {
-    const { userId, name, slug, logo, status = SHOP_STATUS.ACTIVE } = input;
+    const {
+      userId,
+      name,
+      slug,
+      description,
+      logo,
+      status = SHOP_STATUS.ACTIVE,
+    } = input;
     const [createdShop] = await Shops.create(
       [
         {
@@ -33,6 +40,7 @@ export class ShopRepository {
           shopName: name,
           shopSlug: slug ?? undefined,
           shopLogo: logo ?? undefined,
+          shopDescription: description,
           shopStatus: status,
         },
       ],

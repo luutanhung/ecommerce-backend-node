@@ -20,4 +20,5 @@ export type RegisterShopInput = {
   userId: string;
   name: string;
   slug?: string;
+  description?: string;
 };

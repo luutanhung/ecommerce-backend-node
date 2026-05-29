@@ -26,6 +26,10 @@ export const ShopSchema = new Schema(
       type: String,
       unique: true,
     },
+    shopDescription: {
+      type: String,
+      default: "",
+    },
     shopLogo: {
       type: String,
     },

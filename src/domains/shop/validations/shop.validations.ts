@@ -31,6 +31,7 @@ export const BaseShopSchema = z.object({
       error: ResCode.SHOP_NAME_EXCEEDED_MAX_LENGTH,
     }),
   slug: z.string().optional(),
+  description: z.string().optional(),
 });
 
 export const RegisterShopRequestBodySchema = BaseShopSchema;

@@ -11,6 +11,7 @@ export type FindShopRepositoryInput = {
 export type CreateShopInput = {
   userId: string;
   name: string;
+  description?: string;
   slug?: string;
   logo?: string;
   status?: ShopStatus;

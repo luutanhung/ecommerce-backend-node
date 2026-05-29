@@ -43,6 +43,10 @@ export class ShopService {
   }
 
   /**
+   * Change shop
+   */
+
+  /**
    * Finds a registered shop by its email.
    */
   static findShopByEmail = async (email: string): Promise<ShopLean | null> => {

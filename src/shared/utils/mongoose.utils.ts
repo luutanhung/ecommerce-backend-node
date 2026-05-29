@@ -36,8 +36,8 @@ export const transformMongoId = <
   const { _id, ...rest } = obj;
 
   return {
-    ...rest,
     id: _id.toString(),
+    ...rest,
   };
 };
 
