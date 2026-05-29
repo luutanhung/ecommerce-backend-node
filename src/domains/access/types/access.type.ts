@@ -4,8 +4,6 @@ import type { UserRole } from "../constants/access.constants.js";
 
 import type { UserSchema } from "../models/user.model.js";
 
-import type { KeyTokenLean } from "../types/keytoken.type.js";
-
 import { sanitizeUser } from "../../../shared/utils/sanitizer.utils.js";
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
@@ -61,10 +59,6 @@ export type TokenPair = {
 
 export type LogoutPayload = {
   sessionId: string;
-};
-
-export type LogoutResult = {
-  keyToken: KeyTokenLean;
 };
 
 export type RefreshTokenInput = {
