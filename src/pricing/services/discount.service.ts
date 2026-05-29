@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 import { DISCOUNT_APPLIES_TO } from "../constants/discount.constants.js";
 import { DISCOUNT_TYPE } from "../constants/discount.constants.js";
 
@@ -10,7 +12,11 @@ import type {
   FindDiscountsByShopInput,
   FindShopDiscountByDiscountCodeInput,
 } from "../types/discount.service.types.js";
-import type { DiscountLean } from "../types/discount.types.js";
+import type {
+  DiscountLean,
+  FixedAmountDiscountConfig,
+  PercentageDiscountConfig,
+} from "../types/discount.types.js";
 
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
@@ -41,7 +47,8 @@ export class DiscountService {
       name,
       description,
       type,
-      value,
+      config,
+      scope,
       code,
       startsAt,
       endsAt,
@@ -71,7 +78,8 @@ export class DiscountService {
           discountName: name,
           discountDescription: description,
           discountType: type,
-          discountValue: value,
+          discountConfig: config,
+          discountScope: scope,
           discountCode: code,
           discountStartsAt: startsAt,
           discountEndsAt: endsAt,
@@ -118,7 +126,8 @@ export class DiscountService {
       discountEndsAt,
       discountMinOrderValue,
       discountType,
-      discountValue,
+      discountConfig,
+      discountUsedCount,
     } = foundActiveDiscount;
 
     if (discountIsActive === false) {
@@ -127,7 +136,7 @@ export class DiscountService {
       });
     }
 
-    if (discountUsageLimit === 0) {
+    if (discountUsedCount >= discountUsageLimit) {
       throw new BadRequestAppError({
         code: ResCode.DISCOUNT_LIMIT_REACHED,
       });
@@ -164,9 +173,15 @@ export class DiscountService {
 
     let discountAmount: number = 0;
     if (discountType === DISCOUNT_TYPE.FIXED_AMOUNT) {
-      discountAmount = discountValue;
+      discountAmount = (discountConfig as FixedAmountDiscountConfig).amount;
     } else if (discountType === DISCOUNT_TYPE.PERCENTAGE) {
-      discountAmount = grandTotal * (discountValue / 100);
+      const { percent, maxDiscountAmount } =
+        discountConfig as PercentageDiscountConfig;
+      discountAmount = (grandTotal * percent) / 100;
+      discountAmount =
+        !_.isNil(maxDiscountAmount) && discountAmount >= maxDiscountAmount
+          ? maxDiscountAmount
+          : discountAmount;
     }
 
     const remainingBalance: number = grandTotal - discountAmount;

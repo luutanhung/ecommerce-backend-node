@@ -15,32 +15,6 @@ export const DISCOUNT_TYPE = {
    * Buy 1 get 50% off second item.
    */
   BUY_X_GET_Y: "BUY_X_GET_Y",
-
-  /**
-   * Apply to whole cart.
-   * 15% off entire cart.
-   */
-  CART_DISCOUNT: "CART_DISCOUNT",
-
-  /**
-   * iPhone 10% off
-   */
-  PRODUCT_DISCOUNT: "PRODUCT_DISCOUNT",
-
-  /**
-   * 20% off all electronics
-   */
-  CATEGORY_DISCOUNT: "CATEGORY_DISCOUNT",
-
-  /**
-   * VIP customers get 10%
-   */
-  USER_DISCOUNT: "USER_DISCOUNT",
-
-  /**
-   * Black Friday sale
-   */
-  SEASONAL_DISCOUNT: "SEASONAL_DISCOUNT",
 } as const;
 
 export const DISCOUNT_APPLIES_TO = {
@@ -49,4 +23,11 @@ export const DISCOUNT_APPLIES_TO = {
   PRODUCTS: "PRODUCTS",
 
   CATEGORIES: "CATEGORIES",
+} as const;
+
+export const DISCOUNT_SCOPE = {
+  CART: "CART",
+  PRODUCT: "PRODUCT",
+  CATEGORY: "CATEGORY",
+  USER: "USER",
 } as const;

@@ -9,7 +9,7 @@ export const DEFAULT_DISCOUNT_SELECT_FIELDS: Array<keyof DiscountLean> = [
   "discountName",
   "discountDescription",
   "discountType",
-  "discountValue",
+  "discountConfig",
   "discountCode",
   "discountStartsAt",
   "discountEndsAt",

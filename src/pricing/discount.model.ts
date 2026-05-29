@@ -10,6 +10,7 @@ import { ProductType } from "../domains/product/constants/product.constants.js";
 
 import {
   DISCOUNT_APPLIES_TO,
+  DISCOUNT_SCOPE,
   DISCOUNT_TYPE,
 } from "./constants/discount.constants.js";
 
@@ -30,14 +31,25 @@ export const DiscountSchema = new Schema(
       type: String,
       required: true,
     },
+    /**
+     * How discount is calculated.
+     */
     discountType: {
       type: String,
       enum: Object.values(DISCOUNT_TYPE),
       required: true,
       default: DISCOUNT_TYPE.FIXED_AMOUNT,
     },
-    discountValue: {
-      type: Number,
+    /**
+     * Where discount applies.
+     */
+    discountScope: {
+      type: String,
+      enum: Object.values(DISCOUNT_SCOPE),
+      required: true,
+    },
+    discountConfig: {
+      type: Schema.Types.Mixed,
       required: true,
     },
     discountCode: {
@@ -53,8 +65,10 @@ export const DiscountSchema = new Schema(
       type: Date,
       required: true,
     },
+    /**
+     * Maximum allowed usages.
+     */
     discountUsageLimit: {
-      // Usage limit for this discount.
       type: Number,
       required: true,
     },
