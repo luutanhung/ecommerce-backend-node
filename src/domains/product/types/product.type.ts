@@ -21,6 +21,13 @@ export type ProductLean = Product & {
 
 export type BaseProductAttributes = Record<string, unknown>;
 
+export type ProductVariation = {
+  sku: string;
+  price: number;
+  stock: number;
+  attributes: Record<string, string>;
+};
+
 export type CreateProductInput<TAttributes> = Omit<
   ProductProps<TAttributes>,
   "isDraft" | "isPublished"

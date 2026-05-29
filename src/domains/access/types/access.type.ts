@@ -23,9 +23,9 @@ export type CreateTokenPairInput = {
 };
 
 export type AccessTokenPayload = {
-  uid: string;
-  did: string;
-  sid: string;
+  uid: string; // userId
+  did: string; // deviceId
+  sid: string; // sessionId
 };
 
 export type RefreshTokenPayload = {

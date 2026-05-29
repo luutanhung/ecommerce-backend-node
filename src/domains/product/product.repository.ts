@@ -1,31 +1,26 @@
 import type { PaginateResult } from "mongoose";
 
-import { Clothes } from "./models/clothing.model.js";
-import { Electronics } from "./models/electronic.model.js";
-import { Furnitures } from "./models/furniture.model.js";
 import { Products } from "./models/product.model.js";
 
 import type {
+  CreateProductInput,
   FindProductRepositoryInput,
   FindProductsRepositoryInput,
   UpdateProductRepositoryInput,
 } from "./types/product.repository.type.js";
 import type { ProductDocument, ProductLean } from "./types/product.type.js";
 
-import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import { SortOrder } from "../../shared/constants/common.constants.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
 } from "../../shared/constants/pagination.constants.js";
-import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
-import { buildSelect, buildSort } from "../../shared/utils/mongoose.utils.js";
-
-import type { Product } from "./entities/baseProduct.entity.js";
-import { Clothing } from "./entities/clothing.entity.js";
-import { Electronic } from "./entities/electronic.entity.js";
-import { Furniture } from "./entities/furniture.entity.js";
+import {
+  buildSelect,
+  buildSort,
+  toObjectId,
+} from "../../shared/utils/mongoose.utils.js";
 
 import { DEFAULT_PRODUCT_SELECT_FIELDS } from "./product.sanitizer.js";
 
@@ -33,119 +28,87 @@ export class ProductRepository {
   /**
    * Create a new product.
    */
-  static async createProduct(
-    product: Product<unknown>,
+  static async create(
+    input: CreateProductInput,
     options: TransactionOptions,
   ): Promise<ProductLean | null> {
-    if (product instanceof Clothing) {
-      const clothing = await Clothes.create(
-        [product.toAttributesPersistence()],
+    const {
+      userId,
+      shopId,
+      name,
+      thumb,
+      description,
+      price,
+      quantity,
+      categoryId,
+      attributes,
+      images,
+      slug,
+      isPublished = false,
+    } = input;
+    const [createdProduct] = await Products.create(
+      [
         {
-          session: options.session,
+          productUser: toObjectId(userId),
+
+          productShop: toObjectId(shopId),
+
+          productName: name,
+
+          productThumb: thumb,
+
+          productDescription: description,
+
+          productPrice: price,
+
+          productQuantity: quantity,
+
+          productCategory: categoryId ? toObjectId(categoryId) : undefined,
+
+          productAttributes: attributes,
+
+          productImages: images,
+
+          productSlug: slug,
+
+          isPublished,
         },
-      );
+      ],
+      {
+        session: options.session,
+      },
+    );
 
-      const [createdProduct] = await Products.create(
-        [
-          {
-            ...product.toPersistence(),
-            _id: clothing[0]!._id,
-          },
-        ],
-        {
-          session: options.session,
-        },
-      );
-
-      if (!createdProduct) {
-        return null;
-      }
-
-      return createdProduct.toObject();
-    } else if (product instanceof Electronic) {
-      const electronic = await Electronics.create(
-        [product.toAttributesPersistence()],
-        {
-          session: options.session,
-        },
-      );
-
-      const [createdProduct] = await Products.create(
-        [
-          {
-            ...product.toPersistence(),
-            _id: electronic[0]!._id,
-          },
-        ],
-        {
-          session: options.session,
-        },
-      );
-
-      if (!createdProduct) {
-        return null;
-      }
-
-      return createdProduct.toObject();
-    } else if (product instanceof Furniture) {
-      const furniture = await Furnitures.create(
-        [product.toAttributesPersistence()],
-        {
-          session: options.session,
-        },
-      );
-
-      const [createdProduct] = await Products.create(
-        [
-          {
-            ...product.toPersistence(),
-            _id: furniture[0]!._id,
-          },
-        ],
-        {
-          session: options.session,
-        },
-      );
-
-      if (!createdProduct) {
-        return null;
-      }
-
-      return createdProduct.toObject();
-    }
-
-    throw new BadRequestAppError({
-      code: ResCode.PRODUCT_TYPE_UNSUPPORTED,
-    });
+    return createdProduct ? createdProduct.toObject() : null;
   }
 
   /**
    * Update a single product.
    */
-  static updateProduct = async ({
+  static async update({
     query,
     update,
-  }: UpdateProductRepositoryInput): Promise<ProductDocument | null> => {
+  }: UpdateProductRepositoryInput): Promise<ProductDocument | null> {
     return await Products.findOneAndUpdate(query, update, {
       runValidators: true,
     });
-  };
+  }
 
   /**
    * Find a single product.
    */
-  static findProduct = async ({
+  static async findOne({
     query,
-  }: FindProductRepositoryInput): Promise<ProductLean | null> => {
+  }: FindProductRepositoryInput): Promise<ProductLean | null> {
     return await Products.findOne(query)
       .populate("productShop", "name email -_id")
       .lean();
-  };
+  }
 
   /**
    * Find products.
    */
-  static findProducts = async ({
+  static async findProducts({
     query = {},
     // Sort Options.
     sortBy = "time",
@@ -154,7 +117,7 @@ export class ProductRepository {
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
     select = DEFAULT_PRODUCT_SELECT_FIELDS,
-  }: FindProductsRepositoryInput): Promise<PaginateResult<ProductLean>> => {
+  }: FindProductsRepositoryInput): Promise<PaginateResult<ProductLean>> {
     const sortOptions = buildSort({
       sortBy,
       sortOrder,
@@ -179,5 +142,5 @@ export class ProductRepository {
         },
       ],
     })) as PaginateResult<ProductLean>;
-  };
+  }
 }

@@ -3,8 +3,6 @@ import type { PaginateModel } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 import slugify from "slugify";
 
-import { ProductType } from "../constants/product.constants.js";
-
 import type { Product } from "../types/product.type.js";
 
 import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
@@ -16,7 +14,7 @@ import { ResCode } from "../../../shared/constants/resCode.constants.js";
 
 export const ProductSchema = new Schema(
   {
-    productOwner: {
+    productUser: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.USER,
       required: true,
@@ -26,21 +24,16 @@ export const ProductSchema = new Schema(
       ref: DOCUMENT_NAME.SHOP,
       required: true,
     },
+    productCategory: {
+      type: Schema.Types.ObjectId,
+      ref: DOCUMENT_NAME.PRODUCT_CATEGORY,
+    },
     productName: {
       type: String,
       required: true,
     },
     productThumb: {
       type: String,
-      required: true,
-    },
-    productType: {
-      type: String,
-      required: true,
-      enum: Object.values(ProductType),
-    },
-    productAttributes: {
-      type: Schema.Types.Mixed,
       required: true,
     },
     productPrice: {
@@ -74,15 +67,20 @@ export const ProductSchema = new Schema(
       ],
       set: (averageRating: number) => averageRating.toFixed(1),
     },
-    productVariations: {
-      type: Array,
+
+    /**
+     * Dynamic attributes.
+     */
+    productAttributes: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+
+    productImages: {
+      type: [String],
       default: [],
     },
-    isDraft: {
-      type: Boolean,
-      default: true,
-      index: true,
-    },
+
     isPublished: {
       type: Boolean,
       default: false,

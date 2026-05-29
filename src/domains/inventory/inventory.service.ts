@@ -11,10 +11,7 @@ export class InventoryService {
     payload: CreateInventoryInput,
     options: TransactionOptions = {},
   ) {
-    const createdInventory = await InventoryRepository.createInventory(
-      payload,
-      options,
-    );
+    const createdInventory = await InventoryRepository.create(payload, options);
 
     if (!createdInventory) {
       throw new BadRequestAppError({

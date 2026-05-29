@@ -12,95 +12,73 @@ import {
 } from "../../../shared/validations/common.validations.js";
 import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
 
-const BaseProductSchema = z.object({
-  productName: z
+export const BaseProductSchema = z.object({
+  name: z
     .string({
       error: (issue) => {
-        const productName = issue.input;
+        const value = issue.input;
 
-        if (_.isUndefined(productName)) {
+        if (_.isUndefined(value)) {
           return ResCode.PRODUCT_NAME_REQUIRED;
         }
 
-        if (!_.isString(productName)) {
+        if (!_.isString(value)) {
           return ResCode.PRODUCT_NAME_INVALID_TYPE;
         }
       },
     })
-    .min(1),
+    .trim()
+    .min(1)
+    .max(150),
 
-  productThumb: z
+  thumb: z
     .string({
       error: (issue) => {
-        const productThumb = issue.input;
+        const value = issue.input;
 
-        if (_.isUndefined(productThumb)) {
+        if (_.isUndefined(value)) {
           return ResCode.PRODUCT_THUMB_REQUIRED;
         }
 
-        if (!_.isString(productThumb)) {
+        if (!_.isString(value)) {
           return ResCode.PRODUCT_THUMB_INVALID_TYPE;
         }
       },
     })
+    .url()
     .min(1),
 
-  productDescription: z.string().optional(),
+  description: z.string().trim().max(5000).optional(),
 
-  productPrice: PositiveNumberSchema(
+  price: PositiveNumberSchema(
     ResCode.PRODUCT_PRICE_INVALID_TYPE,
     ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
   ),
 
-  productQuantity: PositiveNumberSchema(
-    ResCode.PRODUCT_QUANTITY_INVALID_TYPE,
-    ResCode.PRODUCT_QUANTITY_MUST_BE_POSITIVE,
-  ),
+  quantity: z
+    .number({
+      error: ResCode.PRODUCT_QUANTITY_INVALID_TYPE,
+    })
+    .int()
+    .min(0, {
+      error: ResCode.PRODUCT_QUANTITY_MUST_BE_POSITIVE,
+    }),
 
-  productType: z.literal(ProductType.CLOTHING),
+  categoryId: z.string().min(1),
+
+  /**
+   * Dynamic attributes.
+   */
+  attributes: z.record(z.string(), z.any()).default({}),
+
+  /**
+   * Product images gallery.
+   */
+  images: z.array(z.string().url()).default([]),
 });
 
-const ClothingProductSchema = BaseProductSchema.extend({
-  productType: z.literal(ProductType.CLOTHING),
+export const CreateProductRequestSchema = BaseProductSchema;
 
-  productAttributes: z.object({
-    brand: z.string().min(1),
-
-    size: z.string().optional(),
-
-    material: z.string().optional(),
-  }),
-});
-
-const ElectronicProductSchema = BaseProductSchema.extend({
-  productType: z.literal(ProductType.ELECTRONICS),
-
-  productAttributes: z.object({
-    manufacturer: z.string().min(1),
-
-    model: z.string().optional(),
-
-    color: z.string().optional(),
-  }),
-});
-
-export const FurnitureProductSchema = BaseProductSchema.extend({
-  productType: z.literal(ProductType.FURNITURE),
-
-  productAttributes: z.object({
-    brand: z.string().min(1),
-
-    size: z.string().optional(),
-
-    material: z.string().optional(),
-  }),
-});
-
-export const CreateProductRequestSchema = z.discriminatedUnion("productType", [
-  ClothingProductSchema,
-  ElectronicProductSchema,
-  FurnitureProductSchema,
-]);
 export type CreateProductRequest = z.infer<typeof CreateProductRequestSchema>;
 
 export const ProductParamsSchema = z.object({

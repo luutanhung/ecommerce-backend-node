@@ -7,7 +7,10 @@ import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 import { Inventories } from "./inventory.model.js";
 
 export class InventoryRepository {
-  static async createInventory(
+  /**
+   * Create a new inventory record.
+   */
+  static async create(
     {
       productId,
       shopId,

@@ -4,14 +4,10 @@ import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
-import type { AuthPayload } from "../../../domains/access/types/access.type.js";
 import type { ShopLean } from "../../../domains/shop/types/shop.type.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import type {
-  ParamsRequest,
-  TypedRequest,
-} from "../../../shared/types/http.type.js";
-import type { ShopParams } from "../../shop/validations/shop.validations.js";
+import type { ParamsRequest } from "../../../shared/types/http.type.js";
+import type { AccessTokenPayload } from "../../access/types/access.type.js";
 import { sanitizeProduct } from "../product.sanitizer.js";
 import { ProductService } from "../product.service.js";
 import type {
@@ -31,14 +27,11 @@ class SellerProductController {
    * - On success, a `CreatedResponse` with `ResCode.PRODUCT_CREATION_SUCCESS`
    *   and the created product data is sent to the client.
    */
-  async createShopProduct(
-    req: TypedRequest<ShopParams, CreateProductRequest>,
-    res: Response,
-  ): Promise<void> {
+  async createShopProduct(req: Request, res: Response): Promise<void> {
     const createdProduct = await ProductService.createShopProduct({
-      ...req.body,
-      productOwner: (req.user as AuthPayload).userId,
-      productShop: (req.ownedShop as ShopLean)._id.toString(),
+      ...(req.body as CreateProductRequest),
+      userId: (req.user as AccessTokenPayload).uid,
+      shopId: (req.ownedShop as ShopLean)._id.toString(),
     });
 
     if (!createdProduct) {

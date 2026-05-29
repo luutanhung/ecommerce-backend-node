@@ -1,9 +1,62 @@
 import type { SortOptions } from "../../../shared/types/common.type.js";
 import type { PartialPaginationQuery } from "../../../shared/validations/pagination.validations.js";
 
-import type { ProductDocument, ProductType } from "./product.type.js";
+import type { ProductType } from "./product.type.js";
 
-export type CreateProductResult = ProductDocument;
+/**
+ * Create a new shop product.
+ */
+export type CreateShopProductInput = {
+  userId: string;
+
+  shopId: string;
+
+  name: string;
+
+  thumb: string;
+
+  description?: string;
+
+  /**
+   * Store money in smallest unit.
+   * Example:
+   * 129999 = $1299.99
+   */
+  price: number;
+
+  quantity: number;
+
+  /**
+   * Category determines allowed attributes.
+   */
+  categoryId?: string;
+
+  /**
+   * Dynamic category-specific attributes.
+   *
+   * Example:
+   * {
+   *   brand: "Nike",
+   *   material: "Cotton"
+   * }
+   */
+  attributes?: Record<string, unknown>;
+
+  /**
+   * Additional gallery images.
+   */
+  images?: string[];
+
+  /**
+   * Publication status.
+   */
+  isPublished?: boolean;
+
+  /**
+   * Optional SEO slug.
+   */
+  slug?: string;
+};
 
 export type PublishShopProductInput = {
   shopId: string;

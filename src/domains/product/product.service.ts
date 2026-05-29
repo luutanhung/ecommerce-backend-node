@@ -1,10 +1,5 @@
 import type { ClientSession } from "mongoose";
 
-import { ProductType } from "./constants/product.constants.js";
-
-import { Clothes } from "./models/clothing.model.js";
-import { Electronics } from "./models/electronic.model.js";
-import { Furnitures } from "./models/furniture.model.js";
 import { Products } from "./models/product.model.js";
 
 import type {
@@ -12,6 +7,7 @@ import type {
   ProductUpdateQuery,
 } from "./types/product.repository.type.js";
 import type {
+  CreateShopProductInput,
   FindProductOwnedByShopInput,
   FindProductsOwnedByShopInput,
   FindPublishedProductInput,
@@ -21,7 +17,6 @@ import type {
   UnpublishedShopProductInput,
 } from "./types/product.service.type.js";
 import type {
-  CreateProductFactoryInput,
   ProductLean,
   UpdateShopProductInput,
 } from "./types/product.type.js";
@@ -43,7 +38,6 @@ import { cleanObject } from "../../shared/utils/object.utils.js";
 import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
 import { InventoryService } from "../inventory/inventory.service.js";
 
-import { ProductFactory } from "./product.factory.js";
 import { ProductRepository } from "./product.repository.js";
 import { sanitizeProduct } from "./product.sanitizer.js";
 import { buildProductsQuery } from "./product.utils.js";
@@ -56,15 +50,11 @@ export class ProductService {
    * Create a new shop product.
    */
   static async createShopProduct(
-    createProductFactoryInput: CreateProductFactoryInput,
+    createShopProductInput: CreateShopProductInput,
   ) {
     return await withTransaction(async (session: ClientSession) => {
-      const productToCreate = await ProductFactory.createProduct(
-        createProductFactoryInput,
-      );
-
-      const createdProduct = await ProductRepository.createProduct(
-        productToCreate,
+      const createdProduct = await ProductRepository.create(
+        createShopProductInput,
         {
           session,
         },
@@ -133,30 +123,7 @@ export class ProductService {
         });
       }
 
-      if (productAttributes) {
-        const updatedBaseProductType = updatedBaseProduct.productType;
-
-        // eslint-disable-next-line
-        let childProductModel: any;
-        if (updatedBaseProductType === ProductType.CLOTHING) {
-          childProductModel = Clothes;
-        } else if (updatedBaseProductType === ProductType.ELECTRONICS) {
-          childProductModel = Electronics;
-        } else if (updatedBaseProductType === ProductType.FURNITURE) {
-          childProductModel = Furnitures;
-        }
-
-        await childProductModel.findByIdAndUpdate(
-          { _id: toObjectId(productId) },
-          flattenObject(productAttributes as Record<string, unknown>),
-          {
-            new: true,
-            session,
-          },
-        );
-      }
-
-      return updatedBaseProduct;
+      return updatedBaseProduct.toObject();
     });
   }
 
@@ -172,7 +139,7 @@ export class ProductService {
       _id: toObjectId(productId),
     };
 
-    const foundProduct = await ProductRepository.findProduct({ query });
+    const foundProduct = await ProductRepository.findOne({ query });
 
     if (!foundProduct) {
       throw new NotFoundAppError({
@@ -180,18 +147,17 @@ export class ProductService {
       });
     }
 
-    if (foundProduct.isDraft === false && foundProduct.isPublished === true) {
+    if (foundProduct.isPublished === true) {
       throw new ConflictAppError({
         code: ResCode.PRODUCT_ALREADY_PUBLISHED,
       });
     }
 
     const update: ProductUpdateQuery = {
-      isDraft: false,
       isPublished: true,
     };
 
-    const publishedProduct = await ProductRepository.updateProduct({
+    const publishedProduct = await ProductRepository.update({
       query,
       update,
     });
@@ -219,7 +185,7 @@ export class ProductService {
       _id: toObjectId(productId),
     };
 
-    const foundProduct = await ProductRepository.findProduct({ query });
+    const foundProduct = await ProductRepository.findOne({ query });
 
     if (!foundProduct) {
       throw new NotFoundAppError({
@@ -227,7 +193,7 @@ export class ProductService {
       });
     }
 
-    if (foundProduct.isDraft === true || foundProduct.isPublished === false) {
+    if (foundProduct.isPublished === false) {
       throw new ConflictAppError({
         code: ResCode.PRODUCT_ALREADY_DRAFT,
       });
@@ -238,7 +204,7 @@ export class ProductService {
       isPublished: false,
     };
 
-    const unpublishedProduct = await ProductRepository.updateProduct({
+    const unpublishedProduct = await ProductRepository.update({
       query,
       update,
     });
@@ -266,7 +232,7 @@ export class ProductService {
       _id: toObjectId(productId),
     };
 
-    const foundProductOwnedByShop = await ProductRepository.findProduct({
+    const foundProductOwnedByShop = await ProductRepository.findOne({
       query,
     });
 
@@ -377,7 +343,7 @@ export class ProductService {
    * Find a single published product.
    */
   static async findPublishedProduct({ productId }: FindPublishedProductInput) {
-    const foundProduct = await ProductRepository.findProduct({
+    const foundProduct = await ProductRepository.findOne({
       query: {
         _id: toObjectId(productId),
         isPublished: true,

@@ -10,6 +10,8 @@ export const DOCUMENT_NAME = {
 
   // Product.
   PRODUCT: "Product",
+  PRODUCT_CATEGORY: "PRODUCT_CATEGORY",
+
   CLOTHING: "Clothing",
   ELECTRONIC: "Electronic",
   FURNITURE: "Furniture",
@@ -36,6 +38,8 @@ export const COLLECTION_NAME = {
 
   // Product.
   PRODUCTS: "Products",
+  PRODUCT_CATEGORIES: "PRODUCT_CATEGORIES",
+
   CLOTHES: "Clothes",
   ELECTRONICS: "Electronics",
   FURNITURES: "Furnitures",

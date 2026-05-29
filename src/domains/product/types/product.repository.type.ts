@@ -12,6 +12,24 @@ export type ProductFilterQuery = QueryFilter<Product>;
 export type ProductUpdateQuery = UpdateQuery<Product>;
 
 /**
+ * Creation operations.
+ */
+export type CreateProductInput = {
+  userId: string;
+  shopId: string;
+  name: string;
+  thumb: string;
+  price: number;
+  quantity: number;
+  categoryId?: string;
+  description?: string;
+  attributes?: Record<string, unknown>;
+  images?: string[];
+  isPublished?: boolean;
+  slug?: string;
+};
+
+/**
  * Modification operations.
  */
 export type UpdateProductRepositoryInput = {
