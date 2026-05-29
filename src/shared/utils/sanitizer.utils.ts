@@ -1,8 +1,10 @@
 import _ from "lodash";
 import type { PaginateResult } from "mongoose";
 
-import type { User, UserLean } from "../../domains/access/types/access.type.js";
-import type { Shop, ShopLean } from "../../domains/shop/types/shop.type.js";
+import type {
+  User,
+  UserLean,
+} from "../../domains/access/types/access.types.js";
 
 import { transformMongoId } from "./mongoose.utils.js";
 
@@ -33,18 +35,6 @@ export function sanitizeUser(user: UserLean): Partial<User> {
   );
 
   return transformMongoId(sanitizedUser);
-}
-
-/**
- * Sanitize shop document instance.
- */
-export function sanitizeShop(shop: ShopLean): Partial<Shop> {
-  const sanitizedShop = pickFields(
-    ["_id", "shopOwner", "shopName", "shopStatus", "shopStatus"],
-    shop,
-  );
-
-  return transformMongoId(sanitizedShop);
 }
 
 /**

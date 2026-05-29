@@ -2,22 +2,32 @@ import type { Request, Response } from "express";
 
 import { ShopService } from "../services/shop.service.js";
 
+import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { AccessTokenPayload } from "../../access/types/access.types.js";
-import type { RegisterShopRequest } from "../validations/shop.validations.js";
+import { sanitizeShop } from "../sanitizers/shop.sanitizer.js";
+import type { RegisterShopRequestBody } from "../validations/shop.validations.js";
 
 export class ShopController {
   /**
    * Register a new shop.
    */
   async registerShop(req: Request, res: Response) {
+    const registeredShop = await ShopService.registerShop({
+      userId: (req.user as AccessTokenPayload).uid,
+      ...(req.body as RegisterShopRequestBody),
+    });
+
+    if (!registeredShop) {
+      throw new BadRequestAppError({
+        code: ResCode.SHOP_REGISTER_FAILED,
+      });
+    }
+
     new CreatedResponse({
       code: ResCode.SHOP_REGISTER_SUCCESS,
-      data: await ShopService.registerShop({
-        userId: (req.user as AccessTokenPayload).uid,
-        ...(req.body as RegisterShopRequest),
-      }),
+      data: sanitizeShop(registeredShop),
     }).send(req, res);
   }
 }

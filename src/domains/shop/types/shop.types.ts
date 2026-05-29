@@ -19,4 +19,5 @@ export type ShopRole = (typeof ShopRole)[keyof typeof ShopRole];
 export type RegisterShopInput = {
   userId: string;
   name: string;
+  slug?: string;
 };
