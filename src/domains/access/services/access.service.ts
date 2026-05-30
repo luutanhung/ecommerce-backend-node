@@ -41,6 +41,7 @@ import {
 import { NotificationService } from "../../notifications/notification.service.js";
 import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 
+import { AccessRateLimitService } from "./accessRateLimit.service.js";
 import { SessionService } from "./session.service.js";
 
 export class AccessService {
@@ -87,6 +88,10 @@ export class AccessService {
         code: ResCode.USER_NOT_FOUND,
       });
     }
+
+    await AccessRateLimitService.checkEmailVerificationRateLimit({
+      userId,
+    });
 
     const issuedNotification = await NotificationService.issueNotification({
       userId,
