@@ -16,7 +16,7 @@ import { i18nMiddleware } from "./shared/middlewares/i18n.middleware.js";
 import { swaggerSpec } from "./configs/swagger.js";
 
 import { handleNotFoundRoute } from "./handlers/notFoundRoute.handler.js";
-import { emailQueue } from "./libs/queue/index.js";
+import { emailQueue } from "./queues/email/email.queue.js";
 
 import { mainRouter } from "./mainRouter.js";
 

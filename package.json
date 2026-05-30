@@ -15,7 +15,12 @@
     "lint:check": "eslint \"./src/**/*.{js,ts}\"",
     "lint:fix": "eslint --fix \"./src/**/*.{js,ts}\"",
     "prepare": "husky",
-    "test": "vitest"
+    "test": "vitest",
+    "worker:dev": "tsx watch src/queues/workers/index.ts",
+    "worker:start": "node dist/workers/index.js",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:restart": "pm2 restart ecosystem.config.cjs",
+    "pm2:stop": "pm2 stop ecosystem.config.cjs"
   },
   "keywords": [
     "nodejs",
@@ -53,6 +58,7 @@
     "jiti": "^2.7.0",
     "lint-staged": "^17.0.4",
     "ms": "^2.1.3",
+    "pm2": "^7.0.1",
     "prettier": "3.8.3",
     "prettier-plugin-organize-imports": "^4.3.0",
     "supertest": "^7.2.2",

@@ -23,7 +23,7 @@ import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
-import { emailQueue } from "../../../libs/queue/index.js";
+import { emailQueue } from "../../../queues/email/email.queue.js";
 import { EMAIL_JOB_NAME } from "../../../shared/constants/queue.constants.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";

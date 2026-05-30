@@ -4,7 +4,7 @@ import { DiscountService } from "../services/discount.service.js";
 
 import { CreatedResponse } from "../../core/response/created.response.js";
 import { OKResponse } from "../../core/response/ok.response.js";
-import type { ShopLean } from "../../domains/shop/types/shop.type.js";
+import type { ShopLean } from "../../domains/shop/types/shop.types.js";
 import type { ShopParams } from "../../domains/shop/validations/shop.validations.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";

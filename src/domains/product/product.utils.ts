@@ -1,5 +1,6 @@
-import type { ProductFilterQuery } from "./types/product.repository.type.js";
-import type { ProductFilters } from "./types/product.service.type.js";
+import type { ProductFilters } from "./services/types/product.service.type.js";
+
+import type { ProductFilterQuery } from "./repositories/types/product.repository.type.js";
 
 /**
  * Build query to support searching products.
