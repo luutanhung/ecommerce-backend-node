@@ -68,15 +68,16 @@ export const emailWorker = new Worker(
           const { userInfo, shopInfo } =
             job.data as ShopSendVerificationEmailJob;
 
-          const token = generateVerificationToken<VerifyShopPayload>(
-            {
-              userId: userInfo.userId,
-              shopId: shopInfo.shopId,
-            },
-            config.mail.secret,
-          );
+          const shopVerificationToken =
+            generateVerificationToken<VerifyShopPayload>(
+              {
+                userId: userInfo.userId,
+                shopId: shopInfo.shopId,
+              },
+              config.mail.secret,
+            );
 
-          const verificationUrl = `${config.client.url}/shops/verify-email?token=${token}`;
+          const verificationUrl = `${config.client.url}/shops/verify-email?token=${shopVerificationToken}`;
 
           const html = buildVerifyShopEmailTemplate({
             shopName: shopInfo.name,

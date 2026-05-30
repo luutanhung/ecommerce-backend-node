@@ -10,6 +10,7 @@ import {
   RegisterShopRequestBodySchema,
   ShopParamsSchema,
   UpdateShopInformationRequestBodySchema,
+  VerifyShopRequestBodySchema,
 } from "../validations/shop.validations.js";
 
 const router = Router();
@@ -43,9 +44,10 @@ router.post(
  * Verify shop.
  */
 router.post(
-  "shops/:shopId/verify",
+  "/shops/:shopId/verify",
   validateRequest({
     params: ShopParamsSchema,
+    body: VerifyShopRequestBodySchema,
   }),
   authorizeShopOwnership,
   asyncWrapper(shopController.verifyShop),
