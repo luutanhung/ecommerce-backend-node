@@ -9,11 +9,23 @@ import { inventoryController } from "./inventory.controller.js";
 const router = Router();
 
 router.use(authenticateAccessToken);
-router.use(authorizeShopOwnership);
 
+/**
+ * Create a new inventory.
+ */
 router.post(
   "/shops/:shopId/inventories/create",
+  authorizeShopOwnership,
   asyncWrapper(inventoryController.createInventory),
+);
+
+/**
+ * Update an inventory.
+ */
+router.post(
+  "/shops/:shopId/inventories/update",
+  authorizeShopOwnership,
+  asyncWrapper(inventoryController.updateInventory),
 );
 
 export { router as inventoryRouter };

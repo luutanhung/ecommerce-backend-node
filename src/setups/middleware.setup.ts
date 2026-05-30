@@ -9,7 +9,7 @@ import morgan from "morgan";
 import { i18nMiddleware } from "../shared/middlewares/i18n.middleware.js";
 import {
   attachRequestId,
-  requestLogger,
+  // requestLogger,
 } from "../shared/middlewares/logger.middleware.js";
 
 export const registerMiddlewares = (app: Express): void => {
@@ -25,7 +25,7 @@ export const registerMiddlewares = (app: Express): void => {
 
   app.use(attachRequestId);
 
-  app.use(requestLogger);
+  // app.use(requestLogger);
 
   app.use(express.json());
 

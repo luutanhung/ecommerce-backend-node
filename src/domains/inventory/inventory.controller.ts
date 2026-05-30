@@ -1,18 +1,34 @@
 import type { Request, Response } from "express";
 
 import { CreatedResponse } from "../../core/response/created.response.js";
+import { OKResponse } from "../../core/response/ok.response.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 
 import { sanitizeInventory } from "./inventory.sanitizer.js";
 import { InventoryService } from "./inventory.service.js";
 
 export class InventoryController {
+  /**
+   * Create a new inventory.
+   */
   async createInventory(req: Request, res: Response) {
     const createdInventory = await InventoryService.createInventory(req.body);
 
     new CreatedResponse({
       code: ResCode.INVENTORY_CREATE_SUCCEEDED,
       data: sanitizeInventory(createdInventory),
+    }).send(req, res);
+  }
+
+  /**
+   * Update an inventory.
+   */
+  async updateInventory(req: Request, res: Response) {
+    const updatedInventory = await InventoryService.updateInventory(req.body);
+
+    new OKResponse({
+      code: ResCode.INVENTORY_UPDATE_SUCCEEDED,
+      data: sanitizeInventory(updatedInventory),
     }).send(req, res);
   }
 }
