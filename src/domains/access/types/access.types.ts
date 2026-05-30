@@ -29,6 +29,10 @@ export type RefreshTokenPayload = {
   ver: number; // refreshTokenVersion
 };
 
+export type EmailVerificationPayload = {
+  userId: string; // userId
+};
+
 // Services.
 export type RegisterInput = {
   email: string;
@@ -37,6 +41,10 @@ export type RegisterInput = {
 
 export type QueueVerificationEmailInput = {
   userId: string;
+};
+
+export type VerifyEmailInput = {
+  emailVerificationToken: string;
 };
 
 export type AccessBaseResult = {

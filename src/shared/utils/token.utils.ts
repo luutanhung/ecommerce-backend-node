@@ -1,13 +1,15 @@
 import jwt from "jsonwebtoken";
-import _ from "lodash";
 
-import { config } from "../../configs/index.js";
+import type { VerifyJSONWebTokenInput } from "../types/token.utils.types.js";
+
+import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import {
   ACCESS_TOKEN_EXPIRES_IN_DAYS,
   REFRESH_TOKEN_EXPIRES_IN_DAYS,
 } from "../../domains/access/constants/access.constants.js";
 import type {
   AccessTokenPayload,
+  EmailVerificationPayload,
   RefreshTokenPayload,
 } from "../../domains/access/types/access.types.js";
 
@@ -26,17 +28,13 @@ export const generateAccessToken = async (
 /**
  * Generate email verficiation token.
  */
-export const generateEmailVerificationToken = (userId: string): string => {
-  return jwt.sign(
-    {
-      userId,
-      type: "EMAIL_VERIFICATION",
-    },
-    config.mail.secret,
-    {
-      expiresIn: "1d",
-    },
-  );
+export const generateEmailVerificationToken = (
+  payload: EmailVerificationPayload,
+  secret: string,
+): string => {
+  return jwt.sign(payload, secret, {
+    expiresIn: "1d",
+  });
 };
 
 /**
@@ -57,17 +55,29 @@ export const generateRefreshToken = async (
  * @param token - Token to verify
  * @param secretKey - Secret to be used to verify token.
  */
-export const verifyJSONWebToken = <T>(
-  token: string,
-  secretKey: string,
-): Promise<T> => {
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, secretKey, (err, decoded) => {
-      if (err || _.isUndefined(decoded)) {
-        return reject(err);
-      }
+export const verifyJSONWebToken = <TPayload>({
+  token,
+  secret,
+  expiredCode,
+  invalidCode,
+}: VerifyJSONWebTokenInput): Promise<TPayload> => {
+  try {
+    const decoded = jwt.verify(token, secret) as TPayload;
+    return Promise.resolve(decoded);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    if (err instanceof jwt.TokenExpiredError) {
+      throw new BadRequestAppError({
+        code: expiredCode,
+      });
+    }
 
-      resolve(decoded as T);
-    });
-  });
+    if (err instanceof jwt.JsonWebTokenError) {
+      throw new BadRequestAppError({
+        code: invalidCode,
+      });
+    }
+
+    throw err;
+  }
 };

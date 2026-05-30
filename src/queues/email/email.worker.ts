@@ -24,7 +24,12 @@ export const emailWorker = new Worker(
         case EMAIL_JOB_NAME.SEND_VERIFICATION_EMAIL: {
           const { userId, email, name } = job.data as SendVerificationEmailJob;
 
-          const token = generateEmailVerificationToken(userId);
+          const token = generateEmailVerificationToken(
+            {
+              userId,
+            },
+            config.mail.secret,
+          );
 
           const verificationUrl = `${config.client.url}/verify-email?token=${token}`;
 

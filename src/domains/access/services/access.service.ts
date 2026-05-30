@@ -7,6 +7,7 @@ import { Sessions } from "../models/session.model.js";
 import { Users } from "../models/user.model.js";
 
 import type {
+  EmailVerificationPayload,
   LoginInput,
   LogoutAllExceptCurrentInput,
   LogoutAllInput,
@@ -17,8 +18,10 @@ import type {
   RegisterInput,
   UserDocument,
   UserLean,
+  VerifyEmailInput,
 } from "../types/access.types.js";
 
+import { config } from "../../../configs/index.js";
 import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
@@ -123,6 +126,32 @@ export class AccessService {
   }
 
   /**
+   * Verify email.
+   */
+  static async verifyEmail({
+    emailVerificationToken,
+  }: VerifyEmailInput): Promise<UserLean> {
+    const { userId } = await verifyJSONWebToken<EmailVerificationPayload>({
+      token: emailVerificationToken,
+      secret: config.mail.secret,
+      expiredCode: ResCode.ACCESS_EMAIL_VERIFICATION_TOKEN_EXPIRED,
+      invalidCode: ResCode.ACCESS_EMAIL_VERIFICATION_TOKEN_INVALID,
+    });
+
+    const foundUser = await Users.findOne({ _id: toObjectId(userId) });
+    if (!foundUser) {
+      throw new NotFoundAppError({
+        code: ResCode.USER_NOT_FOUND,
+      });
+    }
+
+    foundUser.isVerified = true;
+    await foundUser.save();
+
+    return foundUser.toObject();
+  }
+
+  /**
    * Logins with user's payload.
    */
   static async login({ email, password, deviceId }: LoginInput): Promise<{
@@ -178,33 +207,6 @@ export class AccessService {
     accessToken: string;
     refreshToken: string;
   }> {
-    const verifyRefreshToken = async (
-      refreshToken: string,
-      privateKey: string,
-    ): Promise<RefreshTokenPayload> => {
-      try {
-        const refreshAuthPayload =
-          await verifyJSONWebToken<RefreshTokenPayload>(
-            refreshToken,
-            privateKey,
-          );
-        return refreshAuthPayload;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
-        if (err instanceof jwt.TokenExpiredError) {
-          throw new UnauthorizedAppError({
-            code: ResCode.REFRESH_TOKEN_EXPIRED,
-          });
-        } else if (err instanceof jwt.JsonWebTokenError) {
-          throw new UnauthorizedAppError({
-            code: ResCode.REFRESH_TOKEN_INVALID,
-          });
-        }
-
-        throw err;
-      }
-    };
-
     /**
      * Decode only.
      */
@@ -228,10 +230,12 @@ export class AccessService {
       throw new UnauthorizedAppError();
     }
 
-    const payload: RefreshTokenPayload = await verifyRefreshToken(
-      refreshToken,
-      session.privateKey,
-    );
+    const payload: RefreshTokenPayload = await verifyJSONWebToken({
+      token: refreshToken,
+      secret: session.privateKey,
+      expiredCode: ResCode.REFRESH_TOKEN_EXPIRED,
+      invalidCode: ResCode.REFRESH_TOKEN_INVALID,
+    });
 
     if (payload.ver !== session.refreshTokenVersion) {
       // CRITICAL: Detected a user who has reused refresh token.

@@ -21,6 +21,13 @@ export type SendVerificationEmailRequestBody = z.infer<
   typeof SendVerificationEmailRequestBodySchema
 >;
 
+export const VerifyEmailRequestBodySchema = z.object({
+  token: z.string().min(1),
+});
+export type VerifyEmailRequestBody = z.infer<
+  typeof VerifyEmailRequestBodySchema
+>;
+
 export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
 
 export const LoginRequestSchema = z.object({

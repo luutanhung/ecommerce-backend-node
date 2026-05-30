@@ -12,7 +12,9 @@ import {
   LoginRequestSchema,
   RegisterRequestSchema,
   SendVerificationEmailRequestBodySchema,
+  VerifyEmailRequestBodySchema,
 } from "../validations/access.validations.js";
+import { UserParamsSchema } from "../validations/user.validations.js";
 
 const router = Router();
 
@@ -30,6 +32,18 @@ router.post(
   "/access/send-verification-email",
   validateRequest({ body: SendVerificationEmailRequestBodySchema }),
   asyncWrapper(accessController.sendVerificationEmail),
+);
+
+/**
+ * Verify account via email.
+ */
+router.post(
+  "/access/:userId/verify-email",
+  validateRequest({
+    params: UserParamsSchema,
+    body: VerifyEmailRequestBodySchema,
+  }),
+  asyncWrapper(accessController.verifyEmail),
 );
 
 /**

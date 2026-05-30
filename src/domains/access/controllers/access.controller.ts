@@ -18,6 +18,7 @@ import type {
   LoginRequest,
   RegisterRequest,
   SendVerificationEmailRequestBody,
+  VerifyEmailRequestBody,
 } from "../validations/access.validations.js";
 
 class AccessController {
@@ -34,6 +35,37 @@ class AccessController {
     new CreatedResponse({
       code: ResCode.USER_REGISTER_SUCCESS,
       data: registerResult,
+    }).send(req, res);
+  }
+
+  /**
+   * Send verification email.
+   */
+  async sendVerificationEmail(req: Request, res: Response): Promise<void> {
+    const userId = (req.body as SendVerificationEmailRequestBody).uid;
+
+    await AccessService.queueVerificationEmail({
+      userId,
+    });
+
+    new OKResponse({
+      code: ResCode.ACCESS_SEND_VERIFICATION_EMAIL_SUCCESS,
+    }).send(req, res);
+  }
+
+  /**
+   * Verify email.
+   */
+  async verifyEmail(req: Request, res: Response): Promise<void> {
+    const token = (req.body as VerifyEmailRequestBody).token;
+
+    const verifiedUser = await AccessService.verifyEmail({
+      emailVerificationToken: token,
+    });
+
+    new OKResponse({
+      code: ResCode.ACCESS_VERIFY_EMAIL_SUCCEEDED,
+      data: sanitizeUser(verifiedUser),
     }).send(req, res);
   }
 
@@ -67,7 +99,7 @@ class AccessController {
   /**
    * Refreshes token.
    */
-  refreshToken = async (req: Request, res: Response): Promise<void> => {
+  async refreshToken(req: Request, res: Response): Promise<void> {
     const { accessToken, refreshToken }: RefreshTokenResult =
       await AccessService.refreshToken({
         refreshToken: req.cookies.refreshToken,
@@ -89,24 +121,9 @@ class AccessController {
         accessToken,
       },
     }).send(req, res);
-  };
-
-  // Authenticated.
-  async sendVerificationEmail(req: Request, res: Response): Promise<void> {
-    const userId = (req.body as SendVerificationEmailRequestBody).uid;
-
-    await AccessService.queueVerificationEmail({
-      userId,
-    });
-
-    new OKResponse({
-      code: ResCode.ACCESS_SEND_VERIFICATION_EMAIL_SUCCESS,
-    }).send(req, res);
   }
 
-  /**
-   *
-   */
+  // Authenticated.
 
   /**
    * Logout from current device.
