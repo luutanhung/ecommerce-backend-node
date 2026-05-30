@@ -24,6 +24,7 @@ import type {
 import { config } from "../../../configs/index.js";
 import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
+import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
 import { emailQueue } from "../../../queues/email/email.queue.js";
@@ -142,6 +143,12 @@ export class AccessService {
     if (!foundUser) {
       throw new NotFoundAppError({
         code: ResCode.USER_NOT_FOUND,
+      });
+    }
+
+    if (foundUser.isVerified) {
+      throw new BadRequestAppError({
+        code: ResCode.USER_ALREADY_VERIFIED_EMAIL,
       });
     }
 

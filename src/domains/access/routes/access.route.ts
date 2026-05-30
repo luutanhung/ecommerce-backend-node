@@ -8,6 +8,7 @@ import {
   authenticateAccessToken,
   authenticateClientId,
 } from "../middlewares/access.middleware.js";
+import { ensureUserRegistered } from "../middlewares/user.middleware.js";
 import {
   LoginRequestSchema,
   RegisterRequestSchema,
@@ -26,27 +27,6 @@ router.post(
 );
 
 /**
- * Send verification mail.
- */
-router.post(
-  "/access/send-verification-email",
-  validateRequest({ body: SendVerificationEmailRequestBodySchema }),
-  asyncWrapper(accessController.sendVerificationEmail),
-);
-
-/**
- * Verify account via email.
- */
-router.post(
-  "/access/:userId/verify-email",
-  validateRequest({
-    params: UserParamsSchema,
-    body: VerifyEmailRequestBodySchema,
-  }),
-  asyncWrapper(accessController.verifyEmail),
-);
-
-/**
  * Login with account information.
  */
 router.post(
@@ -62,6 +42,32 @@ router.post(
   "/access/refreshToken",
   authenticateClientId,
   asyncWrapper(accessController.refreshToken),
+);
+
+/**
+ * Send verification mail.
+ */
+router.post(
+  "/access/:userId/send-verification-email",
+  validateRequest({
+    params: UserParamsSchema,
+    body: SendVerificationEmailRequestBodySchema,
+  }),
+  ensureUserRegistered,
+  asyncWrapper(accessController.sendVerificationEmail),
+);
+
+/**
+ * Verify account via email.
+ */
+router.post(
+  "/access/:userId/verify-email",
+  validateRequest({
+    params: UserParamsSchema,
+    body: VerifyEmailRequestBodySchema,
+  }),
+  ensureUserRegistered,
+  asyncWrapper(accessController.verifyEmail),
 );
 
 /**

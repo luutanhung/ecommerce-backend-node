@@ -1,4 +1,4 @@
-import type { AccessTokenPayload } from "../../../domains/access/types/access.type.ts";
+import type { AccessTokenPayload } from "../../../domains/access/types/access.types.ts";
 import type { ShopLean } from "../../../domains/shop/types/shop.type.ts";
 import type { ProductLean } from "../../domains/product/product.type.ts";
 import type { ApiKeyDocument } from "../../models/apikey.model.ts";
