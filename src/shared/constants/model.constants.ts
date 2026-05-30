@@ -1,6 +1,9 @@
 export const DOCUMENT_NAME = {
   API_KEY: "ApiKey",
 
+  // Notification.
+  NOTIFICATION: "NOTIFICATION",
+
   // Access.
   USER: "User",
   SESSION: "Session",
@@ -24,6 +27,9 @@ export const DOCUMENT_NAME = {
 
 export const COLLECTION_NAME = {
   API_KEYS: "api_keys",
+
+  // Notifications.
+  NOTIFICATIONS: "NOTIFICATIONS",
 
   // Access.
   USERS: "users",
