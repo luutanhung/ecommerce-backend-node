@@ -15,7 +15,6 @@ import type {
 import { sanitizeShop } from "../sanitizers/shop.sanitizer.js";
 import type {
   RegisterShopRequestBody,
-  ShopParams,
   UpdateShopInformationRequestBody,
   VerifyShopRequestBody,
 } from "../validations/shop.validations.js";
@@ -47,11 +46,18 @@ export class ShopController {
    */
   async sendVerificationEmail(req: Request, res: Response) {
     const currentUser = req.currentUser as UserDocument;
-    const shopId = (req.params as ShopParams).shopId;
+    const ownedShop = req.ownedShop as ShopLean;
 
     await ShopService.queueShopVerificationEmail({
-      userId: currentUser._id.toString(),
-      shopId,
+      userInfo: {
+        userId: currentUser._id.toString(),
+        email: currentUser.email,
+        name: currentUser.name,
+      },
+      shopInfo: {
+        shopId: ownedShop._id.toString(),
+        name: ownedShop.name,
+      },
     });
 
     new OKResponse({

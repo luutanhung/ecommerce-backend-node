@@ -6,8 +6,15 @@ export type RegisterShopInput = {
 };
 
 export type QueueShopVerificationEmailInput = {
-  userId: string;
-  shopId: string;
+  userInfo: {
+    userId: string;
+    email: string;
+    name: string;
+  };
+  shopInfo: {
+    shopId: string;
+    name: string;
+  };
 };
 
 export type VerifyShopInput = {

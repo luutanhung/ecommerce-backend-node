@@ -22,7 +22,6 @@ import { withTransaction } from "../../../shared/helpers/withTransaction.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { verifyJSONWebToken } from "../../../shared/utils/token.utils.js";
 import { USER_ROLE } from "../../access/constants/user.constants.js";
-import { Users } from "../../access/models/user.model.js";
 import { UserService } from "../../access/services/user.service.js";
 import type { VerifyShopPayload } from "../../access/types/access.types.js";
 import {
@@ -71,27 +70,14 @@ export class ShopService {
    * Send email to verify shop.
    */
   static async queueShopVerificationEmail({
-    userId,
-    shopId,
+    userInfo,
+    shopInfo,
   }: QueueShopVerificationEmailInput) {
-    const user = await Users.findOne({ _id: toObjectId(userId) }).lean();
-
-    if (!user) {
-      throw new NotFoundAppError({
-        code: ResCode.USER_NOT_FOUND,
-      });
-    }
-
-    const shop = await Shops.findOne({ _id: toObjectId(shopId) }).lean();
-
-    if (!shop) {
-      throw new NotFoundAppError({
-        code: ResCode.SHOP_NOT_FOUND,
-      });
-    }
+    const { userId } = userInfo;
+    const { shopId } = shopInfo;
 
     const issuedNotification = await NotificationService.issueNotification({
-      userId,
+      userId: userInfo.userId,
       type: NOTIFICATION_TYPE.SHOP_VERIFY_EMAIL_SENT,
       title: NOTIFICATION_TITLE.SHOP_VERIFY_EMAIL,
       content: NOTIFICATION_CONTENT.SHOP_VERIFY_EMAIL,
@@ -99,15 +85,8 @@ export class ShopService {
     });
 
     const jobData: ShopSendVerificationEmailJob = {
-      userInfo: {
-        userId: user._id.toString(),
-        name: user.name,
-        email: user.email,
-      },
-      shopInfo: {
-        shopId: shop._id.toString(),
-        name: shop.name,
-      },
+      userInfo,
+      shopInfo,
       notificationId: issuedNotification._id.toString(),
     };
 
