@@ -227,6 +227,7 @@ export const ResCode = {
    * Inventory.
    */
   INVENTORY_CREATE_FAILED: "INVENTORY_CREATE_FAILED",
+  INVENTORY_CREATE_SUCCEEDED: "INVENTORY_CREATE_SUCCEEDED",
 
   /**
    * Cart.

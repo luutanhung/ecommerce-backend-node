@@ -4,6 +4,7 @@ import { Router } from "express";
 
 import { accessRouter } from "./domains/access/routes/access.route.js";
 import { cartRouter } from "./domains/cart/cart.route.js";
+import { inventoryRouter } from "./domains/inventory/inventory.route.js";
 import { publicProductRouter } from "./domains/product/routes/publicProduct.route.js";
 import { sellerProductRouter } from "./domains/product/routes/sellerProduct.route.js";
 import { shopRouter } from "./domains/shop/routes/shop.route.js";
@@ -25,6 +26,11 @@ router.use("/api/v1", accessRouter);
  * Register shop routes.
  */
 router.use("/api/v1", shopRouter);
+
+/**
+ * Register inventory routes.
+ */
+router.use("/api/v1", inventoryRouter);
 
 /**
  * Register product routes.

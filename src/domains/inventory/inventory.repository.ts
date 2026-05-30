@@ -23,11 +23,11 @@ export class InventoryRepository {
     const [createdInventory] = await Inventories.create(
       [
         {
-          inventoryProduct: toObjectId(productId),
-          inventoryShop: toObjectId(shopId),
-          inventoryStock: stock,
-          inventoryLocation: location,
-          inventoryReservations: reservations,
+          shop: toObjectId(shopId),
+          product: toObjectId(productId),
+          stock,
+          location,
+          reservations,
         },
       ],
       {

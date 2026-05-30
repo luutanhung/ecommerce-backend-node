@@ -5,11 +5,11 @@ import { pickFields } from "../../shared/utils/sanitizer.utils.js";
 
 export const DEFAULT_INVENTORY_SELECT_FIELDS: Array<keyof InventoryLean> = [
   "_id",
-  "inventoryProduct",
-  "inventoryShop",
-  "inventoryStock",
-  "inventoryLocation",
-  "inventoryReservations",
+  "shop",
+  "product",
+  "stock",
+  "location",
+  "reservations",
   "createdAt",
   "updatedAt",
 ] as const;

@@ -10,25 +10,25 @@ import {
  */
 export const InventorySchema = new Schema(
   {
-    inventoryProduct: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: DOCUMENT_NAME.PRODUCT,
-    },
-    inventoryShop: {
+    shop: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.SHOP,
       required: true,
     },
-    inventoryLocation: {
-      type: String,
-      default: "",
+    product: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: DOCUMENT_NAME.PRODUCT,
     },
-    inventoryStock: {
+    stock: {
       type: Number,
       required: true,
     },
-    inventoryReservations: {
+    location: {
+      type: String,
+      default: "",
+    },
+    reservations: {
       type: Array,
       default: [],
     },

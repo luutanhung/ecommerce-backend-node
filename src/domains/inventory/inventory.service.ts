@@ -7,11 +7,14 @@ import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { InventoryRepository } from "./inventory.repository.js";
 
 export class InventoryService {
+  /**
+   * Create a new inventory record.
+   */
   static async createInventory(
-    payload: CreateInventoryInput,
+    input: CreateInventoryInput,
     options: TransactionOptions = {},
   ) {
-    const createdInventory = await InventoryRepository.create(payload, options);
+    const createdInventory = await InventoryRepository.create(input, options);
 
     if (!createdInventory) {
       throw new BadRequestAppError({
