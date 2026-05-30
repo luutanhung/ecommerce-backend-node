@@ -4,7 +4,8 @@
   "description": "Ecommerce Backend written in Nodejs",
   "main": "./src/server.js",
   "scripts": {
-    "dev:containers": "podman-compose up -d",
+    "dev:containers:up": "podman compose -f ./podman-compose.yml up -d",
+    "dev:containers:down": "podman compose -f ./podman-compose.yml down",
     "dev": "cross-env NODE_ENV=development tsx --watch ./src/server.ts",
     "copy-locales": "copyfiles -u 1 \"src/locales/**/*\" dist/locales",
     "build": "tsc -p tsconfig.build.json && npm run copy-locales",
