@@ -8,6 +8,7 @@ export const NOTIFICATION_TYPE = {
    * Shop.
    */
   SHOP_VERIFY_EMAIL_SENT: "SHOP_VERIFY_EMAIL_SENT",
+  SHOP_CLOSED: "SHOP_CLOSED",
 
   ORDER_CREATED: "ORDER_CREATED",
 
@@ -25,10 +26,10 @@ export const NOTIFICATION_TYPE = {
 export const NOTIFICATION_STATUS = {
   PENDING: "PENDING",
 
-  SENT: "SENT",
-
+  SUCCEEDED: "SUCCEEDED",
   FAILED: "FAILED",
 
+  SENT: "SENT",
   READ: "READ",
 } as const;
 
@@ -42,10 +43,18 @@ export const NOTIFICATION_TITLE = {
    * Shop.
    */
   SHOP_VERIFY_EMAIL: "SHOP_VERIFY_EMAIL",
+  SHOP_CLOSE: "SHOP_CLOSE",
 } as const;
 
 export const NOTIFICATION_CONTENT = {
+  /**
+   * Access.
+   */
   ACCESS_VERIFY_EMAIL: "ACCESS_VERIFY_EMAIL",
 
+  /**
+   * Shops.
+   */
   SHOP_VERIFY_EMAIL: "SHOP_VERIFY_EMAIL",
+  SHOP_CLOSE: "SHOP_CLOSE",
 } as const;

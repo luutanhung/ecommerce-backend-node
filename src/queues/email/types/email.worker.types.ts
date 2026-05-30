@@ -1,6 +1,4 @@
-export type BaseJob = {
-  notificationId: string;
-};
+import type { BaseJob } from "../../../shared/types/job.types.js";
 
 export type AccessSendVerificationEmailJob = BaseJob & {
   userId: string;

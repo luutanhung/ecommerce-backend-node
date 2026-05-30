@@ -8,6 +8,7 @@ import { Shops } from "../models/shop.model.js";
 import type { ShopLean } from "../types/shop.types.js";
 import type {
   CloseShopInput,
+  PerformShopClosureInput,
   QueueShopVerificationEmailInput,
   RegisterShopInput,
   UpdateShopInput,
@@ -38,6 +39,7 @@ import {
   NOTIFICATION_TYPE,
 } from "../../notifications/notification.constants.js";
 import { NotificationService } from "../../notifications/notification.service.js";
+import { Products } from "../../product/models/product.model.js";
 import { ShopRepository } from "../repositories/shop.repository.js";
 
 /**
@@ -165,6 +167,9 @@ export class ShopService {
     return updatedShop;
   }
 
+  /**
+   * Schedule shop closure.
+   */
   static async closeShop({ shopId }: CloseShopInput): Promise<void> {
     const shop = await Shops.findOne({
       _id: toObjectId(shopId),
@@ -185,10 +190,19 @@ export class ShopService {
     shop.status = SHOP_STATUS.CLOSING;
     await shop.save();
 
+    const issuedNotification = await NotificationService.issueNotification({
+      userId: shop.user.toString(),
+      type: NOTIFICATION_TYPE.SHOP_CLOSED,
+      title: NOTIFICATION_TITLE.SHOP_CLOSE,
+      content: NOTIFICATION_CONTENT.SHOP_CLOSE,
+      status: NOTIFICATION_STATUS.PENDING,
+    });
+
     await shopQueue.add(
       SHOP_JOB_NAME.CLOSE_SHOP,
       {
         shopId,
+        notificationId: issuedNotification._id.toString(),
       },
       {
         jobId: `close-shop:${shopId}`,
@@ -197,6 +211,39 @@ export class ShopService {
         removeOnFail: 100,
       },
     );
+  }
+
+  /**
+   * Perform shop closure.
+   */
+  static async performShopClosure({
+    shopId,
+  }: PerformShopClosureInput): Promise<void> {
+    await withTransaction(async (session) => {
+      const shopObjectId = toObjectId(shopId);
+
+      await Products.deleteMany(
+        {
+          shop: shopObjectId,
+        },
+        {
+          session,
+        },
+      );
+
+      await Shops.updateOne(
+        {
+          _id: shopObjectId,
+        },
+        {
+          status: SHOP_STATUS.CLOSED,
+          closedAt: new Date(),
+        },
+        {
+          session,
+        },
+      );
+    });
   }
 
   /**

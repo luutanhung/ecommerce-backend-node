@@ -31,3 +31,7 @@ export type UpdateShopInput = {
 export type CloseShopInput = {
   shopId: string;
 };
+
+export type PerformShopClosureInput = {
+  shopId: string;
+};
