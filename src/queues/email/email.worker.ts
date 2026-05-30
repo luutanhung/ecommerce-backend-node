@@ -12,7 +12,10 @@ import { NotificationService } from "../../domains/notifications/notification.se
 import { buildVerifyShopEmailTemplate } from "../../domains/shop/templates/shop.templates.js";
 import { MailService } from "../../libs/mail/mail.service.js";
 import { bullRedis } from "../../libs/redis/index.js";
-import { EMAIL_JOB_NAME } from "../../shared/constants/queue.constants.js";
+import {
+  EMAIL_JOB_NAME,
+  QUEUE_NAME,
+} from "../../shared/constants/queue.constants.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { generateVerificationToken } from "../../shared/utils/token.utils.js";
 import type {
@@ -21,7 +24,7 @@ import type {
 } from "../email/types/email.worker.types.js";
 
 export const emailWorker = new Worker(
-  "email",
+  QUEUE_NAME.EMAIL,
   async (job) => {
     const { notificationId } = job.data as {
       notificationId: string;
