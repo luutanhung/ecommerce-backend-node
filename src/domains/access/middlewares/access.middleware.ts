@@ -93,13 +93,15 @@ export const authenticateClientId = asyncWrapper(
       });
     }
 
-    const user = await Users.findById(toObjectId(userId)).lean();
+    const user = await Users.findById(toObjectId(userId));
 
     if (!user) {
       throw new NotFoundAppError({
         code: ResCode.USER_IS_NOT_REGISTERED,
       });
     }
+
+    req.currentUser = user;
 
     return next();
   },
@@ -181,7 +183,7 @@ export const authenticateAccessToken = composeMiddlewares([
       }
 
       // Attach key token instance to req.
-      req.user = payload;
+      req.auth = payload;
 
       return next();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

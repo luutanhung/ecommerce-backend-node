@@ -31,7 +31,7 @@ class SellerProductController {
   async createShopProduct(req: Request, res: Response): Promise<void> {
     const createdProduct = await ProductService.createShopProduct({
       ...(req.body as CreateProductRequest),
-      userId: (req.user as AccessTokenPayload).uid,
+      userId: (req.auth as AccessTokenPayload).uid,
       shopId: (req.ownedShop as ShopLean)._id.toString(),
     });
 

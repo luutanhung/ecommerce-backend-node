@@ -1,4 +1,7 @@
-import type { AccessTokenPayload } from "../../../domains/access/types/access.types.ts";
+import type {
+  AccessTokenPayload,
+  UserDocument,
+} from "../../../domains/access/types/access.types.ts";
 import type { ShopLean } from "../../../domains/shop/types/shop.type.ts";
 import type { ProductLean } from "../../domains/product/product.type.ts";
 import type { ApiKeyDocument } from "../../models/apikey.model.ts";
@@ -23,7 +26,8 @@ declare global {
       locale?: Locale;
 
       // Access.
-      user?: AccessTokenPayload;
+      auth?: AccessTokenPayload;
+      currentUser?: UserDocument;
 
       // Shop.
       ownedShop?: ShopLean;

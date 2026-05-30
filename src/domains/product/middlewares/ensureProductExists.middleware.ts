@@ -16,7 +16,7 @@ export const ensureProductExists = asyncWrapper(
     const productId = req.params.productId || req.body.productId;
 
     const query: ProductFilterQuery = {
-      productShop: toObjectId((req.user as AccessTokenPayload).uid),
+      productShop: toObjectId((req.auth as AccessTokenPayload).uid),
       _id: toObjectId(productId),
     };
 

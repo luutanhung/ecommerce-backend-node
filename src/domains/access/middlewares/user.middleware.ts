@@ -22,6 +22,8 @@ export const ensureUserRegistered = asyncWrapper(
       });
     }
 
+    req.currentUser = user;
+
     return next();
   },
 );

@@ -17,9 +17,9 @@ import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 import type {
   LoginRequest,
   RegisterRequest,
-  SendVerificationEmailRequestBody,
   VerifyEmailRequestBody,
 } from "../validations/access.validations.js";
+import type { UserParams } from "../validations/user.validations.js";
 
 class AccessController {
   // Unauthenticated.
@@ -42,7 +42,7 @@ class AccessController {
    * Send verification email.
    */
   async sendVerificationEmail(req: Request, res: Response): Promise<void> {
-    const userId = (req.body as SendVerificationEmailRequestBody).uid;
+    const userId = (req.params as UserParams).userId;
 
     await AccessService.queueVerificationEmail({
       userId,
@@ -130,7 +130,7 @@ class AccessController {
    */
   async logout(req: Request, res: Response): Promise<void> {
     await AccessService.logoutOneSession({
-      sessionId: req.user?.sid as string,
+      sessionId: req.auth?.sid as string,
     });
 
     new OKResponse({
@@ -142,7 +142,7 @@ class AccessController {
    * Logout from all devices.
    */
   async logoutAll(req: Request, res: Response): Promise<void> {
-    const { uid } = req.user as AccessTokenPayload;
+    const { uid } = req.auth as AccessTokenPayload;
     await AccessService.logoutAll({
       userId: uid,
     });

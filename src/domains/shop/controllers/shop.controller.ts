@@ -21,7 +21,7 @@ export class ShopController {
    */
   async registerShop(req: Request, res: Response) {
     const registeredShop = await ShopService.registerShop({
-      userId: (req.user as AccessTokenPayload).uid,
+      userId: (req.auth as AccessTokenPayload).uid,
       ...(req.body as RegisterShopRequestBody),
     });
 
@@ -45,7 +45,6 @@ export class ShopController {
       shopId: (req.ownedShop as ShopLean)._id.toString(),
       ...(req.body as UpdateShopInformationRequestBody),
     });
-    console.log(updatedShop);
 
     new OKResponse({
       code: ResCode.SHOP_UPDATE_INFORMATION_SUCCESS,

@@ -12,7 +12,6 @@ import { ensureUserRegistered } from "../middlewares/user.middleware.js";
 import {
   LoginRequestSchema,
   RegisterRequestSchema,
-  SendVerificationEmailRequestBodySchema,
   VerifyEmailRequestBodySchema,
 } from "../validations/access.validations.js";
 import { UserParamsSchema } from "../validations/user.validations.js";
@@ -51,7 +50,6 @@ router.post(
   "/access/:userId/send-verification-email",
   validateRequest({
     params: UserParamsSchema,
-    body: SendVerificationEmailRequestBodySchema,
   }),
   ensureUserRegistered,
   asyncWrapper(accessController.sendVerificationEmail),
