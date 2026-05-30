@@ -5,6 +5,7 @@ import type {
 import type { NotificationLean } from "./types/notification.types.js";
 
 import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
+import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 
 import { Notifications } from "./notification.model.js";
 
@@ -14,11 +15,19 @@ export class NotificationRepository {
    */
   static async create(
     input: CreateNotificationRepositoryInput,
-    options: TransactionOptions,
+    options: TransactionOptions = {},
   ) {
-    const [createdNotification] = await Notifications.create([input], {
-      session: options.session,
-    });
+    const [createdNotification] = await Notifications.create(
+      [
+        {
+          ...input,
+          user: toObjectId(input.userId),
+        },
+      ],
+      {
+        session: options.session,
+      },
+    );
 
     if (!createdNotification) return null;
 
@@ -34,6 +43,7 @@ export class NotificationRepository {
   }: UpdateNotificationRepositoryInput): Promise<NotificationLean | null> {
     return await Notifications.findOneAndUpdate(query, update, {
       runValidators: true,
+      new: true,
     }).lean();
   }
 }

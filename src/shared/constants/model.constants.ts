@@ -29,7 +29,7 @@ export const COLLECTION_NAME = {
   API_KEYS: "api_keys",
 
   // Notifications.
-  NOTIFICATIONS: "NOTIFICATIONS",
+  NOTIFICATIONS: "notifications",
 
   // Access.
   USERS: "users",

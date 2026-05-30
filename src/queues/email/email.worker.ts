@@ -3,6 +3,8 @@ import { Worker } from "bullmq";
 import { config } from "../../configs/index.js";
 import { InternalSystemError } from "../../core/error/internalSystemError.js";
 import { buildVerifyEmailTemplate } from "../../domains/access/templates/access.templates.js";
+import { NOTIFICATION_STATUS } from "../../domains/notifications/notification.constants.js";
+import { NotificationService } from "../../domains/notifications/notification.service.js";
 import { MailService } from "../../libs/mail/mail.service.js";
 import { redisConnection } from "../../libs/redis/index.js";
 import { EMAIL_JOB_NAME } from "../../shared/constants/queue.constants.js";
@@ -13,29 +15,59 @@ import type { SendVerificationEmailJob } from "../email/types/email.worker.types
 export const emailWorker = new Worker(
   "email",
   async (job) => {
-    if (job.name === EMAIL_JOB_NAME.SEND_VERIFICATION_EMAIL) {
-      const { userId, email, name } = job.data as SendVerificationEmailJob;
+    const { notificationId } = job.data as {
+      notificationId: string;
+    };
 
-      const token = generateEmailVerificationToken(userId);
+    try {
+      switch (job.name) {
+        case EMAIL_JOB_NAME.SEND_VERIFICATION_EMAIL: {
+          const { userId, email, name } = job.data as SendVerificationEmailJob;
 
-      const verificationUrl = `${config.client.url}/verify-email?token=${token}`;
+          const token = generateEmailVerificationToken(userId);
 
-      const html = buildVerifyEmailTemplate({
-        name,
-        verificationUrl,
+          const verificationUrl = `${config.client.url}/verify-email?token=${token}`;
+
+          const html = buildVerifyEmailTemplate({
+            name,
+            verificationUrl,
+          });
+
+          await MailService.send({
+            to: email,
+            subject: "Verify your email",
+            html,
+          });
+
+          await NotificationService.updateNotification({
+            notificationId,
+            payload: {
+              status: NOTIFICATION_STATUS.SENT,
+              sentAt: new Date(),
+            },
+          });
+
+          return;
+        }
+
+        default:
+          throw new InternalSystemError({
+            code: ResCode.JOB_NAME_UNKNOWN,
+          });
+      }
+      // eslint-disable-next-line
+    } catch (err: any) {
+      await NotificationService.updateNotification({
+        notificationId,
+        payload: {
+          status: NOTIFICATION_STATUS.FAILED,
+          failedAt: new Date(),
+          failureReason: err instanceof Error ? err.message : "Unknown error",
+        },
       });
 
-      await MailService.send({
-        to: email,
-        subject: "Verify your email",
-        html,
-      });
-
-      return;
-    } else {
-      throw new InternalSystemError({
-        code: ResCode.JOB_NAME_UNKNOWN,
-      });
+      // Let BullMQ handle retries
+      throw err;
     }
   },
   {

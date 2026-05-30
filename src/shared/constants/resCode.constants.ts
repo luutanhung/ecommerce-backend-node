@@ -1,5 +1,5 @@
 /**
- * [ENTITY]_[ACTION]_[STATUS(verb/adj)]
+ * [ENTITY]_[ACTION]_[STATUS(noun/adj)]
  */
 
 export const ResCode = {
@@ -34,6 +34,14 @@ export const ResCode = {
    * Queue.
    */
   JOB_NAME_UNKNOWN: "JOB_NAME_UNKNOWN",
+
+  /**
+   * Notifications.
+   */
+  NOTIFICATION_CREATE_FAILED: "NOTIFICATION_CREATE_FAILED",
+  NOTIFICATION_CREATE_SUCCEEDED: "NOTIFICATION_CREATE_SUCCEEDED",
+
+  NOTIFICATION_NOT_FOUND: "NOTIFICATION_NOT_FOUND",
 
   // User.
   USER_INVALID: "USER_INVALID",

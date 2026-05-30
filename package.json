@@ -16,8 +16,7 @@
     "lint:fix": "eslint --fix \"./src/**/*.{js,ts}\"",
     "prepare": "husky",
     "test": "vitest",
-    "worker:dev": "tsx watch src/queues/workers/index.ts",
-    "worker:start": "node dist/workers/index.js",
+    "workers:dev": "tsx watch src/queues/workers/index.ts",
     "pm2:start": "pm2 start ecosystem.config.cjs",
     "pm2:restart": "pm2 restart ecosystem.config.cjs",
     "pm2:stop": "pm2 stop ecosystem.config.cjs"

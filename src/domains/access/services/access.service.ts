@@ -32,6 +32,13 @@ import {
   generateRefreshToken,
   verifyJSONWebToken,
 } from "../../../shared/utils/token.utils.js";
+import {
+  NOTIFICATION_CONTENT,
+  NOTIFICATION_STATUS,
+  NOTIFICATION_TITLE,
+  NOTIFICATION_TYPE,
+} from "../../notifications/notification.constants.js";
+import { NotificationService } from "../../notifications/notification.service.js";
 import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 
 import { SessionService } from "./session.service.js";
@@ -81,12 +88,21 @@ export class AccessService {
       });
     }
 
+    const issuedNotification = await NotificationService.issueNotification({
+      userId,
+      type: NOTIFICATION_TYPE.VERIFICATION_EMAIL_SENT,
+      title: NOTIFICATION_TITLE.VERIFY_EMAIL,
+      content: NOTIFICATION_CONTENT.VERIFY_EMAIL,
+      status: NOTIFICATION_STATUS.PENDING,
+    });
+
     await emailQueue.add(
       EMAIL_JOB_NAME.SEND_VERIFICATION_EMAIL,
       {
         userId,
         email: foundUser.email,
         name: foundUser.name,
+        notificationId: issuedNotification._id.toString(),
       },
       {
         jobId: `${userId}-verify-email`,
