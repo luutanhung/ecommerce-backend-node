@@ -5,36 +5,81 @@ import type {
   CreateCartInput,
   UpdateCartItemQuantityInput,
 } from "./types/cart.service.types.js";
-import type { CartLean } from "./types/cart.types.js";
+import type { CartDocument, CartLean } from "./types/cart.types.js";
 
+import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import { ResCode } from "../../shared/constants/resCode.constants.js";
+import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 
 import { CART_STATE } from "./cart.contants.js";
 
 export class CartService {
-  static async createCart({
-    userId,
-    product,
-  }: CreateCartInput): Promise<CartLean> {
-    const createdCart = await Carts.findOneAndUpdate(
-      {
-        cartUser: toObjectId(userId),
-        cartState: CART_STATE.ACTIVE,
-      },
-      {
-        $addToSet: {
-          cartItems: product,
+  /**
+   * Create user's cart.
+   */
+  static async createCart(
+    { userId }: CreateCartInput,
+    options: TransactionOptions = {},
+  ): Promise<CartDocument> {
+    const foundCart = await Carts.findOne({
+      user: toObjectId(userId),
+    });
+
+    if (foundCart) {
+      return foundCart;
+    }
+
+    const [createdCart] = await Carts.create(
+      [
+        {
+          user: toObjectId(userId),
+          state: CART_STATE.ACTIVE,
         },
-      },
+      ],
       {
-        upsert: true,
-        new: true,
+        session: options.session,
       },
-    ).lean();
+    );
+
+    if (!createdCart) {
+      throw new BadRequestAppError({
+        code: ResCode.CART_CREATE_FAILED,
+      });
+    }
 
     return createdCart;
   }
 
+  /**
+   * Add product to cart.
+   */
+  static async addProductToCart({ userId, product }: AddProductToCartInput) {
+    let ownedActiveCart = await Carts.findOne({
+      cartUser: toObjectId(userId),
+      cartState: CART_STATE.ACTIVE,
+    });
+
+    if (!ownedActiveCart) {
+      ownedActiveCart = await this.createCart({
+        userId,
+      });
+    }
+
+    if (ownedActiveCart.items.length === 0) {
+      ownedActiveCart.items.push(product);
+      return await ownedActiveCart.save();
+    }
+
+    return await this.updateCartItemQuantity({
+      userId,
+      product,
+    });
+  }
+
+  /**
+   * Update cart items' quantity.
+   */
   static async updateCartItemQuantity({
     userId,
     product,
@@ -43,13 +88,13 @@ export class CartService {
 
     return await Carts.findOneAndUpdate(
       {
-        cartUser: toObjectId(userId),
-        cartState: CART_STATE.ACTIVE,
-        "cartItems.productId": toObjectId(productId),
+        user: toObjectId(userId),
+        state: CART_STATE.ACTIVE,
+        "items.productId": toObjectId(productId),
       },
       {
         $inc: {
-          "cartItems.$.quantity": quantity,
+          "items.$.quantity": quantity,
         },
       },
       {
@@ -57,29 +102,5 @@ export class CartService {
         new: true,
       },
     ).lean();
-  }
-
-  static async addProductToCart({ userId, product }: AddProductToCartInput) {
-    const ownedActiveCart = await Carts.findOne({
-      cartUser: toObjectId(userId),
-      cartState: CART_STATE.ACTIVE,
-    });
-
-    if (!ownedActiveCart) {
-      return await this.createCart({
-        userId,
-        product,
-      });
-    }
-
-    if (ownedActiveCart.cartItems.length === 0) {
-      ownedActiveCart.cartItems.push(product);
-      return await ownedActiveCart.save();
-    }
-
-    return await this.updateCartItemQuantity({
-      userId,
-      product,
-    });
   }
 }

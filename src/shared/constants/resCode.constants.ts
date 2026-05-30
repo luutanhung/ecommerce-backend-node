@@ -232,6 +232,7 @@ export const ResCode = {
    * Cart.
    */
   CART_NOT_FOUND: "CART_NOT_FOUND",
+  CART_CREATE_FAILED: "CART_CREATE_FAILED",
 
   /**
    * Pricing.

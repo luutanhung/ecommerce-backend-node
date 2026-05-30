@@ -8,7 +8,6 @@ export type CartItem = {
 
 export type CreateCartInput = {
   userId: string;
-  product: CartItem;
 };
 
 export type AddProductToCartInput = {

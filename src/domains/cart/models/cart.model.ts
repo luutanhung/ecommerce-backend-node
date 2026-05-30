@@ -8,12 +8,12 @@ import { CART_STATE } from "../cart.contants.js";
 
 const CartItemSchema = new Schema(
   {
-    productId: {
+    product: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.PRODUCT,
       required: true,
     },
-    shopId: {
+    shop: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.SHOP,
       required: true,
@@ -43,22 +43,22 @@ const CartItemSchema = new Schema(
 
 export const CartSchema = new Schema(
   {
-    cartUser: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.USER,
       required: true,
     },
-    cartItems: {
+    items: {
       type: [CartItemSchema],
       required: true,
       default: [],
     },
-    cartItemCount: {
+    itemCount: {
       type: Number,
       required: true,
       default: 0,
     },
-    cartState: {
+    state: {
       type: String,
       enum: Object.values(CART_STATE),
       default: CART_STATE.ACTIVE,
