@@ -5,6 +5,11 @@ export type RegisterShopInput = {
   description?: string;
 };
 
+export type QueueShopVerificationEmailInput = {
+  userId: string;
+  shopId: string;
+};
+
 export type UpdateShopInput = {
   shopId: string;
   name?: string;

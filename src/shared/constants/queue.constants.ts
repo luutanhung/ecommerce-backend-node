@@ -9,5 +9,7 @@ export const QUEUE_NAME = {
  * Queue Jobs.
  */
 export const EMAIL_JOB_NAME = {
-  SEND_VERIFICATION_EMAIL: "send-verification-email",
+  ACCESS_SEND_VERIFICATION_EMAIL: "access-send-verification-email",
+
+  SHOP_SEND_VERIFICATION_EMAIL: "shop-send-verification-email",
 } as const;

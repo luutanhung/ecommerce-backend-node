@@ -29,8 +29,13 @@ export type RefreshTokenPayload = {
   ver: number; // refreshTokenVersion
 };
 
-export type EmailVerificationPayload = {
-  userId: string; // userId
+export type VerifyUserPayload = {
+  userId: string;
+};
+
+export type VerifyShopPayload = {
+  userId: string;
+  shopId: string;
 };
 
 // Services.

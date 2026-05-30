@@ -14,16 +14,29 @@ import {
 
 const router = Router();
 
+router.use(authenticateAccessToken);
+
 /**
  * User registers a new shop.
  */
 router.post(
   "/shops/register",
-  authenticateAccessToken,
   validateRequest({
     body: RegisterShopRequestBodySchema,
   }),
   asyncWrapper(shopController.registerShop),
+);
+
+/**
+ * Verify shop.
+ */
+router.post(
+  "/shops/:shopId/verify",
+  validateRequest({
+    params: ShopParamsSchema,
+  }),
+  authorizeShopOwnership,
+  asyncWrapper(shopController.sendVerificationEmail),
 );
 
 /**

@@ -1,18 +1,33 @@
 import _ from "lodash";
 import { type ClientSession } from "mongoose";
 
+import { Shops } from "../models/shop.model.js";
+
 import type { ShopLean } from "../types/shop.types.js";
 import type {
+  QueueShopVerificationEmailInput,
   RegisterShopInput,
   UpdateShopInput,
 } from "./types/shop.service.types.js";
 
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
+import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
+import { emailQueue } from "../../../queues/email/email.queue.js";
+import type { ShopSendVerificationEmailJob } from "../../../queues/email/types/email.worker.types.js";
+import { EMAIL_JOB_NAME } from "../../../shared/constants/queue.constants.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { withTransaction } from "../../../shared/helpers/withTransaction.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { USER_ROLE } from "../../access/constants/user.constants.js";
+import { Users } from "../../access/models/user.model.js";
 import { UserService } from "../../access/services/user.service.js";
+import {
+  NOTIFICATION_CONTENT,
+  NOTIFICATION_STATUS,
+  NOTIFICATION_TITLE,
+  NOTIFICATION_TYPE,
+} from "../../notifications/notification.constants.js";
+import { NotificationService } from "../../notifications/notification.service.js";
 import { ShopRepository } from "../repositories/shop.repository.js";
 
 /**
@@ -45,6 +60,59 @@ export class ShopService {
       );
 
       return registeredShop;
+    });
+  }
+
+  static async queueShopVerificationEmail({
+    userId,
+    shopId,
+  }: QueueShopVerificationEmailInput) {
+    const user = await Users.findOne({ _id: toObjectId(userId) }).lean();
+
+    if (!user) {
+      throw new NotFoundAppError({
+        code: ResCode.USER_NOT_FOUND,
+      });
+    }
+
+    const shop = await Shops.findOne({ _id: toObjectId(shopId) }).lean();
+
+    if (!shop) {
+      throw new NotFoundAppError({
+        code: ResCode.SHOP_NOT_FOUND,
+      });
+    }
+
+    const issuedNotification = await NotificationService.issueNotification({
+      userId,
+      type: NOTIFICATION_TYPE.SHOP_VERIFY_EMAIL_SENT,
+      title: NOTIFICATION_TITLE.SHOP_VERIFY_EMAIL,
+      content: NOTIFICATION_CONTENT.SHOP_VERIFY_EMAIL,
+      status: NOTIFICATION_STATUS.PENDING,
+    });
+
+    const jobData: ShopSendVerificationEmailJob = {
+      userInfo: {
+        userId: user._id.toString(),
+        name: user.name,
+        email: user.email,
+      },
+      shopInfo: {
+        shopId: shop._id.toString(),
+        name: shop.name,
+      },
+      notificationId: issuedNotification._id.toString(),
+    };
+
+    await emailQueue.add(EMAIL_JOB_NAME.SHOP_SEND_VERIFICATION_EMAIL, jobData, {
+      jobId: `${userId}-${shopId}-verify-email`,
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 3000,
+      },
+      removeOnComplete: 100,
+      removeOnFail: 100,
     });
   }
 

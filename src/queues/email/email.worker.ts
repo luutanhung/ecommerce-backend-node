@@ -2,15 +2,23 @@ import { Worker } from "bullmq";
 
 import { config } from "../../configs/index.js";
 import { InternalSystemError } from "../../core/error/internalSystemError.js";
-import { buildVerifyEmailTemplate } from "../../domains/access/templates/access.templates.js";
+import { buildVerifyUserEmailTemplate } from "../../domains/access/templates/access.templates.js";
+import type {
+  VerifyShopPayload,
+  VerifyUserPayload,
+} from "../../domains/access/types/access.types.js";
 import { NOTIFICATION_STATUS } from "../../domains/notifications/notification.constants.js";
 import { NotificationService } from "../../domains/notifications/notification.service.js";
+import { buildVerifyShopEmailTemplate } from "../../domains/shop/templates/shop.templates.js";
 import { MailService } from "../../libs/mail/mail.service.js";
 import { bullRedis } from "../../libs/redis/index.js";
 import { EMAIL_JOB_NAME } from "../../shared/constants/queue.constants.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
-import { generateEmailVerificationToken } from "../../shared/utils/token.utils.js";
-import type { SendVerificationEmailJob } from "../email/types/email.worker.types.js";
+import { generateVerificationToken } from "../../shared/utils/token.utils.js";
+import type {
+  AccessSendVerificationEmailJob,
+  ShopSendVerificationEmailJob,
+} from "../email/types/email.worker.types.js";
 
 export const emailWorker = new Worker(
   "email",
@@ -21,19 +29,20 @@ export const emailWorker = new Worker(
 
     try {
       switch (job.name) {
-        case EMAIL_JOB_NAME.SEND_VERIFICATION_EMAIL: {
-          const { userId, email, name } = job.data as SendVerificationEmailJob;
+        case EMAIL_JOB_NAME.ACCESS_SEND_VERIFICATION_EMAIL: {
+          const { userId, email, name } =
+            job.data as AccessSendVerificationEmailJob;
 
-          const token = generateEmailVerificationToken(
+          const token = generateVerificationToken<VerifyUserPayload>(
             {
               userId,
             },
             config.mail.secret,
           );
 
-          const verificationUrl = `${config.client.url}/verify-email?token=${token}`;
+          const verificationUrl = `${config.client.url}/access/verify-email?token=${token}`;
 
-          const html = buildVerifyEmailTemplate({
+          const html = buildVerifyUserEmailTemplate({
             name,
             verificationUrl,
           });
@@ -41,6 +50,43 @@ export const emailWorker = new Worker(
           await MailService.send({
             to: email,
             subject: "Verify your email",
+            html,
+          });
+
+          await NotificationService.updateNotification({
+            notificationId,
+            payload: {
+              status: NOTIFICATION_STATUS.SENT,
+              sentAt: new Date(),
+            },
+          });
+
+          return;
+        }
+
+        case EMAIL_JOB_NAME.SHOP_SEND_VERIFICATION_EMAIL: {
+          const { userInfo, shopInfo } =
+            job.data as ShopSendVerificationEmailJob;
+
+          const token = generateVerificationToken<VerifyShopPayload>(
+            {
+              userId: userInfo.userId,
+              shopId: shopInfo.shopId,
+            },
+            config.mail.secret,
+          );
+
+          const verificationUrl = `${config.client.url}/shops/verify-email?token=${token}`;
+
+          const html = buildVerifyShopEmailTemplate({
+            shopName: shopInfo.name,
+            ownerName: userInfo.name,
+            verificationUrl,
+          });
+
+          await MailService.send({
+            to: userInfo.email,
+            subject: "Verify your shop",
             html,
           });
 

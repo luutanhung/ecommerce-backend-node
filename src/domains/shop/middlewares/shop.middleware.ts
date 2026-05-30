@@ -13,7 +13,7 @@ import type { AccessTokenPayload } from "../../access/types/access.types.js";
  */
 export const authorizeShopOwnership = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user: AccessTokenPayload = req.user as AccessTokenPayload;
+    const user: AccessTokenPayload = req.auth as AccessTokenPayload;
 
     // Extract shop ID from params or body.
     const shopId: string = req.params.shopId || req.body.shopId;

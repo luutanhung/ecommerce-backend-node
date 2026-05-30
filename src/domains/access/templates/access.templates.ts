@@ -1,6 +1,6 @@
 import type { BuildVerifyEmailTemplateInput } from "./types/access.template.types.js";
 
-export const buildVerifyEmailTemplate = ({
+export const buildVerifyUserEmailTemplate = ({
   name,
   verificationUrl,
   brandName = "Ecommerce Backend Node",

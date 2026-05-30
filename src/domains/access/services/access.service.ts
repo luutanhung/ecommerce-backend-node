@@ -7,7 +7,6 @@ import { Sessions } from "../models/session.model.js";
 import { Users } from "../models/user.model.js";
 
 import type {
-  EmailVerificationPayload,
   LoginInput,
   LogoutAllExceptCurrentInput,
   LogoutAllInput,
@@ -19,6 +18,7 @@ import type {
   UserDocument,
   UserLean,
   VerifyEmailInput,
+  VerifyUserPayload,
 } from "../types/access.types.js";
 
 import { config } from "../../../configs/index.js";
@@ -99,14 +99,14 @@ export class AccessService {
 
     const issuedNotification = await NotificationService.issueNotification({
       userId,
-      type: NOTIFICATION_TYPE.VERIFICATION_EMAIL_SENT,
-      title: NOTIFICATION_TITLE.VERIFY_EMAIL,
-      content: NOTIFICATION_CONTENT.VERIFY_EMAIL,
+      type: NOTIFICATION_TYPE.ACCESS_VERIFY_EMAIL_SENT,
+      title: NOTIFICATION_TITLE.ACCESS_VERIFY_EMAIL,
+      content: NOTIFICATION_CONTENT.ACCESS_VERIFY_EMAIL,
       status: NOTIFICATION_STATUS.PENDING,
     });
 
     await emailQueue.add(
-      EMAIL_JOB_NAME.SEND_VERIFICATION_EMAIL,
+      EMAIL_JOB_NAME.ACCESS_SEND_VERIFICATION_EMAIL,
       {
         userId,
         email: foundUser.email,
@@ -132,7 +132,7 @@ export class AccessService {
   static async verifyEmail({
     emailVerificationToken,
   }: VerifyEmailInput): Promise<UserLean> {
-    const { userId } = await verifyJSONWebToken<EmailVerificationPayload>({
+    const { userId } = await verifyJSONWebToken<VerifyUserPayload>({
       token: emailVerificationToken,
       secret: config.mail.secret,
       expiredCode: ResCode.ACCESS_EMAIL_VERIFICATION_TOKEN_EXPIRED,

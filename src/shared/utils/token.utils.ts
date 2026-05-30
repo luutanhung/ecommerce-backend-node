@@ -9,7 +9,6 @@ import {
 } from "../../domains/access/constants/access.constants.js";
 import type {
   AccessTokenPayload,
-  EmailVerificationPayload,
   RefreshTokenPayload,
 } from "../../domains/access/types/access.types.js";
 
@@ -28,8 +27,10 @@ export const generateAccessToken = async (
 /**
  * Generate email verficiation token.
  */
-export const generateEmailVerificationToken = (
-  payload: EmailVerificationPayload,
+export const generateVerificationToken = <
+  TPlayload extends Record<string, unknown>,
+>(
+  payload: TPlayload,
   secret: string,
 ): string => {
   return jwt.sign(payload, secret, {

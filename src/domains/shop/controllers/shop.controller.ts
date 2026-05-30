@@ -8,10 +8,14 @@ import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import type { AccessTokenPayload } from "../../access/types/access.types.js";
+import type {
+  AccessTokenPayload,
+  UserDocument,
+} from "../../access/types/access.types.js";
 import { sanitizeShop } from "../sanitizers/shop.sanitizer.js";
 import type {
   RegisterShopRequestBody,
+  ShopParams,
   UpdateShopInformationRequestBody,
 } from "../validations/shop.validations.js";
 
@@ -34,6 +38,23 @@ export class ShopController {
     new CreatedResponse({
       code: ResCode.SHOP_REGISTER_SUCCESS,
       data: sanitizeShop(registeredShop),
+    }).send(req, res);
+  }
+
+  /**
+   * Send verification email.
+   */
+  async sendVerificationEmail(req: Request, res: Response) {
+    const currentUser = req.currentUser as UserDocument;
+    const shopId = (req.params as ShopParams).shopId;
+
+    await ShopService.queueShopVerificationEmail({
+      userId: currentUser._id.toString(),
+      shopId,
+    });
+
+    new OKResponse({
+      code: ResCode.SHOP_VERIFY_EMAIL_SUCCEEDED,
     }).send(req, res);
   }
 
