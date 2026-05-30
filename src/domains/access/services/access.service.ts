@@ -89,6 +89,14 @@ export class AccessService {
   static async queueVerificationEmail({
     userId,
   }: QueueVerificationEmailInput): Promise<void> {
+    await RateLimitService.enforce({
+      cooldownKey: `${RATE_LIMIT_KEY.ACCESS_EMAIL_VERIFICATION_COOLDOWN}:${userId}`,
+      cooldownSeconds: EMAIL_VERIFICATION_COOLDOWN_SECONDS,
+      limitKey: `${RATE_LIMIT_KEY.ACCESS_EMAIL_VERIFICATION_LIMIT}:${userId}`,
+      maxRequests: EMAIL_VERIFICATION_MAX_REQUESTS,
+      windowSeconds: EMAIL_VERIFICATION_WINDOW_SECONDS,
+    });
+
     const foundUser = await Users.findOne({
       _id: toObjectId(userId),
     }).lean();
@@ -98,14 +106,6 @@ export class AccessService {
         code: ResCode.USER_NOT_FOUND,
       });
     }
-
-    await RateLimitService.enforce({
-      cooldownKey: `${RATE_LIMIT_KEY.ACCESS_EMAIL_VERIFICATION_COOLDOWN}:${userId}`,
-      cooldownSeconds: EMAIL_VERIFICATION_COOLDOWN_SECONDS,
-      limitKey: `${RATE_LIMIT_KEY.ACCESS_EMAIL_VERIFICATION_LIMIT}:${userId}`,
-      maxRequests: EMAIL_VERIFICATION_MAX_REQUESTS,
-      windowSeconds: EMAIL_VERIFICATION_WINDOW_SECONDS,
-    });
 
     const issuedNotification = await NotificationService.issueNotification({
       userId,
