@@ -8,6 +8,7 @@ import type { ResponseCodeKey } from "../../shared/types/core/response.type.js";
 import { ErrorResponse } from "../response/error.response.js";
 
 import { AppError } from "./appError.js";
+import { TooManyRequestsAppError } from "./tooManyRequestAppError.js";
 
 /**
  * Express error handling middleware that processes application errors and converts them
@@ -29,6 +30,13 @@ export const handleError = async (
   }
 
   if (err instanceof AppError) {
+    if (err instanceof TooManyRequestsAppError) {
+      res.setHeader(
+        "x-retry-after",
+        (err?.data as { retryAfterSeconds: number }).retryAfterSeconds,
+      );
+    }
+
     return new ErrorResponse({
       statusCode: err.statusCode,
       code: err.code,
