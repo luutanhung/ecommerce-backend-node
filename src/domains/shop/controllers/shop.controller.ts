@@ -17,6 +17,7 @@ import type {
   RegisterShopRequestBody,
   ShopParams,
   UpdateShopInformationRequestBody,
+  VerifyShopRequestBody,
 } from "../validations/shop.validations.js";
 
 export class ShopController {
@@ -52,6 +53,19 @@ export class ShopController {
       userId: currentUser._id.toString(),
       shopId,
     });
+
+    new OKResponse({
+      code: ResCode.SHOP_SEND_VERIFICATION_EMAIL_SUCCEEDED,
+    }).send(req, res);
+  }
+
+  /**
+   * Verify shop.
+   */
+  async verifyShop(req: Request, res: Response) {
+    const token = (req.body as VerifyShopRequestBody).token;
+
+    await ShopService.verifyShop({ token });
 
     new OKResponse({
       code: ResCode.SHOP_VERIFY_EMAIL_SUCCEEDED,

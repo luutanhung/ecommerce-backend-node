@@ -28,15 +28,27 @@ router.post(
 );
 
 /**
- * Verify shop.
+ * Send verification email.
  */
 router.post(
-  "/shops/:shopId/verify",
+  "/shops/:shopId/send-verification-email",
   validateRequest({
     params: ShopParamsSchema,
   }),
   authorizeShopOwnership,
   asyncWrapper(shopController.sendVerificationEmail),
+);
+
+/**
+ * Verify shop.
+ */
+router.post(
+  "shops/:shopId/verify",
+  validateRequest({
+    params: ShopParamsSchema,
+  }),
+  authorizeShopOwnership,
+  asyncWrapper(shopController.verifyShop),
 );
 
 /**

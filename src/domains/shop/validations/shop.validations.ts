@@ -51,3 +51,8 @@ export const UpdateShopInformationRequestBodySchema =
 export type UpdateShopInformationRequestBody = z.infer<
   typeof UpdateShopInformationRequestBodySchema
 >;
+
+export const VerifyShopRequestBodySchema = z.object({
+  token: z.string().min(1),
+});
+export type VerifyShopRequestBody = z.infer<typeof VerifyShopRequestBodySchema>;

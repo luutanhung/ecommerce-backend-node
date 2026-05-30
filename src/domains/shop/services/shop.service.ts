@@ -8,8 +8,10 @@ import type {
   QueueShopVerificationEmailInput,
   RegisterShopInput,
   UpdateShopInput,
+  VerifyShopInput,
 } from "./types/shop.service.types.js";
 
+import { config } from "../../../configs/index.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { emailQueue } from "../../../queues/email/email.queue.js";
@@ -18,9 +20,11 @@ import { EMAIL_JOB_NAME } from "../../../shared/constants/queue.constants.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { withTransaction } from "../../../shared/helpers/withTransaction.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
+import { verifyJSONWebToken } from "../../../shared/utils/token.utils.js";
 import { USER_ROLE } from "../../access/constants/user.constants.js";
 import { Users } from "../../access/models/user.model.js";
 import { UserService } from "../../access/services/user.service.js";
+import type { VerifyShopPayload } from "../../access/types/access.types.js";
 import {
   NOTIFICATION_CONTENT,
   NOTIFICATION_STATUS,
@@ -63,6 +67,9 @@ export class ShopService {
     });
   }
 
+  /**
+   * Send email to verify shop.
+   */
   static async queueShopVerificationEmail({
     userId,
     shopId,
@@ -114,6 +121,40 @@ export class ShopService {
       removeOnComplete: 100,
       removeOnFail: 100,
     });
+  }
+
+  /**
+   * Verify shop.
+   */
+  static async verifyShop({ token }: VerifyShopInput) {
+    const { userId, shopId } = await verifyJSONWebToken<VerifyShopPayload>({
+      token,
+      secret: config.mail.secret,
+      expiredCode: ResCode.SHOP_EMAIL_VERIFICATION_TOKEN_EXPIRED,
+      invalidCode: ResCode.SHOP_EMAIL_VERIFICATION_TOKEN_INVALID,
+    });
+
+    const shop = await Shops.findOne({
+      user: toObjectId(userId),
+      _id: toObjectId(shopId),
+    });
+
+    if (!shop) {
+      throw new NotFoundAppError({
+        code: ResCode.SHOP_NOT_FOUND,
+      });
+    }
+
+    if (shop.isVerified) {
+      throw new BadRequestAppError({
+        code: ResCode.SHOP_ALREADY_VERIFIED,
+      });
+    }
+
+    shop.isVerified = true;
+    await shop.save();
+
+    return shop.toObject();
   }
 
   /**

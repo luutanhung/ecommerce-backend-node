@@ -10,6 +10,10 @@ export type QueueShopVerificationEmailInput = {
   shopId: string;
 };
 
+export type VerifyShopInput = {
+  token: string;
+};
+
 export type UpdateShopInput = {
   shopId: string;
   name?: string;
