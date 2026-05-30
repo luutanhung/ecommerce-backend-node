@@ -1,1 +1,1 @@
-import "../email/email.queue.js";
+import "../email/email.worker.js";

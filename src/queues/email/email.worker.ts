@@ -48,6 +48,10 @@ emailWorker.on("completed", (job) => {
   console.log(`Job ${job.id} completed`);
 });
 
+emailWorker.on("error", (err) => {
+  console.error(err);
+});
+
 emailWorker.on("failed", (job, err) => {
   console.error(`Job ${job?.id} failed`, err);
 });

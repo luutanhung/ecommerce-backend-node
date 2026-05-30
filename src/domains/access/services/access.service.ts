@@ -95,10 +95,8 @@ export class AccessService {
           type: "exponential",
           delay: 3000,
         },
-
-        removeOnComplete: 1000,
-
-        removeOnFail: 5000,
+        removeOnComplete: 100,
+        removeOnFail: 100,
       },
     );
   }
