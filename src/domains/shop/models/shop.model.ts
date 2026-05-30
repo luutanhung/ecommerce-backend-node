@@ -42,6 +42,10 @@ export const ShopSchema = new Schema(
       type: Schema.Types.Boolean,
       default: false,
     },
+    closedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,

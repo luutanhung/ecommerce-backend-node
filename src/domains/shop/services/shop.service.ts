@@ -1,10 +1,13 @@
 import _ from "lodash";
 import { type ClientSession } from "mongoose";
 
+import { SHOP_STATUS } from "../constants/shop.constants.js";
+
 import { Shops } from "../models/shop.model.js";
 
 import type { ShopLean } from "../types/shop.types.js";
 import type {
+  CloseShopInput,
   QueueShopVerificationEmailInput,
   RegisterShopInput,
   UpdateShopInput,
@@ -16,7 +19,11 @@ import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { emailQueue } from "../../../queues/email/email.queue.js";
 import type { ShopSendVerificationEmailJob } from "../../../queues/email/types/email.worker.types.js";
-import { EMAIL_JOB_NAME } from "../../../shared/constants/queue.constants.js";
+import { shopQueue } from "../../../queues/shop/shop.queue.js";
+import {
+  EMAIL_JOB_NAME,
+  SHOP_JOB_NAME,
+} from "../../../shared/constants/queue.constants.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { withTransaction } from "../../../shared/helpers/withTransaction.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
@@ -156,6 +163,40 @@ export class ShopService {
     }
 
     return updatedShop;
+  }
+
+  static async closeShop({ shopId }: CloseShopInput): Promise<void> {
+    const shop = await Shops.findOne({
+      _id: toObjectId(shopId),
+    });
+
+    if (!shop) {
+      throw new NotFoundAppError({
+        code: ResCode.SHOP_NOT_FOUND,
+      });
+    }
+
+    if (shop.status === SHOP_STATUS.CLOSED) {
+      throw new BadRequestAppError({
+        code: ResCode.SHOP_ALREADY_CLOSED,
+      });
+    }
+
+    shop.status = SHOP_STATUS.CLOSING;
+    await shop.save();
+
+    await shopQueue.add(
+      SHOP_JOB_NAME.CLOSE_SHOP,
+      {
+        shopId,
+      },
+      {
+        jobId: `close-shop:${shopId}`,
+        attempts: 3,
+        removeOnComplete: 100,
+        removeOnFail: 100,
+      },
+    );
   }
 
   /**

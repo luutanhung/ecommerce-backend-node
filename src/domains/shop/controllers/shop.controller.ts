@@ -15,6 +15,7 @@ import type {
 import { sanitizeShop } from "../sanitizers/shop.sanitizer.js";
 import type {
   RegisterShopRequestBody,
+  ShopParams,
   UpdateShopInformationRequestBody,
   VerifyShopRequestBody,
 } from "../validations/shop.validations.js";
@@ -97,6 +98,21 @@ export class ShopController {
     new OKResponse({
       code: ResCode.SHOP_UPDATE_INFORMATION_SUCCESS,
       data: sanitizeShop(updatedShop),
+    }).send(req, res);
+  }
+
+  /**
+   * Close shop.
+   */
+  async closeShop(req: Request, res: Response) {
+    const shopId = (req.params as ShopParams).shopId;
+
+    await ShopService.closeShop({
+      shopId,
+    });
+
+    new OKResponse({
+      code: ResCode.SHOP_CLOSE_SUCCEEDED,
     }).send(req, res);
   }
 }

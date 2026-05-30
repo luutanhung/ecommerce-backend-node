@@ -1,6 +1,7 @@
 export const SHOP_STATUS = {
   ACTIVE: "active",
-  INACTIVE: "inactive",
+  CLOSING: "closing",
+  CLOSED: "closed",
 } as const;
 
 export const ShopRole = {

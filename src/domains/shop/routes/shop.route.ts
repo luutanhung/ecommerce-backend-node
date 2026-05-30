@@ -66,4 +66,16 @@ router.post(
   asyncWrapper(shopController.updateShopInformation),
 );
 
+/**
+ * Close shop.
+ */
+router.post(
+  "/shops/:shopId/close",
+  validateRequest({
+    params: ShopParamsSchema,
+  }),
+  authorizeShopOwnership,
+  asyncWrapper(shopController.closeShop),
+);
+
 export { router as shopRouter };

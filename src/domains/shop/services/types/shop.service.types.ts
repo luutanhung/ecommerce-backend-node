@@ -27,3 +27,7 @@ export type UpdateShopInput = {
   slug?: string;
   description?: string;
 };
+
+export type CloseShopInput = {
+  shopId: string;
+};
