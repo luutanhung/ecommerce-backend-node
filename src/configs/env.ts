@@ -21,6 +21,10 @@ const env = cleanEnv(process.env, {
   MONGODB_DBNAME: str({ default: "" }),
   MONGODB_REPLICA_SET: str({ default: "rs0" }),
 
+  // Redis.
+  REDIS_HOST: host(),
+  REDIS_PORT: port(),
+
   // Mail.
   SMTP_HOST: host(),
   SMTP_PORT: port(),

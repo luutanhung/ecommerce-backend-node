@@ -11,30 +11,28 @@ import type {
   LogoutAllExceptCurrentInput,
   LogoutAllInput,
   LogoutPayload,
+  QueueVerificationEmailInput,
   RefreshTokenInput,
   RefreshTokenPayload,
   RegisterInput,
-  SendVerificationEmailInput,
   UserDocument,
   UserLean,
 } from "../types/access.types.js";
 
-import { config } from "../../../configs/index.js";
 import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
-import { MailService } from "../../../libs/mail/mail.service.js";
+import { emailQueue } from "../../../libs/queue/index.js";
+import { EMAIL_JOB_NAME } from "../../../shared/constants/queue.constants.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import {
   generateAccessToken,
-  generateEmailVerificationToken,
   generateRefreshToken,
   verifyJSONWebToken,
 } from "../../../shared/utils/token.utils.js";
 import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
-import { buildVerifyEmailTemplate } from "../templates/access.templates.js";
 
 import { SessionService } from "./session.service.js";
 
@@ -67,7 +65,12 @@ export class AccessService {
     };
   }
 
-  static async sendVerificationEmail({ userId }: SendVerificationEmailInput) {
+  /**
+   * Send verification email to user's mail address.
+   */
+  static async queueVerificationEmail({
+    userId,
+  }: QueueVerificationEmailInput): Promise<void> {
     const foundUser = await Users.findOne({
       _id: toObjectId(userId),
     }).lean();
@@ -78,20 +81,26 @@ export class AccessService {
       });
     }
 
-    const token = generateEmailVerificationToken(foundUser._id.toString());
+    await emailQueue.add(
+      EMAIL_JOB_NAME.SEND_VERIFICATION_EMAIL,
+      {
+        userId,
+        email: foundUser.email,
+        name: foundUser.name,
+      },
+      {
+        jobId: `${userId}-verify-email`,
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 3000,
+        },
 
-    const verificationUrl = `${config.client.url}/verify-email?token=${token}`;
+        removeOnComplete: 1000,
 
-    const html = buildVerifyEmailTemplate({
-      name: foundUser.name,
-      verificationUrl,
-    });
-
-    await MailService.send({
-      to: foundUser.email,
-      subject: "Verify your email",
-      html,
-    });
+        removeOnFail: 5000,
+      },
+    );
   }
 
   /**

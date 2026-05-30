@@ -35,7 +35,7 @@ export type RegisterInput = {
   password: string;
 };
 
-export type SendVerificationEmailInput = {
+export type QueueVerificationEmailInput = {
   userId: string;
 };
 

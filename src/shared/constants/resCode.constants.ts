@@ -30,6 +30,11 @@ export const ResCode = {
   INVALID_OBJECT_ID: "INVALID_OBJECT_ID",
   INVALID_ID: "INVALID_ID",
 
+  /**
+   * Queue.
+   */
+  JOB_NAME_UNKNOWN: "JOB_NAME_UNKNOWN",
+
   // User.
   USER_INVALID: "USER_INVALID",
 

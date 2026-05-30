@@ -32,32 +32,8 @@ router.post(
   asyncWrapper(accessController.sendVerificationEmail),
 );
 
-// Login with shop's information.
 /**
- * @openapi
- * /api/v1/access/login:
- *   post:
- *     tags:
- *       - Access
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 example: test@gmail.com
- *               password:
- *                 type: string
- *                 example: 123456
- *     responses:
- *       200:
- *         description: OK
+ * Login with account information.
  */
 router.post(
   "/access/login",

@@ -13,6 +13,10 @@ const baseConfig = {
     name: env.MONGODB_DBNAME,
     replicaSet: env.MONGODB_REPLICA_SET,
   },
+  redis: {
+    host: env.REDIS_HOST,
+    port: env.REDIS_PORT,
+  },
   mail: {
     host: env.SMTP_HOST,
     port: env.SMTP_PORT,

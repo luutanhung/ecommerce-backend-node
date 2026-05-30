@@ -1,3 +1,6 @@
+import { createBullBoard } from "@bull-board/api";
+import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
+import { ExpressAdapter } from "@bull-board/express";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import type { Express } from "express";
@@ -13,8 +16,19 @@ import { i18nMiddleware } from "./shared/middlewares/i18n.middleware.js";
 import { swaggerSpec } from "./configs/swagger.js";
 
 import { handleNotFoundRoute } from "./handlers/notFoundRoute.handler.js";
+import { emailQueue } from "./libs/queue/index.js";
 
 import { mainRouter } from "./mainRouter.js";
+
+const serverAdapter = new ExpressAdapter();
+
+serverAdapter.setBasePath("/admin/queues");
+
+createBullBoard({
+  queues: [new BullMQAdapter(emailQueue)],
+
+  serverAdapter,
+});
 
 const app: Express = express();
 
@@ -46,6 +60,11 @@ app.use(i18nMiddleware);
  * Swagger API.
  */
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ * BullMQ Dashboard.
+ */
+app.use("/admin/queues", serverAdapter.getRouter());
 
 /**
  * Register routers.

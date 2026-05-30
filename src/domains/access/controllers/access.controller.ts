@@ -95,7 +95,7 @@ class AccessController {
   async sendVerificationEmail(req: Request, res: Response): Promise<void> {
     const userId = (req.body as SendVerificationEmailRequestBody).uid;
 
-    await AccessService.sendVerificationEmail({
+    await AccessService.queueVerificationEmail({
       userId,
     });
 
