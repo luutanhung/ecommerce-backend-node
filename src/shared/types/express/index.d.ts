@@ -1,3 +1,5 @@
+import type { Logger } from "pino";
+
 import type {
   AccessTokenPayload,
   UserDocument,
@@ -14,6 +16,9 @@ declare global {
       t: (phrase: string, options?: any) => string;
       getLocale: () => string;
       setLocale: (locale: Locale) => void;
+
+      id: string;
+      log: Logger;
 
       // Common.
       validated?: {

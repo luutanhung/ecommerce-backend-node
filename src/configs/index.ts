@@ -24,6 +24,9 @@ const baseConfig = {
     password: env.SMTP_PASSWORD,
     secret: env.JWT_MAIL_SECRET,
   },
+  logger: {
+    level: env.LOG_LEVEL,
+  },
   client: {
     url: env.CLIENT_URL,
   },

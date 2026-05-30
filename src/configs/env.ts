@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { cleanEnv, host, port, str } from "envalid";
+import { bool, cleanEnv, host, port, str } from "envalid";
 import path from "path";
 
 const NODE_ENV = process.env.NODE_ENV || "development";
@@ -31,8 +31,14 @@ const env = cleanEnv(process.env, {
   SMTP_USER: str(),
   SMTP_PASSWORD: str(),
 
+  // JWT Secrets.
   JWT_MAIL_SECRET: str(),
 
+  // Logger.
+  LOG_LEVEL: str(),
+  LOG_TO_FILE: bool({ default: true }),
+
+  // Client.
   CLIENT_URL: str(),
 });
 

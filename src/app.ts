@@ -12,6 +12,10 @@ import swaggerUi from "swagger-ui-express";
 import { handleError } from "./core/error/handleError.middleware.js";
 
 import { i18nMiddleware } from "./shared/middlewares/i18n.middleware.js";
+import {
+  attachRequestId,
+  requestLogger,
+} from "./shared/middlewares/logger.middleware.js";
 
 import { swaggerSpec } from "./configs/swagger.js";
 
@@ -42,6 +46,9 @@ app.use(
     level: 9,
   }),
 );
+
+app.use(attachRequestId);
+app.use(requestLogger);
 
 // Parse application/json
 app.use(express.json());
