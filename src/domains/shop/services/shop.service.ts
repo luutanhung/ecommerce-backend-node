@@ -205,7 +205,6 @@ export class ShopService {
         notificationId: issuedNotification._id.toString(),
       },
       {
-        jobId: `close-shop:${shopId}`,
         attempts: 3,
         removeOnComplete: 100,
         removeOnFail: 100,

@@ -109,7 +109,6 @@ export class AccessService {
         notificationId: issuedNotification._id.toString(),
       },
       {
-        jobId: `${userId}-verify-email`,
         attempts: 3,
         backoff: {
           type: "exponential",
