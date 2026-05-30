@@ -3,11 +3,13 @@ import { Carts } from "./models/cart.model.js";
 import type {
   AddProductToCartInput,
   CreateCartInput,
+  FindCartInput,
   UpdateCartItemQuantityInput,
 } from "./types/cart.service.types.js";
 import type { CartDocument, CartLean } from "./types/cart.types.js";
 
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
@@ -54,27 +56,35 @@ export class CartService {
   /**
    * Add product to cart.
    */
-  static async addProductToCart({ userId, product }: AddProductToCartInput) {
-    let ownedActiveCart = await Carts.findOne({
-      cartUser: toObjectId(userId),
-      cartState: CART_STATE.ACTIVE,
+  static async addProductToCart({
+    userId,
+    product,
+  }: AddProductToCartInput): Promise<CartLean> {
+    let ownedCart = await Carts.findOne({
+      user: toObjectId(userId),
+      state: CART_STATE.ACTIVE,
     });
 
-    if (!ownedActiveCart) {
-      ownedActiveCart = await this.createCart({
+    if (!ownedCart) {
+      ownedCart = await this.createCart({
         userId,
       });
     }
 
-    if (ownedActiveCart.items.length === 0) {
-      ownedActiveCart.items.push(product);
-      return await ownedActiveCart.save();
+    const existingItem = ownedCart.items.find(
+      (item) => item.product.toString() === product.productId,
+    );
+    if (existingItem) {
+      existingItem.quantity = product.quantity;
+    } else {
+      ownedCart.items.push({
+        ...product,
+        product: toObjectId(product.productId),
+        shop: toObjectId(product.shopId),
+      });
     }
 
-    return await this.updateCartItemQuantity({
-      userId,
-      product,
-    });
+    return (await ownedCart.save()).toObject();
   }
 
   /**
@@ -102,5 +112,23 @@ export class CartService {
         new: true,
       },
     ).lean();
+  }
+
+  /**
+   * Find current owned active cart.
+   */
+  static async findCart({ userId }: FindCartInput): Promise<CartLean> {
+    const ownedCart = await Carts.findOne({
+      user: toObjectId(userId),
+      state: CART_STATE.ACTIVE,
+    }).lean();
+
+    if (!ownedCart) {
+      throw new NotFoundAppError({
+        code: ResCode.CART_NOT_FOUND,
+      });
+    }
+
+    return ownedCart;
   }
 }

@@ -19,3 +19,7 @@ export type UpdateCartItemQuantityInput = {
   userId: string;
   product: CartItem;
 };
+
+export type FindCartInput = {
+  userId: string;
+};

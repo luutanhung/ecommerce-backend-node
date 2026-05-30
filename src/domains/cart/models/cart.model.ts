@@ -53,11 +53,6 @@ export const CartSchema = new Schema(
       required: true,
       default: [],
     },
-    itemCount: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
     state: {
       type: String,
       enum: Object.values(CART_STATE),
