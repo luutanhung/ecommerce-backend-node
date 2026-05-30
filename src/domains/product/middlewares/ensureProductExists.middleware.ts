@@ -1,28 +1,26 @@
 import type { NextFunction, Request, Response } from "express";
 
-import type { ProductFilterQuery } from "../types/product.repository.type.js";
-
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
-import type { AuthPayload } from "../../access/types/access.type.js";
-import { ProductRepository } from "../product.repository.js";
-import type { ProductParams } from "../validations/product.validations.js";
+import type { AccessTokenPayload } from "../../access/types/access.types.js";
+import { ProductRepository } from "../repositories/product.repository.js";
+import type { ProductFilterQuery } from "../repositories/types/product.repository.type.js";
 
 /**
  * Ensure product exists.
  */
 export const ensureProductExists = asyncWrapper(
-  async (req: Request<ProductParams>, res: Response, next: NextFunction) => {
-    const productId = req.params.productId;
+  async (req: Request, res: Response, next: NextFunction) => {
+    const productId = req.params.productId || req.body.productId;
 
     const query: ProductFilterQuery = {
-      productShop: toObjectId((req.user as AuthPayload).userId),
+      productShop: toObjectId((req.user as AccessTokenPayload).uid),
       _id: toObjectId(productId),
     };
 
-    const searchedProduct = await ProductRepository.findProduct({ query });
+    const searchedProduct = await ProductRepository.findOne({ query });
 
     if (!searchedProduct) {
       throw new NotFoundAppError({
