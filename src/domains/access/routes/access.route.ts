@@ -4,6 +4,8 @@ import { accessController } from "../controllers/access.controller.js";
 
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../../../shared/middlewares/validateRequest.middleware.js";
+import { rateLimitMiddleware } from "../../../shared/rateLimit/rateLimit.middleware.js";
+import { RATE_LIMIT_POLICY_NAME } from "../../../shared/rateLimit/rateLimite.policy.js";
 import {
   authenticateAccessToken,
   authenticateClientId,
@@ -14,7 +16,10 @@ import {
   RegisterRequestSchema,
   VerifyEmailRequestBodySchema,
 } from "../validations/access.validations.js";
-import { UserParamsSchema } from "../validations/user.validations.js";
+import {
+  type UserParams,
+  UserParamsSchema,
+} from "../validations/user.validations.js";
 
 const router = Router();
 
@@ -48,10 +53,16 @@ router.post(
  */
 router.post(
   "/access/:userId/send-verification-email",
+
   validateRequest({
     params: UserParamsSchema,
   }),
   ensureUserRegistered,
+
+  rateLimitMiddleware(
+    RATE_LIMIT_POLICY_NAME.ACCESS_SEND_EMAIL_VERIFICATION,
+    (req) => (req.params as UserParams).userId,
+  ),
   asyncWrapper(accessController.sendVerificationEmail),
 );
 

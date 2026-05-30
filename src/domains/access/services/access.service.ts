@@ -1,11 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import {
-  EMAIL_VERIFICATION_COOLDOWN_SECONDS,
-  EMAIL_VERIFICATION_MAX_REQUESTS,
-  EMAIL_VERIFICATION_WINDOW_SECONDS,
-} from "../constants/access.constants.js";
 import { USER_ROLE } from "../constants/user.constants.js";
 
 import { Sessions } from "../models/session.model.js";
@@ -34,9 +29,7 @@ import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { UnauthorizedAppError } from "../../../core/error/unauthorizedAppError.js";
 import { emailQueue } from "../../../queues/email/email.queue.js";
 import { EMAIL_JOB_NAME } from "../../../shared/constants/queue.constants.js";
-import { RATE_LIMIT_KEY } from "../../../shared/constants/rateLimit.constants.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import { RateLimitService } from "../../../shared/services/rateLimit.service.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import {
   generateAccessToken,
@@ -89,14 +82,6 @@ export class AccessService {
   static async queueVerificationEmail({
     userId,
   }: QueueVerificationEmailInput): Promise<void> {
-    await RateLimitService.enforce({
-      cooldownKey: `${RATE_LIMIT_KEY.ACCESS_EMAIL_VERIFICATION_COOLDOWN}:${userId}`,
-      cooldownSeconds: EMAIL_VERIFICATION_COOLDOWN_SECONDS,
-      limitKey: `${RATE_LIMIT_KEY.ACCESS_EMAIL_VERIFICATION_LIMIT}:${userId}`,
-      maxRequests: EMAIL_VERIFICATION_MAX_REQUESTS,
-      windowSeconds: EMAIL_VERIFICATION_WINDOW_SECONDS,
-    });
-
     const foundUser = await Users.findOne({
       _id: toObjectId(userId),
     }).lean();

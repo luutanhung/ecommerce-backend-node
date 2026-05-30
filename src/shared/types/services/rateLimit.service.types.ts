@@ -1,7 +1,7 @@
 export type RateLimitInput = {
-  cooldownKey: string;
+  cooldownKey?: string;
   cooldownSeconds?: number;
-  limitKey: string;
+  limitKey?: string;
   maxRequests?: number;
   windowSeconds?: number;
 };

@@ -3,7 +3,28 @@ import type { RateLimitInput } from "../types/services/rateLimit.service.types.j
 import { TooManyRequestsAppError } from "../../core/error/tooManyRequestAppError.js";
 import { redis } from "../../libs/redis/index.js";
 
+import { RATE_LIMIT_POLICY } from "./rateLimite.policy.js";
+
 export class RateLimitService {
+  static async enforcePolicy(
+    policyName: keyof typeof RATE_LIMIT_POLICY,
+    identifier: string,
+  ) {
+    const policy = RATE_LIMIT_POLICY[policyName];
+
+    return this.enforce({
+      cooldownKey: `rate-limit:${policyName}:cooldown:${identifier}`,
+      cooldownSeconds: policy.cooldownSeconds,
+
+      limitKey: policy.maxRequests
+        ? `rate-limit:${policyName}:limit:${identifier}`
+        : undefined,
+
+      maxRequests: policy.maxRequests,
+      windowSeconds: policy.windowSeconds,
+    });
+  }
+
   static async enforce({
     cooldownKey,
     cooldownSeconds = 60,
