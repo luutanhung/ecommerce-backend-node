@@ -6,7 +6,7 @@ import { buildVerifyEmailTemplate } from "../../domains/access/templates/access.
 import { NOTIFICATION_STATUS } from "../../domains/notifications/notification.constants.js";
 import { NotificationService } from "../../domains/notifications/notification.service.js";
 import { MailService } from "../../libs/mail/mail.service.js";
-import { redisConnection } from "../../libs/redis/index.js";
+import { bullRedis } from "../../libs/redis/index.js";
 import { EMAIL_JOB_NAME } from "../../shared/constants/queue.constants.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { generateEmailVerificationToken } from "../../shared/utils/token.utils.js";
@@ -71,7 +71,7 @@ export const emailWorker = new Worker(
     }
   },
   {
-    connection: redisConnection,
+    connection: bullRedis,
     concurrency: 10,
   },
 );
