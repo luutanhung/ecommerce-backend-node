@@ -45,8 +45,15 @@ export class ShopController {
    * Send verification email.
    */
   async sendVerificationEmail(req: Request, res: Response) {
-    const currentUser = req.currentUser as UserDocument;
     const ownedShop = req.ownedShop as ShopLean;
+
+    if (ownedShop.isVerified) {
+      throw new BadRequestAppError({
+        code: ResCode.SHOP_ALREADY_VERIFIED,
+      });
+    }
+
+    const currentUser = req.currentUser as UserDocument;
 
     await ShopService.queueShopVerificationEmail({
       userInfo: {
