@@ -1,4 +1,4 @@
-import type { CheckoutProductInput } from "../../domains/order/services/types/checkout.service.types.js";
+import type { CheckoutProductInput } from "../../domains/order/types/checkout.service.types.js";
 import type { ProductType } from "../../domains/product/types/product.type.js";
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
 

@@ -2,18 +2,18 @@ import type {
   CheckoutOrderInput,
   CheckoutSummary,
   OrderItem,
-} from "./types/checkout.service.types.js";
+} from "./types/order.service.types.js";
 
-import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
-import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
-import { DiscountService } from "../../../pricing/services/discount.service.js";
-import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
-import { CART_STATE } from "../../cart/cart.contants.js";
-import { Carts } from "../../cart/models/cart.model.js";
-import { Products } from "../../product/models/product.model.js";
+import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
+import { DiscountService } from "../../pricing/services/discount.service.js";
+import { ResCode } from "../../shared/constants/resCode.constants.js";
+import { toObjectId } from "../../shared/utils/mongoose.utils.js";
+import { CART_STATE } from "../cart/cart.contants.js";
+import { Carts } from "../cart/models/cart.model.js";
+import { Products } from "../product/models/product.model.js";
 
-export class CheckoutService {
+export class OrderService {
   /**
    * Preview order before making a purchase.
    */
