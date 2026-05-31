@@ -35,7 +35,7 @@ export const ProductDescriptionSchema = z.string().trim().max(5000, {
   error: ResCode.PRODUCT_DESCRIPTION_EXCEEDED_CHARACTER_LIMIT,
 });
 
-export const ProductPrice = createPositiveNumberSchema({
+export const ProductPriceSchema = createPositiveNumberSchema({
   invalidMessage: ResCode.PRODUCT_PRICE_INVALID,
   positiveMessage: ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
 });
@@ -61,7 +61,7 @@ export const BaseProductSchema = z.object({
 
   description: ProductDescriptionSchema.optional(),
 
-  price: ProductPrice,
+  price: ProductPriceSchema,
 
   quantity: ProductQuantitySchema,
 

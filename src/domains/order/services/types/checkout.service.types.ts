@@ -15,7 +15,7 @@ export type CheckoutProductInput = {
 
 export type ShopOrderInput = {
   shopId: string;
-  discountCodes: string[];
+  discountCode: string;
   items: CheckoutProductInput[];
 };
 

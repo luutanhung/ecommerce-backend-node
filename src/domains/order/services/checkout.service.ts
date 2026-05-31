@@ -5,6 +5,7 @@ import type {
 } from "./types/checkout.service.types.js";
 
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
+import { DiscountService } from "../../../pricing/services/discount.service.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { CART_STATE } from "../../cart/cart.contants.js";
@@ -33,7 +34,7 @@ export class CheckoutService {
     }
 
     let merchandiseSubtotal: number = 0;
-    // eslint-disable-next-line
+     
     let discountSubtotal: number = 0;
     // eslint-disable-next-line
     let shippingSubtotal: number = 0;
@@ -55,7 +56,11 @@ export class CheckoutService {
           products.map((product) => [product._id.toString(), product]),
         );
 
-        for (const item of items) {
+        const eligibleItems = items.filter((item) =>
+          productMap.has(item.productId),
+        );
+
+        for (const item of eligibleItems) {
           const { productId, quantity } = item;
 
           const product = productMap.get(productId);
@@ -80,6 +85,14 @@ export class CheckoutService {
           shopId,
           items: orderItems,
         });
+
+        const discountResult = await DiscountService.applyDiscountToProducts({
+          shopId: shopOrder.shopId,
+          code: shopOrder.discountCode,
+          products: eligibleItems,
+        });
+
+        discountSubtotal += discountResult.discountAmount;
       }
     }
 

@@ -8,7 +8,7 @@ import {
 import {
   ProductIdSchema,
   ProductNameSchema,
-  ProductPrice,
+  ProductPriceSchema,
 } from "../../product/validations/product.validations.js";
 import { ShopIdSchema } from "../../shop/validations/shop.validations.js";
 
@@ -28,7 +28,7 @@ export const CartItemSchema = z.object({
   shopId: ShopIdSchema,
   quantity: CartItemQuantity,
   name: ProductNameSchema.optional(),
-  price: ProductPrice.optional(),
+  price: ProductPriceSchema.optional(),
 });
 export type CartItem = z.infer<typeof CartItemSchema>;
 
