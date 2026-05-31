@@ -13,12 +13,12 @@ export const UserIdSchema = createObjectIdSchema({
 
 export const UserNameSchema = createRequiredStringSchema({
   requiredMessage: ResCode.USER_NAME_REQUIRED,
-  invalidTypeMessage: ResCode.USER_NAME_INVALID_TYPE,
+  invalidMessage: ResCode.USER_NAME_INVALID_TYPE,
 });
 
 export const UserPasswordSchema = createRequiredStringSchema({
   requiredMessage: ResCode.PASSWORD_REQUIRED,
-  invalidTypeMessage: ResCode.PASSWORD_INVALID_TYPE,
+  invalidMessage: ResCode.PASSWORD_INVALID,
 })
   .min(8, { message: ResCode.PASSWORD_TOO_SHORT })
   .regex(/[A-Z]/, {

@@ -1,13 +1,20 @@
-import _ from "lodash";
 import z from "zod";
 
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import { EmailSchema } from "../../../shared/validations/common.validations.js";
+import {
+  EmailSchema,
+  createJwtTokenSchema,
+} from "../../../shared/validations/common.validations.js";
 
-import { UserPasswordSchema } from "./user.validations.js";
+import { UserIdSchema, UserPasswordSchema } from "./user.validations.js";
 
 const DeviceIdSchema = z.uuid({
   error: ResCode.ACCESS_DEVICE_ID_INVALID,
+});
+
+export const RefreshTokenSchema = createJwtTokenSchema({
+  requiredMessage: ResCode.REFRESH_TOKEN_REQUIRED,
+  invalidMessage: ResCode.REFRESH_TOKEN_INVALID,
 });
 
 export const RegisterRequestSchema = z.object({
@@ -16,14 +23,17 @@ export const RegisterRequestSchema = z.object({
 });
 
 export const SendVerificationEmailRequestBodySchema = z.object({
-  uid: z.string(),
+  uid: UserIdSchema,
 });
 export type SendVerificationEmailRequestBody = z.infer<
   typeof SendVerificationEmailRequestBodySchema
 >;
 
 export const VerifyEmailRequestBodySchema = z.object({
-  token: z.string().min(1),
+  token: createJwtTokenSchema({
+    requiredMessage: ResCode.ACCESS_VERIFY_EMAIL_TOKEN_REQUIRED,
+    invalidMessage: ResCode.ACCESS_VERIFY_EMAIL_TOKEN_INVALID,
+  }),
 });
 export type VerifyEmailRequestBody = z.infer<
   typeof VerifyEmailRequestBodySchema
@@ -40,22 +50,7 @@ export const LoginRequestSchema = z.object({
 export type LoginRequest = z.infer<typeof LoginRequestSchema>;
 
 export const RefreshTokenRequestSchema = z.object({
-  refreshToken: z
-    .string({
-      error: (issue) => {
-        const refreshToken = issue.input;
-
-        if (_.isUndefined(refreshToken)) {
-          return ResCode.REFRESH_TOKEN_REQUIRED;
-        }
-
-        if (!_.isString(refreshToken)) {
-          return ResCode.REFRESH_TOKEN_INVALID;
-        }
-      },
-    })
-    .min(1)
-    .trim(),
+  refreshToken: RefreshTokenSchema,
 });
 
 export type RefreshTokenRequest = z.infer<typeof RefreshTokenRequestSchema>;

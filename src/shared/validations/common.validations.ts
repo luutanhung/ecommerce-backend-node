@@ -5,6 +5,7 @@ import z from "zod";
 import { ResCode } from "../constants/resCode.constants.js";
 
 import type {
+  CreateJwtTokenSchemaInput,
   CreateObjectIdSchemaInput,
   CreatePositiveNumberSchemaInput,
   CreateRequiredStringSchemaInput,
@@ -38,7 +39,7 @@ export const createObjectIdSchema = ({
 
 export const createRequiredStringSchema = ({
   requiredMessage,
-  invalidTypeMessage,
+  invalidMessage,
   trim = true,
 }: CreateRequiredStringSchemaInput) => {
   let schema = z.string({
@@ -50,7 +51,7 @@ export const createRequiredStringSchema = ({
       }
 
       if (!_.isString(value)) {
-        return invalidTypeMessage;
+        return invalidMessage;
       }
     },
   });
@@ -70,16 +71,31 @@ export const EmailSchema = z.email({
  * Create schema for positive number.
  */
 export const createPositiveNumberSchema = ({
-  invalidTypeMessage,
+  invalidMessage,
   positiveMessage,
 }: CreatePositiveNumberSchemaInput) => {
   return z
     .number({
-      error: invalidTypeMessage,
+      error: invalidMessage,
     })
     .positive({
       error: positiveMessage,
     });
+};
+
+export const createJwtTokenSchema = ({
+  requiredMessage,
+  invalidMessage,
+}: CreateJwtTokenSchemaInput) => {
+  return (
+    createRequiredStringSchema({
+      requiredMessage,
+      invalidMessage,
+    }).refine((token) => token.split(".").length === 3),
+    {
+      message: invalidMessage,
+    }
+  );
 };
 
 export const SearchKeywordSchema = z.object({

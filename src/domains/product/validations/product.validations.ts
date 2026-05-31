@@ -1,4 +1,3 @@
-import _ from "lodash";
 import z from "zod";
 
 import { ProductType } from "../constants/product.constants.js";
@@ -9,6 +8,7 @@ import {
   SortOrderSchema,
   createObjectIdSchema,
   createPositiveNumberSchema,
+  createRequiredStringSchema,
 } from "../../../shared/validations/common.validations.js";
 import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
 
@@ -17,46 +17,24 @@ export const ProductIdSchema = createObjectIdSchema({
   invalidMessage: ResCode.PRODUCT_ID_INVALID,
 });
 
+export const ProductNameSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.PRODUCT_NAME_REQUIRED,
+  invalidMessage: ResCode.PRODUCT_NAME_INVALID,
+})
+  .min(1)
+  .max(150);
+
 export const BaseProductSchema = z.object({
-  name: z
-    .string({
-      error: (issue) => {
-        const value = issue.input;
+  name: ProductNameSchema,
 
-        if (_.isUndefined(value)) {
-          return ResCode.PRODUCT_NAME_REQUIRED;
-        }
-
-        if (!_.isString(value)) {
-          return ResCode.PRODUCT_NAME_INVALID_TYPE;
-        }
-      },
-    })
-    .trim()
-    .min(1)
-    .max(150),
-
-  thumb: z
-    .string({
-      error: (issue) => {
-        const value = issue.input;
-
-        if (_.isUndefined(value)) {
-          return ResCode.PRODUCT_THUMB_REQUIRED;
-        }
-
-        if (!_.isString(value)) {
-          return ResCode.PRODUCT_THUMB_INVALID_TYPE;
-        }
-      },
-    })
-    .url()
-    .min(1),
+  thumb: z.url({
+    error: ResCode.PRODUCT_THUMB_INVALID,
+  }),
 
   description: z.string().trim().max(5000).optional(),
 
   price: createPositiveNumberSchema({
-    invalidTypeMessage: ResCode.PRODUCT_PRICE_INVALID_TYPE,
+    invalidMessage: ResCode.PRODUCT_PRICE_INVALID,
     positiveMessage: ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
   }),
 

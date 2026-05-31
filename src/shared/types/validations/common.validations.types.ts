@@ -4,12 +4,17 @@ export type CreateObjectIdSchemaInput = {
 };
 
 export type CreatePositiveNumberSchemaInput = {
-  invalidTypeMessage: string;
+  invalidMessage: string;
   positiveMessage: string;
 };
 
 export type CreateRequiredStringSchemaInput = {
   requiredMessage: string;
-  invalidTypeMessage: string;
+  invalidMessage: string;
   trim?: boolean;
+};
+
+export type CreateJwtTokenSchemaInput = {
+  requiredMessage: string;
+  invalidMessage: string;
 };
