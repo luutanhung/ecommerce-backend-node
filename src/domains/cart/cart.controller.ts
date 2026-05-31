@@ -7,7 +7,7 @@ import type { AccessTokenPayload } from "../access/types/access.types.js";
 
 import type {
   AddProductToCartRequestBody,
-  RemoveProductFromCartRequestBody,
+  RemoveCartItemFromCartRequestBody,
 } from "./validations/cart.validations.js";
 
 import { sanitizeCart } from "./cart.sanitizer.js";
@@ -36,12 +36,12 @@ export class CartController {
   }
 
   /**
-   * Remove a single product from cart.
+   * Remove a single cart item from cart.
    */
-  async removeProductFromCart(req: Request, res: Response) {
-    const updatedCart = await CartService.removeProductFromCart({
+  async removeCartItemFromCart(req: Request, res: Response) {
+    const updatedCart = await CartService.removeCartItemFromCart({
       userId: (req.auth as AccessTokenPayload).uid,
-      productId: (req.body as RemoveProductFromCartRequestBody).productId,
+      productId: (req.body as RemoveCartItemFromCartRequestBody).productId,
     });
 
     new OKResponse({

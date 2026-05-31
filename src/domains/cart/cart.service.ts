@@ -4,7 +4,7 @@ import type {
   AddProductToCartInput,
   CreateCartInput,
   FindCartInput,
-  RemoveProductFromCartInput,
+  RemoveCartItemFromCartInput,
   UpdateCartItemQuantityInput,
 } from "./types/cart.service.types.js";
 import type { CartDocument, CartLean } from "./types/cart.types.js";
@@ -116,12 +116,12 @@ export class CartService {
   }
 
   /**
-   * Remove a single product from cart.
+   * Remove a single cart item from cart.
    */
-  static async removeProductFromCart({
+  static async removeCartItemFromCart({
     userId,
     productId,
-  }: RemoveProductFromCartInput): Promise<CartLean> {
+  }: RemoveCartItemFromCartInput): Promise<CartLean> {
     const updatedCart = await Carts.findOneAndUpdate(
       { user: toObjectId(userId), state: CART_STATE.ACTIVE },
       {

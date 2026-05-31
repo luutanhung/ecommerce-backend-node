@@ -6,7 +6,7 @@ import { authenticateAccessToken } from "../access/middlewares/access.middleware
 
 import {
   AddProductToCartRequestBodySchema,
-  RemoveProductFromCartRequestBodySchema,
+  RemoveCartItemFromCartRequestBodySchema,
 } from "./validations/cart.validations.js";
 
 import { cartController } from "./cart.controller.js";
@@ -27,14 +27,14 @@ router.post(
 );
 
 /**
- * Remove a single product from cart.
+ * Remove a single cart item from cart.
  */
 router.post(
-  "/carts/remove-product",
+  "/carts/remove-item",
   validateRequest({
-    body: RemoveProductFromCartRequestBodySchema,
+    body: RemoveCartItemFromCartRequestBodySchema,
   }),
-  asyncWrapper(cartController.removeProductFromCart),
+  asyncWrapper(cartController.removeCartItemFromCart),
 );
 
 /**
