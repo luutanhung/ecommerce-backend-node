@@ -20,6 +20,11 @@ export type UpdateCartItemQuantityInput = {
   product: CartItem;
 };
 
+export type RemoveProductFromCartInput = {
+  userId: string;
+  productId: string;
+};
+
 export type FindCartInput = {
   userId: string;
 };

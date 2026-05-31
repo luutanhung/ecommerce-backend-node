@@ -4,6 +4,7 @@ import type {
   AddProductToCartInput,
   CreateCartInput,
   FindCartInput,
+  RemoveProductFromCartInput,
   UpdateCartItemQuantityInput,
 } from "./types/cart.service.types.js";
 import type { CartDocument, CartLean } from "./types/cart.types.js";
@@ -112,6 +113,37 @@ export class CartService {
         new: true,
       },
     ).lean();
+  }
+
+  /**
+   * Remove a single product from cart.
+   */
+  static async removeProductFromCart({
+    userId,
+    productId,
+  }: RemoveProductFromCartInput): Promise<CartLean> {
+    const updatedCart = await Carts.findOneAndUpdate(
+      { user: toObjectId(userId), state: CART_STATE.ACTIVE },
+      {
+        $pull: {
+          items: {
+            product: toObjectId(productId),
+          },
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    ).lean();
+
+    if (!updatedCart) {
+      throw new NotFoundAppError({
+        code: ResCode.CART_NOT_FOUND,
+      });
+    }
+
+    return updatedCart;
   }
 
   /**

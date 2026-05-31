@@ -14,3 +14,10 @@ export const AddProductToCartRequestBodySchema = CartItemSchema;
 export type AddProductToCartRequestBody = z.infer<
   typeof AddProductToCartRequestBodySchema
 >;
+
+export const RemoveProductFromCartRequestBodySchema = z.object({
+  productId: z.string().min(1),
+});
+export type RemoveProductFromCartRequestBody = z.infer<
+  typeof RemoveProductFromCartRequestBodySchema
+>;

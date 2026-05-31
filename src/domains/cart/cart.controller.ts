@@ -5,7 +5,10 @@ import { OKResponse } from "../../core/response/ok.response.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { AccessTokenPayload } from "../access/types/access.types.js";
 
-import type { AddProductToCartRequestBody } from "./validations/cart.validations.js";
+import type {
+  AddProductToCartRequestBody,
+  RemoveProductFromCartRequestBody,
+} from "./validations/cart.validations.js";
 
 import { sanitizeCart } from "./cart.sanitizer.js";
 import { CartService } from "./cart.service.js";
@@ -28,6 +31,21 @@ export class CartController {
 
     new OKResponse({
       code: ResCode.CART_ADD_PRODUCT_TO_CART_SUCCEEDED,
+      data: sanitizeCart(updatedCart),
+    }).send(req, res);
+  }
+
+  /**
+   * Remove a single product from cart.
+   */
+  async removeProductFromCart(req: Request, res: Response) {
+    const updatedCart = await CartService.removeProductFromCart({
+      userId: (req.auth as AccessTokenPayload).uid,
+      productId: (req.body as RemoveProductFromCartRequestBody).productId,
+    });
+
+    new OKResponse({
+      code: ResCode.CART_REMOVE_PRODUCT_FROM_CART_SUCCEEDED,
       data: sanitizeCart(updatedCart),
     }).send(req, res);
   }
