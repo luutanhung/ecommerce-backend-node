@@ -4,6 +4,7 @@ import type {
   OrderItem,
 } from "./types/checkout.service.types.js";
 
+import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { DiscountService } from "../../../pricing/services/discount.service.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
@@ -42,6 +43,7 @@ export class CheckoutService {
 
     for (const shopOrder of shopOrders) {
       const { shopId, items } = shopOrder;
+
       const productIds = items.map((item) => toObjectId(item.productId));
       const products = await Products.find({
         _id: {
@@ -49,51 +51,56 @@ export class CheckoutService {
         },
       }).lean();
 
-      if (products.length > 0) {
-        const orderItems: OrderItem[] = [];
-
-        const productMap = new Map(
-          products.map((product) => [product._id.toString(), product]),
-        );
-
-        const eligibleItems = items.filter((item) =>
-          productMap.has(item.productId),
-        );
-
-        for (const item of eligibleItems) {
-          const { productId, quantity } = item;
-
-          const product = productMap.get(productId);
-
-          if (!product) continue;
-
-          const orderItemSubTotal = quantity * product.price;
-
-          merchandiseSubtotal += orderItemSubTotal;
-
-          orderItems.push({
-            productId: item.productId,
-            name: product.name,
-            thumb: product.thumb,
-            price: product.price,
-            quantity,
-            subtotal: orderItemSubTotal,
-          });
-        }
-
-        checkoutSummaryShopOrders.push({
-          shopId,
-          items: orderItems,
+      // CRITICAL: throw error if not found any valid products.
+      if (products.length === 0) {
+        throw new BadRequestAppError({
+          code: ResCode.PRODUCT_NOT_FOUND,
         });
-
-        const discountResult = await DiscountService.applyDiscountToProducts({
-          shopId: shopOrder.shopId,
-          code: shopOrder.discountCode,
-          products: eligibleItems,
-        });
-
-        discountSubtotal += discountResult.discountAmount;
       }
+
+      const orderItems: OrderItem[] = [];
+
+      const productMap = new Map(
+        products.map((product) => [product._id.toString(), product]),
+      );
+
+      const eligibleItems = items.filter((item) =>
+        productMap.has(item.productId),
+      );
+
+      for (const item of eligibleItems) {
+        const { productId, quantity } = item;
+
+        const product = productMap.get(productId);
+
+        if (!product) continue;
+
+        const orderItemSubTotal = quantity * product.price;
+
+        merchandiseSubtotal += orderItemSubTotal;
+
+        orderItems.push({
+          productId: item.productId,
+          name: product.name,
+          thumb: product.thumb,
+          price: product.price,
+          quantity,
+          subtotal: orderItemSubTotal,
+        });
+      }
+
+      checkoutSummaryShopOrders.push({
+        shopId,
+        items: orderItems,
+      });
+
+      const discountResult = await DiscountService.applyDiscountToProducts({
+        shopId: shopOrder.shopId,
+        code: shopOrder.discountCode,
+        products: eligibleItems,
+      });
+
+      discountSubtotal += discountResult.discountAmount;
     }
 
     const orderTotal =
