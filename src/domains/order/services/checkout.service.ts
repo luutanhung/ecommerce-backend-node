@@ -1,13 +1,25 @@
-import type { CheckoutOrderInput } from "./types/checkout.service.types.js";
+import type {
+  CheckoutOrderInput,
+  CheckoutSummary,
+  OrderItem,
+} from "./types/checkout.service.types.js";
 
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { CART_STATE } from "../../cart/cart.contants.js";
 import { Carts } from "../../cart/models/cart.model.js";
+import { Products } from "../../product/models/product.model.js";
 
 export class CheckoutService {
-  static async checkoutOrder({ userId, cartId }: CheckoutOrderInput) {
+  /**
+   * Preview order before making a purchase.
+   */
+  static async checkoutOrder({
+    userId,
+    cartId,
+    shopOrders,
+  }: CheckoutOrderInput) {
     const cart = await Carts.findOne({
       _id: toObjectId(cartId),
       user: toObjectId(userId),
@@ -20,6 +32,68 @@ export class CheckoutService {
       });
     }
 
-    return cart;
+    let merchandiseSubtotal: number = 0;
+    // eslint-disable-next-line
+    let discountSubtotal: number = 0;
+    // eslint-disable-next-line
+    let shippingSubtotal: number = 0;
+    const checkoutSummaryShopOrders = [] as CheckoutSummary["shopOrders"];
+
+    for (const shopOrder of shopOrders) {
+      const { shopId, items } = shopOrder;
+      const productIds = items.map((item) => toObjectId(item.productId));
+      const products = await Products.find({
+        _id: {
+          $in: productIds,
+        },
+      }).lean();
+
+      if (products.length > 0) {
+        const orderItems: OrderItem[] = [];
+
+        const productMap = new Map(
+          products.map((product) => [product._id.toString(), product]),
+        );
+
+        for (const item of items) {
+          const { productId, quantity } = item;
+
+          const product = productMap.get(productId);
+
+          if (!product) continue;
+
+          const orderItemSubTotal = quantity * product.price;
+
+          merchandiseSubtotal += orderItemSubTotal;
+
+          orderItems.push({
+            productId: item.productId,
+            name: product.name,
+            thumb: product.thumb,
+            price: product.price,
+            quantity,
+            subtotal: orderItemSubTotal,
+          });
+        }
+
+        checkoutSummaryShopOrders.push({
+          shopId,
+          items: orderItems,
+        });
+      }
+    }
+
+    const orderTotal =
+      merchandiseSubtotal - discountSubtotal + shippingSubtotal;
+
+    const checkoutSummary: CheckoutSummary = {
+      merchandiseSubtotal,
+      discountSubtotal,
+      shippingSubtotal,
+      orderTotal,
+      shopOrders: checkoutSummaryShopOrders,
+    };
+
+    return checkoutSummary;
   }
 }

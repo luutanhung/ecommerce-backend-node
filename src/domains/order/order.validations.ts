@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { CartIdSchema } from "../cart/validations/cart.validations.js";
 import {
   ProductIdSchema,
@@ -15,7 +16,9 @@ export const OrderItemSchema = z.object({
 export const ShopOrderSchema = z.object({
   shopId: ShopIdSchema,
   discountCodes: z.array(z.string()),
-  items: z.array(OrderItemSchema),
+  items: z.array(OrderItemSchema).length(1, {
+    error: ResCode.ORDER_ITEM_LIST_MUST_BE_NON_EMPTY,
+  }),
 });
 
 export const CheckoutOrderRequestBodySchema = z.object({
