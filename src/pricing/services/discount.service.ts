@@ -176,8 +176,8 @@ export class DiscountService {
   }: ApplyDiscountToProductsInput) {
     const discount = await DiscountRepository.findOne({
       query: {
-        shopId: toObjectId(shopId),
-        discountCode: code,
+        shop: toObjectId(shopId),
+        code,
       },
     });
 

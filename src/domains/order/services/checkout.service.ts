@@ -34,7 +34,7 @@ export class CheckoutService {
     }
 
     let merchandiseSubtotal: number = 0;
-     
+
     let discountSubtotal: number = 0;
     // eslint-disable-next-line
     let shippingSubtotal: number = 0;

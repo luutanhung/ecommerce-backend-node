@@ -6,13 +6,28 @@ import {
 } from "../constants/discount.constants.js";
 
 import { ProductType } from "../../domains/product/constants/product.constants.js";
+import { ResCode } from "../../shared/constants/resCode.constants.js";
+import {
+  createObjectIdSchema,
+  createRequiredStringSchema,
+} from "../../shared/validations/common.validations.js";
 import { PaginationQuerySchema } from "../../shared/validations/pagination.validations.js";
 
-export const DiscountCodeSchema = z
-  .string()
-  .trim()
-  .min(3)
-  .max(50)
+export const DiscountIdSchema = createObjectIdSchema({
+  requiredMessage: ResCode.DISCOUNT_ID_REQUIRED,
+  invalidMessage: ResCode.DISCOUNT_CODE_INVALID,
+});
+
+export const DiscountCodeSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.DISCOUNT_CODE_REQUIRED,
+  invalidMessage: ResCode.DISCOUNT_CODE_INVALID,
+})
+  .min(3, {
+    error: ResCode.DISCOUNT_CODE_INVALID,
+  })
+  .max(50, {
+    error: ResCode.DISCOUNT_CODE_INVALID,
+  })
   .transform((v) => v.toUpperCase());
 
 export const BaseDiscountSchema = z
