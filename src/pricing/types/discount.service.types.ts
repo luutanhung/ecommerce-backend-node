@@ -1,3 +1,4 @@
+import type { CheckoutProductInput } from "../../domains/order/services/types/checkout.service.types.js";
 import type { ProductType } from "../../domains/product/types/product.type.js";
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
 
@@ -14,7 +15,7 @@ export type CreateShopDiscountInput = {
   endsAt: Date;
   usageLimit: number;
   usageLimitPerUser: number;
-  minOrderValue?: number;
+  minOrderTotal?: number;
   appliesTo?: DiscountAppliesTo;
   applicableProducts?: string[];
   applicableCategories?: ProductType[];
@@ -48,4 +49,5 @@ export type FindDiscountsByShopInput = PaginationQuery & {
 export type ApplyDiscountToProductsInput = {
   shopId: string;
   code: string;
+  products: CheckoutProductInput[];
 };

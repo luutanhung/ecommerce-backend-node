@@ -10,7 +10,6 @@ import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
 import { sanitizeDiscount } from "../sanitizers/discount.sanitizer.js";
 import type {
-  ApplyDiscountToProductsRequest,
   CreateShopDiscountRequest,
   FindApplicableProductsByDiscountCode,
   FindShopDiscountByDiscountCodeRequest,
@@ -29,22 +28,6 @@ export class DiscountController {
     new CreatedResponse({
       code: ResCode.DISCOUNT_CREATE_SUCCESS,
       data: sanitizeDiscount(createdDiscount),
-    }).send(req, res);
-  }
-
-  /**
-   * Apply discount to products.
-   */
-  async applyDiscountToProducts(req: Request, res: Response): Promise<void> {
-    const { shopId } = req.validated?.params as ShopParams;
-    const { code } = req.validated?.body as ApplyDiscountToProductsRequest;
-
-    new OKResponse({
-      code: ResCode.DISCOUNT_APPLY_DISCOUNT_TO_PRODUCTS,
-      data: await DiscountService.applyDiscountToProducts({
-        shopId,
-        code,
-      }),
     }).send(req, res);
   }
 

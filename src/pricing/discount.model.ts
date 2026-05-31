@@ -17,82 +17,78 @@ import type { Discount } from "./types/discount.types.js";
 
 export const DiscountSchema = new Schema(
   {
-    discountShop: {
+    shop: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.SHOP,
       required: true,
     },
-    discountName: {
+    name: {
       type: String,
       required: true,
     },
-    discountDescription: {
+    description: {
       type: String,
       required: true,
     },
     /**
      * How discount is calculated.
      */
-    discountType: {
+    type: {
       type: String,
       enum: Object.values(DISCOUNT_TYPE),
       required: true,
       default: DISCOUNT_TYPE.FIXED_AMOUNT,
     },
-    discountConfig: {
+    config: {
       type: Schema.Types.Mixed,
       required: true,
     },
-    discountCode: {
+    code: {
       type: String,
       required: true,
       unique: true,
     },
-    discountStartsAt: {
+    startsAt: {
       type: Date,
       required: true,
     },
-    discountEndsAt: {
+    endsAt: {
       type: Date,
       required: true,
     },
     /**
      * Maximum allowed usages.
      */
-    discountUsageLimit: {
+    usageLimit: {
       type: Number,
       required: true,
     },
-    discountUsageLimitPerUser: {
+    usageLimitPerUser: {
       // Usage limit per user for this discount.
       type: Number,
       required: true,
     },
-    discountUsersUsed: {
-      type: Array,
-      default: [],
-    },
-    discountUsedCount: {
+    usedCount: {
       type: Number,
       default: 0,
     },
-    discountIsActive: {
+    isActive: {
       type: Boolean,
       default: true,
     },
-    discountMinOrderValue: {
+    minOrderTotal: {
       type: Number,
-      default: 0,
+      default: null,
     },
     /**
      * List of products to apply this discount.
      */
-    discountAppliesTo: {
+    appliesTo: {
       type: String,
       enum: Object.values(DISCOUNT_APPLIES_TO),
       default: DISCOUNT_APPLIES_TO.ALL,
     },
-    discountApplicableProducts: {
+    applicableProducts: {
       type: [
         {
           type: Schema.Types.ObjectId,
@@ -101,7 +97,7 @@ export const DiscountSchema = new Schema(
       ],
       default: [],
     },
-    discountApplicableCategories: {
+    applicableCategories: {
       type: [
         {
           type: String,

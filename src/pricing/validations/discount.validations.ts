@@ -118,13 +118,6 @@ export type FindApplicableProductsByDiscountCode = z.infer<
   typeof FindApplicableProductsByDiscountCodeRequestSchema
 >;
 
-export const ApplyDiscountToProductsRequestSchema = z.object({
-  code: DiscountCodeSchema,
-});
-export type ApplyDiscountToProductsRequest = z.infer<
-  typeof ApplyDiscountToProductsRequestSchema
->;
-
 export const FindShopDiscountByDiscountCodeRequestSchema = z.object({
   code: DiscountCodeSchema,
 });

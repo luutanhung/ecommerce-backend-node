@@ -1,7 +1,7 @@
-import _ from "lodash";
-
-import { DISCOUNT_APPLIES_TO } from "../constants/discount.constants.js";
-import { DISCOUNT_TYPE } from "../constants/discount.constants.js";
+import {
+  DISCOUNT_APPLIES_TO,
+  DISCOUNT_TYPE,
+} from "../constants/discount.constants.js";
 
 import type {
   ApplyDiscountToProductsInput,
@@ -21,6 +21,7 @@ import type {
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
+import type { CheckoutProductInput } from "../../domains/order/services/types/checkout.service.types.js";
 import { ProductRepository } from "../../domains/product/repositories/product.repository.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
@@ -42,29 +43,14 @@ export class DiscountService {
     input: CreateShopDiscountInput,
     options: TransactionOptions = {},
   ) {
-    const {
-      shopId,
-      name,
-      description,
-      type,
-      config,
-      code,
-      startsAt,
-      endsAt,
-      usageLimit,
-      usageLimitPerUser,
-      minOrderValue = 0,
-      appliesTo = DISCOUNT_APPLIES_TO.ALL,
-      applicableProducts = [],
-      applicableCategories = [],
-    } = input;
+    const { shopId, code } = input;
 
-    const foundDiscountWithCode = await Discounts.findOne({
+    const discount = await Discounts.findOne({
       discountCode: code,
       discountShop: toObjectId(shopId),
     }).lean();
 
-    if (foundDiscountWithCode && foundDiscountWithCode.discountIsActive) {
+    if (discount && discount.isActive) {
       throw new ConflictAppError({
         code: ResCode.DISCOUNT_WITH_CODE_ALREADY_EXISTS,
       });
@@ -73,20 +59,8 @@ export class DiscountService {
     const [createdShopDiscount] = await Discounts.create(
       [
         {
-          discountShop: toObjectId(shopId),
-          discountName: name,
-          discountDescription: description,
-          discountType: type,
-          discountConfig: config,
-          discountCode: code,
-          discountStartsAt: startsAt,
-          discountEndsAt: endsAt,
-          discountUsageLimit: usageLimit,
-          discountUsageLimitPerUser: usageLimitPerUser,
-          discountMinOrderValue: minOrderValue,
-          discountAppliesTo: appliesTo,
-          discountApplicableProducts: applicableProducts,
-          discountApplicableCategories: applicableCategories,
+          ...input,
+          shop: toObjectId(shopId),
         },
       ],
       {
@@ -103,97 +77,138 @@ export class DiscountService {
     return createdShopDiscount;
   }
 
+  private static validateDiscountAvailability(discount: DiscountLean) {
+    if (!discount.isActive) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_NOT_ACTIVE,
+      });
+    }
+
+    const now = Date.now();
+
+    if (now < discount.startsAt.getTime()) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_NOT_STARTED,
+      });
+    }
+
+    if (now > discount.endsAt.getTime()) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_EXPIRED,
+      });
+    }
+
+    if (discount.usedCount >= discount.usageLimit) {
+      throw new BadRequestAppError({
+        code: ResCode.DISCOUNT_LIMIT_REACHED,
+      });
+    }
+  }
+
+  private static getEligibleProducts(
+    discount: DiscountLean,
+    products: CheckoutProductInput[],
+  ) {
+    switch (discount.appliesTo) {
+      case DISCOUNT_APPLIES_TO.ALL:
+        return products;
+
+      case DISCOUNT_APPLIES_TO.PRODUCT:
+        return products.filter((product) =>
+          discount.applicableProducts.some(
+            (id) => id.toString() === product.productId,
+          ),
+        );
+
+      case DISCOUNT_APPLIES_TO.CATEGORY:
+        return products;
+
+      default:
+        throw new BadRequestAppError({
+          code: ResCode.DISCOUNT_APPLIES_TO_NOT_SUPPORTED,
+        });
+    }
+  }
+
+  private static calculateEligibleAmount(products: CheckoutProductInput[]) {
+    return products.reduce((total, product) => {
+      return total + product.price * product.quantity;
+    }, 0);
+  }
+
+  private static calculateDiscountAmount(
+    discount: DiscountLean,
+    eligibleAmount: number,
+  ) {
+    const discountType = discount.type;
+    switch (discountType) {
+      case DISCOUNT_TYPE.FIXED_AMOUNT: {
+        return (discount.config as FixedAmountDiscountConfig).amount;
+      }
+
+      case DISCOUNT_TYPE.PERCENTAGE: {
+        const { percent, maxDiscountAmount } =
+          discount.config as PercentageDiscountConfig;
+
+        let amount = (eligibleAmount * percent) / 100;
+
+        if (maxDiscountAmount && amount > maxDiscountAmount) {
+          amount = maxDiscountAmount;
+        }
+
+        return amount;
+      }
+
+      default:
+        throw new BadRequestAppError({
+          code: ResCode.DISCOUNT_TYPE_NOT_SUPPORTED,
+        });
+    }
+  }
+
   /**
    * Apply discount to products.
    */
   static async applyDiscountToProducts({
     shopId,
     code,
+    products,
   }: ApplyDiscountToProductsInput) {
-    const foundDiscount = await DiscountRepository.findOne({
+    const discount = await DiscountRepository.findOne({
       query: {
         shopId: toObjectId(shopId),
         discountCode: code,
       },
     });
 
-    if (!foundDiscount) {
+    if (!discount) {
       throw new NotFoundAppError({
         code: ResCode.DISCOUNT_NOT_FOUND,
       });
     }
 
-    const {
-      discountIsActive,
-      discountUsageLimit,
-      discountStartsAt,
-      discountEndsAt,
-      discountMinOrderValue,
-      discountType,
-      discountConfig,
-      discountUsedCount,
-    } = foundDiscount;
+    this.validateDiscountAvailability(discount);
 
-    if (discountIsActive === false) {
+    const eligibleProducts = this.getEligibleProducts(discount, products);
+    const eligibleAmount = this.calculateEligibleAmount(eligibleProducts);
+
+    const minOrderTotal = discount.minOrderTotal;
+    if (minOrderTotal && eligibleAmount < minOrderTotal) {
       throw new BadRequestAppError({
-        code: ResCode.DISCOUNT_NOT_ACTIVE,
+        code: ResCode.DISCOUNT_MIN_ORDER_VALUE_NOT_MET,
       });
     }
 
-    if (discountUsedCount >= discountUsageLimit) {
-      throw new BadRequestAppError({
-        code: ResCode.DISCOUNT_LIMIT_REACHED,
-      });
-    }
-
-    const currentTime = new Date().getTime();
-    const startTime = new Date(discountStartsAt).getTime();
-    const endTime = new Date(discountEndsAt).getTime();
-
-    if (currentTime < startTime) {
-      throw new BadRequestAppError({
-        code: ResCode.DISCOUNT_NOT_STARTED,
-      });
-    }
-
-    if (currentTime > endTime) {
-      throw new BadRequestAppError({
-        code: ResCode.DISCOUNT_EXPIRED,
-      });
-    }
-
-    /**
-     * Get grand total from order.
-     */
-    const grandTotal: number = 0;
-
-    if (discountMinOrderValue > 0) {
-      if (grandTotal < discountMinOrderValue) {
-        throw new BadRequestAppError({
-          code: ResCode.DISCOUNT_MIN_ORDER_VALUE_NOT_MET,
-        });
-      }
-    }
-
-    let discountAmount: number = 0;
-    if (discountType === DISCOUNT_TYPE.FIXED_AMOUNT) {
-      discountAmount = (discountConfig as FixedAmountDiscountConfig).amount;
-    } else if (discountType === DISCOUNT_TYPE.PERCENTAGE) {
-      const { percent, maxDiscountAmount } =
-        discountConfig as PercentageDiscountConfig;
-      discountAmount = (grandTotal * percent) / 100;
-      discountAmount =
-        !_.isNil(maxDiscountAmount) && discountAmount >= maxDiscountAmount
-          ? maxDiscountAmount
-          : discountAmount;
-    }
-
-    const remainingBalance: number = grandTotal - discountAmount;
+    const discountAmount = this.calculateDiscountAmount(
+      discount,
+      eligibleAmount,
+    );
 
     return {
-      grandTotal,
+      discountId: discount._id.toString(),
+      discountCode: discount.code,
+      eligibleAmount,
       discountAmount,
-      remainingBalance,
     };
   }
 
@@ -237,7 +252,7 @@ export class DiscountService {
       });
     }
 
-    if (foundDiscount.discountIsActive === false) {
+    if (foundDiscount.isActive === false) {
       throw new BadRequestAppError({
         code: ResCode.DISCOUNT_NOT_ACTIVE,
       });
@@ -273,17 +288,16 @@ export class DiscountService {
       code,
     });
 
-    const { discountAppliesTo, discountApplicableProducts } =
-      foundActiveDiscount;
+    const { appliesTo, applicableProducts } = foundActiveDiscount;
 
     const query: Record<string, unknown> = {
       productShop: toObjectId(shopId),
       isPublished: true,
     };
 
-    if (discountAppliesTo === DISCOUNT_APPLIES_TO.PRODUCT) {
+    if (appliesTo === DISCOUNT_APPLIES_TO.PRODUCT) {
       query._id = {
-        $in: discountApplicableProducts,
+        $in: applicableProducts,
       };
     }
 
@@ -309,7 +323,7 @@ export class DiscountService {
       discountCode: code,
     }).lean();
 
-    if (!foundDiscount || !foundDiscount.discountIsActive) {
+    if (!foundDiscount || !foundDiscount.isActive) {
       throw new NotFoundAppError({
         code: ResCode.DISCOUNT_NOT_FOUND,
       });
