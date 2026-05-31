@@ -40,7 +40,7 @@ export const ProductPrice = createPositiveNumberSchema({
   positiveMessage: ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
 });
 
-export const ProduceQuantitySchema = createPositiveIntegerSchema({
+export const ProductQuantitySchema = createPositiveIntegerSchema({
   invalidMessage: ResCode.PRODUCT_QUANTITY_INVALID,
   minValueMessage: ResCode.PRODUCT_QUANTITY_MUST_BE_NON_NEGATIVE,
   minValue: 0,
@@ -63,7 +63,7 @@ export const BaseProductSchema = z.object({
 
   price: ProductPrice,
 
-  quantity: ProduceQuantitySchema,
+  quantity: ProductQuantitySchema,
 
   categoryId: CategoryId.optional(),
 

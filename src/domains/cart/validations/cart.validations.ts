@@ -1,14 +1,34 @@
 import { z } from "zod";
 
-import { ProductIdSchema } from "../../product/validations/product.validations.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
+import {
+  createObjectIdSchema,
+  createPositiveIntegerSchema,
+} from "../../../shared/validations/common.validations.js";
+import {
+  ProductIdSchema,
+  ProductNameSchema,
+  ProductPrice,
+} from "../../product/validations/product.validations.js";
 import { ShopIdSchema } from "../../shop/validations/shop.validations.js";
+
+export const CartIdSchema = createObjectIdSchema({
+  requiredMessage: ResCode.CART_ID_REQUIRED,
+  invalidMessage: ResCode.CART_ID_INVALID,
+});
+
+export const CartItemQuantity = createPositiveIntegerSchema({
+  invalidMessage: ResCode.CART_ITEM_QUANTITY_INVALID,
+  minValue: 1,
+  minValueMessage: ResCode.CART_ITEM_QUANTITY_MUST_BE_POSITIVE,
+});
 
 export const CartItemSchema = z.object({
   productId: ProductIdSchema,
   shopId: ShopIdSchema,
-  quantity: z.number().int().positive("Quantity must be a positive integer"),
-  name: z.string().optional(),
-  price: z.number().positive("Price must be a positive number").optional(),
+  quantity: CartItemQuantity,
+  name: ProductNameSchema.optional(),
+  price: ProductPrice.optional(),
 });
 export type CartItem = z.infer<typeof CartItemSchema>;
 
