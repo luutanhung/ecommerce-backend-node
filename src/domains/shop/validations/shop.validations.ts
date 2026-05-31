@@ -2,12 +2,12 @@ import _ from "lodash";
 import z from "zod";
 
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import { ObjectIdSchema } from "../../../shared/validations/common.validations.js";
+import { createObjectIdSchema } from "../../../shared/validations/common.validations.js";
 
-export const ShopParamsSchema = z.object({
-  shopId: ObjectIdSchema,
+export const ShopIdSchema = createObjectIdSchema({
+  requiredMessage: ResCode.SHOP_ID_REQUIRED,
+  invalidMessage: ResCode.SHOP_ID_INVALID,
 });
-export type ShopParams = z.infer<typeof ShopParamsSchema>;
 
 export const BaseShopSchema = z.object({
   name: z
@@ -33,6 +33,11 @@ export const BaseShopSchema = z.object({
   slug: z.string().optional(),
   description: z.string().optional(),
 });
+
+export const ShopParamsSchema = z.object({
+  shopId: ShopIdSchema,
+});
+export type ShopParams = z.infer<typeof ShopParamsSchema>;
 
 export const RegisterShopRequestBodySchema = BaseShopSchema;
 export type RegisterShopRequestBody = z.infer<

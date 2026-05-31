@@ -4,11 +4,36 @@ import z from "zod";
 
 import { ResCode } from "../constants/resCode.constants.js";
 
-export const ObjectIdSchema = z
-  .string()
-  .refine(mongoose.Types.ObjectId.isValid, {
-    message: ResCode.INVALID_ID,
-  });
+import type {
+  CreateObjectIdSchemaInput,
+  CreatePositiveNumberSchemaInput,
+} from "../types/validations/common.validations.types.js";
+
+/**
+ * Create schema for mongoose object id.
+ */
+export const createObjectIdSchema = ({
+  requiredMessage,
+  invalidMessage,
+}: CreateObjectIdSchemaInput) => {
+  return z
+    .string({
+      error: (issue) => {
+        if (issue.input === undefined) {
+          return requiredMessage;
+        }
+
+        if (typeof issue.input !== "string") {
+          return invalidMessage;
+        }
+      },
+    })
+    .trim()
+    .min(24, { message: invalidMessage })
+    .refine((value) => mongoose.Types.ObjectId.isValid(value), {
+      message: invalidMessage,
+    });
+};
 
 export const NameSchema = z.string({
   error: (issue) => {
@@ -60,10 +85,13 @@ export const PasswordSchema = z
     message: ResCode.PASSWORD_MISSING_SPECIAL_CHAR,
   });
 
-export const PositiveNumberSchema = (
-  invalidTypeMessage: string,
-  positiveMessage: string,
-) => {
+/**
+ * Create schema for positive number.
+ */
+export const createPositiveNumberSchema = ({
+  invalidTypeMessage,
+  positiveMessage,
+}: CreatePositiveNumberSchemaInput) => {
   return z
     .number({
       error: invalidTypeMessage,

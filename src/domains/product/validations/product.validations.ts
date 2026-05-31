@@ -5,12 +5,17 @@ import { ProductType } from "../constants/product.constants.js";
 
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import {
-  ObjectIdSchema,
-  PositiveNumberSchema,
   SearchKeywordSchema,
   SortOrderSchema,
+  createObjectIdSchema,
+  createPositiveNumberSchema,
 } from "../../../shared/validations/common.validations.js";
 import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
+
+export const ProductIdSchema = createObjectIdSchema({
+  requiredMessage: ResCode.PRODUCT_ID_REQUIRED,
+  invalidMessage: ResCode.PRODUCT_ID_INVALID,
+});
 
 export const BaseProductSchema = z.object({
   name: z
@@ -50,10 +55,10 @@ export const BaseProductSchema = z.object({
 
   description: z.string().trim().max(5000).optional(),
 
-  price: PositiveNumberSchema(
-    ResCode.PRODUCT_PRICE_INVALID_TYPE,
-    ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
-  ),
+  price: createPositiveNumberSchema({
+    invalidTypeMessage: ResCode.PRODUCT_PRICE_INVALID_TYPE,
+    positiveMessage: ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
+  }),
 
   quantity: z
     .number({
@@ -82,7 +87,7 @@ export const CreateProductRequestSchema = BaseProductSchema;
 export type CreateProductRequest = z.infer<typeof CreateProductRequestSchema>;
 
 export const ProductParamsSchema = z.object({
-  productId: ObjectIdSchema,
+  productId: ProductIdSchema,
 });
 export type ProductParams = z.infer<typeof ProductParamsSchema>;
 

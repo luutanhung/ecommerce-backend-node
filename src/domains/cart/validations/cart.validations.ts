@@ -1,8 +1,11 @@
 import { z } from "zod";
 
+import { ProductIdSchema } from "../../product/validations/product.validations.js";
+import { ShopIdSchema } from "../../shop/validations/shop.validations.js";
+
 export const CartItemSchema = z.object({
-  productId: z.string().min(1, "Product ID is required"),
-  shopId: z.string().min(1, "Shop ID is required"),
+  productId: ProductIdSchema,
+  shopId: ShopIdSchema,
   quantity: z.number().int().positive("Quantity must be a positive integer"),
   name: z.string().optional(),
   price: z.number().positive("Price must be a positive number").optional(),
