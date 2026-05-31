@@ -39,7 +39,7 @@ export type AddProductToCartRequestBody = z.infer<
 >;
 
 export const RemoveCartItemFromCartRequestBodySchema = z.object({
-  productId: z.string().min(1),
+  productId: ProductIdSchema,
 });
 export type RemoveCartItemFromCartRequestBody = z.infer<
   typeof RemoveCartItemFromCartRequestBodySchema
