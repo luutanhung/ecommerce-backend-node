@@ -6,6 +6,7 @@ import type {
   AddRoleInput,
 } from "./types/user.service.types.js";
 
+import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
@@ -68,6 +69,17 @@ export class UserService {
     isPrimary = false,
   }: AddAddressInput) {
     const user = await this.validateUser(userId);
+
+    const addressExists = user.addresses.some(
+      (item) =>
+        item.address.trim().toLowerCase() === address.trim().toLowerCase(),
+    );
+
+    if (addressExists) {
+      throw new BadRequestAppError({
+        code: ResCode.USER_ADDRESS_ALREADY_EXISTS,
+      });
+    }
 
     if (isPrimary) {
       user.addresses.forEach((addr) => {

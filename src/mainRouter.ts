@@ -3,6 +3,7 @@ import { Router } from "express";
 // import { authenticateApiKey } from "../auth/auth.middleware.js";
 
 import { accessRouter } from "./domains/access/routes/access.route.js";
+import { userRouter } from "./domains/access/routes/user.route.js";
 import { cartRouter } from "./domains/cart/cart.route.js";
 import { inventoryRouter } from "./domains/inventory/inventory.route.js";
 import { orderRouter } from "./domains/order/order.route.js";
@@ -20,8 +21,12 @@ const router = Router();
 /**
  * Register access routes.
  */
-
 router.use("/api/v1", accessRouter);
+
+/**
+ * Register user routes.
+ */
+router.use("/api/v1", userRouter);
 
 /**
  * Register shop routes.

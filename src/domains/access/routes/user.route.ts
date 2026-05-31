@@ -4,9 +4,12 @@ import { userController } from "../controllers/user.controller.js";
 
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../../../shared/middlewares/validateRequest.middleware.js";
+import { authenticateAccessToken } from "../middlewares/access.middleware.js";
 import { AddAddressRequestBodySchema } from "../validations/user.validations.js";
 
 const router = Router();
+
+router.use(authenticateAccessToken);
 
 /**
  * Add new address.
@@ -18,3 +21,5 @@ router.post(
   }),
   asyncWrapper(userController.addAddress),
 );
+
+export { router as userRouter };

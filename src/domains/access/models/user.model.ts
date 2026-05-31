@@ -10,6 +10,7 @@ import {
 export const UserAddressSchema = new Schema({
   address: {
     type: String,
+    unique: true,
     required: true,
   },
   isPrimary: {

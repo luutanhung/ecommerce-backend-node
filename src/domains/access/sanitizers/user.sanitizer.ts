@@ -15,6 +15,7 @@ export function sanitizeUser(user: UserLean): Partial<User> {
       "name",
       "nationalId",
       "taxIdentificationNumber",
+      "addresses",
     ],
     user,
   );
