@@ -30,11 +30,25 @@ export const DiscountCodeSchema = createRequiredStringSchema({
   })
   .transform((v) => v.toUpperCase());
 
+export const DiscountNameSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.DISCOUNT_NAME_REQUIRED,
+  invalidMessage: ResCode.DISCOUNT_NAME_INVALID,
+})
+  .min(1)
+  .max(150);
+
+export const DiscountDescriptionSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.DISCOUNT_DESCRIPTION_REQUIRED,
+  invalidMessage: ResCode.DISCOUNT_DESCRIPTION_INVALID,
+}).max(1000, {
+  error: ResCode.DISCOUNT_DESCRIPTION_INVALID,
+});
+
 export const BaseDiscountSchema = z
   .object({
-    name: z.string().min(1).max(150),
+    name: DiscountNameSchema,
 
-    description: z.string().max(1000),
+    description: DiscountDescriptionSchema,
 
     code: DiscountCodeSchema,
 
@@ -64,7 +78,7 @@ export const BaseDiscountSchema = z
     (data) => data.endsAt > data.startsAt,
 
     {
-      message: "endsAt must be after startsAt",
+      message: ResCode.DISCOUNT_ENDS_AT_MUST_BE_AFTER_STARTS_AT,
 
       path: ["endsAt"],
     },
@@ -78,7 +92,7 @@ export const BaseDiscountSchema = z
 
           path: ["applicableProducts"],
 
-          message: "applicableProducts is required",
+          message: ResCode.DISCOUNT_APPLICABLE_PRODUCTS_REQUIRED,
         });
       }
     }
@@ -90,7 +104,7 @@ export const BaseDiscountSchema = z
 
           path: ["applicableCategories"],
 
-          message: "applicableCategories is required",
+          message: ResCode.DISCOUNT_APPLICABLE_CATEGORIES_REQUIRED,
         });
       }
     }
