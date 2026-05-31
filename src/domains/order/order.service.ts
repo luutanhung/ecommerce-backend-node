@@ -116,4 +116,6 @@ export class OrderService {
 
     return checkoutSummary;
   }
+
+  static async createOrder() {}
 }

@@ -13,6 +13,7 @@ const CartItemSchema = new Schema(
       ref: DOCUMENT_NAME.PRODUCT,
       required: true,
     },
+
     shop: {
       type: Schema.Types.ObjectId,
       ref: DOCUMENT_NAME.SHOP,

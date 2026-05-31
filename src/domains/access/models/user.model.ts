@@ -7,6 +7,22 @@ import {
   DOCUMENT_NAME,
 } from "../../../shared/constants/model.constants.js";
 
+export const UserAddressSchema = new Schema(
+  {
+    address: {
+      type: String,
+      required: true,
+    },
+    isPrimary: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    _id: false,
+  },
+);
+
 export const UserSchema = new Schema(
   {
     email: {
@@ -50,6 +66,10 @@ export const UserSchema = new Schema(
       enum: Object.values(USER_ROLE),
       default: USER_ROLE.CUSTOMER,
       required: true,
+    },
+    addresses: {
+      type: [UserAddressSchema],
+      default: [],
     },
   },
   {
