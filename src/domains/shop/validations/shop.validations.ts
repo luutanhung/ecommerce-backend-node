@@ -2,36 +2,37 @@ import _ from "lodash";
 import z from "zod";
 
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import { createObjectIdSchema } from "../../../shared/validations/common.validations.js";
+import {
+  createJwtTokenSchema,
+  createObjectIdSchema,
+  createRequiredStringSchema,
+} from "../../../shared/validations/common.validations.js";
 
 export const ShopIdSchema = createObjectIdSchema({
   requiredMessage: ResCode.SHOP_ID_REQUIRED,
   invalidMessage: ResCode.SHOP_ID_INVALID,
 });
 
-export const BaseShopSchema = z.object({
-  name: z
-    .string({
-      error: (issue) => {
-        const value = issue.input;
+export const ShopNameSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.SHOP_NAME_REQUIRED,
+  invalidMessage: ResCode.SHOP_NAME_INVALID_TYPE,
+})
+  .min(8, {
+    error: ResCode.SHOP_NAME_TOO_SHORT,
+  })
+  .max(150, {
+    error: ResCode.SHOP_NAME_EXCEEDED_MAX_LENGTH,
+  });
 
-        if (_.isUndefined(value)) {
-          return ResCode.SHOP_NAME_REQUIRED;
-        }
-        if (!_.isString(value)) {
-          return ResCode.SHOP_NAME_INVALID_TYPE;
-        }
-      },
-    })
-    .trim() // Remove leading/trailing whitespace before validation.
-    .min(8, {
-      error: ResCode.SHOP_NAME_TOO_SHORT,
-    })
-    .max(150, {
-      error: ResCode.SHOP_NAME_EXCEEDED_MAX_LENGTH,
-    }),
-  slug: z.string().optional(),
-  description: z.string().optional(),
+export const ShopSlugSchema = z.string();
+export const ShopDescriptionSchema = z.string().min(0).max(500);
+
+export const BaseShopSchema = z.object({
+  name: ShopNameSchema,
+
+  slug: ShopSlugSchema.optional(),
+
+  description: ShopDescriptionSchema.optional(),
 });
 
 export const ShopParamsSchema = z.object({
@@ -58,6 +59,9 @@ export type UpdateShopInformationRequestBody = z.infer<
 >;
 
 export const VerifyShopRequestBodySchema = z.object({
-  token: z.string().min(1),
+  token: createJwtTokenSchema({
+    requiredMessage: ResCode.SHOP_VERIFY_EMAIL_TOKEN_REQUIRED,
+    invalidMessage: ResCode.SHOP_VERIFY_EMAIL_TOKEN_INVALID,
+  }),
 });
 export type VerifyShopRequestBody = z.infer<typeof VerifyShopRequestBodySchema>;
