@@ -3,7 +3,13 @@ export type CreateObjectIdSchemaInput = {
   invalidMessage: string;
 };
 
-export type CreatePositiveFloatSchemaInput = {
+export type CreatePositiveNumberSchemaInput = {
   invalidTypeMessage: string;
   positiveMessage: string;
+};
+
+export type CreateRequiredStringSchemaInput = {
+  requiredMessage: string;
+  invalidTypeMessage: string;
+  trim?: boolean;
 };

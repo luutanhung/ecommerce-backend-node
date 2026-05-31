@@ -2,16 +2,17 @@ import _ from "lodash";
 import z from "zod";
 
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import {
-  EmailSchema,
-  PasswordSchema,
-} from "../../../shared/validations/common.validations.js";
+import { EmailSchema } from "../../../shared/validations/common.validations.js";
 
-const DeviceIdSchema = z.string().min(8);
+import { UserPasswordSchema } from "./user.validations.js";
+
+const DeviceIdSchema = z.uuid({
+  error: ResCode.ACCESS_DEVICE_ID_INVALID,
+});
 
 export const RegisterRequestSchema = z.object({
   email: EmailSchema,
-  password: PasswordSchema,
+  password: UserPasswordSchema,
 });
 
 export const SendVerificationEmailRequestBodySchema = z.object({
@@ -32,7 +33,7 @@ export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
 
 export const LoginRequestSchema = z.object({
   email: EmailSchema,
-  password: PasswordSchema,
+  password: UserPasswordSchema,
   deviceId: DeviceIdSchema,
 });
 

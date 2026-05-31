@@ -7,6 +7,7 @@ import { ResCode } from "../constants/resCode.constants.js";
 import type {
   CreateObjectIdSchemaInput,
   CreatePositiveNumberSchemaInput,
+  CreateRequiredStringSchemaInput,
 } from "../types/validations/common.validations.types.js";
 
 /**
@@ -35,55 +36,35 @@ export const createObjectIdSchema = ({
     });
 };
 
-export const NameSchema = z.string({
-  error: (issue) => {
-    if (_.isUndefined(issue.input)) {
-      return ResCode.NAME_REQUIRED;
-    }
+export const createRequiredStringSchema = ({
+  requiredMessage,
+  invalidTypeMessage,
+  trim = true,
+}: CreateRequiredStringSchemaInput) => {
+  let schema = z.string({
+    error: (issue) => {
+      const value = issue.input;
 
-    if (typeof issue.input !== "string") {
-      return ResCode.NAME_INVALID_TYPE;
-    }
-  },
+      if (_.isUndefined(value)) {
+        return requiredMessage;
+      }
+
+      if (!_.isString(value)) {
+        return invalidTypeMessage;
+      }
+    },
+  });
+
+  if (trim) {
+    schema = schema.trim();
+  }
+
+  return schema;
+};
+
+export const EmailSchema = z.email({
+  error: ResCode.EMAIL_INVALID,
 });
-
-export const EmailSchema = z
-  .string({
-    error: (issue) => {
-      if (_.isUndefined(issue.input)) {
-        return ResCode.EMAIL_REQUIRED;
-      }
-
-      return ResCode.EMAIL_INVALID_TYPE;
-    },
-  })
-  .email({
-    message: ResCode.EMAIL_INVALID,
-  });
-
-export const PasswordSchema = z
-  .string({
-    error: (issue) => {
-      if (_.isUndefined(issue.input)) {
-        return ResCode.PASSWORD_REQUIRED;
-      }
-
-      if (typeof issue.input !== "string") {
-        return ResCode.PASSWORD_INVALID_TYPE;
-      }
-    },
-  })
-  .min(8, { message: ResCode.PASSWORD_TOO_SHORT })
-  .regex(/[A-Z]/, {
-    message: ResCode.PASSWORD_MISSING_UPPERCASE,
-  })
-  .regex(/[a-z]/, {
-    message: ResCode.PASSWORD_MISSING_LOWERCASE,
-  })
-  .regex(/[0-9]/, { message: ResCode.PASSWORD_MISSING_NUMBER })
-  .regex(/[^A-Za-z0-9]/, {
-    message: ResCode.PASSWORD_MISSING_SPECIAL_CHAR,
-  });
 
 /**
  * Create schema for positive number.
