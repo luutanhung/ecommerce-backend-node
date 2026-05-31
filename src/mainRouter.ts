@@ -5,6 +5,7 @@ import { Router } from "express";
 import { accessRouter } from "./domains/access/routes/access.route.js";
 import { cartRouter } from "./domains/cart/cart.route.js";
 import { inventoryRouter } from "./domains/inventory/inventory.route.js";
+import { orderRouter } from "./domains/order/order.route.js";
 import { publicProductRouter } from "./domains/product/routes/publicProduct.route.js";
 import { sellerProductRouter } from "./domains/product/routes/sellerProduct.route.js";
 import { shopRouter } from "./domains/shop/routes/shop.route.js";
@@ -39,13 +40,18 @@ router.use("/api/v1", sellerProductRouter);
 router.use("/api/v1", publicProductRouter);
 
 /**
+ * Register pricing routes.
+ */
+router.use("/api/v1", discountRouter);
+
+/**
  * Register cart routes.
  */
 router.use("/api/v1/", cartRouter);
 
 /**
- * Register pricing routes.
+ * Register order routes.
  */
-router.use("/api/v1", discountRouter);
+router.use("/api/v1", orderRouter);
 
 export { router as mainRouter };
