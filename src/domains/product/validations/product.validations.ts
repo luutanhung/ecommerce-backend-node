@@ -7,10 +7,13 @@ import {
   SearchKeywordSchema,
   SortOrderSchema,
   createObjectIdSchema,
+  createPositiveIntegerSchema,
   createPositiveNumberSchema,
   createRequiredStringSchema,
 } from "../../../shared/validations/common.validations.js";
 import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
+
+import { CategoryId } from "./productCategory.validations.js";
 
 export const ProductIdSchema = createObjectIdSchema({
   requiredMessage: ResCode.PRODUCT_ID_REQUIRED,
@@ -24,40 +27,55 @@ export const ProductNameSchema = createRequiredStringSchema({
   .min(1)
   .max(150);
 
+export const ProductThumbSchema = z.url({
+  error: ResCode.PRODUCT_THUMB_INVALID,
+});
+
+export const ProductDescriptionSchema = z.string().trim().max(5000, {
+  error: ResCode.PRODUCT_DESCRIPTION_EXCEEDED_CHARACTER_LIMIT,
+});
+
+export const ProductPrice = createPositiveNumberSchema({
+  invalidMessage: ResCode.PRODUCT_PRICE_INVALID,
+  positiveMessage: ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
+});
+
+export const ProduceQuantitySchema = createPositiveIntegerSchema({
+  invalidMessage: ResCode.PRODUCT_QUANTITY_INVALID,
+  minValueMessage: ResCode.PRODUCT_QUANTITY_MUST_BE_NON_NEGATIVE,
+  minValue: 0,
+});
+
+export const ProductAttributesSchema = z.record(z.string(), z.any());
+
+export const ProductImagesSchema = z.array(
+  z.url({
+    error: ResCode.PRODUCT_IMAGE_INVALID,
+  }),
+);
+
 export const BaseProductSchema = z.object({
   name: ProductNameSchema,
 
-  thumb: z.url({
-    error: ResCode.PRODUCT_THUMB_INVALID,
-  }),
+  thumb: ProductThumbSchema,
 
-  description: z.string().trim().max(5000).optional(),
+  description: ProductDescriptionSchema.optional(),
 
-  price: createPositiveNumberSchema({
-    invalidMessage: ResCode.PRODUCT_PRICE_INVALID,
-    positiveMessage: ResCode.PRODUCT_PRICE_MUST_BE_POSITIVE,
-  }),
+  price: ProductPrice,
 
-  quantity: z
-    .number({
-      error: ResCode.PRODUCT_QUANTITY_INVALID_TYPE,
-    })
-    .int()
-    .min(0, {
-      error: ResCode.PRODUCT_QUANTITY_MUST_BE_POSITIVE,
-    }),
+  quantity: ProduceQuantitySchema,
 
-  categoryId: z.string().min(1).optional(),
+  categoryId: CategoryId.optional(),
 
   /**
    * Dynamic attributes.
    */
-  attributes: z.record(z.string(), z.any()).default({}),
+  attributes: ProductAttributesSchema.default({}),
 
   /**
    * Product images gallery.
    */
-  images: z.array(z.string().url()).default([]),
+  images: ProductImagesSchema.default([]),
 });
 
 export const CreateProductRequestSchema = BaseProductSchema;

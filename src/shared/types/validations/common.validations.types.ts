@@ -8,6 +8,12 @@ export type CreatePositiveNumberSchemaInput = {
   positiveMessage: string;
 };
 
+export type CreatePositiveIntegerSchemeInput = {
+  invalidMessage: string;
+  minValueMessage: string;
+  minValue?: number;
+};
+
 export type CreateRequiredStringSchemaInput = {
   requiredMessage: string;
   invalidMessage: string;

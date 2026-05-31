@@ -7,6 +7,7 @@ import { ResCode } from "../constants/resCode.constants.js";
 import type {
   CreateJwtTokenSchemaInput,
   CreateObjectIdSchemaInput,
+  CreatePositiveIntegerSchemeInput,
   CreatePositiveNumberSchemaInput,
   CreateRequiredStringSchemaInput,
 } from "../types/validations/common.validations.types.js";
@@ -80,6 +81,23 @@ export const createPositiveNumberSchema = ({
     })
     .positive({
       error: positiveMessage,
+    });
+};
+
+export const createPositiveIntegerSchema = ({
+  invalidMessage,
+  minValueMessage,
+  minValue = 0,
+}: CreatePositiveIntegerSchemeInput) => {
+  return z
+    .number({
+      error: invalidMessage,
+    })
+    .int({
+      error: invalidMessage,
+    })
+    .min(minValue, {
+      error: minValueMessage,
     });
 };
 
