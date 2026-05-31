@@ -7,21 +7,16 @@ import {
   DOCUMENT_NAME,
 } from "../../../shared/constants/model.constants.js";
 
-export const UserAddressSchema = new Schema(
-  {
-    address: {
-      type: String,
-      required: true,
-    },
-    isPrimary: {
-      type: Boolean,
-      default: false,
-    },
+export const UserAddressSchema = new Schema({
+  address: {
+    type: String,
+    required: true,
   },
-  {
-    _id: false,
+  isPrimary: {
+    type: Boolean,
+    default: false,
   },
-);
+});
 
 export const UserSchema = new Schema(
   {

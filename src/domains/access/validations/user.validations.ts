@@ -32,7 +32,18 @@ export const UserPasswordSchema = createRequiredStringSchema({
     message: ResCode.PASSWORD_MISSING_SPECIAL_CHAR,
   });
 
+export const UserAddressSchema = z.object({
+  address: createRequiredStringSchema({
+    requiredMessage: ResCode.USER_ADDRESS_REQUIRED,
+    invalidMessage: ResCode.USER_ADDRESS_INVALID,
+  }),
+  isPrimary: z.boolean().optional(),
+});
+
 export const UserParamsSchema = z.object({
   userId: UserIdSchema,
 });
 export type UserParams = z.infer<typeof UserParamsSchema>;
+
+export const AddAddressRequestBodySchema = UserAddressSchema;
+export type AddAddressRequestBody = z.infer<typeof AddAddressRequestBodySchema>;
