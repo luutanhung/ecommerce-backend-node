@@ -25,7 +25,10 @@ export const DOCUMENT_NAME = {
   CART: "Cart",
 
   // Order.
-  ORDER: "ORDER",
+  ORDER: "Order",
+
+  // Payment.
+  PAYMENT: "Payment",
 } as const;
 
 export const COLLECTION_NAME = {
@@ -56,4 +59,7 @@ export const COLLECTION_NAME = {
 
   // Order.
   ORDERS: "orders",
+
+  // Payment.
+  PAYMENTS: "payments",
 } as const;
