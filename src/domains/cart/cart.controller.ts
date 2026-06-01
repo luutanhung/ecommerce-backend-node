@@ -10,7 +10,7 @@ import type {
   RemoveCartItemFromCartRequestBody,
 } from "./validations/cart.validations.js";
 
-import { sanitizeCart } from "./cart.sanitizer.js";
+import { CartMapper } from "./cart.mapper.js";
 import { CartService } from "./cart.service.js";
 
 export class CartController {
@@ -31,7 +31,7 @@ export class CartController {
 
     new OKResponse({
       code: ResCode.CART_ADD_PRODUCT_TO_CART_SUCCEEDED,
-      data: sanitizeCart(updatedCart),
+      data: CartMapper.toPublic(updatedCart),
     }).send(req, res);
   }
 
@@ -46,7 +46,7 @@ export class CartController {
 
     new OKResponse({
       code: ResCode.CART_REMOVE_PRODUCT_FROM_CART_SUCCEEDED,
-      data: sanitizeCart(updatedCart),
+      data: CartMapper.toPublic(updatedCart),
     }).send(req, res);
   }
 
@@ -60,7 +60,7 @@ export class CartController {
 
     new OKResponse({
       code: ResCode.CART_FIND_SUCCEEDED,
-      data: sanitizeCart(cart),
+      data: CartMapper.toPublic(cart),
     }).send(req, res);
   }
 }
