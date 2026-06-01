@@ -1,7 +1,7 @@
 import pino from "pino";
 
-import { env } from "../../configs/env.js";
-import { config } from "../../configs/index.js";
+import { config } from "../configs/config.js";
+import { env } from "../configs/env.js";
 
 const logLevel = config.logger.level || env.isProd ? "info" : "debug";
 

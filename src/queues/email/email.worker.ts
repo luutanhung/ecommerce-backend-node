@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
 
-import { config } from "../../configs/index.js";
+import { config } from "../../configs/config.js";
 import { InternalSystemError } from "../../core/error/internalSystemError.js";
 import { buildVerifyUserEmailTemplate } from "../../domains/access/templates/access.templates.js";
 import type {
@@ -11,7 +11,7 @@ import { NOTIFICATION_STATUS } from "../../domains/notifications/notification.co
 import { NotificationService } from "../../domains/notifications/notification.service.js";
 import { buildVerifyShopEmailTemplate } from "../../domains/shop/templates/shop.templates.js";
 import { MailService } from "../../libs/mail/mail.service.js";
-import { bullRedis } from "../../libs/redis/index.js";
+import { bullRedis } from "../../libs/redis.js";
 import {
   EMAIL_JOB_NAME,
   QUEUE_NAME,
