@@ -31,6 +31,30 @@ export class InventoryController {
       data: InventoryMapper.toPublic(updatedInventory),
     }).send(req, res);
   }
+
+  /**
+   * Increase stock.
+   */
+  async increaseStock(req: Request, res: Response) {
+    const updatedInventory = await InventoryService.increaseStock(req.body);
+
+    new OKResponse({
+      code: ResCode.INVENTORY_INCREASE_STOCK_SUCCEEDED,
+      data: InventoryMapper.toPublic(updatedInventory),
+    }).send(req, res);
+  }
+
+  /**
+   * Decrease stock.
+   */
+  async decreaseStock(req: Request, res: Response) {
+    const updatedInventory = await InventoryService.decreaseStock(req.body);
+
+    new OKResponse({
+      code: ResCode.INVENTORY_DECREASE_STOCK_SUCCEEDED,
+      data: InventoryMapper.toPublic(updatedInventory),
+    }).send(req, res);
+  }
 }
 
 export const inventoryController = new InventoryController();

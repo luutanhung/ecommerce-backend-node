@@ -7,6 +7,16 @@ export type UpdateInventoryInput = {
   stock: number;
 };
 
+export type IncreaseStockInput = {
+  inventoryId: string;
+  stock: number;
+};
+
+export type DecreaseStockInput = {
+  inventoryId: string;
+  stock: number;
+};
+
 export type CheckAvailabilityInput = {
   productId: string;
   quantity: number;

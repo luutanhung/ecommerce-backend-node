@@ -6,6 +6,8 @@ import type {
   CheckAvailabilityInput,
   CommitReservationInput,
   CreateInventoryInput,
+  DecreaseStockInput,
+  IncreaseStockInput,
   ReleaseReservationInput,
   ReservationInventoryInput,
   UpdateInventoryInput,
@@ -21,6 +23,21 @@ import { Inventories } from "./inventory.model.js";
 import { InventoryRepository } from "./inventory.repository.js";
 
 export class InventoryService {
+  private static async ensureInventoryExists(
+    inventoryId: string,
+  ): Promise<InventoryDocument> {
+    const inventory = await Inventories.findOne({
+      _id: toObjectId(inventoryId),
+    });
+
+    if (!inventory) {
+      throw new NotFoundAppError({
+        code: ResCode.INVENTORY_NOT_FOUND,
+      });
+    }
+
+    return inventory;
+  }
   // ==========================================
   // Management.
   // ==========================================
@@ -45,19 +62,34 @@ export class InventoryService {
   /**
    * Update inventory.
    */
-  static async updateInventory(input: UpdateInventoryInput) {
-    const { inventoryId, stock } = input;
-    const inventory = await Inventories.findOne({
-      _id: toObjectId(inventoryId),
-    });
+  static async updateInventory({ inventoryId, stock }: UpdateInventoryInput) {
+    const inventory = await this.ensureInventoryExists(inventoryId);
 
-    if (!inventory) {
-      throw new NotFoundAppError({
-        code: ResCode.INVENTORY_NOT_FOUND,
+    inventory.stock = stock;
+    await inventory.save();
+
+    return inventory.toObject();
+  }
+
+  static async increaseStock({ inventoryId, stock }: IncreaseStockInput) {
+    const inventory = await this.ensureInventoryExists(inventoryId);
+
+    inventory.stock += stock;
+
+    await inventory.save();
+
+    return inventory.toObject();
+  }
+
+  static async decreaseStock({ inventoryId, stock }: DecreaseStockInput) {
+    const inventory = await this.ensureInventoryExists(inventoryId);
+
+    if (inventory.stock < stock) {
+      throw new BadRequestAppError({
+        code: ResCode.INVENTORY_REQUESTED_QUANTITY_EXCEEDS_AVAILABLE_STOCK,
       });
     }
 
-    inventory.stock = stock;
     await inventory.save();
 
     return inventory.toObject();
