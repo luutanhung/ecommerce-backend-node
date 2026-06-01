@@ -8,10 +8,19 @@ import {
 } from "../../../shared/constants/model.constants.js";
 
 export const UserAddressSchema = new Schema({
-  address: {
+  addressLine: {
     type: String,
     unique: true,
     required: true,
+  },
+  ward: {
+    type: String,
+  },
+  district: {
+    type: String,
+  },
+  province: {
+    type: String,
   },
   isPrimary: {
     type: Boolean,

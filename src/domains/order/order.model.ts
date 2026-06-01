@@ -74,7 +74,6 @@ export const ShippingAddressSchema = new Schema({
     type: String,
     required: true,
   },
-
   ward: {
     type: String,
   },

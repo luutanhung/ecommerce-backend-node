@@ -32,12 +32,19 @@ export const UserPasswordSchema = createRequiredStringSchema({
     message: ResCode.PASSWORD_MISSING_SPECIAL_CHAR,
   });
 
+export const UserAddressLineSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.USER_ADDRESS_REQUIRED,
+  invalidMessage: ResCode.USER_ADDRESS_INVALID,
+}).max(500, {
+  error: ResCode.USER_ADDRESS_INVALID,
+});
+
 export const UserAddressSchema = z.object({
-  address: createRequiredStringSchema({
-    requiredMessage: ResCode.USER_ADDRESS_REQUIRED,
-    invalidMessage: ResCode.USER_ADDRESS_INVALID,
-  }),
+  addressLine: UserAddressLineSchema,
   isPrimary: z.boolean().optional(),
+  ward: z.string().optional(),
+  district: z.string().optional(),
+  province: z.string().optional(),
 });
 
 export const UserParamsSchema = z.object({

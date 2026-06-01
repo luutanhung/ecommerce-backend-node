@@ -7,6 +7,9 @@ export type AddRoleInput = {
 
 export type AddAddressInput = {
   userId: string;
-  address: string;
+  addressLine: string;
+  ward?: string;
+  district?: string;
+  province?: string;
   isPrimary?: boolean;
 };

@@ -64,14 +64,18 @@ export class UserService {
    */
   static async addAddress({
     userId,
-    address,
+    addressLine,
+    ward,
+    district,
+    province,
     isPrimary = false,
   }: AddAddressInput) {
     const user = await this.validateUser(userId);
 
     const addressExists = user.addresses.some(
       (item) =>
-        item.address.trim().toLowerCase() === address.trim().toLowerCase(),
+        item.addressLine.trim().toLowerCase() ===
+        addressLine.trim().toLowerCase(),
     );
 
     if (addressExists) {
@@ -87,8 +91,11 @@ export class UserService {
     }
 
     user.addresses.push({
-      address,
+      addressLine,
       isPrimary,
+      ward,
+      district,
+      province,
     });
 
     await user.save();
