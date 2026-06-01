@@ -73,6 +73,12 @@ export class OrderService {
       ),
     );
 
+    if (currencies.length === 0) {
+      throw new BadRequestAppError({
+        code: ResCode.SHOP_CURRENCY_NOT_SET,
+      });
+    }
+
     if (currencies.length > 1) {
       throw new BadRequestAppError({
         code: ResCode.ORDER_MULTIPLE_CURRENCIES_NOT_SUPPORTED,
@@ -145,7 +151,16 @@ export class OrderService {
     const orderTotal =
       merchandiseSubtotal - discountSubtotal + shippingSubtotal;
 
+    const currency = currencies.at(0);
+
+    if (!currency) {
+      throw new BadRequestAppError({
+        code: ResCode.SHOP_CURRENCY_NOT_SET,
+      });
+    }
+
     const orderSummary: OrderSummary = {
+      currency,
       merchandiseSubtotal,
       discountSubtotal,
       shippingSubtotal,

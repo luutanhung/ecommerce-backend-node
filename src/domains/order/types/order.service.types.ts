@@ -1,3 +1,5 @@
+import type { Currency } from "../../../pricing/types/currency.types.js";
+
 export type OrderItem = {
   productId: string;
   shopId: string;
@@ -39,6 +41,7 @@ export type ShopCheckoutSummary = {
 };
 
 export type OrderSummary = {
+  currency: Currency;
   merchandiseSubtotal: number;
   discountSubtotal: number;
   shippingSubtotal: number;
