@@ -16,14 +16,14 @@ import {
 
 const router = Router();
 
-/**
- * Public routes.
- */
+// ==========================================
+// PUBLIC ROUTES (No Authentication Required)
+// ==========================================
 /**
  * Search published products across shop.
  */
 router.get(
-  "/products/search",
+  "/public/products/search",
   validateRequest({
     query: SearchPublishedProductRequestSchema,
   }),
@@ -34,7 +34,7 @@ router.get(
  * Find all published products by shop.
  */
 router.get(
-  "/shops/:shopId/products",
+  "/public/shops/:shopId/products",
   validateRequest({
     params: ShopParamsSchema,
   }),
@@ -45,7 +45,7 @@ router.get(
  * Find all published product across shops.
  */
 router.get(
-  "/products",
+  "/public/products",
   validateRequest({
     query: FindPublishedProductsSchema,
   }),
@@ -56,24 +56,22 @@ router.get(
  * Find a single published product.
  */
 router.get(
-  "/products/:productId",
+  "/public/products/:productId",
   validateRequest({
     params: ProductParamsSchema,
   }),
   asyncWrapper(productController.findPublishedProduct),
 );
 
-/**
- * Routes require authentication.
- */
-
-router.use(authenticateAccessToken);
-
+// ==========================================
+// PROTECTED ROUTES (Authentication Required)
+// ==========================================
 router.use(
   "/shops/:shopId",
   validateRequest({
     params: ShopParamsSchema,
   }),
+  authenticateAccessToken,
   authorizeShopOwnership,
 );
 
@@ -83,6 +81,7 @@ router.use(
 router.post(
   "/shops/:shopId/products/create",
   validateRequest({ body: CreateProductRequestSchema }),
+  authenticateAccessToken,
   asyncWrapper(productController.createShopProduct),
 );
 
@@ -94,6 +93,7 @@ router.patch(
   validateRequest({
     params: ProductParamsSchema,
   }),
+  authenticateAccessToken,
   asyncWrapper(productController.updateShopProduct),
 );
 
@@ -105,6 +105,7 @@ router.post(
   validateRequest({
     params: ProductParamsSchema,
   }),
+  authenticateAccessToken,
   asyncWrapper(productController.publishShopProduct),
 );
 
@@ -116,6 +117,7 @@ router.post(
   validateRequest({
     params: ProductParamsSchema,
   }),
+  authenticateAccessToken,
   asyncWrapper(productController.unpublishShopProduct),
 );
 
@@ -124,6 +126,7 @@ router.post(
  */
 router.get(
   "/shops/:shopId/products/draft",
+  authenticateAccessToken,
   asyncWrapper(productController.findDraftProductsOwnedByShop),
 );
 
@@ -132,6 +135,7 @@ router.get(
  */
 router.get(
   "/shops/:shopId/products/published",
+  authenticateAccessToken,
   asyncWrapper(productController.findPublishedProductsOwnedByShop),
 );
 
@@ -143,6 +147,7 @@ router.get(
   validateRequest({
     params: ProductParamsSchema,
   }),
+  authenticateAccessToken,
   asyncWrapper(productController.findProductOwnedByShop),
 );
 

@@ -5,7 +5,7 @@ import { Products } from "../models/product.model.js";
 import type {
   ProductLean,
   UpdateShopProductInput,
-} from "../types/product.type.js";
+} from "../types/product.types.js";
 import type {
   CreateShopProductInput,
   FindProductOwnedByShopInput,
@@ -31,9 +31,7 @@ import {
   toObjectId,
 } from "../../../shared/utils/mongoose.utils.js";
 import { cleanObject } from "../../../shared/utils/object.utils.js";
-import { sanitizePagination } from "../../../shared/utils/sanitizer.utils.js";
 import { InventoryService } from "../../inventory/inventory.service.js";
-import { sanitizeProduct } from "../product.sanitizer.js";
 import { buildProductsQuery } from "../product.utils.js";
 import { ProductRepository } from "../repositories/product.repository.js";
 import type {
@@ -169,7 +167,7 @@ export class ProductService {
       }
     }
 
-    return sanitizeProduct(publishedProduct);
+    return publishedProduct;
   }
 
   /**
@@ -216,7 +214,7 @@ export class ProductService {
       }
     }
 
-    return sanitizeProduct(unpublishedProduct);
+    return unpublishedProduct;
   }
 
   /**
@@ -241,7 +239,7 @@ export class ProductService {
       });
     }
 
-    return sanitizeProduct(foundProductOwnedByShop);
+    return foundProductOwnedByShop;
   }
 
   /**
@@ -262,7 +260,7 @@ export class ProductService {
       },
     });
 
-    return sanitizePagination(paginationResult, sanitizeProduct);
+    return paginationResult;
   }
 
   /**
@@ -286,7 +284,7 @@ export class ProductService {
       },
     });
 
-    return sanitizePagination(paginationResult, sanitizeProduct);
+    return paginationResult;
   }
 
   //==========
@@ -316,7 +314,7 @@ export class ProductService {
       },
     });
 
-    return sanitizePagination(paginationResult, sanitizeProduct);
+    return paginationResult;
   }
 
   /**
@@ -343,7 +341,7 @@ export class ProductService {
       },
     });
 
-    return sanitizePagination(paginationResult, sanitizeProduct);
+    return paginationResult;
   }
 
   /**

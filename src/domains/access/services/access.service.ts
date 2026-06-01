@@ -42,7 +42,6 @@ import {
   NOTIFICATION_TYPE,
 } from "../../notifications/notification.constants.js";
 import { NotificationService } from "../../notifications/notification.service.js";
-import { UserMapper } from "../mappers/user.mapper.js";
 
 import { SessionService } from "./session.service.js";
 
@@ -51,7 +50,7 @@ export class AccessService {
    * Registers a new user account.
    */
   static async register({ email, password }: RegisterInput): Promise<{
-    user: ReturnType<typeof UserMapper.toAuthenticatedUser>;
+    user: UserLean;
   }> {
     const existingUser = await Users.findOne({ email }).lean();
 
@@ -71,7 +70,7 @@ export class AccessService {
     });
 
     return {
-      user: UserMapper.toAuthenticatedUser(createdUser.toObject()),
+      user: createdUser.toObject(),
     };
   }
 
@@ -155,7 +154,7 @@ export class AccessService {
    * Logins with user's payload.
    */
   static async login({ email, password, deviceId }: LoginInput): Promise<{
-    user: ReturnType<typeof UserMapper.toAuthenticatedUser>;
+    user: UserLean;
     tokens: {
       accessToken: string;
       refreshToken: string;
@@ -189,7 +188,7 @@ export class AccessService {
     });
 
     return {
-      user: UserMapper.toAuthenticatedUser(user),
+      user,
       tokens: {
         accessToken,
         refreshToken,

@@ -12,7 +12,7 @@ import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { ParamsRequest } from "../../../shared/types/http.type.js";
 import type { AccessTokenPayload } from "../../access/types/access.types.js";
 import type { ShopParams } from "../../shop/validations/shop.validations.js";
-import { sanitizeProduct } from "../product.sanitizer.js";
+import { ProductMapper } from "../mappers/product.mapper.js";
 import type {
   CreateProductRequest,
   ProductParams,
@@ -23,6 +23,9 @@ import type {
 } from "../validations/product.validations.js";
 
 class ProductController {
+  // ==========================================
+  // PROTECTED METHODS (Authentication Required)
+  // ==========================================
   /**
    * Creates a new product.
    *
@@ -49,7 +52,7 @@ class ProductController {
 
     new CreatedResponse({
       code: ResCode.PRODUCT_CREATION_SUCCESS,
-      data: sanitizeProduct(createdProduct),
+      data: ProductMapper.toPublic(createdProduct),
     }).send(req, res);
   }
 
@@ -70,7 +73,7 @@ class ProductController {
 
     new OKResponse({
       code: ResCode.PRODUCT_UPDATE_SUCCESS,
-      data: sanitizeProduct(updatedProduct),
+      data: ProductMapper.toPublic(updatedProduct),
     }).send(req, res);
   }
 
@@ -81,12 +84,14 @@ class ProductController {
     req: ParamsRequest<ProductParams>,
     res: Response,
   ): Promise<void> {
+    const publishedProduct = await ProductService.publishShopProduct({
+      shopId: (req.ownedShop as ShopLean)._id.toString(),
+      productId: req.params.productId,
+    });
+
     new OKResponse({
       code: ResCode.PRODUCT_PUBLISH_SUCCESS,
-      data: await ProductService.publishShopProduct({
-        shopId: (req.ownedShop as ShopLean)._id.toString(),
-        productId: req.params.productId,
-      }),
+      data: ProductMapper.toPublic(publishedProduct),
     }).send(req, res);
   }
 
@@ -97,12 +102,14 @@ class ProductController {
     req: Request<ProductParams>,
     res: Response,
   ): Promise<void> {
+    const unpublishedProduct = await ProductService.unpublishShopProduct({
+      shopId: (req.ownedShop as ShopLean)._id.toString(),
+      productId: req.params.productId,
+    });
+
     new OKResponse({
       code: ResCode.PRODUCT_UNPUBLISH_SUCCESS,
-      data: await ProductService.unpublishShopProduct({
-        shopId: (req.ownedShop as ShopLean)._id.toString(),
-        productId: req.params.productId,
-      }),
+      data: ProductMapper.toPublic(unpublishedProduct),
     }).send(req, res);
   }
 
@@ -113,12 +120,14 @@ class ProductController {
     req: ParamsRequest<ProductParams>,
     res: Response,
   ): Promise<void> {
+    const product = await ProductService.findProductOwnedByShop({
+      shopId: (req.ownedShop as ShopLean)._id.toString(),
+      productId: req.params.productId,
+    });
+
     new OKResponse({
       code: ResCode.PRODUCT_FIND_SUCCESS,
-      data: await ProductService.findProductOwnedByShop({
-        shopId: (req.ownedShop as ShopLean)._id.toString(),
-        productId: req.params.productId,
-      }),
+      data: ProductMapper.toPublic(product),
     }).send(req, res);
   }
 
@@ -131,9 +140,11 @@ class ProductController {
   ): Promise<void> {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_DRAFT_PRODUCTS_SUCCESS,
-      data: await ProductService.findDraftProductsOwnedByShop({
-        shopId: (req.ownedShop as ShopLean)._id.toString(),
-      }),
+      data: ProductMapper.toPaginate(
+        await ProductService.findDraftProductsOwnedByShop({
+          shopId: (req.ownedShop as ShopLean)._id.toString(),
+        }),
+      ),
     }).send(req, res);
   }
 
@@ -146,13 +157,17 @@ class ProductController {
   ): Promise<void> {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
-      data: await ProductService.findPublishedProductsOwnedByShop({
-        shopId: (req.ownedShop as ShopLean)._id.toString(),
-      }),
+      data: ProductMapper.toPaginate(
+        await ProductService.findPublishedProductsOwnedByShop({
+          shopId: (req.ownedShop as ShopLean)._id.toString(),
+        }),
+      ),
     }).send(req, res);
   }
 
-  // Public routes.
+  // ==========================================
+  // PUBLIC METHODS (No Authentication Required)
+  // ==========================================
   /**
    * Searches published products by keyword.
    */
@@ -161,11 +176,13 @@ class ProductController {
 
     new OKResponse({
       code: ResCode.PRODUCT_SEARCH_PUBLISHED_SUCCESS,
-      data: await ProductService.searchPublishedProducts({
-        keyword: query.keyword,
-        page: query.page,
-        limit: query.limit,
-      }),
+      data: ProductMapper.toPaginate(
+        await ProductService.searchPublishedProducts({
+          keyword: query.keyword,
+          page: query.page,
+          limit: query.limit,
+        }),
+      ),
     }).send(req, res);
   }
 
@@ -175,9 +192,11 @@ class ProductController {
   async findPublishedProductsByShop(req: Request<ShopParams>, res: Response) {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
-      data: await ProductService.findPublishedProductsOwnedByShop({
-        shopId: req.params.shopId,
-      }),
+      data: ProductMapper.toPaginate(
+        await ProductService.findPublishedProductsOwnedByShop({
+          shopId: req.params.shopId,
+        }),
+      ),
     }).send(req, res);
   }
 
@@ -187,14 +206,16 @@ class ProductController {
   async findPublishedProducts(req: Request, res: Response) {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
-      data: await ProductService.findPublishedProducts(
-        _.pick(req.validated?.query as FindPublishedProducts, [
-          "productType",
-          "sortBy",
-          "sortOrder",
-          "page",
-          "limit",
-        ]),
+      data: ProductMapper.toPaginate(
+        await ProductService.findPublishedProducts(
+          _.pick(req.validated?.query as FindPublishedProducts, [
+            "productType",
+            "sortBy",
+            "sortOrder",
+            "page",
+            "limit",
+          ]),
+        ),
       ),
     }).send(req, res);
   }
@@ -205,7 +226,7 @@ class ProductController {
   async findPublishedProduct(req: Request, res: Response) {
     new OKResponse({
       code: ResCode.PRODUCT_FIND_PUBLISHED_PRODUCTS_SUCCESS,
-      data: sanitizeProduct(
+      data: ProductMapper.toPublic(
         await ProductService.findPublishedProduct({
           productId: (req.validated?.params as ProductParams).productId,
         }),

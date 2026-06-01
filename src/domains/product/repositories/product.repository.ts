@@ -2,7 +2,7 @@ import type { PaginateResult } from "mongoose";
 
 import { Products } from "../models/product.model.js";
 
-import type { ProductDocument, ProductLean } from "../types/product.type.js";
+import type { ProductDocument, ProductLean } from "../types/product.types.js";
 import type {
   CreateProductInput,
   FindPaginatedRepositoryInput,
@@ -21,7 +21,6 @@ import {
   buildSort,
   toObjectId,
 } from "../../../shared/utils/mongoose.utils.js";
-import { DEFAULT_PRODUCT_SELECT_FIELDS } from "../product.sanitizer.js";
 
 export class ProductRepository {
   /**
@@ -118,7 +117,7 @@ export class ProductRepository {
       // Pagination options.
       page = PAGINATION_DEFAULT_PAGE,
       limit = PAGINATION_DEFAULT_LIMIT,
-      select = DEFAULT_PRODUCT_SELECT_FIELDS,
+      select,
     } = options || {};
 
     const sortOptions = buildSort({

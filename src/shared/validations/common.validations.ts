@@ -105,15 +105,12 @@ export const createJwtTokenSchema = ({
   requiredMessage,
   invalidMessage,
 }: CreateJwtTokenSchemaInput) => {
-  return (
-    createRequiredStringSchema({
-      requiredMessage,
-      invalidMessage,
-    }).refine((token) => token.split(".").length === 3),
-    {
-      message: invalidMessage,
-    }
-  );
+  return createRequiredStringSchema({
+    requiredMessage,
+    invalidMessage,
+  }).refine((token) => token.split(".").length === 3, {
+    message: invalidMessage,
+  });
 };
 
 export const SearchKeywordSchema = z.object({

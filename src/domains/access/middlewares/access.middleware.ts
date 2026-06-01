@@ -129,6 +129,8 @@ export const authenticateAccessToken = composeMiddlewares([
   authenticateClientId,
   authenticateDeviceId,
   asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+    console.log("inside");
+    console.log(req.method, req.originalUrl);
     const userId = req.headers[RequestHeaders.CLIENT_ID]?.toString() as string;
     const deviceId = req.headers[
       RequestHeaders.DEVICE_ID

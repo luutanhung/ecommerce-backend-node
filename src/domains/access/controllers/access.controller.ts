@@ -13,7 +13,7 @@ import { env } from "../../../configs/env.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
+import { UserMapper } from "../mappers/user.mapper.js";
 import type {
   LoginRequest,
   RegisterRequest,
@@ -34,7 +34,10 @@ class AccessController {
 
     new CreatedResponse({
       code: ResCode.USER_REGISTER_SUCCESS,
-      data: registerResult,
+      data: {
+        ...registerResult,
+        user: UserMapper.toAuthenticatedUser(registerResult.user),
+      },
     }).send(req, res);
   }
 
@@ -65,7 +68,7 @@ class AccessController {
 
     new OKResponse({
       code: ResCode.ACCESS_VERIFY_EMAIL_SUCCEEDED,
-      data: sanitizeUser(verifiedUser),
+      data: UserMapper.toAuthenticatedUser(verifiedUser),
     }).send(req, res);
   }
 
@@ -90,8 +93,10 @@ class AccessController {
     new OKResponse({
       code: ResCode.USER_LOGIN_SUCCESS,
       data: {
-        user: sanitizeUser(user),
-        accessToken: tokens.accessToken,
+        user: UserMapper.toAuthenticatedUser(user),
+        tokens: {
+          accessToken: tokens.accessToken,
+        },
       },
     }).send(req, res);
   }

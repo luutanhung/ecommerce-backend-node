@@ -23,7 +23,10 @@ import {
 
 const router = Router();
 
-// Register a new shop.
+// ==========================================
+// PUBLIC ROUTES (No Authentication Required)
+// ==========================================
+// Register a new account.
 router.post(
   "/access/register",
   validateRequest({ body: RegisterRequestSchema }),
@@ -79,11 +82,11 @@ router.post(
   asyncWrapper(accessController.verifyEmail),
 );
 
-/**
- * Authentication.
- */
 router.use(authenticateAccessToken);
 
+// ==========================================
+// PROTECTED ROUTES (Authentication Required)
+// ==========================================
 // Logout.
 router.post("/access/logout", asyncWrapper(accessController.logout));
 

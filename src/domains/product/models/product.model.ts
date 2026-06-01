@@ -3,7 +3,7 @@ import type { PaginateModel } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 import slugify from "slugify";
 
-import type { Product } from "../types/product.type.js";
+import type { Product } from "../types/product.types.js";
 
 import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
 import {
@@ -75,12 +75,10 @@ export const ProductSchema = new Schema(
       type: Schema.Types.Mixed,
       default: {},
     },
-
     images: {
       type: [String],
       default: [],
     },
-
     isPublished: {
       type: Boolean,
       default: false,

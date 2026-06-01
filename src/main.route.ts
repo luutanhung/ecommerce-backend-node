@@ -17,44 +17,20 @@ const router = Router();
 // Authenticate API Key.
 // router.use(authenticateApiKey);
 
-/**
- * Register access routes.
- */
-router.use("/api/v1", accessRouter);
-
-/**
- * Register user routes.
- */
-router.use("/api/v1", userRouter);
-
-/**
- * Register shop routes.
- */
-router.use("/api/v1", shopRouter);
-
-/**
- * Register inventory routes.
- */
-router.use("/api/v1", inventoryRouter);
-
-/**
- * Register product routes.
- */
+// ==========================================
+// CONTAIN PUBLIC ROUTES (No Authentication Required)
+// ==========================================
 router.use("/api/v1", productRouter);
 
-/**
- * Register pricing routes.
- */
+// ==========================================
+// CONTAIN PROTECTED ROUTES (No Authentication Required)
+// ==========================================
+router.use("/api/v1", accessRouter);
+router.use("/api/v1", userRouter);
+router.use("/api/v1", shopRouter);
+router.use("/api/v1", inventoryRouter);
 router.use("/api/v1", discountRouter);
-
-/**
- * Register cart routes.
- */
 router.use("/api/v1/", cartRouter);
-
-/**
- * Register order routes.
- */
 router.use("/api/v1", orderRouter);
 
 export { router as mainRouter };
