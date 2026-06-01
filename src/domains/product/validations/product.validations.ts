@@ -78,9 +78,9 @@ export const BaseProductSchema = z.object({
   images: ProductImagesSchema.default([]),
 });
 
-export const CreateProductRequestSchema = BaseProductSchema;
+export const CreateShopProductBodySchema = BaseProductSchema;
 
-export type CreateProductRequest = z.infer<typeof CreateProductRequestSchema>;
+export type CreateShopProductBody = z.infer<typeof CreateShopProductBodySchema>;
 
 export const ProductParamsSchema = z.object({
   productId: ProductIdSchema,

@@ -14,11 +14,9 @@ import type { AccessTokenPayload } from "../../access/types/access.types.js";
 import type { ShopParams } from "../../shop/validations/shop.validations.js";
 import { ProductMapper } from "../mappers/product.mapper.js";
 import type {
-  CreateProductRequest,
-  ProductParams,
-} from "../validations/product.validations.js";
-import type {
+  CreateShopProductBody,
   FindPublishedProducts,
+  ProductParams,
   SearchPublishedProductRequest,
 } from "../validations/product.validations.js";
 
@@ -39,7 +37,7 @@ class ProductController {
    */
   async createShopProduct(req: Request, res: Response): Promise<void> {
     const createdProduct = await ProductService.createShopProduct({
-      ...(req.body as CreateProductRequest),
+      ...(req.body as CreateShopProductBody),
       userId: (req.auth as AccessTokenPayload).uid,
       shopId: (req.ownedShop as ShopLean)._id.toString(),
     });
