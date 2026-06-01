@@ -1,3 +1,5 @@
+import type { OrderItem } from "../../order/types/order.service.types.js";
+
 import type { CreateInventoryRepositoryInput } from "./inventory.repository.types.js";
 
 export type CreateInventoryInput = CreateInventoryRepositoryInput;
@@ -27,6 +29,11 @@ export type ReservationInventoryInput = {
   productId: string;
   quantity: number;
   expiresAt: Date;
+};
+
+export type ReserveOrderInventoryInput = {
+  orderId: string;
+  orderItems: OrderItem[];
 };
 
 export type ReleaseReservationInput = {

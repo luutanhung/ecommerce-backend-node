@@ -13,12 +13,10 @@ import type {
 import type { OrderLean } from "./types/order.types.js";
 
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
-import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { DiscountService } from "../../pricing/services/discount.service.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { withTransaction } from "../../shared/helpers/withTransaction.js";
-import { LockService } from "../../shared/services/lock.service.js";
 import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 import { Users } from "../access/models/user.model.js";
@@ -203,86 +201,36 @@ export class OrderService {
       (shopOrder) => shopOrder.items,
     );
 
-    // Prevent deadlocks by locking in deterministic order.
-    const sortedOrderItems = [...orderItems].sort((a, b) => {
-      return a.productId.toString().localeCompare(b.productId.toString());
-    });
+    const createdPendingOrder = await withTransaction(
+      async (session: ClientSession) => {
+        /**
+         * Create pending order.
+         */
+        const createdOrder = await this.createPendingOrder(
+          {
+            userId,
+            orderItems,
+            orderSummary,
+            orderShippingAddress,
+          },
+          {
+            session,
+          },
+        );
 
-    const lockKeys: string[] = [];
+        await InventoryService.reserveOrderInventory(
+          {
+            orderId: createdOrder._id.toString(),
+            orderItems,
+          },
+          { session },
+        );
 
-    try {
-      for (const orderItem of sortedOrderItems) {
-        const { productId } = orderItem;
+        return createdOrder;
+      },
+    );
 
-        const lockKey = `inventory:lock_v1:${productId}`;
-
-        const acquired = await LockService.acquire(lockKey, 3);
-
-        if (!acquired) {
-          throw new ConflictAppError({
-            code: ResCode.ORDER_PRODUCT_LOCKED,
-          });
-        }
-
-        lockKeys.push(lockKey);
-      }
-
-      // Create a new order.
-      const createdPendingOrder = await withTransaction(
-        async (session: ClientSession) => {
-          /**
-           * Double-check inventory while locks are held.
-           */
-          for (const orderItem of sortedOrderItems) {
-            await InventoryService.checkAvailability(
-              {
-                productId: orderItem.productId,
-                quantity: orderItem.quantity,
-              },
-              { session },
-            );
-          }
-
-          /**
-           * Create pending order.
-           */
-          const createdOrder = await this.createPendingOrder(
-            {
-              userId,
-              orderItems,
-              orderSummary,
-              orderShippingAddress,
-            },
-            {
-              session,
-            },
-          );
-
-          /**
-           * Reserve
-           * */
-          for (const orderItem of sortedOrderItems) {
-            await InventoryService.reserveInventory(
-              {
-                orderId: createdOrder._id.toString(),
-                productId: orderItem.productId.toString(),
-                quantity: orderItem.quantity,
-                expiresAt: new Date(Date.now() + 15 * 60 * 1000),
-              },
-              { session },
-            );
-          }
-
-          return createdOrder;
-        },
-      );
-
-      return createdPendingOrder.toObject();
-    } finally {
-      await Promise.all(
-        lockKeys.map((lockKey) => LockService.release(lockKey)),
-      );
-    }
+    return createdPendingOrder.toObject();
   }
 
   private static async createPendingOrder(

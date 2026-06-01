@@ -10,12 +10,15 @@ import type {
   IncreaseStockInput,
   ReleaseReservationInput,
   ReservationInventoryInput,
+  ReserveOrderInventoryInput,
   UpdateInventoryInput,
 } from "./types/inventory.service.types.js";
 
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
+import { LockService } from "../../shared/services/lock.service.js";
 import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 
@@ -156,6 +159,62 @@ export class InventoryService {
     await inventory.save();
 
     return inventory.toObject();
+  }
+
+  static async reserveOrderInventory(
+    { orderId, orderItems }: ReserveOrderInventoryInput,
+    options: TransactionOptions = {},
+  ) {
+    const lockKeys: string[] = [];
+    try {
+      // Prevent deadlocks by locking in deterministic order.
+      const sortedOrderItems = [...orderItems].sort((a, b) => {
+        return a.productId.toString().localeCompare(b.productId.toString());
+      });
+
+      for (const orderItem of sortedOrderItems) {
+        const { productId } = orderItem;
+
+        const lockKey = `inventory:lock_v1:${productId}`;
+
+        const acquired = await LockService.acquire(lockKey, 3);
+
+        if (!acquired) {
+          throw new ConflictAppError({
+            code: ResCode.ORDER_PRODUCT_LOCKED,
+          });
+        }
+
+        lockKeys.push(lockKey);
+      }
+
+      /**
+       * Double-check inventory while locks are held.
+       */
+      for (const orderItem of sortedOrderItems) {
+        await InventoryService.checkAvailability({
+          productId: orderItem.productId,
+          quantity: orderItem.quantity,
+        });
+      }
+
+      /**
+       * Reserve inventory.
+       * */
+      for (const orderItem of sortedOrderItems) {
+        await InventoryService.reserveInventory(
+          {
+            orderId,
+            productId: orderItem.productId.toString(),
+            quantity: orderItem.quantity,
+            expiresAt: new Date(Date.now() + 15 * 60 * 1000),
+          },
+          { session: options.session },
+        );
+      }
+    } finally {
+      await Promise.all(lockKeys.map((key) => LockService.release(key)));
+    }
   }
 
   static async releaseReservation({
