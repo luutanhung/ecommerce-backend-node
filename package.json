@@ -94,6 +94,7 @@
     "slugify": "^1.6.9",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "vnpay": "^2.5.0",
     "zod": "^4.4.3"
   }
 }

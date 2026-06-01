@@ -37,6 +37,13 @@ const baseConfig = {
       resetPassword: "/access/reset-password",
     },
   },
+  payment: {
+    vnpay: {
+      tmnCode: env.VNPAY_TMNCODE,
+      secret: env.VNPAY_SECURE_SECRET,
+      testMode: env.VNPAY_TEST_MODE,
+    },
+  },
 };
 
 const config = {

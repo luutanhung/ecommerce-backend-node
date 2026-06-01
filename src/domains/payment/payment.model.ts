@@ -5,7 +5,7 @@ import {
   DOCUMENT_NAME,
 } from "../../shared/constants/model.constants.js";
 
-import { PAYMENT_STATUS } from "./payment.constants.js";
+import { PAYMENT_PROVIDER, PAYMENT_STATUS } from "./payment.constants.js";
 
 export const PaymentSchema = new Schema(
   {
@@ -16,6 +16,7 @@ export const PaymentSchema = new Schema(
     },
     provider: {
       type: String,
+      enum: Object.values(PAYMENT_PROVIDER),
       required: true,
     },
     amount: {

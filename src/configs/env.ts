@@ -40,6 +40,11 @@ const env = cleanEnv(process.env, {
 
   // Client.
   CLIENT_URL: str(),
+
+  // VNPay.
+  VNPAY_TMNCODE: str(),
+  VNPAY_SECURE_SECRET: str(),
+  VNPAY_TEST_MODE: bool(),
 });
 
 export { env };

@@ -49,13 +49,24 @@ const OrderItemSchema = new Schema(
 
 export const OrderSummarySchema = new Schema(
   {
-    merchandiseSubtotal: Number,
+    merchandiseSubtotal: {
+      type: Number,
+      required: true,
+    },
+    discountSubtotal: {
+      type: Number,
+      required: true,
+    },
 
-    discountSubtotal: Number,
+    shippingSubtotal: {
+      type: Number,
+      required: true,
+    },
 
-    shippingSubtotal: Number,
-
-    orderTotal: Number,
+    orderTotal: {
+      type: Number,
+      required: true,
+    },
   },
   {
     _id: false,
