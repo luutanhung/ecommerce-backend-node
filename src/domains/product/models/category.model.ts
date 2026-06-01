@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import slugify from "slugify";
 
 import {
   COLLECTION_NAME,
@@ -88,5 +89,11 @@ export const CategorySchema = new Schema(
     collection: COLLECTION_NAME.CATEGORIES,
   },
 );
+
+CategorySchema.pre("validate", function () {
+  this.slug = slugify(this.name, {
+    lower: true,
+  });
+});
 
 export const ProductCategories = model(DOCUMENT_NAME.CATEGORY, CategorySchema);
