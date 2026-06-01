@@ -7,8 +7,7 @@ import { userRouter } from "./domains/access/routes/user.route.js";
 import { cartRouter } from "./domains/cart/cart.route.js";
 import { inventoryRouter } from "./domains/inventory/inventory.route.js";
 import { orderRouter } from "./domains/order/order.route.js";
-import { publicProductRouter } from "./domains/product/routes/publicProduct.route.js";
-import { sellerProductRouter } from "./domains/product/routes/sellerProduct.route.js";
+import { productRouter } from "./domains/product/routes/product.route.js";
 import { shopRouter } from "./domains/shop/routes/shop.route.js";
 
 import { discountRouter } from "./pricing/routes/discount.route.js";
@@ -41,8 +40,7 @@ router.use("/api/v1", inventoryRouter);
 /**
  * Register product routes.
  */
-router.use("/api/v1", sellerProductRouter);
-router.use("/api/v1", publicProductRouter);
+router.use("/api/v1", productRouter);
 
 /**
  * Register pricing routes.
