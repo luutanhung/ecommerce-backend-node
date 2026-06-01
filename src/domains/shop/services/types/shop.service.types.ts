@@ -1,3 +1,5 @@
+import type { Currency } from "../../../../pricing/types/currency.types.js";
+
 export type RegisterShopInput = {
   userId: string;
   name: string;
@@ -34,4 +36,10 @@ export type CloseShopInput = {
 
 export type PerformShopClosureInput = {
   shopId: string;
+};
+
+export type ChangeCurrencyInput = {
+  userId: string;
+  shopId: string;
+  currency: Currency;
 };

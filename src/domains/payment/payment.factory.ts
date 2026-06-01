@@ -1,4 +1,3 @@
-
 import type { PaymentProviderName } from "./types/payment.types.js";
 
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";

@@ -12,6 +12,8 @@ import type {
   CreateRequiredStringSchemaInput,
 } from "../types/validations/common.validations.types.js";
 
+import { CURRENCY } from "../../pricing/constants/currency.constants.js";
+
 /**
  * Create schema for mongoose object id.
  */
@@ -120,3 +122,5 @@ export const SearchKeywordSchema = z.object({
 export const SortOrderSchema = z.object({
   sortOrder: z.enum(["asc", "desc"]).optional().default("desc"),
 });
+
+export const CurrencySchema = z.enum(Object.values(CURRENCY));

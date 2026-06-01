@@ -10,6 +10,7 @@ export class ShopMapper {
         "slug",
         "description",
         "logo",
+        "currency",
         "status",
         "createdAt",
         "updatedAt",

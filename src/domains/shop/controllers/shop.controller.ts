@@ -12,6 +12,7 @@ import type { AccessTokenPayload } from "../../access/types/access.types.js";
 import type { UserDocument } from "../../access/types/user.types.js";
 import { ShopMapper } from "../mappers/shop.mapper.js";
 import type {
+  ChangeCurrencyBody,
   RegisterShopRequestBody,
   ShopParams,
   UpdateShopInformationRequestBody,
@@ -95,6 +96,24 @@ export class ShopController {
 
     new OKResponse({
       code: ResCode.SHOP_UPDATE_INFORMATION_SUCCESS,
+      data: ShopMapper.toPublic(updatedShop),
+    }).send(req, res);
+  }
+
+  /**
+   * Change currency.
+   */
+  async changeCurrency(req: Request, res: Response) {
+    const shopId = (req.params as ShopParams).shopId;
+
+    const updatedShop = await ShopService.changeCurrency({
+      userId: (req.auth as AccessTokenPayload).uid,
+      shopId,
+      ...(req.body as ChangeCurrencyBody),
+    });
+
+    new OKResponse({
+      code: ResCode.SHOP_CHANGE_CURRENCY_SUCCEEDED,
       data: ShopMapper.toPublic(updatedShop),
     }).send(req, res);
   }

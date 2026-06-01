@@ -7,6 +7,7 @@ import { Shops } from "../models/shop.model.js";
 
 import type { ShopLean } from "../types/shop.types.js";
 import type {
+  ChangeCurrencyInput,
   CloseShopInput,
   PerformShopClosureInput,
   QueueShopVerificationEmailInput,
@@ -246,11 +247,36 @@ export class ShopService {
   }
 
   /**
+   * Change currency.
+   */
+  static async changeCurrency({
+    userId,
+    shopId,
+    currency,
+  }: ChangeCurrencyInput): Promise<ShopLean> {
+    const shop = await Shops.findOne({
+      _id: toObjectId(shopId),
+      user: toObjectId(userId),
+    });
+
+    if (!shop) {
+      throw new NotFoundAppError({
+        code: ResCode.SHOP_NOT_FOUND,
+      });
+    }
+
+    shop.currency = currency;
+    await shop.save();
+
+    return shop.toObject();
+  }
+
+  /**
    * Finds a registered shop by its email.
    */
-  static findShopByEmail = async (email: string): Promise<ShopLean | null> => {
+  static async findShopByEmail(email: string): Promise<ShopLean | null> {
     const query = { email };
 
     return await ShopRepository.findOne({ query });
-  };
+  }
 }

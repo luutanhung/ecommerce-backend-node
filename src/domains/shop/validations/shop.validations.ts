@@ -3,6 +3,7 @@ import z from "zod";
 
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import {
+  CurrencySchema,
   createJwtTokenSchema,
   createObjectIdSchema,
   createRequiredStringSchema,
@@ -65,3 +66,8 @@ export const VerifyShopRequestBodySchema = z.object({
   }),
 });
 export type VerifyShopRequestBody = z.infer<typeof VerifyShopRequestBodySchema>;
+
+export const ChangeCurrencyBodySchema = z.object({
+  currency: CurrencySchema,
+});
+export type ChangeCurrencyBody = z.infer<typeof ChangeCurrencyBodySchema>;

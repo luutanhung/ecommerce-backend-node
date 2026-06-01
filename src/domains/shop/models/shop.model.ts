@@ -3,6 +3,7 @@ import slugify from "slugify";
 
 import { SHOP_STATUS } from "../constants/shop.constants.js";
 
+import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
@@ -22,6 +23,11 @@ export const ShopSchema = new Schema(
       trim: true,
       maxLength: 150,
     },
+    currency: {
+      type: String,
+      enum: Object.values(CURRENCY),
+      required: true,
+    },
     slug: {
       type: String,
       unique: true,
@@ -36,7 +42,7 @@ export const ShopSchema = new Schema(
     status: {
       type: String,
       enum: Object.values(SHOP_STATUS),
-      default: SHOP_STATUS.INACTIVE,
+      default: SHOP_STATUS.ACTIVE,
     },
     isVerified: {
       type: Schema.Types.Boolean,

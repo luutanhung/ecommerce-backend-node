@@ -7,6 +7,7 @@ import { validateRequest } from "../../../shared/middlewares/validateRequest.mid
 import { authenticateAccessToken } from "../../access/middlewares/access.middleware.js";
 import { authorizeShopOwnership } from "../middlewares/shop.middleware.js";
 import {
+  ChangeCurrencyBodySchema,
   RegisterShopRequestBodySchema,
   ShopParamsSchema,
   UpdateShopInformationRequestBodySchema,
@@ -64,6 +65,18 @@ router.post(
   }),
   authorizeShopOwnership,
   asyncWrapper(shopController.updateShopInformation),
+);
+
+/**
+ * Change currency.
+ */
+router.post(
+  "/shops/:shopId/change-currency",
+  validateRequest({
+    params: ShopParamsSchema,
+    body: ChangeCurrencyBodySchema,
+  }),
+  asyncWrapper(shopController.changeCurrency),
 );
 
 /**
