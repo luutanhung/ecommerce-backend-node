@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { ResCode } from "../../shared/constants/resCode.constants.js";
+import { createObjectIdSchema } from "../../shared/validations/common.validations.js";
 import {
   UserAddressLineSchema,
   UserDistrictSchema,
@@ -14,6 +15,11 @@ import {
   ProductQuantitySchema,
 } from "../product/validations/product.validations.js";
 import { ShopIdSchema } from "../shop/validations/shop.validations.js";
+
+export const OrderIdSchema = createObjectIdSchema({
+  requiredMessage: ResCode.ORDER_ID_REQUIRED,
+  invalidMessage: ResCode.ORDER_ID_INVALID,
+});
 
 export const OrderItemSchema = z.object({
   productId: ProductIdSchema,

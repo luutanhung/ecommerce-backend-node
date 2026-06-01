@@ -2,8 +2,8 @@ import type { ClientSession } from "mongoose";
 import type Stripe from "stripe";
 
 import type {
-  CreatePaymentInput,
   HandleStripeWebhookInput,
+  createPaymentForOrderInput,
 } from "./types/payment.service.types.js";
 
 import { config } from "../../configs/config.js";
@@ -26,7 +26,10 @@ export class PaymentService {
   /**
    * Create a payment.
    */
-  static async createPayment({ orderId, providerName }: CreatePaymentInput) {
+  static async createPaymentForOrder({
+    orderId,
+    providerName,
+  }: createPaymentForOrderInput) {
     const order = await Orders.findOne({
       _id: toObjectId(orderId),
     }).lean();

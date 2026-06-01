@@ -7,6 +7,7 @@ import { userRouter } from "./domains/access/routes/user.route.js";
 import { cartRouter } from "./domains/cart/cart.route.js";
 import { inventoryRouter } from "./domains/inventory/inventory.route.js";
 import { orderRouter } from "./domains/order/order.route.js";
+import { paymentRouter } from "./domains/payment/payment.router.js";
 import { productRouter } from "./domains/product/routes/product.route.js";
 import { shopRouter } from "./domains/shop/routers/shop.router.js";
 
@@ -21,6 +22,7 @@ const router = Router();
 // CONTAIN PUBLIC ROUTES (No Authentication Required)
 // ==========================================
 router.use("/api/v1", productRouter);
+router.use("/api/v1", paymentRouter);
 
 // ==========================================
 // CONTAIN PROTECTED ROUTES (No Authentication Required)

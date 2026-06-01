@@ -1,6 +1,6 @@
 import type { PaymentProviderName } from "./payment.types.js";
 
-export type CreatePaymentInput = {
+export type createPaymentForOrderInput = {
   orderId: string;
   providerName: PaymentProviderName;
 };
