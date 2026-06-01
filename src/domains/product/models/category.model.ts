@@ -8,6 +8,16 @@ import {
 
 export const CategorySchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: DOCUMENT_NAME.USER,
+      required: true,
+    },
+    shop: {
+      type: Schema.Types.ObjectId,
+      ref: DOCUMENT_NAME.SHOP,
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -17,7 +27,6 @@ export const CategorySchema = new Schema(
     slug: {
       type: String,
       required: true,
-      unique: true,
       lowercase: true,
       trim: true,
     },
@@ -55,25 +64,9 @@ export const CategorySchema = new Schema(
       default: "",
     },
 
-    /**
-     * Sort Order in UI.
-     */
-    sortOrder: {
-      type: Number,
-      default: 0,
-    },
-
     isActive: {
       type: Boolean,
       default: true,
-    },
-
-    /**
-     * SEO metadata.
-     */
-    seo: {
-      metaTitle: String,
-      metaDescription: String,
     },
 
     /**
@@ -96,4 +89,4 @@ CategorySchema.pre("validate", function () {
   });
 });
 
-export const ProductCategories = model(DOCUMENT_NAME.CATEGORY, CategorySchema);
+export const Categories = model(DOCUMENT_NAME.CATEGORY, CategorySchema);
