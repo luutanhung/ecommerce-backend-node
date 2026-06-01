@@ -4,6 +4,7 @@ import { OKResponse } from "../../core/response/ok.response.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { AccessTokenPayload } from "../access/types/access.types.js";
 
+import { OrderMapper } from "./order.mapper.js";
 import { OrderService } from "./order.service.js";
 import type {
   CheckoutOrderRequestBody,
@@ -31,7 +32,7 @@ export class OrderController {
 
     new OKResponse({
       code: ResCode.ORDER_CREATE_ORDER_SUCCEEDED,
-      data: createdOrder,
+      data: OrderMapper.toPublic(createdOrder),
     }).send(req, res);
   }
 }
