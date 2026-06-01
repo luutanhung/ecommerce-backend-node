@@ -22,13 +22,20 @@ const baseConfig = {
     port: env.SMTP_PORT,
     user: env.SMTP_USER,
     password: env.SMTP_PASSWORD,
-    secret: env.JWT_MAIL_SECRET,
+  },
+  jwt: {
+    mailSecret: env.JWT_MAIL_SECRET,
   },
   logger: {
     level: env.LOG_LEVEL,
   },
   client: {
     url: env.CLIENT_URL,
+
+    routes: {
+      verifyEmail: "/access/verify-email",
+      resetPassword: "/access/reset-password",
+    },
   },
 };
 

@@ -40,10 +40,10 @@ export const emailWorker = new Worker(
             {
               userId,
             },
-            config.mail.secret,
+            config.jwt.mailSecret,
           );
 
-          const verificationUrl = `${config.client.url}/access/verify-email?token=${token}`;
+          const verificationUrl = `${config.client.url}/${config.client.routes.verifyEmail}?token=${token}`;
 
           const html = buildVerifyUserEmailTemplate({
             name,
@@ -77,7 +77,7 @@ export const emailWorker = new Worker(
                 userId: userInfo.userId,
                 shopId: shopInfo.shopId,
               },
-              config.mail.secret,
+              config.jwt.mailSecret,
             );
 
           const verificationUrl = `${config.client.url}/shops/verify-email?token=${shopVerificationToken}`;

@@ -21,7 +21,7 @@ import type {
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
-import type { CheckoutProductInput } from "../../domains/order/types/checkout.service.types.js";
+import type { CheckoutProductInput } from "../../domains/order/types/order.service.types.js";
 import { ProductRepository } from "../../domains/product/repositories/product.repository.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
