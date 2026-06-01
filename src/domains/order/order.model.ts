@@ -121,12 +121,14 @@ export const OrderSchema = new Schema(
       type: ShippingAddressSchema,
       required: true,
     },
+    // Tracks fulfillment.
     status: {
       type: String,
       enum: Object.values(ORDER_STATUS),
       default: ORDER_STATUS.PENDING,
       index: true,
     },
+    // Tracks money.
     paymentStatus: {
       type: String,
       enum: Object.values(PAYMENT_STATUS),

@@ -77,9 +77,19 @@ export class PaymentService {
 
     switch (event.type) {
       case "checkout.session.completed":
+        await this.handleCheckoutSessionCompleted(event);
+        break;
+
+      case "payment_intent.succeeded":
+        await this.handleCheckoutSessionCompleted(event);
         break;
 
       case "checkout.session.expired":
+        await this.handleCheckoutSessionExpired(event);
+        break;
+
+      case "payment_intent.payment_failed":
+        await this.handleCheckoutSessionExpired(event);
         break;
 
       default:
@@ -101,6 +111,7 @@ export class PaymentService {
     if (!order) {
       return;
     }
+
     /**
      * Idempotency.
      * Stripe may send the same webhook multiple times.
@@ -133,7 +144,7 @@ export class PaymentService {
         session,
       });
 
-      await InventoryService.commitReservation(
+      await InventoryService.commitReservationByOrder(
         {
           orderId,
         },
@@ -154,6 +165,75 @@ export class PaymentService {
           $set: {
             status: PAYMENT_STATUS.PAID,
             paidAt: new Date(),
+          },
+        },
+        {
+          session,
+        },
+      );
+    });
+  }
+
+  private static async handleCheckoutSessionExpired(event: Stripe.Event) {
+    const checkoutSession = event.data.object as Stripe.Checkout.Session;
+
+    const orderId = checkoutSession.metadata?.orderId;
+
+    if (!orderId) {
+      return;
+    }
+
+    const order = await Orders.findById(orderId);
+
+    if (!order) {
+      return;
+    }
+
+    /**
+     * Idempotency.
+     */
+    if (order.paymentStatus !== PAYMENT_STATUS.PENDING) {
+      return;
+    }
+
+    await withTransaction(async (session: ClientSession) => {
+      const updatedOrder = await Orders.findById(orderId, null, { session });
+
+      if (!updatedOrder) {
+        return;
+      }
+
+      /**
+       * Double check.
+       */
+      if (updatedOrder.paymentStatus !== PAYMENT_STATUS.PENDING) {
+        return;
+      }
+
+      updatedOrder.paymentStatus = PAYMENT_STATUS.FAILED;
+
+      updatedOrder.status = ORDER_STATUS.CANCELLED;
+
+      await updatedOrder.save({
+        session,
+      });
+
+      await InventoryService.releaseReservationByOrder(
+        {
+          orderId,
+        },
+        {
+          session,
+        },
+      );
+
+      await Payments.updateOne(
+        {
+          order: updatedOrder._id,
+        },
+        {
+          $set: {
+            status: PAYMENT_STATUS.FAILED,
           },
         },
         {
