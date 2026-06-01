@@ -4,14 +4,14 @@ import type {
 } from "./types/inventory.model.types.js";
 import type {
   CheckAvailabilityInput,
-  CommitReservationInput,
   CreateInventoryInput,
   DecreaseStockInput,
   IncreaseStockInput,
-  ReleaseReservationInput,
   ReservationInventoryInput,
   ReserveOrderInventoryInput,
   UpdateInventoryInput,
+  commitReservationByOrderInput,
+  releaseReservationByOrderInput,
 } from "./types/inventory.service.types.js";
 
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
@@ -218,8 +218,8 @@ export class InventoryService {
     }
   }
 
-  static async releaseReservation(
-    { orderId }: ReleaseReservationInput,
+  static async releaseReservationByOrder(
+    { orderId }: releaseReservationByOrderInput,
     options: TransactionOptions = {},
   ) {
     const { session } = options;
@@ -243,8 +243,8 @@ export class InventoryService {
     );
   }
 
-  static async commitReservation(
-    { orderId }: CommitReservationInput,
+  static async commitReservationByOrder(
+    { orderId }: commitReservationByOrderInput,
     options: TransactionOptions = {},
   ): Promise<void> {
     const { session } = options;

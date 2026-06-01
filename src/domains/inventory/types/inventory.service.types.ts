@@ -36,10 +36,10 @@ export type ReserveOrderInventoryInput = {
   orderItems: OrderItem[];
 };
 
-export type ReleaseReservationInput = {
+export type releaseReservationByOrderInput = {
   orderId: string;
 };
 
-export type CommitReservationInput = {
+export type commitReservationByOrderInput = {
   orderId: string;
 };
