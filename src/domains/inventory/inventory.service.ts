@@ -218,30 +218,29 @@ export class InventoryService {
     }
   }
 
-  static async releaseReservation({
-    productId,
-    orderId,
-  }: ReleaseReservationInput) {
-    const inventory = await Inventories.findOne({
-      product: toObjectId(productId),
-    });
+  static async releaseReservation(
+    { orderId }: ReleaseReservationInput,
+    options: TransactionOptions = {},
+  ) {
+    const { session } = options;
 
-    if (!inventory) {
-      throw new NotFoundAppError({
-        code: ResCode.INVENTORY_NOT_FOUND,
-      });
-    }
+    const orderObjectId = toObjectId(orderId);
 
-    const reservation = inventory.reservations.find(
-      (reservation) => reservation.order.toString() === orderId,
+    await Inventories.updateMany(
+      {
+        "reservations.order": orderObjectId,
+      },
+      {
+        $pull: {
+          reservations: {
+            order: orderObjectId,
+          },
+        },
+      },
+      {
+        session,
+      },
     );
-
-    if (inventory) {
-      inventory.reservations.pull(reservation);
-      await inventory.save();
-    }
-
-    return inventory.toObject();
   }
 
   static async commitReservation(

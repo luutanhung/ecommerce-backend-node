@@ -38,7 +38,6 @@ export type ReserveOrderInventoryInput = {
 
 export type ReleaseReservationInput = {
   orderId: string;
-  productId: string;
 };
 
 export type CommitReservationInput = {
