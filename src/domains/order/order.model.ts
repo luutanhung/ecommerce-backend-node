@@ -61,12 +61,10 @@ export const OrderSummarySchema = new Schema(
       type: Number,
       required: true,
     },
-
     shippingSubtotal: {
       type: Number,
       required: true,
     },
-
     orderTotal: {
       type: Number,
       required: true,

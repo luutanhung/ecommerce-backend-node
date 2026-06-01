@@ -8,7 +8,7 @@ import { cartRouter } from "./domains/cart/cart.route.js";
 import { inventoryRouter } from "./domains/inventory/inventory.route.js";
 import { orderRouter } from "./domains/order/order.route.js";
 import { productRouter } from "./domains/product/routes/product.route.js";
-import { shopRouter } from "./domains/shop/routes/shop.route.js";
+import { shopRouter } from "./domains/shop/routers/shop.router.js";
 
 import { discountRouter } from "./pricing/routes/discount.route.js";
 

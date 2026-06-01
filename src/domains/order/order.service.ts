@@ -26,6 +26,8 @@ import { Carts } from "../cart/models/cart.model.js";
 import { InventoryService } from "../inventory/inventory.service.js";
 import { PAYMENT_STATUS } from "../payment/payment.constants.js";
 import { Products } from "../product/models/product.model.js";
+import { Shops } from "../shop/models/shop.model.js";
+import type { ShopLean } from "../shop/types/shop.types.js";
 
 import { ORDER_STATUS } from "./order.constants.js";
 import { Orders } from "./order.model.js";
@@ -58,6 +60,24 @@ export class OrderService {
     // eslint-disable-next-line
     let shippingSubtotal: number = 0;
     const checkoutShopOrders = [] as ShopOrders;
+
+    // Disallow mixed currencies.
+    const currencies = _.uniq(
+      _.map(
+        await Shops.find({
+          _id: {
+            $in: shopOrders.map((shopOrder) => toObjectId(shopOrder.shopId)),
+          },
+        }).lean(),
+        (shop: ShopLean) => shop.currency,
+      ),
+    );
+
+    if (currencies.length > 1) {
+      throw new BadRequestAppError({
+        code: ResCode.ORDER_MULTIPLE_CURRENCIES_NOT_SUPPORTED,
+      });
+    }
 
     for (const shopOrder of shopOrders) {
       const { shopId, items } = shopOrder;
