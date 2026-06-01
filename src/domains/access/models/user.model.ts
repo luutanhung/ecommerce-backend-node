@@ -7,26 +7,31 @@ import {
   DOCUMENT_NAME,
 } from "../../../shared/constants/model.constants.js";
 
-export const UserAddressSchema = new Schema({
-  addressLine: {
-    type: String,
-    unique: true,
-    required: true,
+export const UserAddressSchema = new Schema(
+  {
+    addressLine: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    ward: {
+      type: String,
+    },
+    district: {
+      type: String,
+    },
+    province: {
+      type: String,
+    },
+    isPrimary: {
+      type: Boolean,
+      default: false,
+    },
   },
-  ward: {
-    type: String,
+  {
+    _id: true,
   },
-  district: {
-    type: String,
-  },
-  province: {
-    type: String,
-  },
-  isPrimary: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 
 export const UserSchema = new Schema(
   {
