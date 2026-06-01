@@ -96,7 +96,7 @@ ProductSchema.plugin(paginate);
 /**
  * Create indexes.
  */
-ProductSchema.index({ productName: "text", productDescription: "text" });
+ProductSchema.index({ name: "text", description: "text" });
 
 /**
  * Document Middlewares.

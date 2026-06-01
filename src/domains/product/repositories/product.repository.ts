@@ -99,7 +99,7 @@ export class ProductRepository {
     query,
   }: FindProductRepositoryInput): Promise<ProductLean | null> {
     return await Products.findOne(query)
-      .populate("productShop", "name email -_id")
+      .populate("shop", "name email -_id")
       .lean();
   }
 
@@ -135,12 +135,12 @@ export class ProductRepository {
       select: selectOptions,
       populate: [
         {
-          path: "productOwner",
+          path: "user",
           select: "email name -_id",
         },
         {
-          path: "productShop",
-          select: "shopName shopSlug shopStatus -_id",
+          path: "shop",
+          select: "name slug status -_id",
         },
       ],
     })) as PaginateResult<ProductLean>;
