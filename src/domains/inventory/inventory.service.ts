@@ -79,10 +79,11 @@ export class InventoryService {
     return inventory.stock - this.getAvailableStock(inventory);
   }
 
-  static async checkAvailability({
-    productId,
-    quantity,
-  }: CheckAvailabilityInput): Promise<InventoryDocument> {
+  static async checkAvailability(
+    { productId, quantity }: CheckAvailabilityInput,
+    // eslint-disable-next-line
+    options: TransactionOptions = {},
+  ): Promise<InventoryDocument> {
     const inventory = await Inventories.findOne({
       product: toObjectId(productId),
     });
@@ -104,12 +105,11 @@ export class InventoryService {
     return inventory;
   }
 
-  static async reserveInventory({
-    orderId,
-    productId,
-    quantity,
-    expiresAt,
-  }: ReservationInventoryInput): Promise<InventoryLean> {
+  static async reserveInventory(
+    { orderId, productId, quantity, expiresAt }: ReservationInventoryInput,
+    // eslint-disable-next-line
+    options: TransactionOptions = {},
+  ): Promise<InventoryLean> {
     const inventory = await this.checkAvailability({
       productId,
       quantity,

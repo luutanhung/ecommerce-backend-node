@@ -1,5 +1,6 @@
 export type OrderItem = {
   productId: string;
+  shopId: string;
   name: string;
   thumb: string;
   price: number;
@@ -37,7 +38,7 @@ export type ShopCheckoutSummary = {
   checkoutPrice: number;
 };
 
-export type CheckoutSummary = {
+export type OrderSummary = {
   merchandiseSubtotal: number;
   discountSubtotal: number;
   shippingSubtotal: number;
@@ -53,4 +54,21 @@ export type CreateOrderInput = {
   userId: string;
   cartId: string;
   shopOrders: ShopOrderInput[];
+  shippingAddress?: OrderShippingAddress;
+};
+
+export type OrderShippingAddress = {
+  addressLine: string;
+  ward?: string;
+  district?: string;
+  province?: string;
+};
+
+export type CreatePendingOrderInput = {
+  userId: string;
+  orderItems: OrderItem[];
+  orderSummary: OrderSummary;
+  orderShippingAddress?: OrderShippingAddress & {
+    phoneNumber: string;
+  };
 };

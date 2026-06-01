@@ -62,10 +62,6 @@ export const OrderSummarySchema = new Schema(
 );
 
 export const ShippingAddressSchema = new Schema({
-  fullName: {
-    type: String,
-    required: true,
-  },
   phoneNumber: {
     type: String,
     required: true,
@@ -141,4 +137,4 @@ export const OrderSchema = new Schema(
   },
 );
 
-export const orders = model(DOCUMENT_NAME.ORDER, OrderSchema);
+export const Orders = model(DOCUMENT_NAME.ORDER, OrderSchema);

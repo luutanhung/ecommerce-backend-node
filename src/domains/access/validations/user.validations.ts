@@ -39,12 +39,16 @@ export const UserAddressLineSchema = createRequiredStringSchema({
   error: ResCode.USER_ADDRESS_INVALID,
 });
 
+export const UserWardSchema = z.string();
+export const UserDistrictSchema = z.string();
+export const UserProvince = z.string();
+
 export const UserAddressSchema = z.object({
   addressLine: UserAddressLineSchema,
   isPrimary: z.boolean().optional(),
-  ward: z.string().optional(),
-  district: z.string().optional(),
-  province: z.string().optional(),
+  ward: UserWardSchema.optional(),
+  district: UserDistrictSchema.optional(),
+  province: UserProvince.optional(),
 });
 
 export const UserParamsSchema = z.object({

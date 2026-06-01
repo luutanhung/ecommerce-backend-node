@@ -5,7 +5,10 @@ import { validateRequest } from "../../shared/middlewares/validateRequest.middle
 import { authenticateAccessToken } from "../access/middlewares/access.middleware.js";
 
 import { orderController } from "./order.controller.js";
-import { CheckoutOrderRequestBodySchema } from "./order.validations.js";
+import {
+  CheckoutOrderRequestBodySchema,
+  CreateOrderRequestBodySchema,
+} from "./order.validations.js";
 
 const router = Router();
 
@@ -20,6 +23,17 @@ router.post(
     body: CheckoutOrderRequestBodySchema,
   }),
   asyncWrapper(orderController.checkoutOrder),
+);
+
+/**
+ * Create pending order.
+ */
+router.post(
+  "/orders/create",
+  validateRequest({
+    body: CreateOrderRequestBodySchema,
+  }),
+  asyncWrapper(orderController.createOrder),
 );
 
 export { router as orderRouter };
