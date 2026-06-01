@@ -55,5 +55,5 @@ export const COLLECTION_NAME = {
   CARTS: "carts",
 
   // Order.
-  ORDERS: "ORDERS",
+  ORDERS: "orders",
 } as const;

@@ -47,7 +47,7 @@ export type CheckoutOrderRequestBody = z.infer<
 export const CreateOrderRequestBodySchema = z.object({
   cartId: CartIdSchema,
   shopOrders: z.array(ShopOrderSchema),
-  shippingAddress: OrderShippingAddressSchema,
+  shippingAddress: OrderShippingAddressSchema.optional(),
 });
 export type CreateOrderRequestBody = z.infer<
   typeof CreateOrderRequestBodySchema

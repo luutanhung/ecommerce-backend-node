@@ -44,8 +44,8 @@ export class DiscountService {
     const { shopId, code } = input;
 
     const discount = await Discounts.findOne({
-      discountCode: code,
-      discountShop: toObjectId(shopId),
+      code: code,
+      shop: toObjectId(shopId),
     }).lean();
 
     if (discount && discount.isActive) {
