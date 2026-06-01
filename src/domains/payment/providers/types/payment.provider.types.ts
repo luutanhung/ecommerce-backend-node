@@ -1,8 +1,10 @@
+import type { Currency } from "../../../../pricing/types/currency.types.js";
+
 export type CreatePaymentInput = {
   orderId: string;
   orderNumber: string;
   amount: number;
-  currency: string;
+  currency: Currency;
   description: string;
   successUrl: string;
   cancelUrl: string;

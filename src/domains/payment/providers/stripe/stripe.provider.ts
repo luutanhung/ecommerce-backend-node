@@ -13,6 +13,7 @@ import { ResCode } from "../../../../shared/constants/resCode.constants.js";
 import { PaymentProvider } from "../payment.provider.js";
 
 import { stripeClient } from "./stripe.client.js";
+import { toStripeAmount } from "./stripe.helpers.js";
 
 export class StripeProvider extends PaymentProvider {
   async createPayment(input: CreatePaymentInput): Promise<CreatePaymentResult> {
@@ -26,7 +27,7 @@ export class StripeProvider extends PaymentProvider {
           quantity: 1,
           price_data: {
             currency: currency.toLocaleLowerCase(),
-            unit_amount: Math.round(amount),
+            unit_amount: toStripeAmount(amount, currency),
             product_data: {
               name: `Order ${orderNumber}`,
             },
