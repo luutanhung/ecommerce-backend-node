@@ -8,7 +8,7 @@ import type { ShopLean } from "../../domains/shop/types/shop.types.js";
 import type { ShopParams } from "../../domains/shop/validations/shop.validations.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
-import { sanitizeDiscount } from "../sanitizers/discount.sanitizer.js";
+import { DiscountMapper } from "../mappers/discount.mapper.js";
 import type {
   CreateShopDiscountRequest,
   FindApplicableProductsByDiscountCode,
@@ -27,7 +27,7 @@ export class DiscountController {
 
     new CreatedResponse({
       code: ResCode.DISCOUNT_CREATE_SUCCESS,
-      data: sanitizeDiscount(createdDiscount),
+      data: DiscountMapper.toPublic(createdDiscount),
     }).send(req, res);
   }
 
@@ -61,11 +61,13 @@ export class DiscountController {
 
     new OKResponse({
       code: ResCode.DISCOUNT_FIND_DISCOUNTS_BY_SHOP,
-      data: await DiscountService.findDiscountsByShop({
-        shopId,
-        page,
-        limit,
-      }),
+      data: DiscountMapper.toPaginate(
+        await DiscountService.findDiscountsByShop({
+          shopId,
+          page,
+          limit,
+        }),
+      ),
     }).send(req, res);
   }
 
@@ -82,10 +84,12 @@ export class DiscountController {
 
     new OKResponse({
       code: ResCode.DISCOUNT_FIND_SHOP_DISCOUNT_BY_DISCOUNT_CODE_SUCCESS,
-      data: await DiscountService.findShopDiscountByDiscountCode({
-        shopId,
-        code,
-      }),
+      data: DiscountMapper.toPublic(
+        await DiscountService.findShopDiscountByDiscountCode({
+          shopId,
+          code,
+        }),
+      ),
     }).send(req, res);
   }
 }

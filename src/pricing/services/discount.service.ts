@@ -30,10 +30,8 @@ import {
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
-import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
 import { Discounts } from "../discount.model.js";
 import { DiscountRepository } from "../repositories/discount.repository.js";
-import { sanitizeDiscount } from "../sanitizers/discount.sanitizer.js";
 
 export class DiscountService {
   /**
@@ -350,6 +348,6 @@ export class DiscountService {
       limit,
     });
 
-    return sanitizePagination(paginationResult, sanitizeDiscount);
+    return paginationResult;
   }
 }

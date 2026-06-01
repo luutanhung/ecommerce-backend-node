@@ -13,7 +13,6 @@ import {
 } from "../../shared/constants/pagination.constants.js";
 import { buildSelect, buildSort } from "../../shared/utils/mongoose.utils.js";
 import { Discounts } from "../discount.model.js";
-import { DEFAULT_DISCOUNT_SELECT_FIELDS } from "../sanitizers/discount.sanitizer.js";
 
 export class DiscountRepository {
   /**
@@ -34,7 +33,7 @@ export class DiscountRepository {
     sortOrder = SortOrder.DESC,
     page = PAGINATION_DEFAULT_PAGE,
     limit = PAGINATION_DEFAULT_LIMIT,
-    select = DEFAULT_DISCOUNT_SELECT_FIELDS,
+    select,
   }: FindDiscountsPaginatedRepositoryInput) {
     const sortOptions = buildSort({
       sortBy,

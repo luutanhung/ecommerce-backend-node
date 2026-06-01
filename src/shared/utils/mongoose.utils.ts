@@ -22,26 +22,6 @@ export const toObjectId = (value: string): Types.ObjectId => {
 };
 
 /**
- * Transform mongoose _id to id.
- */
-export const transformMongoId = <
-  T extends {
-    _id: Types.ObjectId;
-  },
->(
-  obj: T,
-): Omit<T, "_id"> & {
-  id: string;
-} => {
-  const { _id, ...rest } = obj;
-
-  return {
-    id: _id.toString(),
-    ...rest,
-  };
-};
-
-/**
  * Transform sort options
  * to mongoose sort object.
  */

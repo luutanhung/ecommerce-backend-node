@@ -8,11 +8,9 @@ import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { CreatedResponse } from "../../../core/response/created.response.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import type {
-  AccessTokenPayload,
-  UserDocument,
-} from "../../access/types/access.types.js";
-import { sanitizeShop } from "../sanitizers/shop.sanitizer.js";
+import type { AccessTokenPayload } from "../../access/types/access.types.js";
+import type { UserDocument } from "../../access/types/user.types.js";
+import { ShopMapper } from "../mappers/shop.mapper.js";
 import type {
   RegisterShopRequestBody,
   ShopParams,
@@ -38,7 +36,7 @@ export class ShopController {
 
     new CreatedResponse({
       code: ResCode.SHOP_REGISTER_SUCCESS,
-      data: sanitizeShop(registeredShop),
+      data: ShopMapper.toPublic(registeredShop),
     }).send(req, res);
   }
 
@@ -97,7 +95,7 @@ export class ShopController {
 
     new OKResponse({
       code: ResCode.SHOP_UPDATE_INFORMATION_SUCCESS,
-      data: sanitizeShop(updatedShop),
+      data: ShopMapper.toPublic(updatedShop),
     }).send(req, res);
   }
 
