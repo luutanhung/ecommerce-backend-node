@@ -21,6 +21,7 @@ import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { LockService } from "../../shared/services/lock.service.js";
 import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
+import { Orders } from "../order/order.model.js";
 
 import { Inventories } from "./inventory.model.js";
 import { InventoryRepository } from "./inventory.repository.js";
@@ -243,36 +244,56 @@ export class InventoryService {
     return inventory.toObject();
   }
 
-  static async commitReservation({
-    orderId,
-    productId,
-  }: CommitReservationInput): Promise<InventoryLean> {
-    const inventory = await Inventories.findOne({
-      product: toObjectId(productId),
-    });
+  static async commitReservation(
+    { orderId }: CommitReservationInput,
+    options: TransactionOptions = {},
+  ): Promise<void> {
+    const { session } = options;
 
-    if (!inventory) {
+    const order = await Orders.findById(orderId, null, { session });
+
+    if (!order) {
+      throw new NotFoundAppError({
+        code: ResCode.ORDER_NOT_FOUND,
+      });
+    }
+
+    const productIds = order.items.map((item) => item.product);
+
+    const inventories = await Inventories.find(
+      {
+        product: {
+          $in: productIds,
+        },
+      },
+      null,
+      { session },
+    );
+
+    if (inventories.length !== productIds.length) {
       throw new NotFoundAppError({
         code: ResCode.INVENTORY_NOT_FOUND,
       });
     }
 
-    const reservation = inventory.reservations.find(
-      (reservation) => reservation.order.toString() === orderId,
-    );
+    for (const inventory of inventories) {
+      const reservation = inventory.reservations.find(
+        (reservation) => reservation.order.toString() === orderId,
+      );
 
-    if (!reservation) {
-      throw new BadRequestAppError({
-        code: ResCode.INVENTORY_RESERVATION_NOT_FOUND,
+      if (!reservation) {
+        throw new BadRequestAppError({
+          code: ResCode.INVENTORY_RESERVATION_NOT_FOUND,
+        });
+      }
+
+      inventory.stock -= reservation.quantity;
+
+      inventory.reservations.pull(reservation._id);
+
+      await inventory.save({
+        session,
       });
     }
-
-    inventory.stock -= reservation.quantity;
-
-    inventory.reservations.pull(reservation);
-
-    await inventory.save();
-
-    return inventory.toObject();
   }
 }

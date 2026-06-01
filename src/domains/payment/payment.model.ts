@@ -19,6 +19,10 @@ export const PaymentSchema = new Schema(
       enum: Object.values(PAYMENT_PROVIDER),
       required: true,
     },
+    providerPaymentId: {
+      type: String,
+      required: true,
+    },
     amount: {
       type: Number,
       required: true,
@@ -28,10 +32,7 @@ export const PaymentSchema = new Schema(
       enum: Object.values(PAYMENT_STATUS),
       default: PAYMENT_STATUS.PENDING,
     },
-
     transactionId: String,
-    providerPaymentId: String,
-
     metadata: {
       type: Schema.Types.Mixed,
       default: {},

@@ -10,12 +10,17 @@ export type CreatePaymentInput = {
 
 export type CreatePaymentResult = {
   providerPaymentId: string;
-  paymentUrl?: string;
+  paymentUrl: string;
   clientSecret?: string;
   expiresAt?: Date;
 };
 
 export type VerifyPaymentInput = {
+  body: string;
+  signature: string;
+};
+
+export type ConstructWebhookEventInput = {
   body: string;
   signature: string;
 };

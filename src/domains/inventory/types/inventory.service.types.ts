@@ -43,5 +43,4 @@ export type ReleaseReservationInput = {
 
 export type CommitReservationInput = {
   orderId: string;
-  productId: string;
 };

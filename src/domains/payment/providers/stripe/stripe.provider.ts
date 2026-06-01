@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 
 import type {
+  ConstructWebhookEventInput,
   CreatePaymentInput,
   CreatePaymentResult,
   VerifyPaymentInput,
@@ -52,14 +53,26 @@ export class StripeProvider extends PaymentProvider {
     };
   }
 
-  async verifyPayment(input: VerifyPaymentInput) {
-    const { body, signature } = input;
-
+  constructWebhookEvent({
+    body,
+    signature,
+  }: ConstructWebhookEventInput): Stripe.Event {
     const event = stripeClient.webhooks.constructEvent(
       body,
       signature,
       config.payment.stripe.webhookSecret,
     );
+
+    return event;
+  }
+
+  async verifyPayment(input: VerifyPaymentInput) {
+    const { body, signature } = input;
+
+    const event = this.constructWebhookEvent({
+      body,
+      signature,
+    });
 
     switch (event.type) {
       case "checkout.session.completed": {
