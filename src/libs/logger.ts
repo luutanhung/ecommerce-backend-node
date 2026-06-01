@@ -90,5 +90,3 @@ export const createRequestLogger = (
 ) => {
   return logger.child({ requestId, ...context });
 };
-
-export default logger;

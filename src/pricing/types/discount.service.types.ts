@@ -1,4 +1,4 @@
-import type { CheckoutProductInput } from "../../domains/order/types/order.service.types.js";
+import type { OrderItemInput } from "../../domains/order/types/order.service.types.js";
 import type { ProductType } from "../../domains/product/types/product.types.js";
 import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
 
@@ -49,5 +49,5 @@ export type FindDiscountsByShopInput = PaginationQuery & {
 export type ApplyDiscountToProductsInput = {
   shopId: string;
   code: string;
-  products: CheckoutProductInput[];
+  products: OrderItemInput[];
 };

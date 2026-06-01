@@ -1,6 +1,6 @@
 import type { SendMailInput } from "./types/mail.service.types.js";
 
-import { config } from "../../configs/index.js";
+import { config } from "../../configs/config.js";
 
 import { mailTransporter } from "./mail.transporter.js";
 

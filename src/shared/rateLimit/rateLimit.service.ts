@@ -3,7 +3,7 @@ import type { RateLimitInput } from "../types/services/rateLimit.service.types.j
 import { TooManyRequestsAppError } from "../../core/error/tooManyRequestAppError.js";
 import { redis } from "../../libs/redis.js";
 
-import { RATE_LIMIT_POLICY } from "./rateLimite.policy.js";
+import { RATE_LIMIT_POLICY } from "./rateLimit.policy.js";
 
 export class RateLimitService {
   static async enforcePolicy(

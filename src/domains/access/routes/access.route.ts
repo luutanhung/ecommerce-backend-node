@@ -5,7 +5,7 @@ import { accessController } from "../controllers/access.controller.js";
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../../../shared/middlewares/validateRequest.middleware.js";
 import { rateLimitMiddleware } from "../../../shared/rateLimit/rateLimit.middleware.js";
-import { RATE_LIMIT_POLICY_NAME } from "../../../shared/rateLimit/rateLimite.policy.js";
+import { RATE_LIMIT_POLICY_NAME } from "../../../shared/rateLimit/rateLimit.policy.js";
 import {
   authenticateAccessToken,
   authenticateClientId,

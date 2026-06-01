@@ -15,14 +15,17 @@ export const DOCUMENT_NAME = {
   PRODUCT: "Product",
   PRODUCT_CATEGORY: "PRODUCT_CATEGORY",
 
+  // Pricing.
+  DISCOUNT: "Discount",
+
   // Inventory.
   INVENTORY: "Inventory",
 
   // Cart.
   CART: "Cart",
 
-  // Pricing.
-  DISCOUNT: "Discount",
+  // Order.
+  ORDER: "ORDER",
 } as const;
 
 export const COLLECTION_NAME = {
@@ -42,12 +45,15 @@ export const COLLECTION_NAME = {
   PRODUCTS: "products",
   PRODUCT_CATEGORIES: "product_categories",
 
+  // Pricing.
+  DISCOUNTS: "discounts",
+
   // Inventory.
   INVENTORIES: "inventories",
 
   // Cart.
   CARTS: "carts",
 
-  // Pricing.
-  DISCOUNTS: "discounts",
+  // Order.
+  ORDERS: "ORDERS",
 } as const;

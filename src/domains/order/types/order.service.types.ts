@@ -7,7 +7,11 @@ export type OrderItem = {
   subtotal: number;
 };
 
-export type CheckoutProductInput = {
+// ==========================================
+// Service Inputs.
+// ==========================================
+
+export type OrderItemInput = {
   productId: string;
   quantity: number;
   price: number;
@@ -16,7 +20,7 @@ export type CheckoutProductInput = {
 export type ShopOrderInput = {
   shopId: string;
   discountCode: string;
-  items: CheckoutProductInput[];
+  items: OrderItemInput[];
 };
 
 export type CheckoutOrderInput = {
@@ -38,8 +42,15 @@ export type CheckoutSummary = {
   discountSubtotal: number;
   shippingSubtotal: number;
   orderTotal: number;
-  shopOrders: {
-    shopId: string;
-    items: OrderItem[];
-  }[];
+};
+
+export type ShopOrders = {
+  shopId: string;
+  items: OrderItem[];
+}[];
+
+export type CreateOrderInput = {
+  userId: string;
+  cartId: string;
+  shopOrders: ShopOrderInput[];
 };

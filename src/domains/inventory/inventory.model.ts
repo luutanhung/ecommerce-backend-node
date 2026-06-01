@@ -5,9 +5,27 @@ import {
   DOCUMENT_NAME,
 } from "../../shared/constants/model.constants.js";
 
-/**
- * Inventory model.
- */
+const InventoryReservationSchema = new Schema(
+  {
+    order: {
+      type: Schema.Types.ObjectId,
+      ref: DOCUMENT_NAME.ORDER,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    expiresAt: {
+      type: Date,
+      required: true,
+    },
+  },
+  {
+    _id: false,
+  },
+);
+
 export const InventorySchema = new Schema(
   {
     shop: {
@@ -29,7 +47,7 @@ export const InventorySchema = new Schema(
       default: "",
     },
     reservations: {
-      type: Array,
+      type: [InventoryReservationSchema],
       default: [],
     },
   },

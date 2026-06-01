@@ -1,16 +1,21 @@
 import type {
   CheckoutOrderInput,
   CheckoutSummary,
+  CreateOrderInput,
   OrderItem,
+  ShopOrders,
 } from "./types/order.service.types.js";
 
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
+import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { DiscountService } from "../../pricing/services/discount.service.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
+import { LockService } from "../../shared/services/lock.service.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 import { CART_STATE } from "../cart/cart.contants.js";
 import { Carts } from "../cart/models/cart.model.js";
+import { InventoryService } from "../inventory/inventory.service.js";
 import { Products } from "../product/models/product.model.js";
 
 export class OrderService {
@@ -39,7 +44,7 @@ export class OrderService {
     let discountSubtotal: number = 0;
     // eslint-disable-next-line
     let shippingSubtotal: number = 0;
-    const checkoutSummaryShopOrders = [] as CheckoutSummary["shopOrders"];
+    const checkoutShopOrders = [] as ShopOrders;
 
     for (const shopOrder of shopOrders) {
       const { shopId, items } = shopOrder;
@@ -89,7 +94,7 @@ export class OrderService {
         });
       }
 
-      checkoutSummaryShopOrders.push({
+      checkoutShopOrders.push({
         shopId,
         items: orderItems,
       });
@@ -111,11 +116,61 @@ export class OrderService {
       discountSubtotal,
       shippingSubtotal,
       orderTotal,
-      shopOrders: checkoutSummaryShopOrders,
     };
 
-    return checkoutSummary;
+    return {
+      checkoutSummary,
+      shopOrders: checkoutShopOrders,
+    };
   }
 
-  static async createOrder() {}
+  static async createOrder({ userId, cartId, shopOrders }: CreateOrderInput) {
+    // eslint-disable-next-line
+    const { checkoutSummary, shopOrders: checkoutShopOrders } =
+      await this.checkoutOrder({
+        userId,
+        cartId,
+        shopOrders,
+      });
+
+    const orderItems: OrderItem[] = checkoutShopOrders.flatMap(
+      (shopOrder) => shopOrder.items,
+    );
+
+    const sortedOrderItems = [...orderItems].sort((a, b) => {
+      return a.productId.toString().localeCompare(b.productId.toString());
+    });
+
+    const lockKeys: string[] = [];
+
+    try {
+      for (const orderItem of sortedOrderItems) {
+        const { productId, quantity } = orderItem;
+
+        const lockKey = `inventory:lock:${productId}`;
+
+        const acquired = await LockService.acquire(lockKey, 30);
+
+        if (!acquired) {
+          throw new ConflictAppError({
+            code: ResCode.ORDER_PRODUCT_LOCKED,
+          });
+        }
+
+        lockKeys.push(lockKey);
+
+        // Reserve inventory.
+        await InventoryService.reserveInventory({
+          orderId: "xxx",
+          productId,
+          quantity,
+          expiresAt: new Date(Date.now() + 15 * 60 * 1000),
+        });
+      }
+    } finally {
+      await Promise.all(
+        lockKeys.map((lockKey) => LockService.release(lockKey)),
+      );
+    }
+  }
 }

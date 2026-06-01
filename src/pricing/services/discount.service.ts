@@ -21,7 +21,7 @@ import type {
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import { ConflictAppError } from "../../core/error/conflictAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
-import type { CheckoutProductInput } from "../../domains/order/types/order.service.types.js";
+import type { OrderItemInput } from "../../domains/order/types/order.service.types.js";
 import { ProductRepository } from "../../domains/product/repositories/product.repository.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
@@ -105,7 +105,7 @@ export class DiscountService {
 
   private static getEligibleProducts(
     discount: DiscountLean,
-    products: CheckoutProductInput[],
+    products: OrderItemInput[],
   ) {
     switch (discount.appliesTo) {
       case DISCOUNT_APPLIES_TO.ALL:
@@ -128,7 +128,7 @@ export class DiscountService {
     }
   }
 
-  private static calculateEligibleAmount(products: CheckoutProductInput[]) {
+  private static calculateEligibleAmount(products: OrderItemInput[]) {
     return products.reduce((total, product) => {
       return total + product.price * product.quantity;
     }, 0);
