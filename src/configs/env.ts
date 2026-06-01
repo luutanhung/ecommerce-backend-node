@@ -45,6 +45,11 @@ const env = cleanEnv(process.env, {
   VNPAY_TMNCODE: str(),
   VNPAY_SECURE_SECRET: str(),
   VNPAY_TEST_MODE: bool(),
+
+  // Stripe.
+  STRIPE_SECRET_KEY: str(),
+  STRIPE_WEBHOOK_SECRET: str(),
+  STRIPE_PUBLISHABLE_KEY: str(),
 });
 
 export { env };

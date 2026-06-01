@@ -22,7 +22,7 @@ export class OrderMapper {
         "shippingAddress",
         "status",
         "paymentStatus",
-        "note",
+        "description",
         "paidAt",
         "cancelledAt",
         "deliveredAt",

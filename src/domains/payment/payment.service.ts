@@ -1,6 +1,7 @@
 import type { CreatePaymentInput } from "./types/payment.service.types.js";
 
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
+import { CURRENCY } from "../../pricing/constants/currency.constants.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
 import { Orders } from "../order/order.model.js";
@@ -23,8 +24,12 @@ export class PaymentService {
 
     const paymentProvider = PaymentProviderFactory.getProvider(providerName);
 
-    const paymentUrl = await paymentProvider.createPaymentUrl({
-      order,
+    const paymentUrl = await paymentProvider.createPayment({
+      orderId: order._id.toString(),
+      orderNumber: order.orderNumber,
+      amount: order.summary.orderTotal,
+      currency: CURRENCY.USD,
+      description: order.description,
     });
 
     const payment = await Payments.create({

@@ -38,10 +38,17 @@ const baseConfig = {
     },
   },
   payment: {
+    // VNPay.
     vnpay: {
       tmnCode: env.VNPAY_TMNCODE,
       secret: env.VNPAY_SECURE_SECRET,
       testMode: env.VNPAY_TEST_MODE,
+    },
+    // Stripe.
+    stripe: {
+      secretKey: env.STRIPE_SECRET_KEY,
+      webhookSecret: env.STRIPE_WEBHOOK_SECRET,
+      publishableKey: env.STRIPE_PUBLISHABLE_KEY,
     },
   },
 };

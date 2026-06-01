@@ -49,6 +49,10 @@ const OrderItemSchema = new Schema(
 
 export const OrderSummarySchema = new Schema(
   {
+    currency: {
+      type: String,
+      required: true,
+    },
     merchandiseSubtotal: {
       type: Number,
       required: true,
@@ -130,7 +134,7 @@ export const OrderSchema = new Schema(
       enum: Object.values(PAYMENT_STATUS),
       default: PAYMENT_STATUS.PENDING,
     },
-    note: {
+    description: {
       type: String,
       default: "",
     },

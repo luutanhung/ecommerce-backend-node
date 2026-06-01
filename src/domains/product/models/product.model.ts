@@ -5,7 +5,6 @@ import slugify from "slugify";
 
 import type { Product } from "../types/product.types.js";
 
-import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
@@ -39,10 +38,6 @@ export const ProductSchema = new Schema(
     price: {
       type: Number,
       required: true,
-    },
-    currency: {
-      type: String,
-      default: CURRENCY.USD,
     },
     quantity: {
       type: Number,

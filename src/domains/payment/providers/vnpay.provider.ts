@@ -1,7 +1,7 @@
 import { PaymentProvider } from "./payment.provider.js";
 
 export class VNPayProvider extends PaymentProvider {
-  async createPaymentUrl(): Promise<string> {
+  async createPayment(): Promise<string> {
     return "";
   }
 
