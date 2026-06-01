@@ -56,5 +56,5 @@ export const UserParamsSchema = z.object({
 });
 export type UserParams = z.infer<typeof UserParamsSchema>;
 
-export const AddAddressRequestBodySchema = UserAddressSchema;
-export type AddAddressRequestBody = z.infer<typeof AddAddressRequestBodySchema>;
+export const AddAddressBodySchema = UserAddressSchema;
+export type AddAddressBody = z.infer<typeof AddAddressBodySchema>;

@@ -7,13 +7,13 @@ import type { AccessTokenPayload } from "../types/access.types.js";
 import { OKResponse } from "../../../core/response/ok.response.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { UserMapper } from "../mappers/user.mapper.js";
-import type { AddAddressRequestBody } from "../validations/user.validations.js";
+import type { AddAddressBody } from "../validations/user.validations.js";
 
 export class UserController {
   async addAddress(req: Request, res: Response) {
     const updatedUser = await UserService.addAddress({
       userId: (req.auth as AccessTokenPayload).uid,
-      ...(req.body as AddAddressRequestBody),
+      ...(req.body as AddAddressBody),
     });
 
     new OKResponse({

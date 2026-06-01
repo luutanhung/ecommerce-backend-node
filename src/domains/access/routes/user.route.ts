@@ -5,7 +5,7 @@ import { userController } from "../controllers/user.controller.js";
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../../../shared/middlewares/validateRequest.middleware.js";
 import { authenticateAccessToken } from "../middlewares/access.middleware.js";
-import { AddAddressRequestBodySchema } from "../validations/user.validations.js";
+import { AddAddressBodySchema } from "../validations/user.validations.js";
 
 const router = Router();
 
@@ -17,7 +17,7 @@ router.use(authenticateAccessToken);
 router.post(
   "/users/me/add-address",
   validateRequest({
-    body: AddAddressRequestBodySchema,
+    body: AddAddressBodySchema,
   }),
   asyncWrapper(userController.addAddress),
 );
