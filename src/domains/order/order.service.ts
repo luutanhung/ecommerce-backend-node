@@ -216,7 +216,7 @@ export class OrderService {
 
         const lockKey = `inventory:lock:${productId}`;
 
-        const acquired = await LockService.acquire(lockKey, 30);
+        const acquired = await LockService.acquire(lockKey, 3);
 
         if (!acquired) {
           throw new ConflictAppError({
