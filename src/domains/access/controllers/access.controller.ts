@@ -15,9 +15,9 @@ import { OKResponse } from "../../../core/response/ok.response.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { UserMapper } from "../mappers/user.mapper.js";
 import type {
-  LoginRequest,
-  RegisterRequest,
-  VerifyEmailRequestBody,
+  LoginBody,
+  RegisterBody,
+  VerifyEmailBody,
 } from "../validations/access.validations.js";
 import type { UserParams } from "../validations/user.validations.js";
 
@@ -29,7 +29,7 @@ class AccessController {
    */
   async register(req: Request, res: Response): Promise<void> {
     const registerResult = await AccessService.register(
-      req.body as RegisterRequest,
+      req.body as RegisterBody,
     );
 
     new CreatedResponse({
@@ -60,7 +60,7 @@ class AccessController {
    * Verify email.
    */
   async verifyEmail(req: Request, res: Response): Promise<void> {
-    const token = (req.body as VerifyEmailRequestBody).token;
+    const token = (req.body as VerifyEmailBody).token;
 
     const verifiedUser = await AccessService.verifyEmail({
       emailVerificationToken: token,
@@ -77,7 +77,7 @@ class AccessController {
    */
   async login(req: Request, res: Response): Promise<void> {
     const { user, tokens } = await AccessService.login(
-      req?.validated?.body as LoginRequest,
+      req?.validated?.body as LoginBody,
     );
 
     /**

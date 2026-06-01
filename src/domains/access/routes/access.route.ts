@@ -12,9 +12,9 @@ import {
 } from "../middlewares/access.middleware.js";
 import { ensureUserRegistered } from "../middlewares/user.middleware.js";
 import {
-  LoginRequestSchema,
-  RegisterRequestSchema,
-  VerifyEmailRequestBodySchema,
+  LoginBodySchema,
+  RegisterBodySchema,
+  VerifyEmailBodySchema,
 } from "../validations/access.validations.js";
 import {
   type UserParams,
@@ -29,7 +29,7 @@ const router = Router();
 // Register a new account.
 router.post(
   "/access/register",
-  validateRequest({ body: RegisterRequestSchema }),
+  validateRequest({ body: RegisterBodySchema }),
   asyncWrapper(accessController.register),
 );
 
@@ -38,7 +38,7 @@ router.post(
  */
 router.post(
   "/access/login",
-  validateRequest({ body: LoginRequestSchema }),
+  validateRequest({ body: LoginBodySchema }),
   asyncWrapper(accessController.login),
 );
 
@@ -76,7 +76,7 @@ router.post(
   "/access/:userId/verify-email",
   validateRequest({
     params: UserParamsSchema,
-    body: VerifyEmailRequestBodySchema,
+    body: VerifyEmailBodySchema,
   }),
   ensureUserRegistered,
   asyncWrapper(accessController.verifyEmail),

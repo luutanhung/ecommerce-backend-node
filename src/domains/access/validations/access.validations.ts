@@ -17,40 +17,34 @@ export const RefreshTokenSchema = createJwtTokenSchema({
   invalidMessage: ResCode.REFRESH_TOKEN_INVALID,
 });
 
-export const RegisterRequestSchema = z.object({
+// Register a new account.
+export const RegisterBodySchema = z.object({
   email: EmailSchema,
   password: UserPasswordSchema,
 });
+export type RegisterBody = z.infer<typeof RegisterBodySchema>;
 
-export const SendVerificationEmailRequestBodySchema = z.object({
+// Send verification email.
+export const SendVerificationEmailBodySchema = z.object({
   uid: UserIdSchema,
 });
-export type SendVerificationEmailRequestBody = z.infer<
-  typeof SendVerificationEmailRequestBodySchema
+export type SendVerificationEmailBody = z.infer<
+  typeof SendVerificationEmailBodySchema
 >;
 
-export const VerifyEmailRequestBodySchema = z.object({
+// Verify email.
+export const VerifyEmailBodySchema = z.object({
   token: createJwtTokenSchema({
     requiredMessage: ResCode.ACCESS_VERIFY_EMAIL_TOKEN_REQUIRED,
     invalidMessage: ResCode.ACCESS_VERIFY_EMAIL_TOKEN_INVALID,
   }),
 });
-export type VerifyEmailRequestBody = z.infer<
-  typeof VerifyEmailRequestBodySchema
->;
+export type VerifyEmailBody = z.infer<typeof VerifyEmailBodySchema>;
 
-export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
-
-export const LoginRequestSchema = z.object({
+export const LoginBodySchema = z.object({
   email: EmailSchema,
   password: UserPasswordSchema,
   deviceId: DeviceIdSchema,
 });
 
-export type LoginRequest = z.infer<typeof LoginRequestSchema>;
-
-export const RefreshTokenRequestSchema = z.object({
-  refreshToken: RefreshTokenSchema,
-});
-
-export type RefreshTokenRequest = z.infer<typeof RefreshTokenRequestSchema>;
+export type LoginBody = z.infer<typeof LoginBodySchema>;
