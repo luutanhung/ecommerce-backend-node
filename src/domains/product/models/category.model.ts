@@ -5,22 +5,22 @@ import {
   DOCUMENT_NAME,
 } from "../../../shared/constants/model.constants.js";
 
-export const ProductCategorySchema = new Schema(
+export const CategorySchema = new Schema(
   {
-    categoryName: {
+    name: {
       type: String,
       required: true,
       trim: true,
       maxlength: 120,
     },
-    categorySlug: {
+    slug: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
     },
-    categoryDescription: {
+    description: {
       type: String,
       default: "",
       maxlength: 1_000,
@@ -30,26 +30,26 @@ export const ProductCategorySchema = new Schema(
      * Parent category.
      * null = root category.
      */
-    categoryParent: {
+    parent: {
       type: Schema.Types.ObjectId,
-      ref: DOCUMENT_NAME.PRODUCT_CATEGORY,
+      ref: DOCUMENT_NAME.CATEGORY,
       default: null,
     },
 
     /**
      * Full accestor path.
      */
-    categoryAncestors: [
+    ancestors: [
       {
         type: Schema.Types.ObjectId,
-        ref: DOCUMENT_NAME.PRODUCT_CATEGORY,
+        ref: DOCUMENT_NAME.CATEGORY,
       },
     ],
 
     /**
      * Optiona image/banner.
      */
-    categoryImage: {
+    image: {
       type: String,
       default: "",
     },
@@ -57,12 +57,12 @@ export const ProductCategorySchema = new Schema(
     /**
      * Sort Order in UI.
      */
-    categorySortOrder: {
+    sortOrder: {
       type: Number,
       default: 0,
     },
 
-    categoryIsActive: {
+    isActive: {
       type: Boolean,
       default: true,
     },
@@ -70,7 +70,7 @@ export const ProductCategorySchema = new Schema(
     /**
      * SEO metadata.
      */
-    categorySeo: {
+    seo: {
       metaTitle: String,
       metaDescription: String,
     },
@@ -78,18 +78,15 @@ export const ProductCategorySchema = new Schema(
     /**
      * Optional stats cache.
      */
-    categoryProductCount: {
+    productCount: {
       type: Number,
       default: 0,
     },
   },
   {
     timestamps: true,
-    collection: COLLECTION_NAME.PRODUCT_CATEGORIES,
+    collection: COLLECTION_NAME.CATEGORIES,
   },
 );
 
-export const ProductCategories = model(
-  DOCUMENT_NAME.PRODUCT_CATEGORY,
-  ProductCategorySchema,
-);
+export const ProductCategories = model(DOCUMENT_NAME.CATEGORY, CategorySchema);

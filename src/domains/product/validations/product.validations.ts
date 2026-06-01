@@ -13,7 +13,7 @@ import {
 } from "../../../shared/validations/common.validations.js";
 import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
 
-import { CategoryId } from "./productCategory.validations.js";
+import { CategoryId } from "./category.validations.js";
 
 export const ProductIdSchema = createObjectIdSchema({
   requiredMessage: ResCode.PRODUCT_ID_REQUIRED,

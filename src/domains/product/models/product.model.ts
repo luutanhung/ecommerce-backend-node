@@ -26,7 +26,7 @@ export const ProductSchema = new Schema(
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: DOCUMENT_NAME.PRODUCT_CATEGORY,
+      ref: DOCUMENT_NAME.CATEGORY,
     },
     name: {
       type: String,

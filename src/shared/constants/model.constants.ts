@@ -13,7 +13,7 @@ export const DOCUMENT_NAME = {
 
   // Product.
   PRODUCT: "Product",
-  PRODUCT_CATEGORY: "PRODUCT_CATEGORY",
+  CATEGORY: "CATEGORY",
 
   // Pricing.
   DISCOUNT: "Discount",
@@ -43,7 +43,7 @@ export const COLLECTION_NAME = {
 
   // Product.
   PRODUCTS: "products",
-  PRODUCT_CATEGORIES: "product_categories",
+  CATEGORIES: "categories",
 
   // Pricing.
   DISCOUNTS: "discounts",
