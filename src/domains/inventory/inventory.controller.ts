@@ -4,7 +4,7 @@ import { CreatedResponse } from "../../core/response/created.response.js";
 import { OKResponse } from "../../core/response/ok.response.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 
-import { sanitizeInventory } from "./inventory.sanitizer.js";
+import { InventoryMapper } from "./inventory.mapper.js";
 import { InventoryService } from "./inventory.service.js";
 
 export class InventoryController {
@@ -16,7 +16,7 @@ export class InventoryController {
 
     new CreatedResponse({
       code: ResCode.INVENTORY_CREATE_SUCCEEDED,
-      data: sanitizeInventory(createdInventory),
+      data: InventoryMapper.toPublic(createdInventory),
     }).send(req, res);
   }
 
@@ -28,7 +28,7 @@ export class InventoryController {
 
     new OKResponse({
       code: ResCode.INVENTORY_UPDATE_SUCCEEDED,
-      data: sanitizeInventory(updatedInventory),
+      data: InventoryMapper.toPublic(updatedInventory),
     }).send(req, res);
   }
 }
