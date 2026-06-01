@@ -2,7 +2,7 @@
 import { randomUUID } from "crypto";
 import type { NextFunction, Request, Response } from "express";
 
-import { createRequestLogger, logger } from "../../libs/logger/index.js";
+import { createRequestLogger, logger } from "../../libs/logger.js";
 
 // Request ID middleware - attaches unique ID to every request
 export const attachRequestId = (

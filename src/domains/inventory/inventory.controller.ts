@@ -4,7 +4,7 @@ import { CreatedResponse } from "../../core/response/created.response.js";
 import { OKResponse } from "../../core/response/ok.response.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 
-import { sanitizeInventory } from "./inventory.sanitizer.js";
+import { sanitizeInventory } from "./inventory.sanitizers.js";
 import { InventoryService } from "./inventory.service.js";
 
 export class InventoryController {

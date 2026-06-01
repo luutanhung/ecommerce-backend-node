@@ -21,7 +21,7 @@ import type {
   VerifyUserPayload,
 } from "../types/access.types.js";
 
-import { config } from "../../../configs/index.js";
+import { config } from "../../../configs/config.js";
 import { AppError } from "../../../core/error/appError.js";
 import { AuthenticationFailedAppError } from "../../../core/error/authenticationFailedAppError.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
@@ -128,7 +128,7 @@ export class AccessService {
   }: VerifyEmailInput): Promise<UserLean> {
     const { userId } = await verifyJSONWebToken<VerifyUserPayload>({
       token: emailVerificationToken,
-      secret: config.mail.secret,
+      secret: config.jwt.mailSecret,
       expiredCode: ResCode.ACCESS_EMAIL_VERIFICATION_TOKEN_EXPIRED,
       invalidCode: ResCode.ACCESS_EMAIL_VERIFICATION_TOKEN_INVALID,
     });

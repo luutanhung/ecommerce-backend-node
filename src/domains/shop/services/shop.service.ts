@@ -15,7 +15,7 @@ import type {
   VerifyShopInput,
 } from "./types/shop.service.types.js";
 
-import { config } from "../../../configs/index.js";
+import { config } from "../../../configs/config.js";
 import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import { emailQueue } from "../../../queues/email/email.queue.js";
@@ -117,7 +117,7 @@ export class ShopService {
   static async verifyShop({ token }: VerifyShopInput) {
     const { userId, shopId } = await verifyJSONWebToken<VerifyShopPayload>({
       token,
-      secret: config.mail.secret,
+      secret: config.jwt.mailSecret,
       expiredCode: ResCode.SHOP_EMAIL_VERIFICATION_TOKEN_EXPIRED,
       invalidCode: ResCode.SHOP_EMAIL_VERIFICATION_TOKEN_INVALID,
     });
