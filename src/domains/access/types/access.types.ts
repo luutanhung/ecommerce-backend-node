@@ -1,18 +1,4 @@
-import type { HydratedDocument, InferSchemaType, Types } from "mongoose";
-
-import { USER_ROLE } from "../constants/user.constants.js";
-
-import type { UserSchema } from "../models/user.model.js";
-
-import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
-
-export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
-
-export type User = InferSchemaType<typeof UserSchema>;
-export type UserDocument = HydratedDocument<User>;
-export type UserLean = User & {
-  _id: Types.ObjectId;
-};
+import type { UserMapper } from "../mappers/user.mapper.js";
 
 export type CreateTokenPairPayload = Record<string, string>;
 
@@ -53,7 +39,7 @@ export type VerifyEmailInput = {
 };
 
 export type AccessBaseResult = {
-  user: ReturnType<typeof sanitizeUser>;
+  user: ReturnType<typeof UserMapper.toAuthenticatedUser>;
   tokens: TokenPair;
 };
 

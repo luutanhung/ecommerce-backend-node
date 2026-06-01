@@ -6,7 +6,7 @@ import type { AccessTokenPayload } from "../types/access.types.js";
 
 import { OKResponse } from "../../../core/response/ok.response.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
-import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
+import { UserMapper } from "../mappers/user.mapper.js";
 import type { AddAddressRequestBody } from "../validations/user.validations.js";
 
 export class UserController {
@@ -18,7 +18,7 @@ export class UserController {
 
     new OKResponse({
       code: ResCode.USER_ADD_ADDRESS_SUCCESS,
-      data: sanitizeUser(updatedUser),
+      data: UserMapper.toProfile(updatedUser),
     }).send(req, res);
   }
 }

@@ -1,6 +1,6 @@
 import { Users } from "../models/user.model.js";
 
-import type { UserDocument, UserLean } from "../types/access.types.js";
+import type { UserDocument, UserLean } from "../types/user.types.js";
 import type {
   AddAddressInput,
   AddRoleInput,
@@ -12,7 +12,6 @@ import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
 import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
 import { UserRepository } from "../repositories/user.repository.js";
-import { sanitizeUser } from "../sanitizers/user.sanitizer.js";
 
 export class UserService {
   private static async validateUser(userId: string): Promise<UserDocument> {
@@ -57,7 +56,7 @@ export class UserService {
       });
     }
 
-    return sanitizeUser(updatedUser);
+    return updatedUser;
   }
 
   /**
