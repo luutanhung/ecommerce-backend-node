@@ -31,6 +31,7 @@ import { Products } from "../product/models/product.model.js";
 
 import { ORDER_STATUS } from "./order.constants.js";
 import { Orders } from "./order.model.js";
+import { generateOrderNumber } from "./order.utils.js";
 
 export class OrderService {
   /**
@@ -310,6 +311,7 @@ export class OrderService {
               ]),
             };
           }),
+          orderNumber: generateOrderNumber(),
           summary: orderSummary,
           status: ORDER_STATUS.PENDING,
           paymentStatus: PAYMENT_STATUS.PENDING,

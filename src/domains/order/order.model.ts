@@ -7,6 +7,7 @@ import {
 import { PAYMENT_STATUS } from "../payment/payment.constants.js";
 
 import { ORDER_STATUS } from "./order.constants.js";
+import { generateOrderNumber } from "./order.utils.js";
 
 const OrderItemSchema = new Schema(
   {
@@ -93,6 +94,7 @@ export const OrderSchema = new Schema(
       type: String,
       unique: true,
       required: true,
+      index: true,
     },
     items: {
       type: [OrderItemSchema],
@@ -136,5 +138,11 @@ export const OrderSchema = new Schema(
     collection: COLLECTION_NAME.ORDERS,
   },
 );
+
+OrderSchema.pre("validate", function () {
+  if (this.orderNumber) {
+    this.orderNumber = generateOrderNumber();
+  }
+});
 
 export const Orders = model(DOCUMENT_NAME.ORDER, OrderSchema);
