@@ -214,7 +214,7 @@ export class OrderService {
       for (const orderItem of sortedOrderItems) {
         const { productId } = orderItem;
 
-        const lockKey = `inventory:lock:${productId}`;
+        const lockKey = `inventory:lock_v1:${productId}`;
 
         const acquired = await LockService.acquire(lockKey, 3);
 
