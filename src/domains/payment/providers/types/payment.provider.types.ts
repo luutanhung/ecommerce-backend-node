@@ -4,7 +4,8 @@ export type CreatePaymentInput = {
   amount: number;
   currency: string;
   description: string;
-  ipAddress?: string;
+  successUrl: string;
+  cancelUrl: string;
 };
 
 export type CreatePaymentResult = {
@@ -14,8 +15,10 @@ export type CreatePaymentResult = {
   expiresAt?: Date;
 };
 
-// eslint-disable-next-line
-export type VerifyPaymentResultInput = {};
+export type VerifyPaymentInput = {
+  body: string;
+  signature: string;
+};
 
 export type VerifyPaymentResult = {
   success: boolean;

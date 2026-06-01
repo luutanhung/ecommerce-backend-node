@@ -1,7 +1,7 @@
-import { PaymentProvider } from "./payment.provider.js";
+// import { PaymentProvider } from "./payment.provider.js";
 
-export class MomoProvider extends PaymentProvider {
-  async createPayment(): Promise<string> {
-    return "";
-  }
-}
+// export class MomoProvider extends PaymentProvider {
+//   async createPayment(): Promise<string> {
+//     return "";
+//   }
+// }

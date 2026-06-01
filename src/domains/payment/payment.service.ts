@@ -1,5 +1,6 @@
 import type { CreatePaymentInput } from "./types/payment.service.types.js";
 
+import { config } from "../../configs/config.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
 import { CURRENCY } from "../../pricing/constants/currency.constants.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
@@ -30,6 +31,8 @@ export class PaymentService {
       amount: order.summary.orderTotal,
       currency: CURRENCY.USD,
       description: order.description,
+      successUrl: `${config.client.url}/payment/success`,
+      cancelUrl: `${config.client.url}/payment/cancel`,
     });
 
     const payment = await Payments.create({

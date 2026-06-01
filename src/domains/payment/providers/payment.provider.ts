@@ -1,15 +1,20 @@
 import type {
   CreatePaymentInput,
+  CreatePaymentResult,
+  VerifyPaymentInput,
+  VerifyPaymentResult,
   // RefundPaymentInput,
   // VerifyPaymentResultInput,
 } from "./types/payment.provider.types.js";
 
 export abstract class PaymentProvider {
-  abstract createPayment(input: CreatePaymentInput): Promise<string>;
+  abstract createPayment(
+    input: CreatePaymentInput,
+  ): Promise<CreatePaymentResult>;
 
-  // abstract verifyCallback(
-  //   payload: Record<string, unknown>,
-  // ): Promise<VerifyPaymentResultInput>;
+  abstract verifyPayment(
+    input: VerifyPaymentInput,
+  ): Promise<VerifyPaymentResult>;
 
   // refund?(input: RefundPaymentInput): Promise<void>;
 }

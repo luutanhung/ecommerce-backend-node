@@ -1,11 +1,7 @@
-import { PaymentProvider } from "./payment.provider.js";
+// import { PaymentProvider } from "./payment.provider.js";
 
-export class VNPayProvider extends PaymentProvider {
-  async createPayment(): Promise<string> {
-    return "";
-  }
-
-  // async verifyCallback(payload: Record<string, unknown>) {
-  //   // validate secure hash
-  // }
-}
+// export class VNPayProvider extends PaymentProvider {
+//   async createPayment(): Promise<string> {
+//     return "";
+//   }
+// }
