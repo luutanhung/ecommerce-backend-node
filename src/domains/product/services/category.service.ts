@@ -56,4 +56,26 @@ export class CategoryService {
 
     return category.toObject();
   }
+
+  static async findDescendants(categoryId: string) {
+    return await Categories.find({
+      ancestors: toObjectId(categoryId),
+    });
+  }
+
+  static async findAncestors(categoryId: string) {
+    const category = await Categories.findById(categoryId);
+
+    if (!category) {
+      throw new NotFoundAppError({
+        code: ResCode.CATEGORY_NOT_FOUND,
+      });
+    }
+
+    return Categories.find({
+      _id: {
+        $in: category.ancestors,
+      },
+    });
+  }
 }

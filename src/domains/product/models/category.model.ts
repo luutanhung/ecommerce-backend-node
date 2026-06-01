@@ -89,4 +89,16 @@ CategorySchema.pre("validate", function () {
   });
 });
 
+CategorySchema.index({
+  slug: 1,
+});
+
+CategorySchema.index({
+  parent: 1,
+});
+
+CategorySchema.index({
+  ancestors: 1,
+});
+
 export const Categories = model(DOCUMENT_NAME.CATEGORY, CategorySchema);
