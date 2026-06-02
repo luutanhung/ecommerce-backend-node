@@ -35,6 +35,7 @@ export class StripeProvider extends PaymentProvider {
         });
     }
   }
+
   async createPaymentForOrder(
     input: createPaymentForOrderInput,
   ): Promise<CreatePaymentForOrderResult> {

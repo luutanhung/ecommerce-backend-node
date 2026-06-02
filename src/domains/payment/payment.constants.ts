@@ -29,7 +29,6 @@ export const PAYMENT_METHOD = {
   BANK_TRANSFER: "bank_transfer",
 
   COD: "cod",
-  MOMO_WALLET: "momo_wallet",
   ZALOPAY_WALLET: "zalopay_wallet",
 
   VNPAY_QR: "vnpay_qr",
