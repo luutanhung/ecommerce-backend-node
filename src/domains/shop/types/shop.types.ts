@@ -15,3 +15,12 @@ export type ShopLean = Shop & {
 
 export type ShopStatus = (typeof SHOP_STATUS)[keyof typeof SHOP_STATUS];
 export type ShopRole = (typeof ShopRole)[keyof typeof ShopRole];
+
+export type ShopAddress = {
+  addressLine: string;
+  province: string;
+  ward: string;
+  district?: string;
+  provinceId?: string;
+  districtId?: string;
+};
