@@ -120,10 +120,7 @@ export const OrderSchema = new Schema(
       type: OrderSummarySchema,
       required: true,
     },
-    shippingAddress: {
-      type: ShippingAddressSchema,
-      required: true,
-    },
+
     // Tracks fulfillment.
     status: {
       type: String,
@@ -131,7 +128,8 @@ export const OrderSchema = new Schema(
       default: ORDER_STATUS.PENDING,
       index: true,
     },
-    // Tracks money.
+
+    // Tracks payment.
     paymentMethod: {
       type: String,
       enum: Object.values(PAYMENT_METHOD),
@@ -142,6 +140,17 @@ export const OrderSchema = new Schema(
       enum: Object.values(PAYMENT_STATUS),
       default: PAYMENT_STATUS.PENDING,
     },
+
+    // Tracks shipment.
+    shippingAddress: {
+      type: ShippingAddressSchema,
+      required: true,
+    },
+    shipment: {
+      type: Schema.Types.ObjectId,
+      ref: DOCUMENT_NAME.SHIPMENT,
+    },
+
     description: {
       type: String,
       default: "",

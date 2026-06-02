@@ -29,6 +29,9 @@ export const DOCUMENT_NAME = {
 
   // Payment.
   PAYMENT: "Payment",
+
+  // Shipping.
+  SHIPMENT: "Shipment",
 } as const;
 
 export const COLLECTION_NAME = {
@@ -62,4 +65,7 @@ export const COLLECTION_NAME = {
 
   // Payment.
   PAYMENTS: "payments",
+
+  // Shipping.
+  SHIPMENTS: "shipments",
 } as const;
