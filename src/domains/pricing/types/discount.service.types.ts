@@ -1,6 +1,6 @@
-import type { OrderItemInput } from "../../domains/order/types/order.service.types.js";
-import type { ProductType } from "../../domains/product/types/product.types.js";
-import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
+import type { PaginationQuery } from "../../../shared/validations/pagination.validations.js";
+import type { OrderItemInput } from "../../order/types/order.service.types.js";
+import type { ProductType } from "../../product/types/product.types.js";
 
 import type { DiscountAppliesTo, DiscountType } from "./discount.types.js";
 

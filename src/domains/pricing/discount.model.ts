@@ -2,18 +2,17 @@ import { type PaginateModel, Schema, model } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 import {
-  COLLECTION_NAME,
-  DOCUMENT_NAME,
-} from "../shared/constants/model.constants.js";
-
-import { ProductType } from "../domains/product/constants/product.constants.js";
-
-import {
   DISCOUNT_APPLIES_TO,
   DISCOUNT_TYPE,
 } from "./constants/discount.constants.js";
 
 import type { Discount } from "./types/discount.types.js";
+
+import {
+  COLLECTION_NAME,
+  DOCUMENT_NAME,
+} from "../../shared/constants/model.constants.js";
+import { ProductType } from "../product/constants/product.constants.js";
 
 export const DiscountSchema = new Schema(
   {

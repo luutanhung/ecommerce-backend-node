@@ -12,7 +12,7 @@ import type {
   CreateRequiredStringSchemaInput,
 } from "../types/validations/common.validations.types.js";
 
-import { CURRENCY } from "../../pricing/constants/currency.constants.js";
+import { CURRENCY } from "../../domains/pricing/constants/currency.constants.js";
 
 /**
  * Create schema for mongoose object id.

@@ -3,8 +3,8 @@ import type { QueryFilter, UpdateQuery } from "mongoose";
 import type {
   SelectFields,
   SortOptions,
-} from "../../shared/types/common.type.js";
-import type { PartialPaginationQuery } from "../../shared/validations/pagination.validations.js";
+} from "../../../shared/types/common.type.js";
+import type { PartialPaginationQuery } from "../../../shared/validations/pagination.validations.js";
 
 import type { Discount } from "./discount.types.js";
 

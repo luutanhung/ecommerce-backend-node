@@ -1,4 +1,4 @@
-import type { Currency } from "../../../../pricing/types/currency.types.js";
+import type { Currency } from "../../../pricing/types/currency.types.js";
 import type { PaymentMethod } from "../../types/payment.types.js";
 
 export type createPaymentForOrderInput = {

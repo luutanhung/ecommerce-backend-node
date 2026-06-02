@@ -3,11 +3,11 @@ import slugify from "slugify";
 
 import { SHOP_STATUS } from "../constants/shop.constants.js";
 
-import { CURRENCY } from "../../../pricing/constants/currency.constants.js";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
 } from "../../../shared/constants/model.constants.js";
+import { CURRENCY } from "../../pricing/constants/currency.constants.js";
 
 export const ShopAddressSchema = new Schema(
   {

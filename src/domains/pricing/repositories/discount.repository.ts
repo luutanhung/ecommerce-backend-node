@@ -6,12 +6,15 @@ import type {
 } from "../types/discount.repository.types.js";
 import type { DiscountLean } from "../types/discount.types.js";
 
-import { SortOrder } from "../../shared/constants/common.constants.js";
+import { SortOrder } from "../../../shared/constants/common.constants.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
-} from "../../shared/constants/pagination.constants.js";
-import { buildSelect, buildSort } from "../../shared/utils/mongoose.utils.js";
+} from "../../../shared/constants/pagination.constants.js";
+import {
+  buildSelect,
+  buildSort,
+} from "../../../shared/utils/mongoose.utils.js";
 import { Discounts } from "../discount.model.js";
 
 export class DiscountRepository {

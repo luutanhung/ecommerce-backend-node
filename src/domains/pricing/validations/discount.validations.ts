@@ -5,13 +5,13 @@ import {
   DISCOUNT_TYPE,
 } from "../constants/discount.constants.js";
 
-import { ProductType } from "../../domains/product/constants/product.constants.js";
-import { ResCode } from "../../shared/constants/resCode.constants.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import {
   createObjectIdSchema,
   createRequiredStringSchema,
-} from "../../shared/validations/common.validations.js";
-import { PaginationQuerySchema } from "../../shared/validations/pagination.validations.js";
+} from "../../../shared/validations/common.validations.js";
+import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
+import { ProductType } from "../../product/constants/product.constants.js";
 
 export const DiscountIdSchema = createObjectIdSchema({
   requiredMessage: ResCode.DISCOUNT_ID_REQUIRED,

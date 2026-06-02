@@ -18,18 +18,18 @@ import type {
   PercentageDiscountConfig,
 } from "../types/discount.types.js";
 
-import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
-import { ConflictAppError } from "../../core/error/conflictAppError.js";
-import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
-import type { OrderItemInput } from "../../domains/order/types/order.service.types.js";
-import { ProductRepository } from "../../domains/product/repositories/product.repository.js";
+import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
+import { ConflictAppError } from "../../../core/error/conflictAppError.js";
+import { NotFoundAppError } from "../../../core/error/notFoundAppError.js";
 import {
   PAGINATION_DEFAULT_LIMIT,
   PAGINATION_DEFAULT_PAGE,
-} from "../../shared/constants/pagination.constants.js";
-import { ResCode } from "../../shared/constants/resCode.constants.js";
-import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
-import { toObjectId } from "../../shared/utils/mongoose.utils.js";
+} from "../../../shared/constants/pagination.constants.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
+import type { TransactionOptions } from "../../../shared/types/mongoose.type.js";
+import { toObjectId } from "../../../shared/utils/mongoose.utils.js";
+import type { OrderItemInput } from "../../order/types/order.service.types.js";
+import { ProductRepository } from "../../product/repositories/product.repository.js";
 import { Discounts } from "../discount.model.js";
 import { DiscountRepository } from "../repositories/discount.repository.js";
 

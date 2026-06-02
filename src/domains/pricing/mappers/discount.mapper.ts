@@ -3,7 +3,7 @@ import type { PaginateResult } from "mongoose";
 
 import type { DiscountLean } from "../types/discount.types.js";
 
-import { sanitizePagination } from "../../shared/utils/sanitizer.utils.js";
+import { sanitizePagination } from "../../../shared/utils/sanitizer.utils.js";
 
 export class DiscountMapper {
   static toPublic(discount: DiscountLean) {

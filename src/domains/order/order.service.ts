@@ -14,7 +14,6 @@ import type { OrderLean } from "./types/order.types.js";
 
 import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
-import { DiscountService } from "../../pricing/services/discount.service.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { withTransaction } from "../../shared/helpers/withTransaction.js";
 import type { TransactionOptions } from "../../shared/types/mongoose.type.js";
@@ -25,6 +24,7 @@ import { CART_STATE } from "../cart/cart.contants.js";
 import { Carts } from "../cart/models/cart.model.js";
 import { InventoryService } from "../inventory/inventory.service.js";
 import { PAYMENT_STATUS } from "../payment/payment.constants.js";
+import { DiscountService } from "../pricing/services/discount.service.js";
 import { Products } from "../product/models/product.model.js";
 import { Shops } from "../shop/models/shop.model.js";
 import type { ShopLean } from "../shop/types/shop.types.js";

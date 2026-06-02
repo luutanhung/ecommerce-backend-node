@@ -1,5 +1,5 @@
-import { BadRequestAppError } from "../../core/error/badRequestAppError.js";
-import { ResCode } from "../../shared/constants/resCode.constants.js";
+import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
 import { SHIPPING_PROVIDER } from "../shipping.constants.js";
 import type { ShippingProviderName } from "../shipping.types.js";
 

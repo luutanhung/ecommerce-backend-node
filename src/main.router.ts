@@ -8,10 +8,10 @@ import { cartRouter } from "./domains/cart/cart.route.js";
 import { inventoryRouter } from "./domains/inventory/inventory.route.js";
 import { orderRouter } from "./domains/order/order.route.js";
 import { paymentRouter } from "./domains/payment/payment.router.js";
+import { discountRouter } from "./domains/pricing/routes/discount.route.js";
 import { productRouter } from "./domains/product/routes/product.route.js";
+import { addressRouter } from "./domains/shipping/routers/address.router.js";
 import { shopRouter } from "./domains/shop/routers/shop.router.js";
-
-import { discountRouter } from "./pricing/routes/discount.route.js";
 
 const router = Router();
 
@@ -21,6 +21,7 @@ const router = Router();
 // ==========================================
 // CONTAIN PUBLIC ROUTES (No Authentication Required)
 // ==========================================
+router.use("/api/v1", addressRouter);
 router.use("/api/v1", productRouter);
 router.use("/api/v1", paymentRouter);
 

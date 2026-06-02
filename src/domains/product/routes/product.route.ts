@@ -2,10 +2,10 @@ import { Router } from "express";
 
 import { productController } from "../controllers/product.controller.js";
 
-import { CreateShopDiscountRequestSchema } from "../../../pricing/validations/discount.validations.js";
 import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
 import { validateRequest } from "../../../shared/middlewares/validateRequest.middleware.js";
 import { authenticateAccessToken } from "../../access/middlewares/access.middleware.js";
+import { CreateShopDiscountRequestSchema } from "../../pricing/validations/discount.validations.js";
 import { authorizeShopOwnership } from "../../shop/middlewares/shop.middleware.js";
 import { ShopParamsSchema } from "../../shop/validations/shop.validations.js";
 import {

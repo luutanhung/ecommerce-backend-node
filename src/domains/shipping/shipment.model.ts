@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
-} from "../shared/constants/model.constants.js";
+} from "../../shared/constants/model.constants.js";
 
 import { SHIPPING_PROVIDER, SHIPPING_STATUS } from "./shipping.constants.js";
 

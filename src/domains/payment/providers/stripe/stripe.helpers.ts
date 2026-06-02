@@ -1,6 +1,6 @@
 import { BadRequestAppError } from "../../../../core/error/badRequestAppError.js";
-import type { Currency } from "../../../../pricing/types/currency.types.js";
 import { ResCode } from "../../../../shared/constants/resCode.constants.js";
+import type { Currency } from "../../../pricing/types/currency.types.js";
 
 export function toStripeAmount(amount: number, currency: Currency): number {
   switch (currency.toUpperCase()) {

@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 
-import { CURRENCY } from "../../pricing/constants/currency.constants.js";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
@@ -9,6 +8,7 @@ import {
   PAYMENT_METHOD,
   PAYMENT_STATUS,
 } from "../payment/payment.constants.js";
+import { CURRENCY } from "../pricing/constants/currency.constants.js";
 
 import { ORDER_STATUS } from "./order.constants.js";
 import { generateOrderNumber } from "./order.utils.js";

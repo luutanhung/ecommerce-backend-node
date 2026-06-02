@@ -2,12 +2,12 @@ import { Router } from "express";
 
 import { discountController } from "../controllers/discount.controller.js";
 
-import { authenticateAccessToken } from "../../domains/access/middlewares/access.middleware.js";
-import { authorizeShopOwnership } from "../../domains/shop/middlewares/shop.middleware.js";
-import { ShopParamsSchema } from "../../domains/shop/validations/shop.validations.js";
-import { asyncWrapper } from "../../shared/helpers/asyncWrapper.js";
-import { validateRequest } from "../../shared/middlewares/validateRequest.middleware.js";
-import { PaginationQuerySchema } from "../../shared/validations/pagination.validations.js";
+import { asyncWrapper } from "../../../shared/helpers/asyncWrapper.js";
+import { validateRequest } from "../../../shared/middlewares/validateRequest.middleware.js";
+import { PaginationQuerySchema } from "../../../shared/validations/pagination.validations.js";
+import { authenticateAccessToken } from "../../access/middlewares/access.middleware.js";
+import { authorizeShopOwnership } from "../../shop/middlewares/shop.middleware.js";
+import { ShopParamsSchema } from "../../shop/validations/shop.validations.js";
 import {
   CreateShopDiscountRequestSchema,
   FindApplicableProductsByDiscountCodeRequestSchema,

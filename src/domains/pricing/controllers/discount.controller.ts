@@ -2,12 +2,12 @@ import type { Request, Response } from "express";
 
 import { DiscountService } from "../services/discount.service.js";
 
-import { CreatedResponse } from "../../core/response/created.response.js";
-import { OKResponse } from "../../core/response/ok.response.js";
-import type { ShopLean } from "../../domains/shop/types/shop.types.js";
-import type { ShopParams } from "../../domains/shop/validations/shop.validations.js";
-import { ResCode } from "../../shared/constants/resCode.constants.js";
-import type { PaginationQuery } from "../../shared/validations/pagination.validations.js";
+import { CreatedResponse } from "../../../core/response/created.response.js";
+import { OKResponse } from "../../../core/response/ok.response.js";
+import { ResCode } from "../../../shared/constants/resCode.constants.js";
+import type { PaginationQuery } from "../../../shared/validations/pagination.validations.js";
+import type { ShopLean } from "../../shop/types/shop.types.js";
+import type { ShopParams } from "../../shop/validations/shop.validations.js";
 import { DiscountMapper } from "../mappers/discount.mapper.js";
 import type {
   CreateShopDiscountRequest,

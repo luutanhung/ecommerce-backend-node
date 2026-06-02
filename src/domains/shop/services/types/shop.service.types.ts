@@ -1,4 +1,4 @@
-import type { Currency } from "../../../../pricing/types/currency.types.js";
+import type { Currency } from "../../../pricing/types/currency.types.js";
 
 export type RegisterShopInput = {
   userId: string;
