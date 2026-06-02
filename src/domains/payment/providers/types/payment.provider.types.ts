@@ -1,7 +1,9 @@
 import type { Currency } from "../../../../pricing/types/currency.types.js";
+import type { PaymentMethod } from "../../types/payment.types.js";
 
 export type createPaymentForOrderInput = {
   orderId: string;
+  method: PaymentMethod;
   orderNumber: string;
   amount: number;
   currency: Currency;

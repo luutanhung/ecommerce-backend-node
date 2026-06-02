@@ -28,7 +28,8 @@ export class PaymentService {
    */
   static async createPaymentForOrder({
     orderId,
-    providerName,
+    paymentProviderName,
+    paymentMethod,
   }: createPaymentForOrderInput) {
     const order = await Orders.findOne({
       _id: toObjectId(orderId),
@@ -40,10 +41,12 @@ export class PaymentService {
       });
     }
 
-    const paymentProvider = PaymentProviderFactory.getProvider(providerName);
+    const paymentProvider =
+      PaymentProviderFactory.getProvider(paymentProviderName);
 
     const { paymentUrl, providerPaymentId } =
-      await paymentProvider.createPayment({
+      await paymentProvider.createPaymentForOrder({
+        method: paymentMethod,
         orderId: order._id.toString(),
         orderNumber: order.orderNumber,
         amount: order.summary.orderTotal,
@@ -55,7 +58,8 @@ export class PaymentService {
 
     const payment = await Payments.create({
       order: order._id,
-      provider: providerName,
+      providerName: paymentProviderName,
+      method: paymentMethod,
       amount: order.summary.orderTotal,
       status: PAYMENT_STATUS.PENDING,
       providerPaymentId,

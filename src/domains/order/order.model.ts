@@ -4,7 +4,10 @@ import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
 } from "../../shared/constants/model.constants.js";
-import { PAYMENT_STATUS } from "../payment/payment.constants.js";
+import {
+  PAYMENT_METHOD,
+  PAYMENT_STATUS,
+} from "../payment/payment.constants.js";
 
 import { ORDER_STATUS } from "./order.constants.js";
 import { generateOrderNumber } from "./order.utils.js";
@@ -129,6 +132,11 @@ export const OrderSchema = new Schema(
       index: true,
     },
     // Tracks money.
+    paymentMethod: {
+      type: String,
+      enum: Object.values(PAYMENT_METHOD),
+      required: true,
+    },
     paymentStatus: {
       type: String,
       enum: Object.values(PAYMENT_STATUS),

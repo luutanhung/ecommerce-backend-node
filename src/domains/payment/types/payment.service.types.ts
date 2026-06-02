@@ -1,8 +1,9 @@
-import type { PaymentProviderName } from "./payment.types.js";
+import type { PaymentMethod, PaymentProviderName } from "./payment.types.js";
 
 export type createPaymentForOrderInput = {
   orderId: string;
-  providerName: PaymentProviderName;
+  paymentProviderName: PaymentProviderName;
+  paymentMethod: PaymentMethod;
 };
 
 export type HandleStripeWebhookInput = {

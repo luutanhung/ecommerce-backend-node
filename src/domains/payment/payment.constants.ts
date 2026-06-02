@@ -17,7 +17,21 @@ export const PAYMENT_STATUS = {
   PARTIALLY_REFUNDED: "partially_refunded",
 } as const;
 
-export enum PAYMENT_PROVIDER {
-  VNPAY = "vnpay",
-  STRIPE = "stripe",
-}
+export const PAYMENT_PROVIDER = {
+  VNPAY: "vnpay",
+  STRIPE: "stripe",
+  ZALOPAY: "zalopay",
+  COD: "cod",
+} as const;
+
+export const PAYMENT_METHOD = {
+  CARD: "card",
+  BANK_TRANSFER: "bank_transfer",
+
+  COD: "cod",
+  MOMO_WALLET: "momo_wallet",
+  ZALOPAY_WALLET: "zalopay_wallet",
+
+  VNPAY_QR: "vnpay_qr",
+  VNPAY_ATM: "vnpay_atm",
+} as const;

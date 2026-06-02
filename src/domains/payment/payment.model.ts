@@ -5,7 +5,11 @@ import {
   DOCUMENT_NAME,
 } from "../../shared/constants/model.constants.js";
 
-import { PAYMENT_PROVIDER, PAYMENT_STATUS } from "./payment.constants.js";
+import {
+  PAYMENT_METHOD,
+  PAYMENT_PROVIDER,
+  PAYMENT_STATUS,
+} from "./payment.constants.js";
 
 export const PaymentSchema = new Schema(
   {
@@ -14,9 +18,14 @@ export const PaymentSchema = new Schema(
       ref: DOCUMENT_NAME.ORDER,
       required: true,
     },
-    provider: {
+    providerName: {
       type: String,
       enum: Object.values(PAYMENT_PROVIDER),
+      required: true,
+    },
+    method: {
+      type: String,
+      enum: Object.values(PAYMENT_METHOD),
       required: true,
     },
     providerPaymentId: {
