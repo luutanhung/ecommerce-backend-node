@@ -22,12 +22,12 @@ const router = Router();
 // CONTAIN PUBLIC ROUTES (No Authentication Required)
 // ==========================================
 router.use("/api/v1", productRouter);
+router.use("/api/v1", accessRouter);
 router.use("/api/v1", paymentRouter);
 
 // ==========================================
 // CONTAIN PROTECTED ROUTES (No Authentication Required)
 // ==========================================
-router.use("/api/v1", accessRouter);
 router.use("/api/v1", addressRouter);
 router.use("/api/v1", userRouter);
 router.use("/api/v1", shopRouter);
