@@ -145,7 +145,8 @@ export class PaymentService {
 
       updatedOrder.paymentStatus = PAYMENT_STATUS.PAID;
 
-      updatedOrder.status = ORDER_STATUS.CONFIRMED;
+      // Order has been paid by customer but still need seller's confirmation.
+      updatedOrder.status = ORDER_STATUS.PENDING_FULFILLMENT;
 
       await updatedOrder.save({
         session,
