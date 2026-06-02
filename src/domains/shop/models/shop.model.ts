@@ -9,6 +9,36 @@ import {
   DOCUMENT_NAME,
 } from "../../../shared/constants/model.constants.js";
 
+export const ShopAddressSchema = new Schema(
+  {
+    addressLine: {
+      type: String,
+      required: true,
+    },
+    province: {
+      type: String,
+    },
+    district: {
+      type: String,
+    },
+    ward: {
+      type: String,
+    },
+    provinceId: {
+      type: Number,
+    },
+    districtId: {
+      type: Number,
+    },
+    wardCode: {
+      type: Number,
+    },
+  },
+  {
+    _id: false,
+  },
+);
+
 export const ShopSchema = new Schema(
   {
     user: {
@@ -51,6 +81,9 @@ export const ShopSchema = new Schema(
     closedAt: {
       type: Date,
       default: null,
+    },
+    address: {
+      type: ShopAddressSchema,
     },
   },
   {
