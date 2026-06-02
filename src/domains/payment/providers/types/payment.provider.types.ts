@@ -1,6 +1,6 @@
 import type { Currency } from "../../../../pricing/types/currency.types.js";
 
-export type CreatePaymentInput = {
+export type createPaymentForOrderInput = {
   orderId: string;
   orderNumber: string;
   amount: number;
@@ -10,7 +10,7 @@ export type CreatePaymentInput = {
   cancelUrl: string;
 };
 
-export type CreatePaymentResult = {
+export type CreatePaymentForOrderResult = {
   providerPaymentId: string;
   paymentUrl: string;
   clientSecret?: string;

@@ -1,16 +1,16 @@
 import type {
-  CreatePaymentInput,
-  CreatePaymentResult,
+  CreatePaymentForOrderResult,
   VerifyPaymentInput,
   VerifyPaymentResult,
   // RefundPaymentInput,
   // VerifyPaymentResultInput,
+  createPaymentForOrderInput,
 } from "./types/payment.provider.types.js";
 
 export abstract class PaymentProvider {
-  abstract createPayment(
-    input: CreatePaymentInput,
-  ): Promise<CreatePaymentResult>;
+  abstract createPaymentForOrder(
+    input: createPaymentForOrderInput,
+  ): Promise<CreatePaymentForOrderResult>;
 
   abstract verifyPayment(
     input: VerifyPaymentInput,

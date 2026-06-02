@@ -20,5 +20,4 @@ export const PAYMENT_STATUS = {
 export enum PAYMENT_PROVIDER {
   VNPAY = "vnpay",
   STRIPE = "stripe",
-  MOMO = "momo",
 }
