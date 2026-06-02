@@ -8,7 +8,6 @@ import type {
 
 import { config } from "../../configs/config.js";
 import { NotFoundAppError } from "../../core/error/notFoundAppError.js";
-import { CURRENCY } from "../../pricing/constants/currency.constants.js";
 import { ResCode } from "../../shared/constants/resCode.constants.js";
 import { withTransaction } from "../../shared/helpers/withTransaction.js";
 import { toObjectId } from "../../shared/utils/mongoose.utils.js";
@@ -49,8 +48,8 @@ export class PaymentService {
         method: paymentMethod,
         orderId: order._id.toString(),
         orderNumber: order.orderNumber,
-        amount: order.summary.orderTotal,
-        currency: CURRENCY.USD,
+        amount: order.pricing.orderTotal,
+        currency: order.pricing.currency,
         description: order.description,
         successUrl: `${config.client.url}/payment/success`,
         cancelUrl: `${config.client.url}/payment/cancel`,
@@ -60,7 +59,7 @@ export class PaymentService {
       order: order._id,
       providerName: paymentProviderName,
       method: paymentMethod,
-      amount: order.summary.orderTotal,
+      amount: order.pricing.orderTotal,
       status: PAYMENT_STATUS.PENDING,
       providerPaymentId,
     });

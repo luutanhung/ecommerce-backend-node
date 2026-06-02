@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 
+import { CURRENCY } from "../../pricing/constants/currency.constants.js";
 import {
   COLLECTION_NAME,
   DOCUMENT_NAME,
@@ -50,10 +51,11 @@ const OrderItemSchema = new Schema(
   },
 );
 
-export const OrderSummarySchema = new Schema(
+export const OrderPricingSchema = new Schema(
   {
     currency: {
       type: String,
+      enum: Object.values(CURRENCY),
       required: true,
     },
     merchandiseSubtotal: {
@@ -116,8 +118,8 @@ export const OrderSchema = new Schema(
       type: [OrderItemSchema],
       required: true,
     },
-    summary: {
-      type: OrderSummarySchema,
+    pricing: {
+      type: OrderPricingSchema,
       required: true,
     },
 

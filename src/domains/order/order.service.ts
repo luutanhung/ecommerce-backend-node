@@ -6,8 +6,8 @@ import type {
   CreateOrderInput,
   CreatePendingOrderInput,
   OrderItem,
+  OrderPricing,
   OrderShippingAddress,
-  OrderSummary,
   ShopOrders,
 } from "./types/order.service.types.js";
 import type { OrderLean } from "./types/order.types.js";
@@ -159,7 +159,7 @@ export class OrderService {
       });
     }
 
-    const orderSummary: OrderSummary = {
+    const orderPricing: OrderPricing = {
       currency,
       merchandiseSubtotal,
       discountSubtotal,
@@ -168,7 +168,7 @@ export class OrderService {
     };
 
     return {
-      orderSummary,
+      orderPricing,
       shopOrders: checkoutShopOrders,
     };
   }
@@ -225,7 +225,7 @@ export class OrderService {
 
     const orderShippingAddress = this.getShippingAddress(user, shippingAddress);
 
-    const { orderSummary, shopOrders: checkoutShopOrders } =
+    const { orderPricing, shopOrders: checkoutShopOrders } =
       await this.checkoutOrder({
         userId,
         cartId,
@@ -245,7 +245,7 @@ export class OrderService {
           {
             userId,
             orderItems,
-            orderSummary,
+            orderPricing,
             orderShippingAddress,
           },
           {
@@ -272,7 +272,7 @@ export class OrderService {
     {
       userId,
       orderItems,
-      orderSummary,
+      orderPricing,
       orderShippingAddress,
     }: CreatePendingOrderInput,
     options: TransactionOptions = {},
@@ -295,7 +295,7 @@ export class OrderService {
             };
           }),
           orderNumber: generateOrderNumber(),
-          summary: orderSummary,
+          pricing: orderPricing,
           status: ORDER_STATUS.PENDING,
           paymentStatus: PAYMENT_STATUS.PENDING,
           shippingAddress: orderShippingAddress,

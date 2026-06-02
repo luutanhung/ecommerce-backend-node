@@ -40,7 +40,7 @@ export type ShopCheckoutSummary = {
   checkoutPrice: number;
 };
 
-export type OrderSummary = {
+export type OrderPricing = {
   currency: Currency;
   merchandiseSubtotal: number;
   discountSubtotal: number;
@@ -70,7 +70,7 @@ export type OrderShippingAddress = {
 export type CreatePendingOrderInput = {
   userId: string;
   orderItems: OrderItem[];
-  orderSummary: OrderSummary;
+  orderPricing: OrderPricing;
   orderShippingAddress?: OrderShippingAddress & {
     phoneNumber: string;
   };
