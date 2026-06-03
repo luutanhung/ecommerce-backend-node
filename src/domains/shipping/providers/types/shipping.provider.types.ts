@@ -5,3 +5,7 @@ export type CalculateShippingFeeInput = {
   destinationInfo: Address;
   weight: number;
 };
+
+export type CalculateShippingFeeResult = {
+  total: number;
+};

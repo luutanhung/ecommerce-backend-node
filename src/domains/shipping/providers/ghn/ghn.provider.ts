@@ -1,7 +1,12 @@
+import crypto from "node:crypto";
+
 import type { AxiosInstance } from "axios";
 import axios from "axios";
 
-import type { CalculateShippingFeeInput } from "../types/shipping.provider.types.js";
+import type {
+  CalculateShippingFeeInput,
+  CalculateShippingFeeResult,
+} from "../types/shipping.provider.types.js";
 
 import { config } from "../../../../configs/config.js";
 import { BadRequestAppError } from "../../../../core/error/badRequestAppError.js";
@@ -30,6 +35,23 @@ export type GHNDistrict = {
 export type GHNWard = {
   WardCode: string;
   WardName: string;
+};
+
+export type GHNService = {
+  service_id: number;
+  short_name: string;
+  service_type_id: number;
+};
+
+type GetServicesInput = {
+  fromDistrict: number;
+  toDistrict: number;
+};
+
+type GHNCalculateFeeData = {
+  total: number;
+  service_fee: number;
+  insurance_fee: number;
 };
 
 export class GHNProvider extends ShippingProvider {
@@ -99,14 +121,36 @@ export class GHNProvider extends ShippingProvider {
     }
   }
 
+  async fetchServices({
+    fromDistrict,
+    toDistrict,
+  }: GetServicesInput): Promise<GHNService[]> {
+    try {
+      const res = await this.axiosInstance.post<GHNBaseResponse<GHNService[]>>(
+        `${this.baseUrl}/v2/shipping-order/available-services`,
+        {
+          shop_id: crypto.randomUUID(),
+          from_district: fromDistrict,
+          to_district: toDistrict,
+        },
+      );
+
+      return res.data.data;
+    } catch (err) {
+      logger.error({ err }, "Failed to fetch available services from GHN");
+
+      throw new InternalSystemError({
+        code: ResCode.SHIPPING_GHN_FETCH_SERVICES_FAILED,
+      });
+    }
+  }
+
   async calculateShippingFee({
-     
     originInfo,
-     
     destinationInfo,
     // eslint-disable-next-line
     weight,
-  }: CalculateShippingFeeInput): Promise<void> {
+  }: CalculateShippingFeeInput): Promise<CalculateShippingFeeResult> {
     const provinces: GHNProvince[] = await this.fetchProvinces();
 
     const foundOriginProvince = provinces.find(
@@ -189,6 +233,28 @@ export class GHNProvider extends ShippingProvider {
     if (!foundDestinationWard) {
       throw new BadRequestAppError({
         code: ResCode.SHIPPING_GHN_DESTINATION_WARD_NOT_FOUND,
+      });
+    }
+
+    try {
+      const res = await this.axiosInstance.post<
+        GHNBaseResponse<GHNCalculateFeeData>
+      >(`${this.baseUrl}/v2/shipping-order/fee`, {
+        service_id: 53321,
+        from_district_id: foundOriginDistrict.DistrictID,
+        from_ward_code: foundOriginWard.WardCode,
+        to_district_id: foundDestinationDistrict.DistrictID,
+        to_ward_code: foundDestinationWard.WardCode,
+      });
+
+      return {
+        total: res.data.data.total,
+      };
+    } catch (err) {
+      logger.error({ err }, "Failed to calculate fee from GHN");
+
+      throw new BadRequestAppError({
+        code: ResCode.SHIPPING_GHN_CALCULATE_FEE_FAILED,
       });
     }
   }
