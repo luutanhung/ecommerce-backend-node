@@ -12,14 +12,33 @@ export const ProvinceCodeSchema = z.coerce
     error: ResCode.ADDRESS_PROVINCE_CODE_CANNOT_EXCEED_96,
   });
 
-export const GetWardsQuerySchema = z.object({
+export const GetDistrictsSchema = z.object({
   provinceCode: ProvinceCodeSchema,
+});
+export type GetDistricts = z.infer<typeof GetDistrictsSchema>;
+
+export const DistrictCodeSchema = z.coerce
+  .number()
+  .min(1, {
+    error: ResCode.ADDRESS_DISTRICT_CODE_MUST_BE_AT_LEAST_1,
+  })
+  .max(973, {
+    error: ResCode.ADDRESS_DISTRICT_CODE_CANNOT_EXCEED_973,
+  });
+
+export const GetWardsQuerySchema = z.object({
+  districtCode: DistrictCodeSchema,
 });
 export type GetWardsQuery = z.infer<typeof GetWardsQuerySchema>;
 
 export const ProvinceNameSchema = createRequiredStringSchema({
   requiredMessage: ResCode.ADDRESS_PROVINCE_NAME_REQUIRED,
   invalidMessage: ResCode.ADDRESS_PROVINCE_NAME_INVALID,
+});
+
+export const DistrictNameSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.ADDRESS_DISTRICT_NAME_REQUIRED,
+  invalidMessage: ResCode.ADDRESS_DISTRICT_NAME_INVALID,
 });
 
 export const WardNameSchema = createRequiredStringSchema({

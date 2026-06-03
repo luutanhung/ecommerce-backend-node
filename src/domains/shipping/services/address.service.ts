@@ -1,9 +1,11 @@
 import axios from "axios";
 
 import type { Province, Ward } from "../types/address.types.js";
-import type { GetWardsInput } from "./types/address.service.types.js";
+import type {
+  GetDistrictsInput,
+  GetWardsInput,
+} from "./types/address.service.types.js";
 
-import { BadRequestAppError } from "../../../core/error/badRequestAppError.js";
 import { InternalSystemError } from "../../../core/error/internalSystemError.js";
 import { logger } from "../../../libs/logger.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
@@ -15,7 +17,14 @@ type VietnamOpenApiProvince = {
   division_type: string;
   codename: string;
   phone_code: number;
-  wards: VietnamOpenApiWard[];
+};
+
+type VietnamepenApiDistrict = {
+  name: string;
+  code: number;
+  disvision_type: string;
+  codename: string;
+  province_code: number;
 };
 
 type VietnamOpenApiWard = {
@@ -27,9 +36,17 @@ type VietnamOpenApiWard = {
 
 type VietnamOpenApiGetProvincesResponse = VietnamOpenApiProvince[];
 
+type VietnamOpenApiGetDistrictsResponse = VietnamOpenApiProvince & {
+  districts: VietnamepenApiDistrict[];
+};
+
+type VietnameOpenApiGetWardsResponse = VietnamepenApiDistrict & {
+  wards: VietnamOpenApiWard[];
+};
+
 export class AddressService {
-  private static readonly VIETNAME_OPEN_API_BASE_URL =
-    "https://provinces.open-api.vn/api/v2";
+  private static readonly VIETNAM_OPEN_API_V1_BASE_URL =
+    "https://provinces.open-api.vn/api/v1";
   private static readonly PROVINCE_CACHE_KEY =
     "address:vietname-open-api:provinces";
   private static readonly PROVINCE_CACHE_TTL = 60 * 60 * 24; // 24 hours.
@@ -43,7 +60,7 @@ export class AddressService {
       async () => {
         try {
           const { data } = await axios.get<VietnamOpenApiGetProvincesResponse>(
-            `${this.VIETNAME_OPEN_API_BASE_URL}/?depth=2`,
+            `${this.VIETNAM_OPEN_API_V1_BASE_URL}/p?depth=2`,
           );
 
           return data;
@@ -76,24 +93,41 @@ export class AddressService {
     });
   }
 
-  static async getWards({ provinceCode }: GetWardsInput): Promise<Ward[]> {
-    const vietnamOpenApiProvinces = await this.fetchProvinces();
+  static async getDistricts({ provinceCode }: GetDistrictsInput) {
+    try {
+      const { data } = await axios.get<VietnamOpenApiGetDistrictsResponse>(
+        `${this.VIETNAM_OPEN_API_V1_BASE_URL}/p/${provinceCode}?depth=2`,
+      );
 
-    const foundVietnamOpenApiProvince = vietnamOpenApiProvinces.find(
-      (province) => province.code === provinceCode,
-    );
+      return data.districts.map((district: VietnamepenApiDistrict) => {
+        return {
+          code: district.code,
+          name: district.name,
+        };
+      });
+      // eslint-disable-next-line
+    } catch (err: any) {}
+  }
 
-    if (!foundVietnamOpenApiProvince) {
-      throw new BadRequestAppError({
-        code: ResCode.ADDRESS_PROVINCE_NOT_FOUND,
+  static async getWards({ districtCode }: GetWardsInput): Promise<Ward[]> {
+    try {
+      const { data } = await axios.get<VietnameOpenApiGetWardsResponse>(
+        `${this.VIETNAM_OPEN_API_V1_BASE_URL}/d/${districtCode}?depth=2`,
+      );
+
+      return data.wards.map((ward: VietnamOpenApiWard) => {
+        return {
+          code: ward.code,
+          name: ward.name,
+        };
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      logger.error({ err }, "Failed to fetch district from Vietnam Open API");
+
+      throw new InternalSystemError({
+        code: ResCode.ADDRESS_GET_WARDS_FAILED,
       });
     }
-
-    return foundVietnamOpenApiProvince.wards.map((ward: VietnamOpenApiWard) => {
-      return {
-        code: ward.code,
-        name: ward.name,
-      };
-    });
   }
 }

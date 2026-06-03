@@ -1,15 +1,21 @@
 export type Province = {
-  name: string;
   code: number;
+  name: string;
+};
+
+export type District = {
+  code: number;
+  name: string;
 };
 
 export type Ward = {
-  name: string;
   code: number;
+  name: string;
 };
 
 export type Address = {
   province: string;
+  district: string;
   ward: string;
   addressLine: string;
 };

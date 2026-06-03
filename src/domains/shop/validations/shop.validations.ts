@@ -10,6 +10,7 @@ import {
 } from "../../../shared/validations/common.validations.js";
 import {
   AddressLineSchema,
+  DistrictNameSchema,
   ProvinceNameSchema,
   WardNameSchema,
 } from "../../shipping/validations/address.validations.js";
@@ -35,6 +36,7 @@ export const ShopDescriptionSchema = z.string().min(0).max(500);
 
 export const ShopAddressSchema = z.object({
   province: ProvinceNameSchema,
+  district: DistrictNameSchema,
   ward: WardNameSchema,
   addressLine: AddressLineSchema,
 });
