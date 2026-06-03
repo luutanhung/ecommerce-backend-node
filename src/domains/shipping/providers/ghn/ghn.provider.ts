@@ -146,8 +146,8 @@ export class GHNProvider extends ShippingProvider {
   }
 
   async calculateShippingFee({
-    originInfo,
-    destinationInfo,
+    origin: originInfo,
+    destination: destinationInfo,
     // eslint-disable-next-line
     weight,
   }: CalculateShippingFeeInput): Promise<CalculateShippingFeeResult> {

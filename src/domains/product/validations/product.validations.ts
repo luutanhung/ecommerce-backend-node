@@ -54,11 +54,13 @@ export const ProductImagesSchema = z.array(
   }),
 );
 
+export const ProductShippingWeightSchema = createPositiveNumberSchema({
+  invalidMessage: ResCode.PRODUCT_SHIPPING_WEIGHT_INVALID,
+  positiveMessage: ResCode.PRODUCT_SHIPPING_WEIGHT_MUST_BE_POSITIVE,
+});
+
 export const ProductShippingSchema = z.object({
-  weight: createPositiveNumberSchema({
-    invalidMessage: ResCode.PRODUCT_SHIPPING_WEIGHT_INVALID,
-    positiveMessage: ResCode.PRODUCT_SHIPPING_WEIGHT_MUST_BE_POSITIVE,
-  }),
+  weight: ProductShippingWeightSchema,
   width: createPositiveNumberSchema({
     invalidMessage: ResCode.PRODUCT_SHIPPING_WIDTH_INVALID,
     positiveMessage: ResCode.PRODUCT_SHIPPING_WIDTH_MUST_BE_POSITIVE,

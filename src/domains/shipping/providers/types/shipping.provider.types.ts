@@ -1,8 +1,10 @@
 import type { Address } from "../../types/address.types.js";
 
+export type ShippingAddressInput = Omit<Address, "addressLine">;
+
 export type CalculateShippingFeeInput = {
-  originInfo: Address;
-  destinationInfo: Address;
+  origin: ShippingAddressInput;
+  destination: ShippingAddressInput;
   weight: number;
 };
 
