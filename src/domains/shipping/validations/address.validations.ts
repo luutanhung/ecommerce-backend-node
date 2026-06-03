@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
+import { createRequiredStringSchema } from "../../../shared/validations/common.validations.js";
 
 export const ProvinceCodeSchema = z.coerce
   .number()
@@ -15,3 +16,20 @@ export const GetWardsQuerySchema = z.object({
   provinceCode: ProvinceCodeSchema,
 });
 export type GetWardsQuery = z.infer<typeof GetWardsQuerySchema>;
+
+export const ProvinceNameSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.ADDRESS_PROVINCE_NAME_REQUIRED,
+  invalidMessage: ResCode.ADDRESS_PROVINCE_NAME_INVALID,
+});
+
+export const WardNameSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.ADDRESS_WARD_NAME_REQUIRED,
+  invalidMessage: ResCode.ADDRESS_WARD_NAME_INVALID,
+});
+
+export const AddressLineSchema = createRequiredStringSchema({
+  requiredMessage: ResCode.ADDRESS_ADDRESS_LINE_REQUIRED,
+  invalidMessage: ResCode.ADDRESS_ADDRESS_LINE_INVALID,
+}).max(500, {
+  error: ResCode.ADDRESS_ADDRESS_LINE_INVALID,
+});

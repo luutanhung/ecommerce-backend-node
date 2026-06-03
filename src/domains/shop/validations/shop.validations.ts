@@ -8,6 +8,11 @@ import {
   createObjectIdSchema,
   createRequiredStringSchema,
 } from "../../../shared/validations/common.validations.js";
+import {
+  AddressLineSchema,
+  ProvinceNameSchema,
+  WardNameSchema,
+} from "../../shipping/validations/address.validations.js";
 
 export const ShopIdSchema = createObjectIdSchema({
   requiredMessage: ResCode.SHOP_ID_REQUIRED,
@@ -28,12 +33,20 @@ export const ShopNameSchema = createRequiredStringSchema({
 export const ShopSlugSchema = z.string();
 export const ShopDescriptionSchema = z.string().min(0).max(500);
 
+export const ShopAddressSchema = z.object({
+  province: ProvinceNameSchema,
+  ward: WardNameSchema,
+  addressLine: AddressLineSchema,
+});
+
 export const BaseShopSchema = z.object({
   name: ShopNameSchema,
 
   slug: ShopSlugSchema.optional(),
 
   description: ShopDescriptionSchema.optional(),
+
+  address: ShopAddressSchema.optional(),
 });
 
 export const ShopParamsSchema = z.object({
@@ -46,17 +59,16 @@ export type RegisterShopRequestBody = z.infer<
   typeof RegisterShopRequestBodySchema
 >;
 
-export const UpdateShopInformationRequestBodySchema =
-  BaseShopSchema.partial().refine(
-    (data) => {
-      return !_.isEmpty(data);
-    },
-    {
-      message: ResCode.SHOP_UPDATE_INFORMATION_EMPTY,
-    },
-  );
-export type UpdateShopInformationRequestBody = z.infer<
-  typeof UpdateShopInformationRequestBodySchema
+export const UpdateShopInformationBodySchema = BaseShopSchema.partial().refine(
+  (data) => {
+    return !_.isEmpty(data);
+  },
+  {
+    message: ResCode.SHOP_UPDATE_INFORMATION_EMPTY,
+  },
+);
+export type UpdateShopInformationBody = z.infer<
+  typeof UpdateShopInformationBodySchema
 >;
 
 export const VerifyShopRequestBodySchema = z.object({

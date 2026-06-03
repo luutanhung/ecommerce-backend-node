@@ -11,15 +11,17 @@ import { CURRENCY } from "../../pricing/constants/currency.constants.js";
 
 export const ShopAddressSchema = new Schema(
   {
-    addressLine: {
+    province: {
       type: String,
       required: true,
     },
-    province: {
-      type: String,
-    },
     ward: {
       type: String,
+      required: true,
+    },
+    addressLine: {
+      type: String,
+      required: true,
     },
   },
   {

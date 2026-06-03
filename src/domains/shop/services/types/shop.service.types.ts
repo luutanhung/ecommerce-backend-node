@@ -1,4 +1,5 @@
 import type { Currency } from "../../../pricing/types/currency.types.js";
+import type { Address } from "../../../shipping/types/address.types.js";
 
 export type RegisterShopInput = {
   userId: string;
@@ -28,6 +29,7 @@ export type UpdateShopInput = {
   name?: string;
   slug?: string;
   description?: string;
+  address?: Address;
 };
 
 export type CloseShopInput = {

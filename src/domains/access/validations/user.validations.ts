@@ -5,6 +5,7 @@ import {
   createObjectIdSchema,
   createRequiredStringSchema,
 } from "../../../shared/validations/common.validations.js";
+import { AddressLineSchema } from "../../shipping/validations/address.validations.js";
 
 export const UserIdSchema = createObjectIdSchema({
   requiredMessage: ResCode.USER_ID_REQUIRED,
@@ -32,12 +33,7 @@ export const UserPasswordSchema = createRequiredStringSchema({
     message: ResCode.PASSWORD_MISSING_SPECIAL_CHAR,
   });
 
-export const UserAddressLineSchema = createRequiredStringSchema({
-  requiredMessage: ResCode.USER_ADDRESS_REQUIRED,
-  invalidMessage: ResCode.USER_ADDRESS_INVALID,
-}).max(500, {
-  error: ResCode.USER_ADDRESS_INVALID,
-});
+export const UserAddressLineSchema = AddressLineSchema;
 
 export const UserWardSchema = z.string();
 export const UserDistrictSchema = z.string();

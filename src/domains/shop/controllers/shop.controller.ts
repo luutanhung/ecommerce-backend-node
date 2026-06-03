@@ -15,7 +15,7 @@ import type {
   ChangeCurrencyBody,
   RegisterShopRequestBody,
   ShopParams,
-  UpdateShopInformationRequestBody,
+  UpdateShopInformationBody,
   VerifyShopRequestBody,
 } from "../validations/shop.validations.js";
 
@@ -91,7 +91,7 @@ export class ShopController {
   async updateShopInformation(req: Request, res: Response) {
     const updatedShop = await ShopService.updateShopInformation({
       shopId: (req.ownedShop as ShopLean)._id.toString(),
-      ...(req.body as UpdateShopInformationRequestBody),
+      ...(req.body as UpdateShopInformationBody),
     });
 
     new OKResponse({

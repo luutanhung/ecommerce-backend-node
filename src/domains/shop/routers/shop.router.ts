@@ -10,7 +10,7 @@ import {
   ChangeCurrencyBodySchema,
   RegisterShopRequestBodySchema,
   ShopParamsSchema,
-  UpdateShopInformationRequestBodySchema,
+  UpdateShopInformationBodySchema,
   VerifyShopRequestBodySchema,
 } from "../validations/shop.validations.js";
 
@@ -61,7 +61,7 @@ router.post(
   "/shops/:shopId/update-information",
   validateRequest({
     params: ShopParamsSchema,
-    body: UpdateShopInformationRequestBodySchema,
+    body: UpdateShopInformationBodySchema,
   }),
   authorizeShopOwnership,
   asyncWrapper(shopController.updateShopInformation),

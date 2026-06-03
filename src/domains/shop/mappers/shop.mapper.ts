@@ -12,6 +12,7 @@ export class ShopMapper {
         "logo",
         "currency",
         "status",
+        "address",
         "createdAt",
         "updatedAt",
       ]),
