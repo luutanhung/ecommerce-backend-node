@@ -1,5 +1,7 @@
+import type { CalculateShippingFeeInput } from "./types/shipping.provider.types.js";
+
 export abstract class ShippingProvider {
-  abstract calculateShippingFee(): unknown;
+  abstract calculateShippingFee(input: CalculateShippingFeeInput): void;
 
   // abstract createShipment(): unknown;
 

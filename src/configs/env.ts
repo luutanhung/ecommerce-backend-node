@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { bool, cleanEnv, host, port, str } from "envalid";
+import { bool, cleanEnv, host, port, str, url } from "envalid";
 import path from "path";
 
 const NODE_ENV = process.env.NODE_ENV || "development";
@@ -50,6 +50,10 @@ const env = cleanEnv(process.env, {
   STRIPE_SECRET_KEY: str(),
   STRIPE_WEBHOOK_SECRET: str(),
   STRIPE_PUBLISHABLE_KEY: str(),
+
+  // GiaoHangNhanh
+  GHN_BASE_API_URL: url(),
+  GHN_TOKEN: str(),
 });
 
 export { env };

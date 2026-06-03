@@ -51,6 +51,13 @@ const baseConfig = {
       publishableKey: env.STRIPE_PUBLISHABLE_KEY,
     },
   },
+  shipping: {
+    // GiaoHangNhanh.
+    ghn: {
+      baseApiUrl: env.GHN_BASE_API_URL,
+      token: env.GHN_TOKEN,
+    },
+  },
 };
 
 const config = {
