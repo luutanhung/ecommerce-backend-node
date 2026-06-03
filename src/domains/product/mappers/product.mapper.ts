@@ -20,6 +20,7 @@ export class ProductMapper {
         "averageRating",
         "attributes",
         "images",
+        "shipping",
       ]),
       id: product._id.toString(),
       userId: product.user.toString(),

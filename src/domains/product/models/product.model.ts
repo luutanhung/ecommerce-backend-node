@@ -11,6 +11,27 @@ import {
 } from "../../../shared/constants/model.constants.js";
 import { ResCode } from "../../../shared/constants/resCode.constants.js";
 
+const ProductShippingSchema = new Schema(
+  {
+    weight: {
+      type: Number,
+      required: true,
+    },
+    width: {
+      type: Number,
+    },
+    length: {
+      type: Number,
+    },
+    height: {
+      type: Number,
+    },
+  },
+  {
+    _id: false,
+  },
+);
+
 export const ProductSchema = new Schema(
   {
     user: {
@@ -78,6 +99,11 @@ export const ProductSchema = new Schema(
       type: Boolean,
       default: false,
       index: true,
+    },
+
+    // Product shipping profile.
+    shipping: {
+      type: ProductShippingSchema,
     },
   },
   {

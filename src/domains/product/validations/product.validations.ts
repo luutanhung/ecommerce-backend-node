@@ -54,6 +54,25 @@ export const ProductImagesSchema = z.array(
   }),
 );
 
+export const ProductShippingSchema = z.object({
+  weight: createPositiveNumberSchema({
+    invalidMessage: ResCode.PRODUCT_SHIPPING_WEIGHT_INVALID,
+    positiveMessage: ResCode.PRODUCT_SHIPPING_WEIGHT_MUST_BE_POSITIVE,
+  }),
+  width: createPositiveNumberSchema({
+    invalidMessage: ResCode.PRODUCT_SHIPPING_WIDTH_INVALID,
+    positiveMessage: ResCode.PRODUCT_SHIPPING_WIDTH_MUST_BE_POSITIVE,
+  }).optional(),
+  length: createPositiveNumberSchema({
+    invalidMessage: ResCode.PRODUCT_SHIPPING_LENGTH_INVALID,
+    positiveMessage: ResCode.PRODUCT_SHIPPING_LENGTH_MUST_BE_POSITIVE,
+  }).optional(),
+  height: createPositiveNumberSchema({
+    invalidMessage: ResCode.PRODUCT_SHIPPING_HEIGHT_INVALID,
+    positiveMessage: ResCode.PRODUCT_SHIPPING_HEIGHT_INVALID,
+  }).optional(),
+});
+
 export const BaseProductSchema = z.object({
   name: ProductNameSchema,
 
@@ -76,6 +95,11 @@ export const BaseProductSchema = z.object({
    * Product images gallery.
    */
   images: ProductImagesSchema.default([]),
+
+  /**
+   * Product shipping profile.
+   */
+  shipping: ProductShippingSchema,
 });
 
 export const CreateShopProductBodySchema = BaseProductSchema;

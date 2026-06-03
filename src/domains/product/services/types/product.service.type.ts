@@ -1,6 +1,6 @@
 import type { SortOptions } from "../../../../shared/types/common.type.js";
 import type { PartialPaginationQuery } from "../../../../shared/validations/pagination.validations.js";
-import type { ProductType } from "../../types/product.type.js";
+import type { ProductType } from "../../types/product.types.js";
 
 /**
  * Create a new shop product.
@@ -55,6 +55,13 @@ export type CreateShopProductInput = {
    * Optional SEO slug.
    */
   slug?: string;
+
+  shipping: {
+    weight: number;
+    width?: number;
+    length?: number;
+    height?: number;
+  };
 };
 
 export type PublishShopProductInput = {
