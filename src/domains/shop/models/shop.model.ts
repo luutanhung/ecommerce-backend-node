@@ -18,20 +18,8 @@ export const ShopAddressSchema = new Schema(
     province: {
       type: String,
     },
-    district: {
-      type: String,
-    },
     ward: {
       type: String,
-    },
-    provinceId: {
-      type: Number,
-    },
-    districtId: {
-      type: Number,
-    },
-    wardCode: {
-      type: Number,
     },
   },
   {
